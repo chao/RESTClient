@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css"   type="text/css"?>
+<?xml-stylesheet href="chrome://restclient/skin/restclient.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://restclient/locale/header.dtd">
+<dialog id             = "headerPrompt"
+        title          = "&header.title;"
+        width          = "275"
+        height         = "140"
+        xmlns          = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        persist        = "screenX screenY width height"
+        onload         = "init(event)"
+        buttons        = "accept, cancel"
+        ondialogaccept = "doOK()">
+
+  <script type="application/x-javascript" src="chrome://restclient/content/restclient.js"/>
+  <script>
+    <![CDATA[
+	    function $(el) {
+			  return document.getElementById(el);
+			}
+
+      function init(aEvent) {
+				$('txtName').value  = window.arguments[0].name;
+        $('txtValue').value = window.arguments[0].value;
+        $('txtName').focus();
+      }
+
+      function doOK() {
+        window.arguments[0].name      = $('txtName').value;
+        window.arguments[0].value     = $('txtValue').value;
+        window.arguments[0].returnVal = true;
+        restclient.saveHistory("header-name-history", $('txtName').value);
+        restclient.saveHistory("header-value-history", $('txtValue').value);
+        return true;
+      }
+    ]]>
+  </script>
+	<grid flex="3">
+	  <columns>
+	    <column/>
+	    <column flex="3" />
+	  </columns>
+	  <rows>
+	  	<row>
+      <label value="&header.name;"    accesskey="&header.name.access;" control="txtName"/>
+      <textbox id="txtName"
+                flex="1"
+                type="autocomplete"
+                autocompletesearch="form-history"
+                autocompletesearchparam="header-name-history"
+                autocompletepopup="PopupAutoComplete"
+                completeselectedindex="true"
+                tabscrolling="true"
+                showcommentcolumn="false"
+                enablehistory="true"
+                maxrows="10"
+      					width="1"
+      					/>
+      </row>
+      <row>
+      <label value="&header.value;" accesskey="&header.value.access;" control="txtValue"/>
+      <textbox id="txtValue"
+                flex="1"
+                type="autocomplete"
+                autocompletesearch="form-history"
+                autocompletesearchparam="header-value-history"
+                autocompletepopup="PopupAutoComplete"
+                completeselectedindex="true"
+                tabscrolling="true"
+                showcommentcolumn="false"
+                enablehistory="true"
+                maxrows="10"
+      					width="1"
+  					/>
+      </row>
+  	</rows>
+	</grid>
+</dialog>

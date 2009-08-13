@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css"   type="text/css"?>
+<?xml-stylesheet href="chrome://restclient/skin/restclient.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://restclient/locale/login.dtd">
+<dialog id             = "loginPrompt"
+        title          = "&title;"
+        width          = "275"
+        height         = "190"
+        xmlns          = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        persist        = "screenX screenY width height"
+        onload         = "init(event)"
+        buttons        = "accept, cancel"
+        ondialogaccept = "doOK()">
+
+  <script type="application/x-javascript" src="chrome://restclient/content/util.js"/>
+  <script>
+    <![CDATA[
+	    function $(el) {
+			  return document.getElementById(el);
+			}
+
+      function init(aEvent) {
+      	var save = util.getBoolPref("restclient.save", false);
+      	if(save){
+        	$('login').value    = util.getStrPref("restclient.login", "");
+        	$('password').value = util.getStrPref("restclient.password", "");
+        	$('save').checked = true;
+				}else{
+					$('login').value    = window.arguments[0].login;
+	        $('password').value = window.arguments[0].password;
+				}
+        $('login').focus();
+      }
+
+      function saveChange() {
+        var save          = $('save').checked;
+      }
+
+      function doOK() {
+        window.arguments[0].login     = $('login').value;
+        window.arguments[0].password  = $('password').value;
+        window.arguments[0].returnVal = true;
+        var save          = $('save').checked;
+        if(save){
+        	util.setStrPref("restclient.login", $('login').value);
+        	util.setStrPref("restclient.password", $('password').value);
+        	util.setBoolPref("restclient.save", true);
+        }
+        return true;
+      }
+    ]]>
+  </script>
+
+  <label value="&enterLogin;"    accesskey="&login.access;"    control="login"/>
+  <textbox id="login"    width="200"/>
+
+  <label value="&enterPassword;" accesskey="&password.access;" control="password"/>
+  <textbox id="password" width="200" type="password"/>
+
+  <hbox>
+    <spacer flex="1"/>
+    <checkbox id="save" label="&save;" accesskey="&save.access;" oncommand="saveChange()"/>
+  </hbox>
+
+</dialog>

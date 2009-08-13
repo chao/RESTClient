@@ -1,0 +1,10 @@
+content	restclient	jar:chrome/restclient.jar!/content/
+
+locale	restclient en-US jar:chrome/restclient.jar!/locale/en-US/
+locale  restclient zh-CN jar:chrome/restclient.jar!/locale/zh-CN/
+locale  restclient fr-FR jar:chrome/restclient.jar!/locale/fr-FR/
+
+skin    restclient classic/1.0  jar:chrome/restclient.jar!/skin/
+
+overlay chrome://browser/content/browser.xul        chrome://restclient/content/restclientOverlay.xul
+style	chrome://global/content/customizeToolbar.xul	chrome://restclient/skin/overlay.css

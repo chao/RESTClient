@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="{ad0d925d-88f8-47f1-85ea-8463569e756e}"
+                   em:name="REST Client"
+                   em:version="1.2.6"
+                   em:creator="Chao Zhou; http://www.porphyry.org/Members/czhou/"
+                   em:contributor="Aurelien Benel; Christophe Lejeune"
+                   em:description="A simple RESTFul web service tester client extension for firefox."
+                   em:homepageURL="http://hypertopic.org/index.php/RESTClient"
+                   em:iconURL="chrome://restclient/skin/logo32.png"
+                   em:optionsURL="chrome://restclient/content/about.xul"
+                   >
+    <em:targetApplication>
+    <Description>
+      <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+      <em:minVersion>1.5.0.4</em:minVersion>
+      <em:maxVersion>3.1a1pre</em:maxVersion>
+    </Description>
+   </em:targetApplication>
+  </RDF:Description>
+</RDF:RDF>

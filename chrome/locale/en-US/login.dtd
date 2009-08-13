@@ -1,0 +1,9 @@
+<!ENTITY title            "Enter Login Information">
+
+<!ENTITY enterLogin       "Login:">
+<!ENTITY enterPassword    "Password:">
+<!ENTITY save        "Remember me on this computer.">
+
+<!ENTITY login.access     "L">
+<!ENTITY password.access  "P">
+<!ENTITY save.access "R">

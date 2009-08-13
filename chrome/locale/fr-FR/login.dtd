@@ -1,0 +1,9 @@
+<!ENTITY title            "Saisie d'un identifiant">
+
+<!ENTITY enterLogin       "Identifiant :">
+<!ENTITY enterPassword    "Mot de passe :">
+<!ENTITY save        "Se rappeler de moi sur cet ordinateur.">
+
+<!ENTITY login.access     "L">
+<!ENTITY password.access  "P">
+<!ENTITY save.access "R">

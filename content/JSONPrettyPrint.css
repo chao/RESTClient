@@ -1,0 +1,69 @@
+/* The top-level container for all the formatted json or the error message if there is one */
+.json-content {
+  background-color: white;
+  border: 1px solid #999999;
+  margin-right: 10px;
+  padding: 10px 10px 10px 0;
+}
+
+.json-string {
+  color: green;
+  white-space: pre;
+}
+
+.json-null {
+  color: red;
+}
+
+.json-numeric {
+  color: red;
+}
+
+.json-bool {
+  color: blue;
+}
+
+/*
+  An object or an array
+*/
+.json-object {
+  padding-left: 10px;
+}
+
+/*
+  A member of an array or object.
+  - a member of an array is just a value
+  - a member of an object is a name/value pair
+*/
+.json-member {
+  padding-left: 10px;
+}
+
+/*
+  The label, for example:
+  {
+    validated: true
+    ^^^^^^^^^
+  }
+*/
+.json-label {
+  font-weight: bold;
+}
+
+/*
+  The braces for objects and arrays, ie {} or []
+*/
+.json-brace {
+  font-weight: bold;
+}
+
+/* The part that says there was an error, eg "There was an error" */
+.json-error-title {
+  font-weight: bold;
+}
+
+/* The actual error message, eg "Missing left bracket on line 6" */
+.json-error-message {
+  
+}
+

@@ -1,0 +1,11 @@
+#restclient-button {
+  list-style-image    : url("chrome://restclient/skin/logo24.png");
+}
+
+toolbar[iconsize="small"] #restclient-button {
+  list-style-image    : url("chrome://restclient/skin/logo16.png");
+}
+
+#restclienttoolsmenu {
+  list-style-image    : url("chrome://restclient/skin/logo16.png");
+}

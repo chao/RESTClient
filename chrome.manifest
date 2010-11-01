@@ -1,0 +1,8 @@
+content   restclient                content/
+skin      restclient   classic/1.0  skin/
+locale    restclient   en-US        locale/en-US/
+locale    restclient   fr-FR        locale/fr-FR/
+locale    restclient   zh-CN        locale/zh-CN/
+
+overlay chrome://browser/content/browser.xul        chrome://restclient/content/restclientOverlay.xul
+style	chrome://global/content/customizeToolbar.xul	chrome://restclient/skin/overlay.css

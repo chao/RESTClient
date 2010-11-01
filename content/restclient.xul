@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type"text/css" ?>
+<?xml-stylesheet href="chrome://restclient/skin/restclient.css" type"text/css" ?>
+<?xml-stylesheet href="chrome://browser/skin/browser.css" type="text/css" ?>
+<?xml-stylesheet href="chrome://restclient/skin/XMLPrettyPrint.css" type="text/css" ?>
+<?xml-stylesheet href="chrome://restclient/skin/JSONPrettyPrint.css" type="text/css" ?>
+
+<!DOCTYPE page SYSTEM "chrome://restclient/locale/restclient.dtd">
+
+<window id="restclient" title="&restclient.title;"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+      
+  <script type="application/x-javascript" src="chrome://restclient/content/tabcontroller.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/tablistener.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/base64.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/util.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/restclient.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/json2.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/json2xul.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/oauth.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/sha1.js"/>
+    <stringbundleset id="stringbundleset">
+    <stringbundle id="string-bundle"
+      src="chrome://restclient/locale/restclient.properties" />
+  </stringbundleset>
+
+  <vbox flex="1">
+  <toolbox>
+    <toolbar id="restclient-toolbar">
+      <toolbarbutton id="open-icon" label="&restclient.menu.open;" onclick="restclient.loadRequest();" tooltiptext="&toolbar.open.tooltip;"/>
+      <toolbarbutton id="save-icon" label="&restclient.menu.save;" onclick="restclient.saveRequest();" tooltiptext="&toolbar.save.tooltip;"/>
+      <toolbarbutton id="copy-icon" label="&restclient.menu.copy;" onclick="restclient.copyResult();" tooltiptext="&toolbar.copy.tooltip;"/>
+      <toolbarbutton id="clear-icon" label="&restclient.menu.clear;" onclick="restclient.clearRequest();" tooltiptext="&toolbar.clear.tooltip;"/>
+      <toolbarseparator/>
+      <toolbarbutton id="header-icon" label="&restclient.menu.addheader;" onclick="restclient.addRequestHeader();" tooltiptext="&toolbar.login.tooltip;"/>
+      <toolbarbutton id="login-icon" label="&restclient.menu.login;" onclick="restclient.doLogin();" tooltiptext="&toolbar.login.tooltip;"/>
+    </toolbar>
+  </toolbox>
+
+  <groupbox>
+  	<caption label="&restclient.request.title;"/>
+		<hbox>
+			<label value="&restclient.method;" />
+			<menulist id="requestMethod" label="&restclient.method;" style="height:24px" editable="true">
+			  <menupopup>
+			    <menuitem id="requestMethod_GET" label="GET" selected="true"/>
+			    <menuitem label="POST"/>
+			    <menuitem label="PUT"/>
+			    <menuitem label="DELETE"/>
+			    <menuitem label="HEAD"/>
+			    <menuitem label="OPTIONS"/>
+			    <menuitem label="TRACE"/>
+			    <menuitem label="PROPFIND"/>
+			    <menuitem label="PROPPATCH"/>
+			    <menuitem label="MKCOL"/>
+			    <menuitem label="COPY"/>
+			    <menuitem label="MOVE"/>
+			    <menuitem label="LOCK"/>
+			    <menuitem label="UNLOCK"/>
+			  </menupopup>
+			</menulist>
+			<textbox id="tbRequestUrl"
+          flex="8"
+          type="autocomplete"
+          autocompletesearch="form-history"
+          autocompletesearchparam="rc-search-history"
+          autocompletepopup="PopupAutoComplete"
+          completeselectedindex="true"
+          tabscrolling="true"
+          showcommentcolumn="false"
+          enablehistory="true"
+          maxrows="10"
+					cols = "5"
+					width="1"
+					size="5"
+					onkeypress="return restclient.checkEnterKeyPress(event);"
+                    ontextentered="return restclient.updateOAuthAuthorizationHeader();"
+                    onchange="return restclient.updateOAuthAuthorizationHeader();"
+					>
+			</textbox>
+
+			<button id="btnSend" label="&restclient.send;" onclick="restclient.doRequest();" />
+		</hbox>
+		<separator class="thin" flex="1" />
+	<grid flex="3">
+	  <columns>
+	    <column/>
+	    <column flex="3" />
+	  </columns>
+	  <rows>
+	  	<row>
+				<caption label="&restclient.header.title;"/>
+				<tree id="headerList" flex="1" height="90" seltype="multiple"
+         		      enableColumnDrag="true" disableKeyNavigation="true" editable="true"
+         		      onkeypress="restclient.checkDeleteKeyPress(event)"
+         		      >
+          <treecols>
+         	  <treecol id="columnName" label="&header.list.name;" flex="1" persist="width ordinal hidden" editable="true"/>
+         		<splitter class="tree-splitter"/>
+         		<treecol id="columnValue" label="&header.list.value;" flex="5" persist="width ordinal hidden" editable="true"/>
+         	</treecols>
+         	<treechildren id="reqHeaderChilds"/>
+        </tree>
+	  	</row>
+	  	<separator class="thin" flex="1" />
+	    <row flex="3" >
+				<caption label="&restclient.body.title;"/>
+	  		<textbox id="tbRequestBody" flex="3" multiline="true" minheight="150px" oninput="restclient.requestBodyChange();"/>
+	  	</row>
+  	</rows>
+	</grid>
+	</groupbox>
+
+	<splitter id="detail-comment" collapse="after" resizeafter="grow" />
+		<tabbox flex="1">
+		  <tabs>
+		    <tab label="&restclient.response.header;"/>
+		    <tab label="&restclient.response.body;"/>
+		    <tab label="&restclient.response.bodyXML;"/>
+		  </tabs>
+		  <tabpanels flex="3">
+		    <tabpanel id="httpheaders">
+			    <tree id="headerInfo" width="375" height="170" seltype="multiple" flex="1"
+	         		      enableColumnDrag="false" disableKeyNavigation="true" editable="false">
+	          <treecols>
+	         	  <treecol id="columnHttpHeader" label="&restclient.response.header.col;" flex="1" persist="width ordinal hidden"/>
+	         	</treecols>
+	         	<treechildren id="headerChilds" />
+	        </tree>
+		    </tabpanel>
+		    <tabpanel flex="1">
+		    	<textbox id="responseBody" multiline="true" flex="1"/>
+		    </tabpanel>
+		    <tabpanel id="xmlContent" orient="vertical" class="overflow_01">
+		    </tabpanel>
+		  </tabpanels>
+		</tabbox>
+	</vbox>
+	<statusbar id="mab-status-bar">
+  	<statusbarpanel id="record-status" flex="2"/>
+  	<statusbarpanel id="out-status" flex="1"/>
+  	<statusbarpanel>
+  			<progressmeter id="meter" value="0" mode="determined"/>
+  	</statusbarpanel>
+  </statusbar>
+</window>

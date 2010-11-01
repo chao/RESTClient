@@ -1,0 +1,7 @@
+<!ENTITY header.title       "增加HTTP请求报头">
+
+<!ENTITY header.name        "名称:">
+<!ENTITY header.value       "值:">
+
+<!ENTITY header.name.access     "N">
+<!ENTITY header.value.access  "V">

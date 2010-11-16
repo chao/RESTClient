@@ -98,10 +98,10 @@ ShutdownObserver.prototype = {
     var container = mainWindow.getBrowser().tabContainer;   
     for (var i=0; i<container.childNodes.length;i++) {
       var tabWindow = mainWindow.getBrowser().getBrowserForTab(
-        container.childNodes[0]).
+        container.childNodes[i]).
         contentWindow.wrappedJSObject;
 
-        tabWindow.restclient.storeRestClientTab(container.childNodes[0]);
+        tabWindow.restclient.storeRestClientTab(container.childNodes[i]);
     }     
   }
 }

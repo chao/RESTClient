@@ -100,8 +100,10 @@ ShutdownObserver.prototype = {
       var tabWindow = mainWindow.getBrowser().getBrowserForTab(
         container.childNodes[i]).
         contentWindow.wrappedJSObject;
-
+    
+      if (typeof tabWindow.restclient != "undefined") {
         tabWindow.restclient.storeRestClientTab(container.childNodes[i]);
+      }
     }     
   }
 }

@@ -346,6 +346,38 @@ var restclient = {
     this.clearRequestHeader();
   },
 
+  storeRestClientTab: function (theTab) {
+      var store = Components.classes["@mozilla.org/browser/sessionstore;1"].
+                  getService(Components.interfaces.nsISessionStore);
+
+      //var theTab = aEvent.originalTarget;
+      //var theTabBrowser = gBrowser.getBrowserForTab(theTab);
+      //var tabDocument = theTabBrowser.contentDocument.wrappedJSObject;
+      var tabDocument = document;      
+
+      var requestUrl = tabDocument.getElementById("tbRequestUrl").value;
+      var requestMethod = tabDocument.getElementById("requestMethod").selectedItem.getAttribute('label');
+      var requestBody = tabDocument.getElementById("tbRequestBody").value;
+      var reqHeaderChilds = tabDocument.getElementById('reqHeaderChilds');
+      var requestHeaderList = {};
+
+      for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--){
+        var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
+        var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
+        
+        requestHeaderList[headerKey] = headerValue;
+      }
+
+      var tabController = new TabController();
+      tabController.requestUrl = requestUrl;
+      tabController.requestMethod = requestMethod;
+      tabController.requestBody = requestBody;
+      tabController.headerList = requestHeaderList;
+      store.setTabValue(theTab, "tab-controller", tabController.toString());
+    },
+
+
+
   clearResult: function(){
     restclient.initHttpHeader();
     restclient.initHttpResponse();
@@ -481,7 +513,4 @@ function setRequestUrl(strUrl){
   //alert(strUrl);
 }
 
-window.tryToClose(aEvent) {
-  alert(aEvent);
-}
 window.addEventListener("load", function() {restclient.init();}, false);

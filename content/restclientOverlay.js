@@ -83,7 +83,30 @@ function storeRestClientTab(aEvent) {
 }
 document.addEventListener("SSTabClosing", storeRestClientTab, false);
 
-var observerService = Component.classes["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
+
+function ShutdownObserver() {
+}
+ShutdownObserver.prototype = {
+  observe: function(subject, topic, data) {
+
+    var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                           .getInterface(Components.interfaces.nsIWebNavigation)
+                           .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+                           .rootTreeItem
+                           .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                           .getInterface(Components.interfaces.nsIDOMWindow);
+    var container = mainWindow.getBrowser().tabContainer;   
+    for (var i=0; i<container.childNodes.length;i++) {
+      var tabWindow = mainWindow.getBrowser().getBrowserForTab(
+        container.childNodes[0]).
+        contentWindow.wrappedJSObject;
+
+        tabWindow.restclient.storeRestClientTab(container.childNodes[0]);
+    }     
+  }
+}
+var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
+observerService.addObserver(new ShutdownObserver(), "quit-application-requested", false);
 
 
 function loadRestClient() {

@@ -53,39 +53,20 @@ function restoreRestClientTab(aEvent) {
 }
 document.addEventListener("SSTabRestored", restoreRestClientTab, false);
 
-function storeRestClientTab(aEvent) {
-  var store = Components.classes["@mozilla.org/browser/sessionstore;1"].
-              getService(Components.interfaces.nsISessionStore);
 
+function storeRestClientTab(aEvent) {
   var theTab = aEvent.originalTarget;
   var theTabBrowser = gBrowser.getBrowserForTab(theTab);
-  var tabDocument = theTabBrowser.contentDocument.wrappedJSObject;
-
-  var requestUrl = tabDocument.getElementById("tbRequestUrl").value;
-  var requestMethod = tabDocument.getElementById("requestMethod").selectedItem.getAttribute('label');
-  var requestBody = tabDocument.getElementById("tbRequestBody").value;
-  var reqHeaderChilds = tabDocument.getElementById('reqHeaderChilds');
-  var requestHeaderList = {};
-
-  for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--){
-    var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
-    var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
+  var tabWindow = gBrowser.getBrowserForTab(theTab).contentWindow.wrappedJSObject;
     
-    requestHeaderList[headerKey] = headerValue;
+  if (typeof tabWindow.restclient != "undefined") {
+    tabWindow.restclient.storeRestClientTab(theTab);
   }
-
-  var tabController = new TabController();
-  tabController.requestUrl = requestUrl;
-  tabController.requestMethod = requestMethod;
-  tabController.requestBody = requestBody;
-  tabController.headerList = requestHeaderList;
-  store.setTabValue(aEvent.originalTarget, "tab-controller", tabController.toString());
 }
 document.addEventListener("SSTabClosing", storeRestClientTab, false);
 
 
-function ShutdownObserver() {
-}
+function ShutdownObserver() {}
 ShutdownObserver.prototype = {
   observe: function(subject, topic, data) {
 

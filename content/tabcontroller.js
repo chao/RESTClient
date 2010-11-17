@@ -2,6 +2,8 @@
  *  Object used to store information on a per tab basis.  This should be passed
  *  into the TabListener as the func argument.
  *
+ *  http://richwklein.com/2009/07/21/tab-listener/
+ *
  *  @version 1.0
  ******************************************************************************/
 function TabController() {}

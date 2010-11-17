@@ -347,35 +347,83 @@ var restclient = {
   },
 
   storeRestClientTab: function (theTab) {
-      var store = Components.classes["@mozilla.org/browser/sessionstore;1"].
-                  getService(Components.interfaces.nsISessionStore);
+    var store = Components.classes["@mozilla.org/browser/sessionstore;1"].
+                getService(Components.interfaces.nsISessionStore);
 
-      //var theTab = aEvent.originalTarget;
-      //var theTabBrowser = gBrowser.getBrowserForTab(theTab);
-      //var tabDocument = theTabBrowser.contentDocument.wrappedJSObject;
-      var tabDocument = document;      
+    //var theTab = aEvent.originalTarget;
+    //var theTabBrowser = gBrowser.getBrowserForTab(theTab);
+    //var tabDocument = theTabBrowser.contentDocument.wrappedJSObject;
+    var tabDocument = document;      
 
-      var requestUrl = tabDocument.getElementById("tbRequestUrl").value;
-      var requestMethod = tabDocument.getElementById("requestMethod").selectedItem.getAttribute('label');
-      var requestBody = tabDocument.getElementById("tbRequestBody").value;
-      var reqHeaderChilds = tabDocument.getElementById('reqHeaderChilds');
-      var requestHeaderList = {};
+    var requestUrl = tabDocument.getElementById("tbRequestUrl").value;
+    var requestMethod = tabDocument.getElementById("requestMethod").selectedItem.getAttribute('label');
+    var requestBody = tabDocument.getElementById("tbRequestBody").value;
+    var reqHeaderChilds = tabDocument.getElementById('reqHeaderChilds');
+    var requestHeaderList = {};
 
-      for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--){
-        var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
-        var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
-        
-        requestHeaderList[headerKey] = headerValue;
+    for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--){
+      var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
+      var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
+      
+      requestHeaderList[headerKey] = headerValue;
+    }
+
+    var tabController = new TabController();
+    tabController.requestUrl = requestUrl;
+    tabController.requestMethod = requestMethod;
+    tabController.requestBody = requestBody;
+    tabController.headerList = requestHeaderList;
+    store.setTabValue(theTab, "tab-controller", tabController.toString());
+  },
+
+  restoreRestClientTab: function (theTab) {
+    var store = Components.classes["@mozilla.org/browser/sessionstore;1"].
+                 getService(Components.interfaces.nsISessionStore);
+
+    //var theTabBrowser = gBrowser.getBrowserForTab(theTab);
+
+    var tbRequestBody   = document.getElementById('tbRequestBody');
+    var tbRequestUrl    = document.getElementById('tbRequestUrl');
+    var requestMethod   = document.getElementById('requestMethod');
+    var reqMethodChilds = document.getElementById('requestMethod').childNodes[0].childNodes;
+    var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+    if (tbRequestBody != null) {
+      var data = store.getTabValue(theTab, "tab-controller");
+      var tabController = new TabController();
+      if (data != "undefined") {
+          tabController.fromString(data);
       }
 
-      var tabController = new TabController();
-      tabController.requestUrl = requestUrl;
-      tabController.requestMethod = requestMethod;
-      tabController.requestBody = requestBody;
-      tabController.headerList = requestHeaderList;
-      store.setTabValue(theTab, "tab-controller", tabController.toString());
-    },
+      tbRequestBody.value = tabController.requestBody;
+      tbRequestUrl.value = tabController.requestUrl;
+      var reqHeaderList = tabController.headerList;
+      for (headerKey in reqHeaderList) {
+        var headerValue = reqHeaderList[headerKey];
 
+        var item =  document.createElement('treeitem');
+        var row  =  document.createElement('treerow');
+        var c1   =  document.createElement('treecell');
+        var c2   =  document.createElement('treecell');
+        c1.setAttribute('label', headerKey);
+        c2.setAttribute('label', headerValue);
+        row.appendChild(c1);
+        row.appendChild(c2);
+        item.appendChild(row);
+        reqHeaderChilds.appendChild(item);
+      }
+
+      var child = null;
+      for (childIndex in reqMethodChilds) {
+        var child = reqMethodChilds[childIndex];
+        if (typeof child == 'object' && child.getAttribute('label') == tabController.requestMethod) {
+          break;
+        }          
+      }
+      if (child != null) {
+        requestMethod.selectedItem = child;
+      }
+    }
+  },
 
 
   clearResult: function(){

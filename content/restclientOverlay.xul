@@ -6,7 +6,6 @@
          xmlns = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="chrome://restclient/content/tabcontroller.js"/>
-  <script type="application/x-javascript" src="chrome://restclient/content/tablistener.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/restclientOverlay.js"/>
 
  

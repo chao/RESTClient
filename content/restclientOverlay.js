@@ -5,11 +5,11 @@ function restoreRestClientTab(aEvent) {
     
   if (typeof tabWindow.restclient != "undefined") {
     tabWindow.restclient.restoreRestClientTab(theTab);
-  }
-  
-  // bring back the icon
-  var func = function () { gBrowser.setIcon(theTab, "chrome://restclient/skin/logo16.png"); };
-  setTimeout(func, 500);
+    
+    // bring back the icon
+    var func = function () { gBrowser.setIcon(theTab, "chrome://restclient/skin/logo16.png"); };
+    setTimeout(func, 500);
+  }  
 }
 document.addEventListener("SSTabRestored", restoreRestClientTab, false);
 

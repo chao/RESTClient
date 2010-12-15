@@ -10,4 +10,5 @@ Patched version of Firefox addon called RESTClient (https://addons.mozilla.org/e
 - field values storing when Firefox is shutting down by user
 
 == todo
+- switch from TabRestored to TabRestoring for tab recovering
 - bind refresh key to send request action

@@ -15,7 +15,7 @@
 <groupbox align="center" orient="horizontal">
 <vbox>
   <text value="&restclient.about.title;" style="font-weight: bold; font-size: x-large;"/>
-  <text value="ver. 1.2.5"/>
+  <text value="ver. 1.3.2"/>
   <separator class="thin"/>
   <text value="&restclient.about.createby;" style="font-weight: bold;"/>
   <text value="Chao ZHOU" class="url"

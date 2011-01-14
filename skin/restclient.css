@@ -9,10 +9,24 @@ list-style-image:url('chrome://restclient/skin/toolbar/icons/document-open.png')
 list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-open.png');
 }
 
+#open-entire-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/document-open.png');
+}
+#open-entire-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-open.png');
+}
+
 #save-icon {
 list-style-image:url('chrome://restclient/skin/toolbar/icons/document-save.png');
 }
 #save-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-save.png');
+}
+
+#save-entire-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/document-save.png');
+}
+#save-entire-icon[disabled="true"] {
 list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-save.png');
 }
 

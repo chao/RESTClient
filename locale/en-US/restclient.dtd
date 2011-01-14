@@ -5,7 +5,9 @@
 <!ENTITY restclient.login "Login">
 
 <!ENTITY restclient.menu.open "Open">
+<!ENTITY restclient.menu.open.entire "Open Entire Request">
 <!ENTITY restclient.menu.save "Save">
+<!ENTITY restclient.menu.save.entire "Save Entire Request">
 <!ENTITY restclient.menu.copy "Copy">
 <!ENTITY restclient.menu.clear "Clear">
 <!ENTITY restclient.menu.addheader "Add Request Header">
@@ -22,7 +24,9 @@
 <!ENTITY restclient.overlay.label "REST Client">
 
 <!ENTITY toolbar.open.tooltip "Load request body from XML file.">
+<!ENTITY toolbar.open.entire.tooltip "Load entire request from file.">
 <!ENTITY toolbar.save.tooltip "Save request body to XML file.">
+<!ENTITY toolbar.save.entire.tooltip "Save entire request to file.">
 <!ENTITY toolbar.copy.tooltip "Copy response body to request body.">
 <!ENTITY toolbar.clear.tooltip "Clear request.">
 <!ENTITY toolbar.login.tooltip "Use basic authentication.">

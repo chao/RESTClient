@@ -29,7 +29,9 @@
   <toolbox>
     <toolbar id="restclient-toolbar">
       <toolbarbutton id="open-icon" label="&restclient.menu.open;" onclick="restclient.loadRequest();" tooltiptext="&toolbar.open.tooltip;"/>
+      <toolbarbutton id="open-entire-icon" label="&restclient.menu.open.entire;" onclick="restclient.loadEntireRequest();" tooltiptext="&toolbar.open.entire.tooltip;"/>
       <toolbarbutton id="save-icon" label="&restclient.menu.save;" onclick="restclient.saveRequest();" tooltiptext="&toolbar.save.tooltip;"/>
+      <toolbarbutton id="save-entire-icon" label="&restclient.menu.save.entire;" onclick="restclient.saveEntireRequest();" tooltiptext="&toolbar.save.entire.tooltip;"/>
       <toolbarbutton id="copy-icon" label="&restclient.menu.copy;" onclick="restclient.copyResult();" tooltiptext="&toolbar.copy.tooltip;"/>
       <toolbarbutton id="clear-icon" label="&restclient.menu.clear;" onclick="restclient.clearRequest();" tooltiptext="&toolbar.clear.tooltip;"/>
       <toolbarseparator/>

@@ -39,13 +39,10 @@ var restclient = {
 	},
 
 	clearRequestHeader: function(){
-	  var headerList = document.getElementById('headerList');
-    var reqHeaderChilds = document.getElementById('reqHeaderChilds');
-    if (headerList.view.selection.count > 0) {
-      for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
-         reqHeaderChilds.removeChild(reqHeaderChilds.childNodes[i]);
-      }
-    }
+        var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+        for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
+            reqHeaderChilds.removeChild(reqHeaderChilds.childNodes[i]);
+        }
 	},
 
   init: function(){
@@ -394,34 +391,17 @@ var restclient = {
           tabController.fromString(data);
       }
 
-      tbRequestBody.value = tabController.requestBody;
-      tbRequestUrl.value = tabController.requestUrl;
+      setRequestBody(tabController.requestBody);
+      setRequestUrl(tabController.requestUrl);
+
       var reqHeaderList = tabController.headerList;
       for (headerKey in reqHeaderList) {
         var headerValue = reqHeaderList[headerKey];
 
-        var item =  document.createElement('treeitem');
-        var row  =  document.createElement('treerow');
-        var c1   =  document.createElement('treecell');
-        var c2   =  document.createElement('treecell');
-        c1.setAttribute('label', headerKey);
-        c2.setAttribute('label', headerValue);
-        row.appendChild(c1);
-        row.appendChild(c2);
-        item.appendChild(row);
-        reqHeaderChilds.appendChild(item);
+        this.addHttpRequestHeader(headerKey, headerValue);
       }
 
-      var child = null;
-      for (childIndex in reqMethodChilds) {
-        var child = reqMethodChilds[childIndex];
-        if (typeof child == 'object' && child.getAttribute('label') == tabController.requestMethod) {
-          break;
-        }          
-      }
-      if (child != null) {
-        requestMethod.selectedItem = child;
-      }
+      setRequestMethod(tabController.requestMethod);
     }
   },
 
@@ -510,6 +490,50 @@ var restclient = {
     }
 	},
 
+
+	saveEntireRequest: function(){
+
+        var requestUrl = document.getElementById("tbRequestUrl").value;
+        var requestMethod = document.getElementById("requestMethod").selectedItem.getAttribute('label');
+        var requestBody = document.getElementById("tbRequestBody").value;
+        var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+
+        var nsIFilePicker = Components.interfaces.nsIFilePicker;
+        var fp = Components.classes["@mozilla.org/filepicker;1"]
+            .createInstance(nsIFilePicker);
+        fp.init(window, "Save As", nsIFilePicker.modeSave);
+        fp.appendFilters(nsIFilePicker.filterText);
+
+        var output = '["' + requestUrl + '","' + requestMethod + '","' + escape(requestBody) +  '"';
+
+        // Now save headers in pairs
+        for (var i = reqHeaderChilds.childNodes.length-1; i>=0; i--) {
+            var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
+            var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
+            output = output + ',"' + headerKey + '","' + escape(headerValue) + '"';
+        }
+        output = output + ']'
+
+        var res = fp.show();
+        if (res == nsIFilePicker.returnOK) {
+            var thefile = fp.file;
+            var path = thefile.path;
+            if (path.match("\.txt$") != ".txt") {
+                thefile = Components.classes["@mozilla.org/file/local;1"]
+                    .createInstance(Components.interfaces.nsILocalFile);
+                thefile.initWithPath(path + ".txt")
+            }
+            var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                .createInstance(Components.interfaces.nsIFileOutputStream);
+
+            // use 0x02 | 0x10 to open file for appending.
+            foStream.init(thefile, 0x02 | 0x08 | 0x20, 0666, 0); // write, create, truncate
+            foStream.write(output, output.length);
+            foStream.close();
+        }
+    },
+
+
 	loadRequest: function(){
 	  var nsIFilePicker = Components.interfaces.nsIFilePicker;
     var fp = Components.classes["@mozilla.org/filepicker;1"]
@@ -535,9 +559,56 @@ var restclient = {
 
 			sstream.close();
 			fstream.close();
-			document.getElementById('tbRequestBody').value = data;
+			setRequestBody(data);
     }
     this.requestBodyChange();
+	},
+
+
+	loadEntireRequest: function(){
+        var nsIFilePicker = Components.interfaces.nsIFilePicker;
+        var fp = Components.classes["@mozilla.org/filepicker;1"]
+                           .createInstance(nsIFilePicker);
+        fp.init(window, "Select a File", nsIFilePicker.modeOpen);
+        fp.appendFilters(nsIFilePicker.filterText);
+        var res = fp.show();
+        if (res == nsIFilePicker.returnOK){
+            this.clearRequest();
+            var thefile = fp.file;
+            var data = "";
+            var fstream = Components.classes["@mozilla.org/network/file-input-stream;1"]
+                            .createInstance(Components.interfaces.nsIFileInputStream);
+            var sstream = Components.classes["@mozilla.org/scriptableinputstream;1"]
+                            .createInstance(Components.interfaces.nsIScriptableInputStream);
+            fstream.init(thefile, -1, 0, 0);
+            sstream.init(fstream);
+
+            var str = sstream.read(4096);
+            while (str.length > 0) {
+                data += str;
+                str = sstream.read(4096);
+            }
+
+            sstream.close();
+            fstream.close();
+
+            var tokens = data.split('","');
+            tokens[0] = tokens[0].substring(2);
+            var lastIndex = tokens.length - 1;
+            lastToken = tokens[lastIndex];
+            tokens[lastIndex] = lastToken.substring(0, lastToken.length - 2);
+
+            setRequestUrl(tokens[0]);
+            setRequestMethod(tokens[1]);
+            setRequestBody(unescape(tokens[2]))
+
+            var headerPairs = (tokens.length - 3) / 2;
+            for (index = 0; index < headerPairs; index++) {
+                var tokenIndex = (index * 2)  + 3;
+                this.addHttpRequestHeader(tokens[tokenIndex], tokens[tokenIndex + 1]);
+            }
+        }
+        this.requestBodyChange();
 	},
 
 	updateSaveButton: function(){
@@ -559,6 +630,26 @@ function setRequestUrl(strUrl){
   var requestUrl = document.getElementById("tbRequestUrl");
   requestUrl.value = strUrl;
   //alert(strUrl);
+}
+
+function setRequestMethod(requestMethod){
+  var reqMethodSelect = document.getElementById('requestMethod');
+  var reqMethodChilds = reqMethodSelect.childNodes[0].childNodes;
+
+  var child = null;
+  for (childIndex in reqMethodChilds) {
+    child = reqMethodChilds[childIndex];
+    if (typeof child == 'object' && child.getAttribute('label') == requestMethod) {
+      break;
+    }
+  }
+  if (child != null) {
+    reqMethodSelect.selectedItem = child;
+  }
+}
+
+function setRequestBody(body){
+  document.getElementById('tbRequestBody').value = body;
 }
 
 window.addEventListener("load", function() {restclient.init();}, false);

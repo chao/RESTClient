@@ -504,15 +504,21 @@ var restclient = {
         fp.init(window, "Save As", nsIFilePicker.modeSave);
         fp.appendFilters(nsIFilePicker.filterText);
 
-        var output = '["' + requestUrl + '","' + requestMethod + '","' + escape(requestBody) +  '"';
+        var index = 0;
+        var outputArray = new Array();
+        outputArray[index++] = requestUrl;
+        outputArray[index++] = requestMethod;
+        outputArray[index++] = requestBody;
 
         // Now save headers in pairs
         for (var i = reqHeaderChilds.childNodes.length-1; i>=0; i--) {
             var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
             var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
-            output = output + ',"' + headerKey + '","' + escape(headerValue) + '"';
+            outputArray[index++] = headerKey;
+            outputArray[index++] = headerValue;
         }
-        output = output + ']'
+
+        var output = JSON.stringify(outputArray);
 
         var res = fp.show();
         if (res == nsIFilePicker.returnOK) {
@@ -591,16 +597,11 @@ var restclient = {
 
             sstream.close();
             fstream.close();
-
-            var tokens = data.split('","');
-            tokens[0] = tokens[0].substring(2);
-            var lastIndex = tokens.length - 1;
-            lastToken = tokens[lastIndex];
-            tokens[lastIndex] = lastToken.substring(0, lastToken.length - 2);
+            var tokens = JSON.parse(data);
 
             setRequestUrl(tokens[0]);
             setRequestMethod(tokens[1]);
-            setRequestBody(unescape(tokens[2]))
+            setRequestBody(tokens[2])
 
             var headerPairs = (tokens.length - 3) / 2;
             for (index = 0; index < headerPairs; index++) {

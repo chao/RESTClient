@@ -10,7 +10,7 @@
                    em:creator="Chao Zhou; chao@zhou.fr"
                    em:contributor="Aurelien Benel; Christophe Lejeune"
                    em:description="A simple RESTFul web service tester client extension for firefox."
-                   em:homepageURL="http://restclient.sourceforge.net"
+                   em:homepageURL="http://github.com/chao/RESTClient"
                    em:iconURL="chrome://restclient/skin/logo32.png"
                    em:optionsURL="chrome://restclient/content/about.xul"
                    em:id="{ad0d925d-88f8-47f1-85ea-8463569e756e}"

@@ -6,7 +6,7 @@
 <!ENTITY enterLogin                 "Identifiant :">
 <!ENTITY enterPassword              "Mot de passe :">
 <!ENTITY save                       "Se rappeler de moi sur cet ordinateur.">
-<!ENTITY enterRSAKey                "Cl¨¦ priv¨¦e (Private Key) :">
+<!ENTITY enterRSAKey                "ClÃ© privÃ©e (Private Key) :">
 <!ENTITY enterConsumerKey           "Consumer Key:">
 <!ENTITY enterConsumerSecret        "Consumer Secret:">
 <!ENTITY enterAccessorSecret        "Accessor Secret:">

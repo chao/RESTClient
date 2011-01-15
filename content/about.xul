@@ -15,20 +15,20 @@
 <groupbox align="center" orient="horizontal">
 <vbox>
   <text value="&restclient.about.title;" style="font-weight: bold; font-size: x-large;"/>
-  <text value="ver. 1.3.2"/>
+  <text value="ver. 1.3.3"/>
   <separator class="thin"/>
   <text value="&restclient.about.createby;" style="font-weight: bold;"/>
   <text value="Chao ZHOU" class="url"
-        onclick="window.open('mailto:chao.zhou@utt.fr'); window.close();"/>
+        onclick="window.open('mailto:chao@zhou.fr'); window.close();"/>
   <separator class="thin"/>
   <text value="&restclient.about.contributor;" style="font-weight: bold;"/>
   <text value="Aurelien Benel" class="url" onclick="window.open('http://www.porphyry.org/Members/abenel/');window.close();"/>
   <text value="Christophe Lejeune"/>
   <separator class="thin"/>
   <text value="&restclient.about.feedback;" style="font-weight: bold;"/>
-  <text value="chao.zhou@utt.fr"
+  <text value="http://github.com/chao/RESTClient"
         class="url"
-        onclick="window.open('mailto:chao.zhou@utt.fr'); window.close();"/>
+        onclick="window.open('http://github.com/chao/RESTClient'); window.close();"/>
 </vbox>
 <spring flex="1"/>
 <image src="chrome://restclient/skin/logo48.png"/>

@@ -1,9 +1,0 @@
-<!ENTITY title            "输入您的登录信息">
-
-<!ENTITY enterLogin       "登录:">
-<!ENTITY enterPassword    "密码:">
-<!ENTITY save        "在此计算机上保存登录信息">
-
-<!ENTITY login.access     "L">
-<!ENTITY password.access  "P">
-<!ENTITY save.access "R">

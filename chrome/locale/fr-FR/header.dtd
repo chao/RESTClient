@@ -1,7 +1,0 @@
-<!ENTITY header.title       "Ajouter des entêtes de la requête">
-
-<!ENTITY header.name        "Nom :">
-<!ENTITY header.value       "Valeur :">
-
-<!ENTITY header.name.access     "N">
-<!ENTITY header.value.access  "V">

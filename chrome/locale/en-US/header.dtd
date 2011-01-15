@@ -1,7 +1,0 @@
-<!ENTITY header.title       "Add Request Headers">
-
-<!ENTITY header.name        "Name:">
-<!ENTITY header.value       "Value:">
-
-<!ENTITY header.name.access     "N">
-<!ENTITY header.value.access  "V">

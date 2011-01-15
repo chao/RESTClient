@@ -1,0 +1,80 @@
+.overflow_01 {overflow: auto;}
+.overflow_02 {overflow: -moz-scrollbars-horizontal;}
+.overflow_03 {overflow: -moz-scrollbars-vertical;}
+
+#open-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/document-open.png');
+}
+#open-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-open.png');
+}
+
+#open-entire-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/document-open.png');
+}
+#open-entire-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-open.png');
+}
+
+#save-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/document-save.png');
+}
+#save-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-save.png');
+}
+
+#save-entire-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/document-save.png');
+}
+#save-entire-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/document-save.png');
+}
+
+#copy-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/edit-copy.png');
+}
+#copy-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/edit-copy.png');
+}
+
+#clear-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/edit-clear.png');
+}
+#clear-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/edit-clear.png');
+}
+
+#header-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/list-add.png');
+}
+#header-icon[disabled="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons_disabled/list-add.png');
+}
+
+#login-icon {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/start-here.png');
+}
+#login-icon[checked="true"] {
+list-style-image:url('chrome://restclient/skin/toolbar/icons/system-log-out.png');
+}
+treechildren::-moz-tree-row(statusOk)
+{
+  background-color: #00FF00;
+  color:black;
+}
+treechildren::-moz-tree-row(statusError)
+{
+  background-color: #800000;
+  color:black;
+}
+treechildren::-moz-tree-cell-text(statusError){  
+  color: white;
+}
+treechildren::-moz-tree-cell-text(statusError, selected){  
+  color: white;
+}
+treechildren::-moz-tree-cell-text(location){  
+  color: blue;
+  font-weight: normal; 
+  text-decoration: underline;
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css"   type="text/css"?>
+<?xml-stylesheet href="chrome://restclient/skin/restclient.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://restclient/locale/login.dtd">
+<dialog id             = "loginPrompt"
+        title          = "&title;"
+        width          = "275"
+        height         = "190"
+        xmlns          = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        persist        = "screenX screenY width height"
+        onload         = "init(event)"
+        buttons        = "accept, cancel"
+        ondialogaccept = "doOK()">
+
+  <script type="application/x-javascript" src="chrome://restclient/content/util.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/sha1.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/oauth.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/login.js"/>
+  
+  <radiogroup id="securitySchemeRadio">
+    <radio id="basic" label="Basic"/>
+    <radio id="oAuth" label="oAuth"/>
+  </radiogroup>
+    
+  <groupbox>
+        <grid id="securitySchemeBasic">
+          <columns>
+            <column/>
+            <column/>
+          </columns>
+          
+          <rows>
+            <row align="center">
+              <label value="&enterLogin;" accesskey="&login.access;" control="login"/>
+              <textbox id="login"/>
+            </row>
+            
+            <row align="center">
+              <label value="&enterPassword;" accesskey="&password.access;" control="password"/>
+              <textbox id="password" type="password"/>
+            </row>
+          </rows>
+        </grid>
+        
+        <vbox id="securitySchemeOAuth" style="display:none;">
+          <groupbox>
+            <caption label="&authMethodGroup;"/>
+            <hbox>
+              <radiogroup id="signatureMethod">
+                <radio id="hmac" label="HMAC-SHA1" accesskey="&authMethodHMAC.access;"/>
+                <radio id="plaintext" label="PLAINTEXT" accesskey="&authMethodPlain.access;"/>
+              </radiogroup>
+            </hbox>
+          </groupbox>
+          
+          <!-- Spacer -->
+          <label value=""/>
+          
+          <groupbox>
+            <caption label="&authKeysSecretsGroup;"/>
+            <grid>
+              <columns>
+                <column/>
+                <column/>
+                <column/>
+                <column/>
+              </columns>
+              
+              <rows>
+                <row align="center">
+                  <label value="&enterAccessorSecret;" accesskey="&accessorSecret.access;" control="accessorSecret"/>
+                  <textbox id="accessorSecret"/>
+                  <spacer flex="1"/>
+                  <spacer flex="1"/>
+                </row>
+                
+                <row align="center">
+                  <label value="&enterConsumerKey;" accesskey="&consumerKey.access;" control="consumerKey"/>
+                  <textbox id="consumerKey"/>
+                  <label value="&enterConsumerSecret;" accesskey="&consumerSecret.access;" control="consumerSecret"/>
+                  <textbox id="consumerSecret"/>
+                </row>
+                
+                <row align="center">
+                  <label value="&enterToken;" accesskey="&token.access;" control="token"/>
+                  <textbox id="token"/>
+                  <label value="&enterTokenSecret;" accesskey="&tokenSecret.access;" control="tokenSecret"/>
+                  <textbox id="tokenSecret"/>
+                </row>
+              
+              </rows>
+            </grid>
+          </groupbox>
+          
+          <!-- Spacer -->
+          <label value=""/>
+          
+          <groupbox>
+            <caption label="&authOtherGroup;"/>
+            <grid>
+              <columns>
+                <column/>
+                <column/>
+                <column/>
+              </columns>
+              
+              <rows>
+                <row align="center">
+                  <label value="&enterNonce;" accesskey="&nonce.access;" control="nonce"/>
+                  <textbox id="nonce" value="nonce"/>
+                  <checkbox id="autoNonce" label="auto" checked="true"/>
+                </row>
+                
+                <row align="center">
+                  <label value="&enterVersion;" accesskey="&version.access;" control="version"/>
+                  <textbox type="number" id="version" value="1.0" min="0" decimalplaces="1"/>
+                  <checkbox id="autoVersion" label="auto" checked="true"/>
+                </row>
+                
+                <row align="center">
+                  <label value="&enterTimestamp;" accesskey="&timestamp.access;" control="timestamp"/>
+                  <textbox id="timestamp"/>
+                  <checkbox id="autoTimestamp" label="auto" checked="true"/>
+                </row>
+                <row align="center">
+                  <spacer flex="1"/>
+                  <label id="timestampAsDate" value=""/>
+                  <spacer flex="1"/>
+                </row>
+              </rows>
+            </grid>
+          </groupbox>
+          
+        </vbox>
+  </groupbox>
+  
+  <spacer flex="1"/>
+  <checkbox id="save" label="&save;" accesskey="&save.access;" oncommand="saveChange()"/>
+</dialog>

@@ -1,0 +1,14 @@
+= restclient-fx-patched
+
+Patched version of Firefox addon called RESTClient (https://addons.mozilla.org/en-US/firefox/addon/9780/) 
+
+== changes
+- field values recovering when Firefox crashes
+- fixed header deleting (now you can use delete key when editing header name or value)
+- fixed display of json data (I've just moved css file to right place)
+- added ability to select and copy text from response (by adding right css style, that doesn't work always properly)
+- field values storing when Firefox is shutting down by user
+
+== todo
+- switch from TabRestored to TabRestoring for tab recovering
+- bind refresh key to send request action

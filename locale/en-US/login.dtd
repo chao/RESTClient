@@ -1,36 +1,36 @@
-<!ENTITY title            "Enter Login Information">
+<!ENTITY title                      "Enter Login Information">
 
-<!ENTITY basicAuth        "Basic">
-<!ENTITY oAuth            "oAuth">
+<!ENTITY basicAuth                  "Basic">
+<!ENTITY oAuth                      "oAuth">
 
-<!ENTITY enterLogin          "Login:">
-<!ENTITY enterPassword       "Password:">
-<!ENTITY save                "Remember me on this computer.">
-<!ENTITY enterRSAKey         "Private Key:">
-<!ENTITY enterConsumerKey    "Consumer Key:">
-<!ENTITY enterConsumerSecret "Consumer Secret:">
-<!ENTITY enterAccessorSecret "Accessor Secret:">
-<!ENTITY enterToken          "Token:">
-<!ENTITY enterTokenSecret    "Token Secret:">
-<!ENTITY enterNonce          "Nonce:">
-<!ENTITY enterTimestamp      "Timestamp:">
-<!ENTITY enterVersion        "Version:">
+<!ENTITY enterLogin                 "Login:">
+<!ENTITY enterPassword              "Password:">
+<!ENTITY save                       "Remember me on this computer.">
+<!ENTITY enterRSAKey                "Private Key:">
+<!ENTITY enterConsumerKey           "Consumer Key:">
+<!ENTITY enterConsumerSecret        "Consumer Secret:">
+<!ENTITY enterAccessorSecret        "Accessor Secret:">
+<!ENTITY enterToken                 "Token:">
+<!ENTITY enterTokenSecret           "Token Secret:">
+<!ENTITY enterNonce                 "Nonce:">
+<!ENTITY enterTimestamp             "Timestamp:">
+<!ENTITY enterVersion               "Version:">
 
-<!ENTITY authMethodGroup       "Authentication Method">
-<!ENTITY authKeysSecretsGroup  "Credentials">
-<!ENTITY authOtherGroup        "Metadata">
+<!ENTITY authMethodGroup            "Authentication Method">
+<!ENTITY authKeysSecretsGroup       "Credentials">
+<!ENTITY authOtherGroup             "Metadata">
 
-<!ENTITY login.access           "L">
-<!ENTITY password.access        "P">
-<!ENTITY save.access            "E">
-<!ENTITY consumerKey.access     "C">
-<!ENTITY consumerSecret.access  "S">
-<!ENTITY accessorSecret.access  "A">
-<!ENTITY authMethodHMAC.access  "H">
-<!ENTITY authMethodRSA.access   "R">
-<!ENTITY authMethodPlain.access "P">
-<!ENTITY token.access           "T">
-<!ENTITY tokenSecret.access     "O">
-<!ENTITY nonce.access           "N">
-<!ENTITY timestamp.access       "P">
-<!ENTITY version.access         "V">
+<!ENTITY login.access               "L">
+<!ENTITY password.access            "P">
+<!ENTITY save.access                "E">
+<!ENTITY consumerKey.access         "C">
+<!ENTITY consumerSecret.access      "S">
+<!ENTITY accessorSecret.access      "A">
+<!ENTITY authMethodHMAC.access      "H">
+<!ENTITY authMethodRSA.access       "R">
+<!ENTITY authMethodPlain.access     "P">
+<!ENTITY token.access               "T">
+<!ENTITY tokenSecret.access         "O">
+<!ENTITY nonce.access               "N">
+<!ENTITY timestamp.access           "P">
+<!ENTITY version.access             "V">

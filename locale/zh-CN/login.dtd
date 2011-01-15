@@ -1,24 +1,24 @@
-<!ENTITY title            "输入您的登录信息">
+<!ENTITY title                  "输入您的登录信息">
 
-<!ENTITY basicAuth        "基本">
-<!ENTITY oAuth            "oAuth">
+<!ENTITY basicAuth              "基本">
+<!ENTITY oAuth                  "oAuth">
 
-<!ENTITY enterLogin          "登录:">
-<!ENTITY enterPassword       "密码:">
-<!ENTITY save                "保存登录信息">
-<!ENTITY enterRSAKey         "Private Key:">
-<!ENTITY enterConsumerKey    "Consumer Key:">
-<!ENTITY enterConsumerSecret "Consumer Secret:">
-<!ENTITY enterAccessorSecret "Accessor Secret:">
-<!ENTITY enterToken          "Token:">
-<!ENTITY enterTokenSecret    "Token Secret:">
-<!ENTITY enterNonce          "Nonce:">
-<!ENTITY enterTimestamp      "Timestamp:">
-<!ENTITY enterVersion        "Version:">
+<!ENTITY enterLogin             "登录:">
+<!ENTITY enterPassword          "密码:">
+<!ENTITY save                   "保存登录信息">
+<!ENTITY enterRSAKey            "私有密钥（Private Key）:">
+<!ENTITY enterConsumerKey       "应用令牌（Consumer Key）:">
+<!ENTITY enterConsumerSecret    "应用密钥（Consumer Secret）:">
+<!ENTITY enterAccessorSecret    "访问者密钥（Accessor Secret）:">
+<!ENTITY enterToken             "令牌（Token）:">
+<!ENTITY enterTokenSecret       "令牌密钥（Token Secret）:">
+<!ENTITY enterNonce             "随机数（Nonce）:">
+<!ENTITY enterTimestamp         "时间戳（Timestamp）:">
+<!ENTITY enterVersion           "版本（Version）:">
 
-<!ENTITY authMethodGroup       "Authentication Method">
-<!ENTITY authKeysSecretsGroup  "Credentials">
-<!ENTITY authOtherGroup        "Metadata">
+<!ENTITY authMethodGroup        "认证方式">
+<!ENTITY authKeysSecretsGroup   "认证（Credentials）">
+<!ENTITY authOtherGroup         "元数据（Metadata）">
 
 <!ENTITY login.access           "L">
 <!ENTITY password.access        "P">

@@ -1,36 +1,40 @@
-<!ENTITY restclient.title "Firefox REST客户端插件">
-<!ENTITY restclient.request.title "REST 请求">
-<!ENTITY restclient.method "方法:">
-<!ENTITY restclient.send "发送">
-<!ENTITY restclient.login "登录">
+<!ENTITY restclient.title                     "REST客户端插件">
+<!ENTITY restclient.request.title             "HTTP 请求">
+<!ENTITY restclient.method                    "方法:">
+<!ENTITY restclient.send                      "发送">
+<!ENTITY restclient.login                     "登录">
 
-<!ENTITY restclient.menu.open "打开">
-<!ENTITY restclient.menu.save "保存">
-<!ENTITY restclient.menu.copy "复制">
-<!ENTITY restclient.menu.clear "清除">
-<!ENTITY restclient.menu.addheader "增加请求首部">
-<!ENTITY restclient.menu.login "登录">
+<!ENTITY restclient.menu.open                 "打开">
+<!ENTITY restclient.menu.open.entire          "打开保存的任务">
+<!ENTITY restclient.menu.save                 "保存">
+<!ENTITY restclient.menu.save.entire          "保存当前任务">
+<!ENTITY restclient.menu.copy                 "复制应答正文到HTTP请求正文">
+<!ENTITY restclient.menu.clear                "清除">
+<!ENTITY restclient.menu.addheader            "增加请求首部">
+<!ENTITY restclient.menu.login                "登录">
 
-<!ENTITY restclient.body.title "REST 请求正文:">
-<!ENTITY restclient.header.title "REST 请求首部:">
-<!ENTITY restclient.getfromresult "从应答中复制正文">
-<!ENTITY restclient.response.header "应答首部">
-<!ENTITY restclient.response.body "应答正文">
-<!ENTITY restclient.response.bodyXML "应答正文 （XML 高亮）">
-<!ENTITY restclient.response.header.col "HTTP 头">
+<!ENTITY restclient.body.title                "HTTP 请求正文:">
+<!ENTITY restclient.header.title              "HTTP 请求首部:">
+<!ENTITY restclient.getfromresult             "从应答中复制正文">
+<!ENTITY restclient.response.header           "应答首部">
+<!ENTITY restclient.response.body             "应答正文">
+<!ENTITY restclient.response.bodyXML          "应答正文 （高亮显示）">
+<!ENTITY restclient.response.header.col       "HTTP 头">
 
-<!ENTITY restclient.overlay.label "REST客户端">
+<!ENTITY restclient.overlay.label             "REST客户端">
 
-<!ENTITY toolbar.open.tooltip "从XML文件中载入正文.">
-<!ENTITY toolbar.save.tooltip "保存正文到XML文件.">
-<!ENTITY toolbar.copy.tooltip "拷贝.">
-<!ENTITY toolbar.clear.tooltip "重置请求.">
-<!ENTITY toolbar.login.tooltip "使用基本认证方式.">
+<!ENTITY toolbar.open.tooltip                 "从XML文件中载入正文.">
+<!ENTITY toolbar.open.entire.tooltip          "从文件中载入任务.">
+<!ENTITY toolbar.save.tooltip                 "保存正文到XML文件.">
+<!ENTITY toolbar.save.entire.tooltip          "保存当前任务到文件">
+<!ENTITY toolbar.copy.tooltip                 "拷贝.">
+<!ENTITY toolbar.clear.tooltip                "重置请求.">
+<!ENTITY toolbar.login.tooltip                "使用基本认证方式.">
 
-<!ENTITY header.list.name "名称">
-<!ENTITY header.list.value "值">
+<!ENTITY header.list.name                     "名称">
+<!ENTITY header.list.value                    "值">
 
-<!ENTITY restclient.about.title "关于REST客户端">
-<!ENTITY restclient.about.createby "创建人">
-<!ENTITY restclient.about.contributor "贡献者">
-<!ENTITY restclient.about.feedback "反馈">
+<!ENTITY restclient.about.title               "关于REST客户端">
+<!ENTITY restclient.about.createby            "创建人">
+<!ENTITY restclient.about.contributor         "贡献者">
+<!ENTITY restclient.about.feedback            "反馈">

@@ -5,7 +5,9 @@
 <!ENTITY restclient.login                 "Identifiant">
 
 <!ENTITY restclient.menu.open             "Ouvrir">
+<!ENTITY restclient.menu.open.entire      "Ouvrir une tâche">
 <!ENTITY restclient.menu.save             "Enregistrer">
+<!ENTITY restclient.menu.save.entire      "Enregistrer cette tâche">
 <!ENTITY restclient.menu.copy             "Copier">
 <!ENTITY restclient.menu.clear            "Reinitialiser les champs">
 <!ENTITY restclient.menu.addheader        "Ajouter des entêtes de la requête">
@@ -16,13 +18,15 @@
 <!ENTITY restclient.getfromresult         "Extraire du résultat">
 <!ENTITY restclient.response.header       "Entête de la réponse">
 <!ENTITY restclient.response.body         "Corps de la réponse">
-<!ENTITY restclient.response.bodyXML      "Corps de la réponse（XML en surbrillance)">
+<!ENTITY restclient.response.bodyXML      "Corps de la réponse en surbrillance">
 <!ENTITY restclient.response.header.col   "Entêtes HTTP">
 
 <!ENTITY restclient.overlay.label         "Client REST">
 
 <!ENTITY toolbar.open.tooltip             "Charger un fichier XML comme corps de la requête.">
+<!ENTITY toolbar.open.entire.tooltip      "Charger une tâche du fichier.">
 <!ENTITY toolbar.save.tooltip             "Sauvegarder le corps de la requête comme un fichier XML.">
+<!ENTITY toolbar.save.entire.tooltip      "Sauvegarder cette tâche au fichier.">
 <!ENTITY toolbar.copy.tooltip             "Copier le corps de la réponse comme corps de la requête.">
 <!ENTITY toolbar.clear.tooltip            "Effacer la requête.">
 <!ENTITY toolbar.login.tooltip            "Utiliser l'autentification de base.">

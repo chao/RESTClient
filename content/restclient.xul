@@ -141,7 +141,13 @@
 	</vbox>
 	<statusbar id="mab-status-bar">
   	<statusbarpanel id="record-status" flex="2"/>
-  	<statusbarpanel id="out-status" flex="1"/>
+    <statusbarpanel id="out-status" flex="1"/>
+  	<statusbarpanel>
+          <label id="timeTakenLabel"/>
+    </statusbarpanel>
+  	<statusbarpanel>
+          <label id="bytesLabel"/>
+    </statusbarpanel>
   	<statusbarpanel>
   			<progressmeter id="meter" value="0" mode="determined"/>
   	</statusbarpanel>

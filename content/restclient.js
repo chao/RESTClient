@@ -261,8 +261,9 @@ var restclient = {
         xmlHttpRequest.setRequestHeader(headerKey, headerValue);
       }
 
+      var startTime = new Date().getTime();
       xmlHttpRequest.onerror = function() { restclient.doErrorResponse(this); };
-      xmlHttpRequest.onload = function() { restclient.doResponse(this); };
+      xmlHttpRequest.onload = function() { restclient.doResponse(this, startTime); };
       xmlHttpRequest.send(requestBody);
     }
     catch (e) {
@@ -282,9 +283,16 @@ var restclient = {
     restclient.addHttpHeader("Error", "Could not connect to server");
   },
 
-  doResponse: function(xmlHttpRequest) {
+  doResponse: function(xmlHttpRequest, startTime) {
     restclient.doPostResponse();
-    
+
+    var millisString = this._stringBundle.getString("restclient.milliseconds");
+    var bytesString = this._stringBundle.getString("restclient.bytes");
+
+    var endTime = new Date().getTime();
+    setTimeTaken((endTime - startTime) + " " + millisString);
+    setBytes(xmlHttpRequest.responseText.length + " " + bytesString);
+
     var responseBody = document.getElementById('responseBody');
     try {
       var responseHeaderString = xmlHttpRequest.status + " " + xmlHttpRequest.statusText + "";
@@ -409,6 +417,8 @@ var restclient = {
   clearResult: function(){
     restclient.initHttpHeader();
     restclient.initHttpResponse();
+    setTimeTaken("");
+    setBytes("");
   },
 
   initHttpHeader: function(){
@@ -656,6 +666,14 @@ function setRequestMethod(requestMethod){
 
 function setRequestBody(body){
   document.getElementById('tbRequestBody').value = body;
+}
+
+function setTimeTaken(timeTaken) {
+  document.getElementById("timeTakenLabel").value = timeTaken;
+}
+
+function setBytes(bytes) {
+  document.getElementById("bytesLabel").value = bytes;
 }
 
 window.addEventListener("load", function() {restclient.init();}, false);

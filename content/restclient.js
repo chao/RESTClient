@@ -504,21 +504,26 @@ var restclient = {
         fp.init(window, "Save As", nsIFilePicker.modeSave);
         fp.appendFilters(nsIFilePicker.filterText);
 
-        var index = 0;
-        var outputArray = new Array();
-        outputArray[index++] = requestUrl;
-        outputArray[index++] = requestMethod;
-        outputArray[index++] = requestBody;
 
-        // Now save headers in pairs
+        var outputObject = new Object();
+        outputObject["requestUrl"] = requestUrl;
+        outputObject["requestMethod"] = requestMethod;
+        outputObject["requestBody"] = requestBody;
+
+        var index = 0;
+        var headerArray = new Array();
+
+        // Now store headers in pairs
         for (var i = reqHeaderChilds.childNodes.length-1; i>=0; i--) {
             var headerKey = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label')
             var headerValue = reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label')
-            outputArray[index++] = headerKey;
-            outputArray[index++] = headerValue;
+            headerArray[index++] = headerKey;
+            headerArray[index++] = headerValue;
         }
 
-        var output = JSON.stringify(outputArray);
+        outputObject["headers"] = headerArray;
+
+        var output = JSON.stringify(outputObject);
 
         var res = fp.show();
         if (res == nsIFilePicker.returnOK) {
@@ -597,16 +602,16 @@ var restclient = {
 
             sstream.close();
             fstream.close();
-            var tokens = JSON.parse(data);
+            var dataObject = JSON.parse(data);
 
-            setRequestUrl(tokens[0]);
-            setRequestMethod(tokens[1]);
-            setRequestBody(tokens[2])
+            setRequestUrl(dataObject["requestUrl"]);
+            setRequestMethod(dataObject["requestMethod"]);
+            setRequestBody(dataObject["requestBody"]);
 
-            var headerPairs = (tokens.length - 3) / 2;
-            for (index = 0; index < headerPairs; index++) {
-                var tokenIndex = (index * 2)  + 3;
-                this.addHttpRequestHeader(tokens[tokenIndex], tokens[tokenIndex + 1]);
+            var headerPairs = dataObject["headers"];
+            var index = 0;
+            while (index < headerPairs.length) {
+                this.addHttpRequestHeader(headerPairs[index++], headerPairs[index++]);
             }
         }
         this.requestBodyChange();

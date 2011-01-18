@@ -519,7 +519,7 @@ var restclient = {
 		fp.init(window, "Save As", nsIFilePicker.modeSave);
 		fp.appendFilters(nsIFilePicker.filterXML | nsIFilePicker.filterText);
 		var res = fp.show();
-    if (res == nsIFilePicker.returnOK){
+    if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace){
     	var thefile = fp.file;
     	var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
                          .createInstance(Components.interfaces.nsIFileOutputStream);
@@ -567,7 +567,7 @@ var restclient = {
         var output = JSON.stringify(outputObject);
 
         var res = fp.show();
-        if (res == nsIFilePicker.returnOK) {
+        if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace) {
             var thefile = fp.file;
             var path = thefile.path;
             if (path.match("\.txt$") != ".txt") {

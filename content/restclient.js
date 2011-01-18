@@ -264,6 +264,8 @@ var restclient = {
       var startTime = new Date().getTime();
       xmlHttpRequest.onerror = function() { restclient.doErrorResponse(this); };
       xmlHttpRequest.onload = function() { restclient.doResponse(this, startTime); };
+      // Required to handle binary (image) responses
+      xmlHttpRequest.overrideMimeType("text/plain; charset=x-user-defined");
       xmlHttpRequest.send(requestBody);
     }
     catch (e) {
@@ -310,9 +312,15 @@ var restclient = {
 			    restclient.addHttpHeader(key, headValue);
 		    }
 		  }
-		  responseBody.value = xmlHttpRequest.responseText;
-      
-      if (xmlHttpRequest.getResponseHeader("Content-Type").indexOf("json") >= 0) {
+
+      var contentType = xmlHttpRequest.getResponseHeader("Content-Type");
+      if (contentType.indexOf("image") >= 0) {
+        this.displayImage(xmlHttpRequest.responseText, contentType);
+      } else {
+  		  responseBody.value = xmlHttpRequest.responseText;
+      }
+
+      if (contentType.indexOf("json") >= 0) {
         var outputDiv = document.getElementById("xmlContent");
         json2xul.prettyPrintJSON(outputDiv, xmlHttpRequest.responseText);
         return;
@@ -335,6 +343,29 @@ var restclient = {
     catch (e) {
       util.mlog("doResponse INFO:" + e.name + ": " + e.message);
     }
+  },
+
+  displayImage: function(responseData, contentType) {
+    var toConvert = "";
+    for(i = 0; i < responseData.length; i++){
+      toConvert += String.fromCharCode(responseData.charCodeAt(i) & 0xff);
+    }
+    var base64encoded = btoa(toConvert);
+    var imgSrc = "data:" + contentType + ";base64," + base64encoded;
+
+    var hbox = document.createElement("hbox");
+    hbox.setAttribute("pack", "center");
+    hbox.setAttribute("flex", "1");
+
+    var vbox = document.createElement("vbox");
+    vbox.setAttribute("pack", "center");
+    hbox.appendChild(vbox);
+
+    var image = document.createElement("image");
+    image.setAttribute("src", imgSrc);
+    vbox.appendChild(image);
+
+    document.getElementById("xmlContent").appendChild(hbox);
   },
 
   clearRequest: function(){

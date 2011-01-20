@@ -317,7 +317,11 @@ var restclient = {
       if (contentType.indexOf("image") >= 0) {
         this.displayImage(xmlHttpRequest.responseText, contentType);
       } else {
-  		  responseBody.value = xmlHttpRequest.responseText;
+        responseBody.value = xmlHttpRequest.responseText;
+      }
+
+      if (contentType.indexOf("html") >= 0) {
+        this.displayHtml(xmlHttpRequest.responseText);
       }
 
       if (contentType.indexOf("json") >= 0) {
@@ -366,6 +370,23 @@ var restclient = {
     vbox.appendChild(image);
 
     document.getElementById("xmlContent").appendChild(hbox);
+  },
+  
+  displayHtml: function(responseData) {
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("type", "content");
+    iframe.setAttribute("flex", "1");
+    
+    var docShell = iframe.getAttribute("docShell");
+    docShell.allowAuth = false;
+    docShell.allowJavascript = false;
+    docShell.allowMetaRedirects = false;
+    docShell.allowPlugins = false;
+    docShell.allowSubframes = false;
+        
+    iframe.setAttribute("src", "data:text/html," + encodeURIComponent(responseData));
+      
+    document.getElementById("xmlContent").appendChild(iframe);
   },
 
   clearRequest: function(){

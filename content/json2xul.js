@@ -110,7 +110,23 @@ var json2xul = {
     } else {
       // If the value doesn't have a label, just add it directly
       childObj.setAttribute("class", childObj.getAttribute("class") + " json-member");
-      xulObj.appendChild(childObj);
+      var childIsArray = (Object.prototype.toString.apply(value) === '[object Array]');
+
+      if (childIsObj) {
+        var openBrace = document.createElement("label");
+        openBrace.setAttribute("value", childIsArray ? "[" : "{");
+        openBrace.setAttribute("class", "json-brace");
+        var closeBrace = document.createElement("label");
+        closeBrace.setAttribute("value", childIsArray ? "]" : "}");
+        closeBrace.setAttribute("class", "json-brace");
+        xulObj.appendChild(openBrace);
+        xulObj.appendChild(childObj);
+        xulObj.appendChild(closeBrace);
+        
+      } else {
+        xulObj.appendChild(childObj);
+      }
+
     }
   },
   testCount: 0,

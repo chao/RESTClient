@@ -1,6 +1,5 @@
 const HTMLNS = "http://www.w3.org/1999/xhtml";
 
-
 var restclient = {
 	passwordObject: null,
 	_stringBundle: null,
@@ -265,7 +264,7 @@ var restclient = {
       xmlHttpRequest.onerror = function() { restclient.doErrorResponse(this); };
       xmlHttpRequest.onload = function() { restclient.doResponse(this, startTime); };
       // Required to handle binary (image) responses
-      xmlHttpRequest.overrideMimeType("text/plain; charset=x-user-defined");
+      xmlHttpRequest.overrideMimeType("text/xml; charset=x-user-defined");
       xmlHttpRequest.send(requestBody);
     }
     catch (e) {
@@ -314,34 +313,9 @@ var restclient = {
 		  }
 
       var contentType = xmlHttpRequest.getResponseHeader("Content-Type");
-      if (contentType.indexOf("image") >= 0) {
-        this.displayImage(xmlHttpRequest.responseText, contentType);
-      } else {
-        responseBody.value = xmlHttpRequest.responseText;
-      }
-
-      if (contentType.indexOf("html") >= 0) {
-        this.displayHtml(xmlHttpRequest.responseText);
-      }
-
-      if (contentType.indexOf("json") >= 0) {
-        var outputDiv = document.getElementById("xmlContent");
-        json2xul.prettyPrintJSON(outputDiv, xmlHttpRequest.responseText);
-        return;
-      }
       
-		  var xmlDoc = xmlHttpRequest.responseXML;
-		  if(xmlDoc == null)
-		  	return;
-		  var xslDocument = document.implementation.createDocument("", "dummy", null);
-      xslDocument.onload = function (evt) {
-        var xsltProcessor = new XSLTProcessor();
-        xsltProcessor.importStylesheet(xslDocument);
-        var resultFragment = xsltProcessor.transformToFragment(xmlDoc, document);
-        var oDiv = document.getElementById("xmlContent");
-        oDiv.appendChild(resultFragment);
-      };
-      xslDocument.load("chrome://restclient/content/XMLPrettyPrint.xsl");
+      var handler = handlerSelector.getHandler(contentType);
+      handler.handleContent(contentType, xmlHttpRequest);
 
     }
     catch (e) {

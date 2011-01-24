@@ -16,6 +16,7 @@
   <script type="application/x-javascript" src="chrome://restclient/content/base64.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/util.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/restclient.js"/>
+  <script type="application/x-javascript" src="chrome://restclient/content/contentHandlers.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/json2.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/json2xul.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/oauth.js"/>

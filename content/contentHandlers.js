@@ -80,6 +80,7 @@ function ImageContentHandler() {
         image.setAttribute("src", imgSrc);
         vbox.appendChild(image);
 
+	document.getElementById('responseBody').value = imgSrc;
         document.getElementById("xmlContent").appendChild(hbox);
 
     };

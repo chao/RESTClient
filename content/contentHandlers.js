@@ -21,7 +21,7 @@ function XmlContentHandler() {
     this.contentTypeFragment = "xml";
     
     this.handleContent = function(contentType, xmlHttpRequest) {
-        var responseBody = document.getElementById('responseBody');
+        var responseBody = $('responseBody');
         responseBody.value = xmlHttpRequest.responseText;
         
         var xmlDoc = xmlHttpRequest.responseXML;
@@ -34,7 +34,7 @@ function XmlContentHandler() {
             var xsltProcessor = new XSLTProcessor();
             xsltProcessor.importStylesheet(xslDocument);
             var resultFragment = xsltProcessor.transformToFragment(xmlDoc, document);
-            var oDiv = document.getElementById("xmlContent");
+            var oDiv = $("xmlContent");
             oDiv.appendChild(resultFragment);
         };
         xslDocument.load("chrome://restclient/content/XMLPrettyPrint.xsl");
@@ -46,10 +46,10 @@ function JsonContentHandler() {
     this.contentTypeFragment = "json";
     
     this.handleContent = function(contentType, xmlHttpRequest) {
-        var responseBody = document.getElementById('responseBody');
+        var responseBody = $('responseBody');
         responseBody.value = xmlHttpRequest.responseText;
 
-        var outputDiv = document.getElementById("xmlContent");
+        var outputDiv = $("xmlContent");
         json2xul.prettyPrintJSON(outputDiv, xmlHttpRequest.responseText);
     };
 
@@ -80,8 +80,8 @@ function ImageContentHandler() {
         image.setAttribute("src", imgSrc);
         vbox.appendChild(image);
 
-	document.getElementById('responseBody').value = imgSrc;
-        document.getElementById("xmlContent").appendChild(hbox);
+	$('responseBody').value = imgSrc;
+        $("xmlContent").appendChild(hbox);
 
     };
 
@@ -93,7 +93,7 @@ function HtmlContentHandler() {
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseData = xmlHttpRequest.responseText;
 
-        var responseBody = document.getElementById('responseBody');
+        var responseBody = $('responseBody');
         responseBody.value = responseData;
         
         var iframe = document.createElement("iframe");
@@ -109,7 +109,7 @@ function HtmlContentHandler() {
 	        
         iframe.setAttribute("src", "data:text/html," + encodeURIComponent(responseData));
       
-        document.getElementById("xmlContent").appendChild(iframe);
+        $("xmlContent").appendChild(iframe);
 
     };
 

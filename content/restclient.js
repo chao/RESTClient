@@ -1,5 +1,9 @@
 const HTMLNS = "http://www.w3.org/1999/xhtml";
 
+function $(elementId) {
+  return document.getElementById(elementId);
+}
+
 var restclient = {
 	passwordObject: null,
 	_stringBundle: null,
@@ -27,8 +31,8 @@ var restclient = {
 	},
 
 	deleteSelectedHeader: function(){
-	  var headerList = document.getElementById('headerList');
-    var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+	  var headerList = $('headerList');
+    var reqHeaderChilds = $('reqHeaderChilds');
     if (headerList.view.selection.count > 0 && headerList.editingRow < 0) {
       for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
          if (headerList.view.selection.isSelected(i))
@@ -38,7 +42,7 @@ var restclient = {
 	},
 
 	clearRequestHeader: function(){
-        var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+        var reqHeaderChilds = $('reqHeaderChilds');
         for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
             reqHeaderChilds.removeChild(reqHeaderChilds.childNodes[i]);
         }
@@ -48,16 +52,16 @@ var restclient = {
     var controller = new TabController();
     controller.tbRequestUrl = "dupa tam";
 
-    this._stringBundle = document.getElementById("string-bundle");
+    this._stringBundle = $("string-bundle");
 	  this.updateSaveButton();
     var that = this;
-    var requestMethodDropdown = document.getElementById('requestMethod');
-    var requestUrlDropdown = document.getElementById('tbRequestUrl');
+    var requestMethodDropdown = $('requestMethod');
+    var requestUrlDropdown = $('tbRequestUrl');
     requestMethodDropdown.addEventListener('command', function() { that.updateOAuthAuthorizationHeader(); }, false);
 	},
 
 	updateLogin: function(){
-	  var login = document.getElementById("login-icon");
+	  var login = $("login-icon");
 		if( ! this.isAuthorizationHeaderSet() ){
 			login.label = this._stringBundle.getString("restclient.login");
 			login.checked = false;
@@ -68,7 +72,7 @@ var restclient = {
 	},
   
   isAuthorizationHeaderSet: function() {
-	  var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+	  var reqHeaderChilds = $('reqHeaderChilds');
     for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
       if(reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label') == "Authorization") {
         return true;
@@ -79,7 +83,7 @@ var restclient = {
   },
 
 	doLogin: function(){
-		var login = document.getElementById("login-icon");
+		var login = $("login-icon");
     
     // If the login button is already checked, clear the Authorization header and uncheck the button
 		if(login.checked) {
@@ -138,9 +142,9 @@ var restclient = {
     };
     
     
-    var action = document.getElementById('tbRequestUrl').value;
+    var action = $('tbRequestUrl').value;
     var message = { action: action, parameters: parameters };
-    message.method = document.getElementById('requestMethod').value;
+    message.method = $('requestMethod').value;
     
     parameters.oauth_version   = passwordObject.autoVersion   ? null : passwordObject.version;
     parameters.oauth_nonce     = passwordObject.autoNonce     ? null : passwordObject.nonce;
@@ -182,7 +186,7 @@ var restclient = {
   },
   
 	addHttpRequestHeader: function(headerKey, headerValue){
-  	var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+  	var reqHeaderChilds = $('reqHeaderChilds');
   	var item = document.createElement('treeitem');
   	var row = document.createElement('treerow');
  		var c1 = document.createElement('treecell');
@@ -204,7 +208,7 @@ var restclient = {
 	},
   
 	getHttpRequestHeader: function(headerKey){
-    var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+    var reqHeaderChilds = $('reqHeaderChilds');
     for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
       if(reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label') == headerKey) {
         return reqHeaderChilds.childNodes[i];
@@ -224,11 +228,11 @@ var restclient = {
   },
 
   doRequest: function(){
-    var requestUrl = document.getElementById("tbRequestUrl").value;
-    var requestMethod = document.getElementById("requestMethod").selectedItem.getAttribute('label');
-    var requestBody = document.getElementById("tbRequestBody").value;
-    var headerList = document.getElementById('headerList');
-    var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+    var requestUrl = $("tbRequestUrl").value;
+    var requestMethod = $("requestMethod").selectedItem.getAttribute('label');
+    var requestBody = $("tbRequestBody").value;
+    var headerList = $('headerList');
+    var reqHeaderChilds = $('reqHeaderChilds');
 
     if(!util.isURL(requestUrl)){
       alert('URL Error!');
@@ -245,7 +249,7 @@ var restclient = {
     util.mlog("Send request: method[" + requestMethod + "] Url[" + requestUrl + "]");
     util.mlog("Body[" + requestMethod + "] Url[" + requestUrl + "]");
     try {
-      var meter = document.getElementById("meter");
+      var meter = $("meter");
       meter.mode = "undetermined";
 	    meter.value="50%";
       var xmlHttpRequest = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
@@ -273,7 +277,7 @@ var restclient = {
   },
 
   doPostResponse: function(xmlHttpRequest) {
-      var meter = document.getElementById("meter");
+      var meter = $("meter");
 	    meter.value="100%";
 	    meter.mode = "determined";
       restclient.clearResult();
@@ -294,7 +298,7 @@ var restclient = {
     setTimeTaken((endTime - startTime) + " " + millisString);
     setBytes(xmlHttpRequest.responseText.length + " " + bytesString);
 
-    var responseBody = document.getElementById('responseBody');
+    var responseBody = $('responseBody');
     try {
       var responseHeaderString = xmlHttpRequest.status + " " + xmlHttpRequest.statusText + "";
       restclient.addHttpHeader("Status Code", responseHeaderString);
@@ -343,7 +347,7 @@ var restclient = {
     image.setAttribute("src", imgSrc);
     vbox.appendChild(image);
 
-    document.getElementById("xmlContent").appendChild(hbox);
+    $("xmlContent").appendChild(hbox);
   },
   
   displayHtml: function(responseData) {
@@ -360,13 +364,13 @@ var restclient = {
         
     iframe.setAttribute("src", "data:text/html," + encodeURIComponent(responseData));
       
-    document.getElementById("xmlContent").appendChild(iframe);
+    $("xmlContent").appendChild(iframe);
   },
 
   clearRequest: function(){
-    var requestUrl = document.getElementById('tbRequestUrl');
-    var requestBody = document.getElementById('tbRequestBody');
-    var requestMethod = document.getElementById('requestMethod');
+    var requestUrl = $('tbRequestUrl');
+    var requestBody = $('tbRequestBody');
+    var requestMethod = $('requestMethod');
     requestUrl.value = "";
     requestBody.value = "";
     requestMethod.selectedIndex = 0;
@@ -413,11 +417,11 @@ var restclient = {
 
     //var theTabBrowser = gBrowser.getBrowserForTab(theTab);
 
-    var tbRequestBody   = document.getElementById('tbRequestBody');
-    var tbRequestUrl    = document.getElementById('tbRequestUrl');
-    var requestMethod   = document.getElementById('requestMethod');
-    var reqMethodChilds = document.getElementById('requestMethod').childNodes[0].childNodes;
-    var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+    var tbRequestBody   = $('tbRequestBody');
+    var tbRequestUrl    = $('tbRequestUrl');
+    var requestMethod   = $('requestMethod');
+    var reqMethodChilds = $('requestMethod').childNodes[0].childNodes;
+    var reqHeaderChilds = $('reqHeaderChilds');
     if (tbRequestBody != null) {
       var data = store.getTabValue(theTab, "tab-controller");
       var tabController = new TabController();
@@ -448,21 +452,21 @@ var restclient = {
   },
 
   initHttpHeader: function(){
-   	var headerChilds = document.getElementById('headerChilds');
+   	var headerChilds = $('headerChilds');
     for (var i=headerChilds.childNodes.length-1 ; i>=0 ; i--)
     	headerChilds.removeChild(headerChilds.childNodes[i]);
  	},
 
  	initHttpResponse: function(){
- 	  var responseBody = document.getElementById('responseBody');
+ 	  var responseBody = $('responseBody');
  	  responseBody.value="";
- 	  var xmlContent = document.getElementById('xmlContent');
+ 	  var xmlContent = $('xmlContent');
  	  for (var i=xmlContent.childNodes.length-1 ; i>=0 ; i--)
     	xmlContent.removeChild(xmlContent.childNodes[i]);
  	},
 
  	addHttpHeader: function(headerKey, headerValue){
- 	  var headerChilds = document.getElementById('headerChilds');
+ 	  var headerChilds = $('headerChilds');
   	var item = document.createElement('treeitem');
   	var row = document.createElement('treerow');
  		var c1 = document.createElement('treecell');
@@ -491,17 +495,17 @@ var restclient = {
 	},
 
 	copyResult: function(){
-		var tbRequestBody = document.getElementById('tbRequestBody');
-		var responseBody = document.getElementById('responseBody');
+		var tbRequestBody = $('tbRequestBody');
+		var responseBody = $('responseBody');
 		tbRequestBody.value = responseBody.value;
 		this.requestBodyChange();
 	},
 
 	saveRequest: function(){
-		var saveBtn = document.getElementById('save-icon');
+		var saveBtn = $('save-icon');
 		if(saveBtn.disabled) return;
 
-		var tbRequestBody = document.getElementById('tbRequestBody');
+		var tbRequestBody = $('tbRequestBody');
 		var data = tbRequestBody.value;
 		if(util.trim(data) == ""){
 			alert("Nothing to save");
@@ -529,10 +533,10 @@ var restclient = {
 
 	saveEntireRequest: function(){
 
-        var requestUrl = document.getElementById("tbRequestUrl").value;
-        var requestMethod = document.getElementById("requestMethod").selectedItem.getAttribute('label');
-        var requestBody = document.getElementById("tbRequestBody").value;
-        var reqHeaderChilds = document.getElementById('reqHeaderChilds');
+        var requestUrl = $("tbRequestUrl").value;
+        var requestMethod = $("requestMethod").selectedItem.getAttribute('label');
+        var requestBody = $("tbRequestBody").value;
+        var reqHeaderChilds = $('reqHeaderChilds');
 
         var nsIFilePicker = Components.interfaces.nsIFilePicker;
         var fp = Components.classes["@mozilla.org/filepicker;1"]
@@ -654,8 +658,8 @@ var restclient = {
 	},
 
 	updateSaveButton: function(){
-		var tbRequestBody = document.getElementById('tbRequestBody');
-		var saveBtn = document.getElementById('save-icon');
+		var tbRequestBody = $('tbRequestBody');
+		var saveBtn = $('save-icon');
 		if(util.trim(tbRequestBody.value) == ""){
 			saveBtn.disabled = true;
 		}else
@@ -669,13 +673,13 @@ var restclient = {
 }
 
 function setRequestUrl(strUrl){
-  var requestUrl = document.getElementById("tbRequestUrl");
+  var requestUrl = $("tbRequestUrl");
   requestUrl.value = strUrl;
   //alert(strUrl);
 }
 
 function setRequestMethod(requestMethod){
-  var reqMethodSelect = document.getElementById('requestMethod');
+  var reqMethodSelect = $('requestMethod');
   var reqMethodChilds = reqMethodSelect.childNodes[0].childNodes;
 
   var child = null;
@@ -691,15 +695,15 @@ function setRequestMethod(requestMethod){
 }
 
 function setRequestBody(body){
-  document.getElementById('tbRequestBody').value = body;
+  $('tbRequestBody').value = body;
 }
 
 function setTimeTaken(timeTaken) {
-  document.getElementById("timeTakenLabel").value = timeTaken;
+  $("timeTakenLabel").value = timeTaken;
 }
 
 function setBytes(bytes) {
-  document.getElementById("bytesLabel").value = bytes;
+  $("bytesLabel").value = bytes;
 }
 
 window.addEventListener("load", function() {restclient.init();}, false);

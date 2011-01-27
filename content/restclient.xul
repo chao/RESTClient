@@ -118,9 +118,9 @@
 	<splitter id="detail-comment" collapse="after" resizeafter="grow" />
 		<tabbox flex="1">
 		  <tabs>
-		    <tab label="&restclient.response.header;"/>
-		    <tab label="&restclient.response.body;"/>
-		    <tab label="&restclient.response.bodyXML;"/>
+		    <tab label="&restclient.response.header;" id="responseHeaderLabel"/>
+		    <tab label="&restclient.response.body;" id="responseRawLabel"/>
+		    <tab label="&restclient.response.bodyXML;" id="responseParsedLabel"/>
 		  </tabs>
 		  <tabpanels flex="3">
 		    <tabpanel id="httpheaders">

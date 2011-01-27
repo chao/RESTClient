@@ -320,6 +320,8 @@ var restclient = {
       
       var handler = handlerSelector.getHandler(contentType);
       handler.handleContent(contentType, xmlHttpRequest);
+      $('responseRawLabel').label = this._stringBundle.getString(handler.rawTabLabelKey);
+      $('responseParsedLabel').label = this._stringBundle.getString(handler.parsedTabLabelKey);
 
     }
     catch (e) {

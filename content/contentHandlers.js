@@ -19,6 +19,8 @@ var handlerSelector = {
 
 function XmlContentHandler() {
     this.contentTypeFragment = "xml";
+    this.rawTabLabelKey = 'raw.xml.tab.label';
+    this.parsedTabLabelKey = 'parsed.xml.tab.label';
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseBody = $('responseBody');
@@ -39,11 +41,14 @@ function XmlContentHandler() {
         };
         xslDocument.load("chrome://restclient/content/XMLPrettyPrint.xsl");
     };
+    
 
 }
 
 function JsonContentHandler() {
     this.contentTypeFragment = "json";
+    this.rawTabLabelKey = 'raw.json.tab.label';
+    this.parsedTabLabelKey = 'parsed.json.tab.label';
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseBody = $('responseBody');
@@ -57,6 +62,8 @@ function JsonContentHandler() {
 
 function ImageContentHandler() {
     this.contentTypeFragment = "image";
+    this.rawTabLabelKey = 'raw.image.tab.label';
+    this.parsedTabLabelKey = 'parsed.image.tab.label';
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseData = xmlHttpRequest.responseText;
@@ -80,7 +87,7 @@ function ImageContentHandler() {
         image.setAttribute("src", imgSrc);
         vbox.appendChild(image);
 
-	$('responseBody').value = imgSrc;
+	$('responseBody').value = base64encoded;
         $("xmlContent").appendChild(hbox);
 
     };
@@ -89,6 +96,8 @@ function ImageContentHandler() {
 
 function HtmlContentHandler() {
     this.contentTypeFragment = "html";
+    this.rawTabLabelKey = 'raw.html.tab.label';
+    this.parsedTabLabelKey = 'parsed.html.tab.label';
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseData = xmlHttpRequest.responseText;

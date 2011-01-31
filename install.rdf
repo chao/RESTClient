@@ -15,7 +15,7 @@
                    em:optionsURL="chrome://restclient/content/about.xul"
                    em:id="{ad0d925d-88f8-47f1-85ea-8463569e756e}"
                    em:name="RESTClient"
-                   em:version="1.3.3">
+                   em:version="1.3.4">
     <em:targetApplication RDF:resource="rdf:#$ll2uD1"/>
   </RDF:Description>
 </RDF:RDF>

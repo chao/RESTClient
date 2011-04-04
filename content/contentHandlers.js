@@ -8,7 +8,7 @@ var handlerSelector = {
     getHandler: function(contentType) {
     	for (var handlerIndex in this.handlers) {
             var handler = this.handlers[handlerIndex];
-            if (contentType.indexOf(handler.contentTypeFragment) >= 0) {
+            if (handler.handlesContent(contentType, handler.contentTypeFragment)) {
                 return handler;
             }
     	}
@@ -17,10 +17,15 @@ var handlerSelector = {
 
 }
 
+function contentMatch(contentType, typeFragment) {
+    return contentType.indexOf(typeFragment) >= 0;
+}
+
 function XmlContentHandler() {
     this.contentTypeFragment = "xml";
     this.rawTabLabelKey = 'raw.xml.tab.label';
     this.parsedTabLabelKey = 'parsed.xml.tab.label';
+    this.handlesContent = contentMatch;
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseBody = $('responseBody');
@@ -41,15 +46,17 @@ function XmlContentHandler() {
         };
         xslDocument.load("chrome://restclient/content/XMLPrettyPrint.xsl");
     };
-    
-
 }
 
 function JsonContentHandler() {
     this.contentTypeFragment = "json";
     this.rawTabLabelKey = 'raw.json.tab.label';
     this.parsedTabLabelKey = 'parsed.json.tab.label';
-    
+
+    this.handlesContent = function contentMatch(contentType) {
+    	return (contentType.indexOf("json") >= 0) || (contentType.indexOf("javascript") >= 0);
+    }
+
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseBody = $('responseBody');
         responseBody.value = xmlHttpRequest.responseText;
@@ -64,6 +71,8 @@ function ImageContentHandler() {
     this.contentTypeFragment = "image";
     this.rawTabLabelKey = 'raw.image.tab.label';
     this.parsedTabLabelKey = 'parsed.image.tab.label';
+
+    this.handlesContent = contentMatch;
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseData = xmlHttpRequest.responseText;
@@ -98,6 +107,8 @@ function HtmlContentHandler() {
     this.contentTypeFragment = "html";
     this.rawTabLabelKey = 'raw.html.tab.label';
     this.parsedTabLabelKey = 'parsed.html.tab.label';
+
+    this.handlesContent = contentMatch;
     
     this.handleContent = function(contentType, xmlHttpRequest) {
         var responseData = xmlHttpRequest.responseText;

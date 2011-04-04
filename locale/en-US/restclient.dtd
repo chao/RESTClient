@@ -12,6 +12,7 @@
 <!ENTITY restclient.menu.clear            "Clear">
 <!ENTITY restclient.menu.addheader        "Add Request Header">
 <!ENTITY restclient.menu.login            "Login">
+<!ENTITY restclient.menu.images           "Allow Image Response">
 
 <!ENTITY restclient.body.title            "Request Body:">
 <!ENTITY restclient.header.title          "Request Header:">
@@ -30,6 +31,7 @@
 <!ENTITY toolbar.copy.tooltip             "Copy response body to request body.">
 <!ENTITY toolbar.clear.tooltip            "Clear request.">
 <!ENTITY toolbar.login.tooltip            "Use basic authentication.">
+<!ENTITY toolbar.images.tooltip           "Force the response to be returned in a binary format that allows images to be displayed">
 
 <!ENTITY header.list.name                 "Name">
 <!ENTITY header.list.value                "Value">

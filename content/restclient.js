@@ -268,7 +268,10 @@ var restclient = {
       xmlHttpRequest.onerror = function() { restclient.doErrorResponse(this); };
       xmlHttpRequest.onload = function() { restclient.doResponse(this, startTime); };
       // Required to handle binary (image) responses
-      // xmlHttpRequest.overrideMimeType("text/xml; charset=x-user-defined");
+      if ($("enable-images").checked) {
+        xmlHttpRequest.overrideMimeType("text/xml; charset=x-user-defined");
+      }
+
       xmlHttpRequest.send(requestBody);
     }
     catch (e) {

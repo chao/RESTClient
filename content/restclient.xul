@@ -38,6 +38,7 @@
       <toolbarseparator/>
       <toolbarbutton id="header-icon" label="&restclient.menu.addheader;" onclick="restclient.addRequestHeader();" tooltiptext="&toolbar.login.tooltip;"/>
       <toolbarbutton id="login-icon" label="&restclient.menu.login;" onclick="restclient.doLogin();" tooltiptext="&toolbar.login.tooltip;"/>
+      <checkbox id="enable-images" label="&restclient.menu.images;" tooltiptext="&toolbar.images.tooltip;" checked="false"/>
     </toolbar>
   </toolbox>
 

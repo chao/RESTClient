@@ -70,7 +70,20 @@ var restclient = {
 			login.checked = true;
 		}
 	},
-  
+  isContentTypeFormUrlEncoded: function()  {
+    var reqHeaderChilds = $('reqHeaderChilds');
+    for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
+      if(reqHeaderChilds.childNodes[i].childNodes[0].childNodes[0].getAttribute('label').toLowerCase() == "content-type"
+        && 
+        reqHeaderChilds.childNodes[i].childNodes[0].childNodes[1].getAttribute('label').toLowerCase() == "application/x-www-form-urlencoded"
+      ) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+  ,
   isAuthorizationHeaderSet: function() {
 	  var reqHeaderChilds = $('reqHeaderChilds');
     for (var i=reqHeaderChilds.childNodes.length-1 ; i>=0 ; i--) {
@@ -149,6 +162,24 @@ var restclient = {
     parameters.oauth_version   = passwordObject.autoVersion   ? null : passwordObject.version;
     parameters.oauth_nonce     = passwordObject.autoNonce     ? null : passwordObject.nonce;
     parameters.oauth_timestamp = passwordObject.autoTimestamp ? null : passwordObject.timestamp;
+    
+    // if the content-type is form-encoded, we need to add it to the parameters
+    if (message.method == "POST" && this.isContentTypeFormUrlEncoded()) {
+      var formParams = OAuth.decodeForm($('tbRequestBody').value);
+      for(var i in formParams)
+      {
+        if(!formParams.hasOwnProperty(i))
+        {
+          return;
+        }
+        
+        var name = formParams[i][0];
+        var value = formParams[i][1];
+        
+        parameters[name] = value;
+      }
+    }
+    
     OAuth.completeRequest(message, accessor);
     
     // The realm is just the URL with the parameters and anchor removed

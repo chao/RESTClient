@@ -12,6 +12,7 @@
 <!ENTITY restclient.menu.clear                "清除">
 <!ENTITY restclient.menu.addheader            "增加请求首部">
 <!ENTITY restclient.menu.login                "登录">
+<!ENTITY restclient.menu.images           		"允许返回图片">
 
 <!ENTITY restclient.body.title                "HTTP 请求正文:">
 <!ENTITY restclient.header.title              "HTTP 请求首部:">
@@ -30,6 +31,7 @@
 <!ENTITY toolbar.copy.tooltip                 "拷贝.">
 <!ENTITY toolbar.clear.tooltip                "重置请求.">
 <!ENTITY toolbar.login.tooltip                "使用基本认证方式.">
+<!ENTITY toolbar.images.tooltip           		"强制返回二进制的格式（显示图片）">
 
 <!ENTITY header.list.name                     "名称">
 <!ENTITY header.list.value                    "值">

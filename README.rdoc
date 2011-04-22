@@ -3,6 +3,14 @@
 RESTClient is a Firefox addon (https://addons.mozilla.org/en-US/firefox/addon/9780/) to test RESTful Web services.
 
 == News
+
+I'm very sorry for the late replies, I'm spending a lot of time with my new born baby ;) I will try to catch up in next few weeks.
+
+=== 1.3.5
+- fixed Chinese and French translation bug.
+- fixed bug #18, Oauth signature base string is generated incorrectly.
+- merged commits from stiak and David Bernal.
+
 === 1.3.3
 - updated French and Chinese localization
 - merged commits from kazuhiro and stiak

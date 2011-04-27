@@ -1,14 +1,10 @@
 var util = {
 
-  //-----------------------------------------------------------------------------
-
   mlog : function(text) {
     Components.classes["@mozilla.org/consoleservice;1"]
       .getService(Components.interfaces.nsIConsoleService)
       .logStringMessage("RESTClient: "+text);
   },
-
-  //-----------------------------------------------------------------------------
 
   addEventListener : function(obj, type, listener) {
      if (typeof(obj) == "string") obj = document.getElementById(obj);
@@ -34,42 +30,6 @@ var util = {
      }
   },
 
-  //-----------------------------------------------------------------------------
-
-  hookCode : function(orgFunc, orgCode, myCode) {
-     if (orgFunc == "") return;
-     switch (orgCode) {
-     case "{":
-        orgCode = /{/;
-        myCode = "{"+myCode;
-        break;
-     case "}":
-        orgCode = /}$/;
-        myCode = myCode+"}";
-        break;
-     default:
-     }
-     try { eval(orgFunc + "=" + eval(orgFunc).toString().replace(orgCode, myCode)); }catch(e){ util.mlog("Failed to hook function: "+orgFunc); }
-  },
-
-  hookAttr : function(parentNode, attrName, myFunc) {
-     if (typeof(parentNode) == "string") parentNode = document.getElementById(parentNode);
-     try { parentNode.setAttribute(attrName, myFunc + parentNode.getAttribute(attrName)); }catch(e){ util.mlog("Failed to hook attribute: "+attrName); }
-  },
-
-  hookProp : function(parentNode, propName, myGetter, mySetter) {
-     var oGetter = parentNode.__lookupGetter__(propName);
-     var oSetter = parentNode.__lookupSetter__(propName);
-     if (oGetter && myGetter) myGetter = oGetter.toString().replace(/{/, "{"+myGetter.toString().replace(/^.*{/,"").replace(/.*}$/,""));
-     if (oSetter && mySetter) mySetter = oSetter.toString().replace(/{/, "{"+mySetter.toString().replace(/^.*{/,"").replace(/.*}$/,""));
-     if (!myGetter) myGetter = oGetter;
-     if (!mySetter) mySetter = oSetter;
-     if (myGetter) try { eval('parentNode.__defineGetter__(propName, '+ myGetter.toString() +');'); }catch(e){ util.mlog("Failed to hook property Getter: "+propName); }
-     if (mySetter) try { eval('parentNode.__defineSetter__(propName, '+ mySetter.toString() +');'); }catch(e){ util.mlog("Failed to hook property Setter: "+propName); }
-  },
-
-  //-----------------------------------------------------------------------------
-
   trim : function(s) {
      if (s) return s.replace(/^\s+/g,"").replace(/\s+$/g,""); else return "";
   },
@@ -77,8 +37,6 @@ var util = {
   startsWith : function(s, prefix) {
      if (s) return( (s.substring(0, prefix.length) == prefix) ); else return false;
   },
-
-  //-----------------------------------------------------------------------------
 
   getBoolPref : function(prefName, defval) {
      var result = defval;

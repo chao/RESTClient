@@ -6,6 +6,6 @@ toolbar[iconsize="small"] #restclient-button {
   list-style-image    : url("chrome://restclient/skin/logo16.png");
 }
 
-#restclienttoolsmenu {
+#restclienttoolsmenu, #restclientappmenu {
   list-style-image    : url("chrome://restclient/skin/logo16.png");
 }

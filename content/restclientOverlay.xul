@@ -18,5 +18,11 @@
     <toolbarbutton id="restclient-button"     label="&restclient.overlay.label;"       oncommand="loadRestClient()" onclick="if (event.button == 1) loadRestClient()"
                    class="toolbarbutton-1 chromeclass-toolbar-additional" tooltiptext="RESTClient"/>
   </toolbarpalette>
-
+  
+  <!-- Firefox 4+ Web Developer menu -->
+  <menupopup id="appmenu_webDeveloper_popup">
+    <menuitem      id="restclientappmenu"   label="&restclient.overlay.label;"       oncommand="loadRestClient()"
+                   accesskey="R"           position="8"          class="menuitem-iconic"
+                   insertafter="appmenu_errorConsole"/>
+  </menupopup>
 </overlay>

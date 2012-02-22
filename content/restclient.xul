@@ -11,7 +11,8 @@
 <window id="restclient" title="&restclient.title;"
       xmlns:html="http://www.w3.org/1999/xhtml"
       xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
-      
+  <html:link rel="shortcut icon"
+                  href="chrome://restclient/skin/icon16.png"/>
   <script type="application/x-javascript" src="chrome://restclient/content/tabcontroller.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/base64.js"/>
   <script type="application/x-javascript" src="chrome://restclient/content/util.js"/>

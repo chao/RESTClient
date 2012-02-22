@@ -164,7 +164,7 @@ var restclient = {
     parameters.oauth_timestamp = passwordObject.autoTimestamp ? null : passwordObject.timestamp;
     
     // if the content-type is form-encoded, we need to add it to the parameters
-    if (message.method == "POST" && this.isContentTypeFormUrlEncoded()) {
+    if ((message.method == "POST" || message.method == "PUT") && this.isContentTypeFormUrlEncoded()) {
       var formParams = OAuth.decodeForm($('tbRequestBody').value);
       for(var i in formParams)
       {

@@ -15,7 +15,7 @@ html, body {
   position: relative;
   width: 960px;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 40px 0;
 }
 /* For modern browsers (http://nicolasgallagher.com/micro-clearfix-hack/) */
 .cf:before,

@@ -4,15 +4,19 @@
   <meta charset="utf-8">
   <title>RESTClient, a handy debugger for RESTful web services.</title>
 
-  <link href="css/reset.css" rel="stylesheet">
-  <link href="css/restclient.index.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/restclient.index.css">
+  <link rel="stylesheet" href="css/imageflow.css">
+  <link rel="stylesheet" href="css/jquery.fancybox.css?v=2.0.5" type="text/css" media="screen" />
+  
   <link rel="shortcut icon" href="images/favicon.ico" />
 
-  <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>  
+  <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery.fancybox.pack.js?v=2.0.5"></script>
   
-  <!--[if lt IE 9]>
-    <script src="js/html5.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="js/imageflow.js" charset="utf-8"></script>
+  <script type="text/javascript" src="js/restclient.js"></script>
+  
   
   <script type="text/javascript">
 
@@ -61,41 +65,49 @@
     </div>
 
     <div id="screenshots" class="grid grid-3 header">
-      
+      <div class="scroller">
+				<div id="nostos_imageflow" class="imageflow"> 
+					<img src="slides/restclient1.jpg" longdesc="slides/big/restclient1.jpg" width="220" height="160" alt="RESTClient screenshot"/>
+					<img src="slides/restclient2.jpg" longdesc="slides/big/restclient2.jpg" width="220" height="160" alt="Custom HTTP request headers"/>
+					<img src="slides/restclient3.jpg" longdesc="slides/big/restclient3.jpg" width="220" height="160" alt="oAuth supported"/>
+					<img src="slides/restclient4.jpg" longdesc="slides/big/restclient4.jpg" width="220" height="160" alt="Format response body as HTML"/>
+					<img src="slides/restclient5.jpg" longdesc="slides/big/restclient5.jpg" width="220" height="160" alt="JSON response highlighted"/>
+				</div>
+			</div>
     </div>
     <ol id="changes"> 
       <li class="changes grid-1">
         <a href="#">
-          <h2>Version 1.3.2</h2>
+          <h2>Previous Version</h2>
+          <h3>Firefox 3.6 - Firefox 4.x</h3>
+          <p>Now, RESTClient will display different response tabs according to response content-type.</p>
+        </a>
+      </li>
+      <li class="changes grid-1 latest">
+        <a href="#">
+          <h2>Stable version</h2>
           <h3>Firefox 3.x+</h3>
           <ul>
-            <li>field values recovering when Firefox crashes</li>
-            <li>fixed header deleting (now you can use delete key when editing header name or value)</li>
+            <li>1. Fixed Chinese and French translation bug.</li>
+            <li>2. Fixed bug #18, Oauth signature base string is generated incorrectly.</li>
+            <li>3. Removed eval functions.</li>
           </ul>
         </a>
       </li>
       <li class="changes grid-1">
         <a href="#">
-        <h2>Version 1.3.3</h2>
+        <h2>Development Version</h2>
         <h3>Support Firefox 4.0</h3>
         <p>Added Firefox 4.0 support</p>
         </a>
       </li>
       <li class="changes grid-1">
         <a href="#">
-          <h2>Version 1.3.5</h2>
-          <h3>Bug fixed</h3>
-          <p>Now, RESTClient will display different response tabs according to response content-type.</p>
-        </a>
-      </li>
-      <li class="changes grid-1 latest">
-        <a href="#">
-          <h2>Latest version</h2>
+          <h2>In the future</h2>
           <h3>Firefox 3.x+</h3>
           <ul>
-            <li>1. Fixed Chinese and French translation bug.</li>
-            <li>2. Fixed bug #18, Oauth signature base string is generated incorrectly.</li>
-            <li>3. Removed eval functions.</li>
+            <li>field values recovering when Firefox crashes</li>
+            <li>fixed header deleting (now you can use delete key when editing header name or value)</li>
           </ul>
         </a>
       </li>

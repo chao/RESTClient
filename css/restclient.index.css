@@ -156,8 +156,10 @@ div.header h1 {
   
 }
 
-.donation-link {
+.donation-form {
   text-align: right;
+  margin-right: 18px;
+  margin-top: 8px;
 }
 
 #screenshots {
@@ -217,4 +219,8 @@ border-right-color: #FF4040;
 
 li.changes li {
   margin-top: 3px;
+}
+
+.hide {
+  display:none;
 }

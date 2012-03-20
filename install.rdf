@@ -9,8 +9,8 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:creator="Chao Zhou; chao@zhou.fr"
                    em:contributor="Aurelien Benel; Christophe Lejeune"
-                   em:description="A simple RESTFul web service tester client extension for firefox."
-                   em:homepageURL="http://github.com/chao/RESTClient"
+                   em:description="RESTClient, a debugger for RESTful web services."
+                   em:homepageURL="http://www.restclient.net"
                    em:id="{ad0d925d-88f8-47f1-85ea-8463569e756e}"
                    em:name="RESTClient"
                    em:type="2">

@@ -19,7 +19,7 @@ restclient.overlay = {
     }
   },
   open: function(){
-    alert('load');
+    gBrowser.selectedTab = gBrowser.addTab("chrome://restclient/content/restclient.html");  
   }
 }
 window.addEventListener("load", function(){ restclient.overlay.init();  }, false);

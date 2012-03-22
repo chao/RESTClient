@@ -1,0 +1,6 @@
+#restclient-navbar-button {
+  list-style-image: url("chrome://restclient/content/images/icon16_grey.png") !important;
+}
+#restclient-tools-menu, #restclient-app-menu {
+  list-style-image: url("chrome://restclient/content/images/icon16.png") !important;
+}

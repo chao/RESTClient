@@ -1,0 +1,307 @@
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;RESTClient&lt;/title&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;meta name="description" content="RESTClient, a debugger for RESTful web services."&gt;
+    &lt;meta name="author" content="Chao ZHOU (chao@zhou.fr)"&gt;
+
+    &lt;link href="css/bootstrap.css" rel="stylesheet"&gt;
+    &lt;link href="css/bootstrap-responsive.css" rel="stylesheet"&gt;
+    &lt;link href="css/restclient.css" rel="stylesheet"&gt;
+    &lt;link href="css/sunburst.css" rel="stylesheet"&gt;
+    
+    &lt;link rel="shortcut icon" href="images/favicon.ico" /&gt;
+  &lt;/head&gt;
+
+&lt;body data-spy="scroll" data-target=".subnav" data-offset="50"&gt;
+
+&lt;div class="navbar navbar-fixed-top"&gt;
+  &lt;div class="navbar-inner"&gt;
+    &lt;div class="container"&gt;
+      &lt;a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+        &lt;span class="icon-bar"&gt;&lt;/span&gt;
+      &lt;/a&gt;
+      &lt;a class="brand" href="http://restclient.net/"&gt;RESTClient&lt;/a&gt;
+      &lt;div class="nav-collapse"&gt;
+        &lt;ul class="nav"&gt;
+          &lt;li class="dropdown"&gt;
+            &lt;a class="dropdown-toggle" data-toggle="dropdown" href="#"&gt;Authorization &lt;b class="caret"&gt;&lt;/b&gt;&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;"&gt;Basic Auth&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#" onclick="restclient.main.showModal('modal-oauth');return false;"&gt;oAuth&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li class="dropdown"&gt;
+            &lt;a class="dropdown-toggle" data-toggle="dropdown" href="#"&gt;Headers &lt;b class="caret"&gt;&lt;/b&gt;&lt;/a&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              &lt;li&gt;&lt;a href="#"&gt;Custom Header&lt;/a&gt;&lt;/li&gt;
+              &lt;li class="divider"&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;Accept&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;Accept-Charset&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;Cache-Control&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;Content-Type&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;Pragma&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;User-Agent&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href="#"&gt;X-Requested-With&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href="#request"&gt;Request Body&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href="#response"&gt;Response&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+#request-headers .label {
+  padding: 8px 12px;
+  margin-right: 10px;
+  font-weight: normal;
+  line-height: 34px;
+  background-color: #ccc;
+  color: #444;
+  text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25);
+}
+#request-headers .label:hover{
+  color: #000;
+}
+#request-headers .close {
+  color: #000000;
+  float: none;
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 10px;
+  opacity: 0.4;
+  text-decoration: none;
+}
+#response {
+  margin-top: 18px;
+}
+&lt;/style&gt;
+&lt;div class="container"&gt;
+  &lt;div id="request-method-url-send" class="row-fluid"&gt;
+    &lt;div class="well"&gt;
+      &lt;form class="form-inline" style="margin: 0 0;"&gt;
+        &lt;label&gt;Method&lt;/label&gt;
+        &lt;select id="select01" style="width:140px;"&gt;
+          &lt;option&gt;GET&lt;/option&gt;
+          &lt;option&gt;POST&lt;/option&gt;
+          &lt;option&gt;PUT&lt;/option&gt;
+          &lt;option&gt;DELETE&lt;/option&gt;
+          &lt;option&gt;SEND&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;input type="text" class="span9" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source="['http://example.com']"&gt;
+        &lt;button type="submit" class="btn btn-inverse"&gt;SEND&lt;/button&gt;
+      &lt;/form&gt;
+      
+      &lt;ul class="nav nav-tabs"&gt;
+        &lt;li class="active"&gt;
+          &lt;a href="#request-headers" data-toggle="tab"&gt;Request Headers&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li&gt;&lt;a href="#request-body" data-toggle="tab"&gt;Request Body&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;div id="request-tab" class="tab-content"&gt;
+        &lt;div class="tab-pane fade in active" id="request-headers"&gt;
+          &lt;span class="label"&gt;Content-Type: application/json &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+          &lt;span class="label"&gt;Accept: application/json &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+          &lt;span class="label"&gt;Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ== &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+          &lt;span class="label"&gt;Cache-Control: no-cache &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+          &lt;span class="label"&gt;If-Match: "737060cd8c284d8af7ad3082f209582d" &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+          &lt;span class="label"&gt;If-Modified-Since: Sat, 29 Oct 1994 19:43:31 GMT &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+          &lt;span class="label"&gt;If-None-Match: "737060cd8c284d8af7ad3082f209582d" &lt;a class="close"&gt;&times;&lt;/a&gt;&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="tab-pane fade" id="request-body"&gt;
+          &lt;textarea id="textarea-request-body" class="span12" style="margin: 0 auto;" rows="9" placeholder="Request Body"&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+&lt;/div&gt;
+
+&lt;div class="container"&gt;
+
+
+&lt;header id="response" class="jumbotron subhead"&gt;
+  &lt;div class="subnav"&gt;
+    &lt;ul class="nav nav-pills"&gt;
+      &lt;li&gt;&lt;a href="#response-headers"&gt;Response Headers&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#response-body-raw"&gt;Response Body (Raw)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#buttons"&gt;Respone Body (Highlight)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#buttons"&gt;Respone Body (Preview)&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+
+&lt;div id="response-headers"&gt;
+  &lt;div class="page-header"&gt;
+    &lt;h3&gt;Response Headers&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;pre class="pre-scrollable"&gt;
+Status Code: 200
+Date: Thu, 22 Mar 2012 05:36:36 GMT
+Content-Encoding: gzip
+Connection: close
+Content-Length: 1162
+Last-Modified: Wed, 09 Feb 2011 17:13:15 GMT
+Server: Apache/2.2.3 (CentOS)
+Vary: Accept-Encoding
+Content-Type: text/html; charset=UTF-8&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div id="response-body-raw"&gt;
+  &lt;div class="page-header"&gt;
+    &lt;h3&gt;Response Body (Raw)&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;pre class="pre-scrollable"&gt;
+Status Code: 200
+Date: Thu, 22 Mar 2012 05:36:36 GMT
+Content-Encoding: gzip
+Connection: close
+Content-Length: 1162
+Last-Modified: Wed, 09 Feb 2011 17:13:15 GMT
+Server: Apache/2.2.3 (CentOS)
+Vary: Accept-Encoding
+Content-Type: text/html; charset=UTF-8&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;footer class="footer"&gt;
+  &lt;p class="pull-right"&gt;&lt;a href="#"&gt;Back to top&lt;/a&gt;&lt;/p&gt;
+&lt;/footer&gt;
+
+&lt;/div&gt;&lt;!-- /container --&gt;
+
+&lt;div class="modal fade hide" id="modal-basic-authorization"&gt;
+  &lt;div class="modal-header"&gt;
+    &lt;a class="close btnClose"&gt;×&lt;/a&gt;
+    &lt;h3&gt;Basic Authorization&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="modal-body"&gt;
+    &lt;div class="control-group"&gt;
+      &lt;label for="username"&gt;Username&lt;/label&gt; 
+      &lt;div class="controls"&gt;
+        &lt;input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="username" autocomplete="on" placeholder="Username"&gt; 
+        &lt;span class="help-block hide"&gt;&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="control-group"&gt;
+      &lt;label for="password"&gt;Password&lt;/label&gt;
+      &lt;div class="controls"&gt;
+        &lt;input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="password" autocomplete="on" placeholder="Password"&gt;
+        &lt;span class="help-block hide"&gt;&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="modal-footer"&gt;
+    &lt;div style="float:left;margin-top:8px; "&gt;
+    &lt;input type="checkbox" style="margin-right: 6px;"&gt;&lt;span style="margin-top: 10px;"&gt;Remember me on this computer&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;input class="btn btn-inverse" type="submit" value="Okay" onclick="restclient.main.addBasicAuthorization();"&gt;
+    &lt;input class="btn btnClose" type="button" value="Cancel"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="modal fade hide" id="modal-oauth"&gt;
+  &lt;div class="modal-header"&gt;
+    &lt;a class="close btnClose"&gt;×&lt;/a&gt;
+    &lt;h3&gt;oAuth&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="modal-body"&gt;
+    &lt;form class="form-horizontal"&gt;
+      &lt;fieldset&gt;
+      &lt;legend&gt;Signing Requests&lt;/legend&gt;
+      &lt;div class="control-group"&gt;
+        &lt;label class="control-label"&gt;Signature Methods&lt;/label&gt;
+        &lt;div class="controls"&gt;
+          &lt;select id="select01" class="input-xlarge"&gt;
+            &lt;option&gt;HMAC-SHA1&lt;/option&gt;
+            &lt;option&gt;RSA-SHA1&lt;/option&gt;
+            &lt;option&gt;PLAINTEXT&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;/fieldset&gt;
+      &lt;fieldset&gt;
+        &lt;legend&gt;Credentials&lt;/legend&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Accessor Secret&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;input type="text" id="input01" class="input-xlarge"&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Consumer Key&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;input type="text" id="input01" class="input-xlarge"&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Consumer Secret&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;input type="text" id="input01" class="input-xlarge"&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Token&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;input type="text" id="input01" class="input-xlarge"&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Token Secret&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;input type="text" id="input01" class="input-xlarge"&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/fieldset&gt;
+      &lt;fieldset&gt;
+        &lt;legend&gt;Metadata&lt;/legend&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Accessor Secret&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;div class="input-append"&gt;
+            &lt;input class="input-large disabled" id="appendedInput" size="16" type="text" disabled&gt;&lt;span class="add-on"&gt;&lt;input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked&gt;Auto&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Version&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;div class="input-append"&gt;
+            &lt;input class="input-large disabled" id="appendedInput" size="16" type="text" value="1.0" disabled&gt;&lt;span class="add-on"&gt;&lt;input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked&gt;Auto&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="control-group"&gt;
+          &lt;label for="input01" class="control-label"&gt;Timestamp&lt;/label&gt;
+          &lt;div class="controls"&gt;
+            &lt;div class="input-append"&gt;
+            &lt;input class="input-large disabled" id="appendedInput" size="16" type="text" value="12312312.123" disabled&gt;&lt;span class="add-on"&gt;&lt;input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked&gt;Auto&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;p class="help-block"&gt;Tue Mar 20 21:51:29 CST 2012&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/fieldset&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+  &lt;div class="modal-footer"&gt;
+    &lt;div style="float:left;margin-top:8px; "&gt;
+    &lt;input type="checkbox" style="margin-right: 6px;"&gt;&lt;span style="margin-top: 10px;"&gt;Remember me on this computer&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;input class="btn btn-inverse" type="submit" value="Okay" onclick="restclient.main.addBasicAuthorization();"&gt;
+    &lt;input class="btn btnClose" type="button" value="Cancel"&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src="js/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="js/restclient.js"&gt;&lt;/script&gt;
+&lt;script src="js/restclient.main.js"&gt;&lt;/script&gt;
+&lt;script src="js/prettify.js"&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;

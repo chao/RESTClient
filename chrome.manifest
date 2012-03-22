@@ -9,4 +9,4 @@ locale    restclient   fr-FR        locale/fr-FR/
 
 overlay chrome://browser/content/browser.xul chrome://restclient/content/overlay.xul
 overlay	chrome://navigator/content/navigator.xul	chrome://restclient/content/overlay.xul
-style chrome://global/content/customizeToolbar.xul chrome://restclient/skin/css/overlay.css
+style chrome://global/content/customizeToolbar.xul chrome://restclient/content/css/overlay.css

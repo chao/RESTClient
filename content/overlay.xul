@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://restclient/content/css/overlay.css" type="text/css"?>
+
+<overlay id="restclientOverlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://restclient/content/js/restclient.js" />
+  <script type="application/x-javascript" src="chrome://restclient/content/js/restclient.overlay.js" />
+  
+  <commandset id="mainCommandSet">
+    <command id="openRESTClient" oncommand="restclient.overlay.open()"/>
+  </commandset>
+  
+  <keyset id="mainKeyset">
+    <key id="key_open_restclient" modifiers="accel shift" key="R"
+         command="openRESTClient"/>
+  </keyset>
+    
+  <toolbarpalette id="BrowserToolbarPalette">
+     <toolbarbutton id="restclient-navbar-button" 
+                    insertafter="javascriptConsole,devToolsSeparator"    
+                    class="toolbarbutton-1 chromeclass-toolbar-additional"
+                    label="RESTClient"
+                    image="chrome://restclient/content/images/icon16_grey.png"
+                    tooltiptext="RESTClient, a debugger for RESTful web services."
+                    oncommand="restclient.overlay.open()">
+     </toolbarbutton>
+  </toolbarpalette>
+  
+  <!-- Firefox 4b7 Web Developer menu -->
+  <menupopup id="appmenu_webDeveloper_popup">
+    <menuitem id="restclient-app-menu"
+              label="RESTClient"
+              key="key_open_restclient"
+              class="menuitem-iconic"
+              image="chrome://restclient/content/images/icon16.png"
+              command="openRESTClient"
+              insertafter="appmenu_webConsole"
+              hidden="false" />
+  </menupopup>
+  
+	<!-- Firefox 4b6 Developer menu -->
+	<menupopup id="appmenu_developer_popup">
+		<menuitem id="restclient-app-menu"
+              label="RESTClient"
+              key="key_open_restclient"
+              class="menuitem-iconic"
+              image="chrome://restclient/content/images/icon16.png"
+              command="openRESTClient"
+              insertafter="appmenu_webConsole"
+              hidden="false" />
+	</menupopup>
+  	
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="restclient-tools-menu"
+              label="RESTClient"
+              key="key_open_restclient"
+              command="openRESTClient"
+              insertbefore="sanitizeSeparator,prefSep"
+              accesskey="R"
+              class="menuitem-iconic"
+              image="chrome://restclient/content/images/icon16.png"/>
+  </menupopup>
+  
+  <popup id="contentAreaContextMenu">
+  </popup>
+</overlay>

@@ -6,7 +6,7 @@ restclient.overlay = {
     restclient.overlay.firstRun();
   },
   firstRun : function() {
-    var firstRunPref = "extensions.restclient.firstRunDone";
+    var firstRunPref = "firstRunDone";
     if(!restclient.getPref(firstRunPref, false))
     {
       var navbar = document.getElementById("nav-bar");

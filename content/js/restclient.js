@@ -14,11 +14,10 @@ if (typeof (restclient) === "undefined") {
 
       Components.utils.import("resource://gre/modules/NetUtil.jsm", restclient);
       Components.utils.import("resource://gre/modules/FileUtils.jsm", restclient);
-      Components.utils.import("resource://gre/modules/PopupNotifications.jsm", restclient);
     },
     setupLogging: function () {
-      var debugLevel = restclient.getPref("extensions.unipass.log.level", 'Warn'),
-        logfile = restclient.getPref("extensions.unipass.log.file", ""),
+      var debugLevel = restclient.getPref("extensions.restclient.log.level", 'Warn'),
+        logfile = restclient.getPref("extensions.restclient.log.file", ""),
         formatter = new restclient.Log4Moz.BasicFormatter(),
         root = restclient.Log4Moz.repository.rootLogger,
         capp = new restclient.Log4Moz.ConsoleAppender(formatter),
@@ -50,10 +49,10 @@ if (typeof (restclient) === "undefined") {
       return restclient.Log4Moz.repository.getLogger(name);
     },
     setPref : function (name, value) {
-      return restclient.Preferences.set(name, value);
+      return restclient.Preferences.set("extension.restclient." + name, value);
     },
     getPref : function (name, value) {
-      return restclient.Preferences.get(name, value);
+      return restclient.Preferences.get("extension.restclient." + name, value);
     },
     getLocalDirectory : function () {
       var directoryService =

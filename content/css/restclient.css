@@ -14,7 +14,86 @@ body {
   background-repeat: repeat-x;
   background-position: 0 40px;
 }
-
+.navbar-fixed-top .brand {
+  padding-right: 0;
+  padding-left: 0;
+  margin-left: 20px;
+  float: right;
+  font-weight: bold;
+  color: #000;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+     -moz-transition: all .2s linear;
+}
+.navbar-fixed-top .brand:hover {
+  text-decoration: none;
+}
+#request-headers .label {
+  padding: 8px 12px;
+  margin-right: 10px;
+  font-weight: normal;
+  line-height: 34px;
+  background-color: #ccc;
+  color: #444;
+  text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+}
+#request-headers .label:hover{
+  color: #000;
+}
+#request-headers .close {
+  color: #000000;
+  float: none;
+  font-size: 16px;
+  font-weight: normal;
+  margin-left: 10px;
+  opacity: 0.4;
+  text-decoration: none;
+}
+#response {
+  margin-top: 18px;
+}
+#request form {
+  margin-bottom: 18px;
+}
+#request h3 {
+  margin-top: -5px;
+  margin-bottom: 18px;
+}
+#request h2{
+  margin-bottom: 18px;
+}
+#request label {
+  font-weight: bold;
+  margin-right: 4px;
+}
+#request button {
+  margin-left: 2px;
+}
+#response h2 {
+  margin-bottom: 18px;
+}
+#response h3 {
+  margin-bottom: 10px;
+}
+#response pre{
+  min-height: 150px;
+}
+.pre {
+  background-color: #EEE;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px 4px 4px 4px;
+  display: block;
+  font-size: 12.95px;
+  line-height: 18px;
+  margin: 0 0 9px;
+  padding: 8.5px;
+  height: 500px;
+}
+#response-body-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
 #modal-oauth legend {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -46,6 +125,7 @@ body {
 /* Space out sub-sections more
 -------------------------------------------------- */
 section {
+  padding-top: 60px;
 }
 
 /* Faded out hr */

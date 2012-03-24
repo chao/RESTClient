@@ -81,7 +81,7 @@ h1 {
 
 h2 {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   color: #571D0C;
 }
 
@@ -185,7 +185,7 @@ li.changes a:hover {
 }
 
 li.changes h2, li.changes h3, li.changes p, li.changes ul {
-  margin: 10px 15px;
+  margin: 15px 15px;
 }
 
 li.changes h2 {

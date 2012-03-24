@@ -16,12 +16,24 @@ restclient.main = {
       return false;
     });
     
-    window.prettyPrint && prettyPrint();
-    
     this.initModal();
     this.updateFavoriteHeadersMenu();
     
-    $('#request-url').focus().select();
+    $('#request-button').bind('click',function(){
+      var method = $('#request-method').val(),
+          url = $('#request-url').val(),
+          body = $('#request-body').val(),
+          headers = [];
+      $('#request-headers .label').each(function(){
+        headers.push($(this).attr('header-name'), $(this).attr('header-value'));
+      });
+      restclient.http.sendRequest(method, url, headers, body);
+    });
+    $('#request-url').bind('keyup', function(evt){
+      if(evt.keyCode == 13)
+        $('#request-button').click();
+    }).focus().select();
+    
   },
   processScroll: function () {
     var scrollTop = $(window).scrollTop();
@@ -229,6 +241,81 @@ restclient.main = {
   clearFavoriteHeaders: function(){
     restclient.setPref('favoriteHeaders', '');
     this.updateFavoriteHeadersMenu();
+  },
+  setResponseHeader: function(headers){
+    $('#response-headers pre').text(headers);
+  },
+  updateProgressBar: function(idx, status) {
+    if(idx > 0 && idx <=100)
+    {
+      $('.mainOverlay').show();
+      $('.mainOverlay .bar').css('width', idx + "%");
+    }
+    else
+    {
+      $('.mainOverlay').hide();
+      $('.mainOverlay .bar').css('width', "0%");
+    }
+    if(status) {
+      $('.mainOverlay .status').text(status);
+    }
+  },
+  showResponse: function(){
+    $('html, body').animate({scrollTop: $("#response").show().offset().top - 50}, 1000);
+    return false;
+  },
+  clearResult: function(){
+    $("#response-body-preview div.pre").html('');
+    $('#response-body-raw pre').text('');
+    $('#response-body-highlight pre').text('');
+    restclient.main.setResponseHeader('');
+  },
+  displayHtml: function(xhr) {
+    var responseData = xhr.responseText,
+        iframe = $("<iframe></firame>")
+          .attr("type", "content")
+          .attr("src", "data:text/html," + encodeURIComponent(responseData));
+    
+    $("#response-body-preview div.pre").append(iframe);
+    
+    $('#response-body-raw pre').text(responseData);
+    $('#response-body-highlight pre').text(responseData);
+  },
+  displayXml: function(xhr) {
+    var responseData = xhr.responseText,
+        iframe = $("<iframe></firame>")
+          .attr("type", "content")
+          .attr("src", "data:text/xml," + encodeURIComponent(responseData));
+    
+    $("#response-body-preview div.pre").append(iframe);
+    $('#response-body-raw pre').text(responseData);
+    $('#response-body-highlight pre').text(responseData);
+  },
+  displayJson: function(xhr) {
+    var responseData = xhr.responseText;
+    
+    $('#response-body-raw pre').text(responseData);
+    var reformatted = responseData;
+    try{
+      reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
+    }catch(e) {}
+    $('#response-body-highlight pre').text(reformatted);
+  },
+  displayImage: function(xhr) {
+    var responseData = xhr.responseText,
+        contentType = xhr.getResponseHeader("Content-Type");
+    var toConvert = "";
+    for(var i = 0; i < responseData.length; i++){
+      toConvert += String.fromCharCode(responseData.charCodeAt(i) & 0xff);
+    }
+    var base64encoded = btoa(toConvert);
+    var imgSrc = "data:" + contentType + ";base64," + base64encoded;
+    /*var base64encoded = restclient.base64(responseData),
+        imgSrc = "data:" + contentType + ";base64," + base64encoded,*/
+    var image = $("<img>").attr("src", imgSrc);
+    
+    $("#response-body-preview div.pre").append(image);
+    $('#response-body-raw pre').text(imgSrc);
   }
 };
 

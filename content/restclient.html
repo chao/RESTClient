@@ -46,7 +46,7 @@
             </ul>
           </li>
           <li><a href="#">Request</a></li>
-          <li><a href="#response">Response</a></li>
+          <li><a href="#" onclick="restclient.main.showResponse();">Response</a></li>
         </ul>
       </div>
     </div>
@@ -66,24 +66,24 @@
           <option>DELETE</option>
           <option>SEND</option>
         </select>
-        <input id="request-url" type="text" class="span9" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source="">
-        <button type="button" class="btn btn-inverse">SEND</button>
+        <input id="request-url" type="URL" class="span9" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source="">
+        <button id="request-button" type="button" class="btn btn-inverse">SEND</button>
       </form>
 
       <div class="well hide" id="request-headers">
         <h3>Headers</h3>
       </div>
       
-      <div id="request-body" class="well" style="margin-bottom:0px;">
+      <div class="well" style="margin-bottom:0px;">
         <h3>Body</h3>
-        <textarea id="textarea-request-body" class="span11" style="margin: 0 auto;" rows="9" placeholder="Request Body"></textarea>
+        <textarea id="request-body" class="span11" style="margin: 0 auto;" rows="9" placeholder="Request Body"></textarea>
       </div>
     </div>
   </div>
   
 </div>
 
-<section id="response" class="container">
+<section id="response" class="container hide">
   <h2>Response</h2>
   <header class="jumbotron subhead">
     <div class="subnav">
@@ -97,158 +97,24 @@
   </header>
 
   <div id="response-headers">
-  <h3>Headers</h3>
-  <pre>
-  Status Code: 200
-  Date: Thu, 22 Mar 2012 05:36:36 GMT
-  Content-Encoding: gzip
-  Connection: close
-  Content-Length: 1162
-  Last-Modified: Wed, 09 Feb 2011 17:13:15 GMT
-  Server: Apache/2.2.3 (CentOS)
-  Vary: Accept-Encoding
-  Content-Type: text/html; charset=UTF-8</pre>
-</div>
+    <h3>Headers</h3>
+    <pre class="pre-scrollable prettyprint linenums"></pre>
+  </div>
 
   <div id="response-body-raw">
-  <h3>Body (Raw)</h3>
-  <pre class="pre-scrollable">
-  </pre>
-</div>
+    <h3>Body (Raw)</h3>
+    <pre class="pre-scrollable"></pre>
+  </div>
 
   <div id="response-body-highlight">
-  <h3>Body (Highlight)</h3>
-  <pre class="pre-scrollable prettyprint linenums">
-    &lt;div class="modal fade hide" id="modal-basic-authorization"&gt;
-      &lt;div class="modal-header"&gt;
-        &lt;a class="close btnClose"&gt;×&lt;/a&gt;
-        &lt;h3&gt;Basic Authorization&lt;/h3&gt;
-      &lt;/div&gt;
-      &lt;div class="modal-body"&gt;
-        &lt;div class="control-group"&gt;
-          &lt;label for="username"&gt;Username&lt;/label&gt; 
-          &lt;div class="controls"&gt;
-            &lt;input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="username" autocomplete="on" placeholder="Username"&gt; 
-            &lt;span class="help-block hide"&gt;&lt;/span&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class="control-group"&gt;
-          &lt;label for="password"&gt;Password&lt;/label&gt;
-          &lt;div class="controls"&gt;
-            &lt;input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="password" autocomplete="on" placeholder="Password"&gt;
-            &lt;span class="help-block hide"&gt;&lt;/span&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class="modal-footer"&gt;
-        &lt;div style="float:left;margin-top:8px; "&gt;
-        &lt;input type="checkbox" style="margin-right: 6px;"&gt;&lt;span style="margin-top: 10px;"&gt;Remember me on this computer&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;input class="btn btn-inverse" type="submit" value="Okay" onclick="restclient.main.addBasicAuthorization();"&gt;
-        &lt;input class="btn btnClose" type="button" value="Cancel"&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class="modal fade hide" id="modal-oauth"&gt;
-      &lt;div class="modal-header"&gt;
-        &lt;a class="close btnClose"&gt;×&lt;/a&gt;
-        &lt;h3&gt;oAuth&lt;/h3&gt;
-      &lt;/div&gt;
-      &lt;div class="modal-body"&gt;
-        &lt;form class="form-horizontal"&gt;
-          &lt;fieldset&gt;
-          &lt;legend&gt;Signing Requests&lt;/legend&gt;
-          &lt;div class="control-group"&gt;
-            &lt;label class="control-label"&gt;Signature Methods&lt;/label&gt;
-            &lt;div class="controls"&gt;
-              &lt;select id="select01" class="input-xlarge"&gt;
-                &lt;option&gt;HMAC-SHA1&lt;/option&gt;
-                &lt;option&gt;RSA-SHA1&lt;/option&gt;
-                &lt;option&gt;PLAINTEXT&lt;/option&gt;
-              &lt;/select&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-          &lt;/fieldset&gt;
-          &lt;fieldset&gt;
-            &lt;legend&gt;Credentials&lt;/legend&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Accessor Secret&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;input type="text" id="input01" class="input-xlarge"&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Consumer Key&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;input type="text" id="input01" class="input-xlarge"&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Consumer Secret&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;input type="text" id="input01" class="input-xlarge"&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Token&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;input type="text" id="input01" class="input-xlarge"&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Token Secret&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;input type="text" id="input01" class="input-xlarge"&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/fieldset&gt;
-          &lt;fieldset&gt;
-            &lt;legend&gt;Metadata&lt;/legend&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Accessor Secret&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;div class="input-append"&gt;
-                &lt;input class="input-large disabled" id="appendedInput" size="16" type="text" disabled&gt;&lt;span class="add-on"&gt;&lt;input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked&gt;Auto&lt;/span&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Version&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;div class="input-append"&gt;
-                &lt;input class="input-large disabled" id="appendedInput" size="16" type="text" value="1.0" disabled&gt;&lt;span class="add-on"&gt;&lt;input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked&gt;Auto&lt;/span&gt;
-                &lt;/div&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-            &lt;div class="control-group"&gt;
-              &lt;label for="input01" class="control-label"&gt;Timestamp&lt;/label&gt;
-              &lt;div class="controls"&gt;
-                &lt;div class="input-append"&gt;
-                &lt;input class="input-large disabled" id="appendedInput" size="16" type="text" value="12312312.123" disabled&gt;&lt;span class="add-on"&gt;&lt;input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked&gt;Auto&lt;/span&gt;
-                &lt;/div&gt;
-                &lt;p class="help-block"&gt;Tue Mar 20 21:51:29 CST 2012&lt;/p&gt;
-              &lt;/div&gt;
-            &lt;/div&gt;
-          &lt;/fieldset&gt;
-        &lt;/form&gt;
-      &lt;/div&gt;
-      &lt;div class="modal-footer"&gt;
-        &lt;div style="float:left;margin-top:8px; "&gt;
-        &lt;input type="checkbox" style="margin-right: 6px;"&gt;&lt;span style="margin-top: 10px;"&gt;Remember me on this computer&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;input class="btn btn-inverse" type="submit" value="Okay" onclick="restclient.main.addBasicAuthorization();"&gt;
-        &lt;input class="btn btnClose" type="button" value="Cancel"&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  </pre>
-</div>
+    <h3>Body (Highlight)</h3>
+    <pre class="pre-scrollable prettyprint linenums"></pre>
+  </div>
 
   <div id="response-body-preview">
-  <h3>Body (Preview)</h3>
-  <div class="pre">
-    <iframe src="example.html">
-    </iframe>
+    <h3>Body (Preview)</h3>
+    <div class="pre"></div>
   </div>
-</div>
 
   <footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
 </section>
@@ -373,7 +239,6 @@
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>
-
 <div class="modal fade hide" id="modal-custom-header">
   <div class="modal-header">
     <a class="close btnClose">×</a>
@@ -404,11 +269,22 @@
   </div>
 </div>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/restclient.js"></script>
-<script src="js/restclient.main.js"></script>
-<script src="js/restclient.headers.js"></script>
-<script src="js/prettify.js"></script>
+<div class="mainOverlay hide">
+  <div class="progressBar">
+  <h3>Processing</h3>
+  <p class="status">Sending data...</p>
+  <div class="progress progress-danger progress-striped active">
+    <div class="bar" style="width: 20%"></div>
+  </div>
+  <p><a class="btn btn-danger" onclick="restclient.http.abortRequest();">Abort</a></p>
+</div></div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/restclient.js"></script>
+<script type="text/javascript" src="js/restclient.main.js"></script>
+<script type="text/javascript" src="js/restclient.headers.js"></script>
+<script type="text/javascript" src="js/restclient.http.js"></script>
+<script type="text/javascript" src="js/prettify.js"></script>
 </body>
 </html>

@@ -88,7 +88,9 @@ body {
   line-height: 18px;
   margin: 0 0 9px;
   padding: 8.5px;
-  height: 500px;
+  height: 600px;
+  resize: both;
+  overflow: hidden;
 }
 #response-body-preview iframe {
   width: 100%;

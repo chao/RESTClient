@@ -29,9 +29,11 @@ restclient.main = {
       });
       restclient.http.sendRequest(method, url, headers, body);
     });
-    $('#request-url').bind('keyup', function(evt){
-      if(evt.keyCode == 13)
+    $('#request-url').bind('keypress', function(evt){
+      if(evt.keyCode == 13) {
         $('#request-button').click();
+        return false;
+      }
     }).focus().select();
     
   },
@@ -242,8 +244,15 @@ restclient.main = {
     restclient.setPref('favoriteHeaders', '');
     this.updateFavoriteHeadersMenu();
   },
-  setResponseHeader: function(headers){
+  setResponseHeader: function(headers, line){
     $('#response-headers pre').text(headers);
+    if(typeof line === 'boolean' && line == false) {
+      $('#response-headers pre').removeClass('linenums');
+    }
+    else
+    {
+      $('#response-headers pre').addClass('linenums');
+    }
   },
   updateProgressBar: function(idx, status) {
     if(idx > 0 && idx <=100)
@@ -261,14 +270,23 @@ restclient.main = {
     }
   },
   showResponse: function(){
-    $('html, body').animate({scrollTop: $("#response").show().offset().top - 50}, 1000);
+    $('html, body').animate({scrollTop: $("#response").show().offset().top}, 1000);
     return false;
   },
   clearResult: function(){
+    $('.nav-tabs [href="#response-body-preview"]').hide();
+    $('.nav-tabs [href="#response-body-highlight"]').hide();
+    $('.nav-tabs li').removeClass('active');
+    $('.nav-tabs li').first().addClass('active');
+    
     $("#response-body-preview div.pre").html('');
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader('');
+  },
+  display: function(xhr) {
+    var responseData = xhr.responseText;
+    $('#response-body-raw pre').text(responseData);
   },
   displayHtml: function(xhr) {
     var responseData = xhr.responseText,
@@ -280,6 +298,9 @@ restclient.main = {
     
     $('#response-body-raw pre').text(responseData);
     $('#response-body-highlight pre').text(responseData);
+    
+    $('.nav-tabs [href="#response-body-preview"]').show();
+    $('.nav-tabs [href="#response-body-highlight"]').show();
   },
   displayXml: function(xhr) {
     var responseData = xhr.responseText,
@@ -290,6 +311,9 @@ restclient.main = {
     $("#response-body-preview div.pre").append(iframe);
     $('#response-body-raw pre').text(responseData);
     $('#response-body-highlight pre').text(responseData);
+    
+    $('.nav-tabs [href="#response-body-preview"]').show();
+    $('.nav-tabs [href="#response-body-highlight"]').show();
   },
   displayJson: function(xhr) {
     var responseData = xhr.responseText;
@@ -300,6 +324,8 @@ restclient.main = {
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
     $('#response-body-highlight pre').text(reformatted);
+    
+    $('.nav-tabs [href="#response-body-highlight"]').show();
   },
   displayImage: function(xhr) {
     var responseData = xhr.responseText,
@@ -316,6 +342,8 @@ restclient.main = {
     
     $("#response-body-preview div.pre").append(image);
     $('#response-body-raw pre').text(imgSrc);
+    
+    $('.nav-tabs [href="#response-body-preview"]').show();
   }
 };
 

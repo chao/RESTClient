@@ -29,6 +29,18 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
+            <ul class="dropdown-menu headers">
+              <li><a class="savedRequest" href="#">Accept</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Import Requests</a></li>
+              <li><a href="#">Export Requests</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Manage Saved Requests</a></li>
+              <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Save Current Request</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;">Basic Auth</a></li>
@@ -57,7 +69,7 @@
   <div class="row-fluid">
     <h2>Request</h2>
     <div class="well">
-      <form class="form-inline">
+      <form class="form-inline" onsubmit="return false;">
         <label>Method</label>
         <select id="request-method" style="width:130px;">
           <option>GET</option>
@@ -84,6 +96,36 @@
 </div>
 
 <section id="response" class="container hide">
+<h2>Response</h2>
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
+  <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
+  <li               ><a data-toggle="tab" href="#response-body-highlight">Respone Body (Highlight)</a></li>
+  <li               ><a data-toggle="tab" href="#response-body-preview">Respone Body (Preview)</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="response-headers">
+    <pre class="prettyprint linenums"></pre>
+  </div>
+  <div class="tab-pane" id="response-body-raw">
+    <pre class=""></pre>
+  </div>
+  <div class="tab-pane" id="response-body-highlight">
+    <pre class="prettyprint linenums"></pre>
+  </div>
+  <div class="tab-pane" id="response-body-preview">
+    <div class="pre"></div>
+  </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
+</section>
+<!--<section id="response" class="container hide">
   <h2>Response</h2>
   <header class="jumbotron subhead">
     <div class="subnav">
@@ -117,7 +159,7 @@
   </div>
 
   <footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
-</section>
+</section>//-->
 
 <div class="modal fade hide" id="modal-basic-authorization">
   <div class="modal-header">

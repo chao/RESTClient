@@ -18,17 +18,11 @@ restclient.main = {
     
     this.initModal();
     this.updateFavoriteHeadersMenu();
+    this.updateFavoriteRequest();
     
     $('#request-button').bind('click',function(){
-      var method = $('#request-method').val(),
-          url = $('#request-url').val(),
-          body = $('#request-body').val(),
-          overrideMimeType = ($('#overrideMimeType').attr('checked') == 'checked') ? $('#overrideMimeType').val() : false,
-          headers = [];
-      $('#request-headers .label').each(function(){
-        headers.push($(this).attr('header-name'), $(this).attr('header-value'));
-      });
-      restclient.http.sendRequest(method, url, headers, overrideMimeType, body);
+      var request = restclient.main.getRequest();
+      restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
     });
     $('#request-url').bind('keypress', function(evt){
       if(evt.keyCode == 13) {
@@ -38,6 +32,16 @@ restclient.main = {
     }).focus().select();
     if ($('#overrideMimeType').attr('checked') == 'checked')
       $('.overrideMimeType').show();
+      
+    $('[name="saved-request-name"]').bind('keypress', function(){
+      if($(this).val() == $('#modal-save-request .btnOkay').attr('request-name') ) {
+        $('#modal-save-request .btnOkay').attr('overwrite', '1').val('Overwrite'); 
+      }
+      else 
+      {
+        $('#modal-save-request .btnOkay').attr('overwrite', '0').val('Save'); 
+      }
+    });
   },
   processScroll: function () {
     var scrollTop = $(window).scrollTop();
@@ -101,18 +105,28 @@ restclient.main = {
     }).on('hidden', function(){
       $(this).data('source', null);
     });
+    
+    $('#modal-save-request').on('show', function(){
+      var savedRequest = restclient.getPref('savedRequest', '');
+      $('[name="saved-request-name"]').val('');
+      if(savedRequest != '') {
+        savedRequest = JSON.parse(savedRequest);
+        var names = [];
+        for(var name in savedRequest) {
+          if(savedRequest.hasOwnProperty[name])
+            continue;
+          names.push(name);
+        }
+        $('[name="saved-request-name"]').attr('data-source', JSON.stringify(names));
+        $('#modal-save-request .btnOkay').val('Save').attr('overwrite', '0').removeAttr('request-name');
+      }
+    });
   },
   showModal: function(modalId) {
     $('#' + modalId).modal('show').on('shown', function(){
       $(this).find('input').first().focus();
     });
     return false;
-  },
-  showMessage: function(title, content, callback){
-    $('#modal-dialog .title').text(title);
-    $('#modal-dialog .content').text(content);
-    $('#modal-dialog .btnOkay').bind('click', callback);
-    $('#modal-dialog').modal('show');
   },
   addBasicAuthorization: function() {
     var username = $("#modal-basic-authorization [name='username']"),
@@ -242,7 +256,7 @@ restclient.main = {
         .attr('header-value', header[1]);
       $('.custom-header').after($('<li></li>').append(a));
     }
-    $('a.favorite').bind('click', function(evt) {
+    $('.headers a.favorite').bind('click', function(evt) {
       restclient.main.addHttpRequestHeader($(this).attr('header-name'), $(this).attr('header-value'));
       evt.preventDefault();
     })
@@ -251,6 +265,19 @@ restclient.main = {
   clearFavoriteHeaders: function(){
     restclient.setPref('favoriteHeaders', '');
     this.updateFavoriteHeadersMenu();
+  },
+  getRequest: function(){
+    var request = {};
+        request.method = $('#request-method').val();
+        request.url = $('#request-url').val();
+        request.body = $('#request-body').val();
+        request.overrideMimeType = ($('#overrideMimeType').attr('checked') == 'checked') ? $('#overrideMimeType').val() : false;
+    var headers = [];
+    $('#request-headers .label').each(function(){
+      headers.push($(this).attr('header-name'), $(this).attr('header-value'));
+    });
+    request.headers = headers;
+    return request;
   },
   setResponseHeader: function(headers, line){
     $('#response-headers pre').text(headers);
@@ -371,7 +398,57 @@ restclient.main = {
     $('#response-body-raw pre').text(responseData);
   },
   saveCurrentRequest: function(){
-    this.showMessage('Save Current Request');
+    var name = $('[name="saved-request-name"]');
+    if(name.val() == '') {
+      name.next().text('Please give this request a name for future usage.').show();
+      name.focus();
+      return false;
+    }
+    var savedRequest = restclient.getPref('savedRequest', '');
+    if(savedRequest != '')
+    {
+      console.log(savedRequest);
+      savedRequest = JSON.parse(savedRequest);
+      console.log(typeof savedRequest[name.val()]);
+      if(typeof $('#modal-save-request .btnOkay').attr('request-name') == 'undefined' &&
+              typeof savedRequest[name.val()] != 'undefined') {
+        name.next().text('Name existed, you can either change a name or overwrite it.').show();
+        $('#modal-save-request .btnOkay').val('Overwrite').attr('overwrite', '1').attr('request-name', name.val());
+        name.focus();
+        return false;
+      }
+    }
+    else
+      savedRequest = {};
+    
+    var request = restclient.main.getRequest();
+    savedRequest[name.val()] = request;
+    restclient.setPref('savedRequest', JSON.stringify(savedRequest));
+    $('#modal-save-request').modal('hide');
+  },
+  updateFavoriteRequest: function(){
+    $('ul.savedRequest .favorite').remove();
+    var savedRequest = restclient.getPref('savedRequest', '');
+    if(savedRequest == '')
+      return false;
+    else
+      savedRequest = JSON.parse(savedRequest);
+    
+    for(var name in savedRequest) {
+      if(savedRequest.hasOwnProperty[name])
+        continue;
+      if (name.length > restclient.main.requestMenuMaxLength)
+        name = name.substr(0, restclient.main.requestMenuMaxLength -3) + "...";
+      
+      var a =   $('<a class="favorite" href="#"></a>').text(name)
+        .data('request', savedRequest[name]);
+      $('.savedRequest').prepend($('<li></li>').append(a));
+    }
+    $('.savedRequest a.favorite').bind('click', function(evt) {
+      //restclient.main.addHttpRequestHeader($(this).attr('header-name'), $(this).attr('header-value'));
+      evt.preventDefault();
+    })
+    $('.savedRequest .favorite:last').after($('<li class="divider favorite"></li>'));
   },
   overrideMimeType: function(){
     $('label.overrideMimeType').show().find('input').attr('checked', true);

@@ -29,18 +29,6 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
-            <ul class="dropdown-menu headers">
-              <li><a class="savedRequest" href="#">Accept</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Import Requests</a></li>
-              <li><a href="#">Export Requests</a></li>
-              <li class="divider"></li>
-              <li><a href="#">Manage Saved Requests</a></li>
-              <li><a href="#" onclick="restclient.main.saveCurrentRequest();return false;">Save Current Request</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;">Basic Auth</a></li>
@@ -59,6 +47,20 @@
           </li>
           <li><a href="#">Request</a></li>
           <li><a href="#" onclick="restclient.main.showResponse();">Response</a></li>
+        </ul>
+        <ul class="nav pull-right">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
+            <ul class="dropdown-menu savedRequest">
+              <li><a class="favorite" href="#">Accept</a></li>
+              <li class="divider favorite"></li>
+              <li><a href="#">Import Requests</a></li>
+              <li><a href="#">Export Requests</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Manage Saved Requests</a></li>
+              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Save Current Request</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
@@ -99,53 +101,53 @@
 </div>
 
 <section id="response" class="container hide">
-<h2>Response</h2>
-<div id="alertOverrideMimeType" class="hide alert alert-block alert-error fade in">
-  <a class="close" data-dismiss="alert" href="#">×</a>
-  <h4 class="alert-heading">Cannot preview image</h4>
-  <p>Your response is an image, but we need to override the mime type to preview this image. Would you like to override the mime type to "text/xml; charset=x-user-defined"
-    and re-send this request?</p>
-  <p>
-    <a class="btn btn-danger" href="#" onclick="restclient.main.overrideMimeType();return false;">Yes, please continue</a> 
-    <a class="btn" href="#" onclick="$('#alertOverrideMimeType').alert('close');return false;">No, thanks</a>
-  </p>
-</div>
-<div id="alertUnOverrideMimeType" class="hide alert alert-block alert-error fade in">
-  <a class="close" data-dismiss="alert" href="#">×</a>
-  <h4 class="alert-heading">You've overrided MIME type</h4>
-  <p>Please notice that you enabled MIME override in this request, it could cause some charset/encoding issues. Would you like to disable this override and try again?</p>
-  <p>
-    <a class="btn btn-danger" href="#" onclick="restclient.main.unOverrideMimeType();return false;">Yes, please continue</a> 
-    <a class="btn" href="#" onclick="$('#alertUnOverrideMimeType').alert('close');return false;">No, thanks</a>
-  </p>
-</div>
-<ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
-  <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
-  <li               ><a data-toggle="tab" href="#response-body-highlight">Respone Body (Highlight)</a></li>
-  <li               ><a data-toggle="tab" href="#response-body-preview">Respone Body (Preview)</a></li>
-</ul>
-<div class="tab-content">
-  <div class="tab-pane active" id="response-headers">
-    <pre class="prettyprint linenums"></pre>
+  <h2>Response</h2>
+  <div id="alertOverrideMimeType" class="hide alert alert-block alert-error fade in">
+    <a class="close" data-dismiss="alert" href="#">×</a>
+    <h4 class="alert-heading">Cannot preview image</h4>
+    <p>Your response is an image, but we need to override the mime type to preview this image. Would you like to override the mime type to "text/xml; charset=x-user-defined"
+      and re-send this request?</p>
+    <p>
+      <a class="btn btn-danger" href="#" onclick="restclient.main.overrideMimeType();return false;">Yes, please continue</a> 
+      <a class="btn" href="#" onclick="$('#alertOverrideMimeType').alert('close');return false;">No, thanks</a>
+    </p>
   </div>
-  <div class="tab-pane" id="response-body-raw">
-    <pre class="span12" style="margin-left:0px"></pre>
+  <div id="alertUnOverrideMimeType" class="hide alert alert-block alert-error fade in">
+    <a class="close" data-dismiss="alert" href="#">×</a>
+    <h4 class="alert-heading">You've overrided MIME type</h4>
+    <p>Please notice that you enabled MIME override in this request, it could cause some charset/encoding issues. Would you like to disable this override and try again?</p>
+    <p>
+      <a class="btn btn-danger" href="#" onclick="restclient.main.unOverrideMimeType();return false;">Yes, please continue</a> 
+      <a class="btn" href="#" onclick="$('#alertUnOverrideMimeType').alert('close');return false;">No, thanks</a>
+    </p>
   </div>
-  <div class="tab-pane" id="response-body-highlight">
-    <pre class="prettyprint linenums span12" style="margin-left:0px"></pre>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
+    <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
+    <li               ><a data-toggle="tab" href="#response-body-highlight">Respone Body (Highlight)</a></li>
+    <li               ><a data-toggle="tab" href="#response-body-preview">Respone Body (Preview)</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="response-headers">
+      <pre class="prettyprint linenums"></pre>
+    </div>
+    <div class="tab-pane" id="response-body-raw">
+      <pre class="span12" style="margin-left:0px"></pre>
+    </div>
+    <div class="tab-pane" id="response-body-highlight">
+      <pre class="prettyprint linenums span12" style="margin-left:0px"></pre>
+    </div>
+    <div class="tab-pane" id="response-body-preview">
+      <div class="pre span12" style="margin-left:0px"></div>
+    </div>
   </div>
-  <div class="tab-pane" id="response-body-preview">
-    <div class="pre span12" style="margin-left:0px"></div>
-  </div>
-</div>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
 </section>
 
 <div class="modal fade hide" id="modal-basic-authorization">
@@ -297,16 +299,24 @@
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>
-<div class="modal fade hide" id="modal-dialog">
+<div class="modal fade hide" id="modal-save-request">
   <div class="modal-header">
     <a class="close btnClose">×</a>
-    <h3 class="title">Request Header</h3>
+    <h3 class="title">Save Current Request</h3>
   </div>
   <div class="modal-body">
-    <p class="content"></p>
+    <form class="offset1">
+      <div class="control-group">
+       <label for="saved-request-name">Request Name</label>
+       <div class="controls">
+         <input type="text" size="200" name="saved-request-name" style="width: 200px;" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
+         <p class="help-block hide">Please give this request a name for future usage.</p>
+       </div>
+     </div>
+   </form>
   </div>
   <div class="modal-footer">
-    <input class="btn btnOkay btn-inverse" type="button" value="Okay">
+    <input class="btn btnOkay btn-inverse" type="button" value="Save" onclick="restclient.main.saveCurrentRequest();">
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>

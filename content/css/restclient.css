@@ -132,6 +132,14 @@ body {
   margin-top: -75px;
   position: absolute;
 }
+
+#request form {
+  margin-bottom: 8px;
+}
+.overrideMimeType {
+  font-weight: normal !important;
+  margin-bottom: 8px;
+}
 /* Tweak navbar brand link to be super sleek
 -------------------------------------------------- */
 /*.navbar-fixed-top .brand {

@@ -1,10 +1,12 @@
 "use strict";
 
 restclient.http = {
-  sendRequest: function(requestMethod, requestUrl, requestHeaders, requestBody) {
+  mimeType : false,
+  sendRequest: function(requestMethod, requestUrl, requestHeaders, mimeType, requestBody) {
     try{
       restclient.main.updateProgressBar(100);
       restclient.main.showResponse();
+      restclient.http.mimeType = mimeType;
       var xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
       xhr.onerror = restclient.http.onerror;
       xhr.onload = restclient.http.onload;
@@ -14,8 +16,10 @@ restclient.http = {
       for(var i=0, header; header = requestHeaders[i]; i++) {
         xhr.setRequestHeader(header[0], header[1]);
       }
+      if(typeof mimeType == 'string')
+        xhr.overrideMimeType(mimeType);
+      
       restclient.http.xhr = xhr;
-      //xhr.overrideMimeType("text/xml; charset=x-user-defined");
       xhr.send(requestBody);
     } catch (e) {
       restclient.main.setResponseHeader("Error: Could not connect to server\n" 
@@ -48,29 +52,25 @@ restclient.http = {
     
     var contentType = xhr.getResponseHeader("Content-Type");
     
-    if(contentType.indexOf('html') >= 0)
-    {
-      restclient.main.displayHtml(xhr);
+    var displayHandler = 'display';
+    
+    if(contentType.indexOf('html') >= 0) {
+      displayHandler = 'displayXml';
     }
-    else
-      if(contentType.indexOf('xml') >= 0)
-      {
-        restclient.main.displayXml(xhr);
-      }
+    if(contentType.indexOf('xml') >= 0) {
+      displayHandler = 'displayXml';
+    }
+    if(contentType.indexOf('json') >= 0) {
+      displayHandler = 'displayJson';
+    }
+    if(contentType.indexOf('image') >= 0) {
+      if(restclient.http.mimeType === false)
+        displayHandler = 'displayImageRaw';
       else
-        if(contentType.indexOf('json') >= 0)
-        {
-          restclient.main.displayJson(xhr);
-        }
-        else
-          if (contentType.indexOf('image') >= 0) 
-          {
-            restclient.main.displayImage(xhr);
-          }
-          else
-          {
-            restclient.main.display(xhr);
-          }
+        displayHandler = 'displayImage';
+    }
+    restclient.main.checkMimeType.apply(restclient.http, []);
+    restclient.main[displayHandler].apply(restclient.http, []);
     window.prettyPrint && prettyPrint();
     //restclient.main.updateProgressBar(-1);
   },

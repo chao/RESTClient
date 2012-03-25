@@ -37,7 +37,7 @@
               <li><a href="#">Export Requests</a></li>
               <li class="divider"></li>
               <li><a href="#">Manage Saved Requests</a></li>
-              <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Save Current Request</a></li>
+              <li><a href="#" onclick="restclient.main.saveCurrentRequest();return false;">Save Current Request</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -81,7 +81,10 @@
         <input id="request-url" type="URL" class="span9" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source="">
         <button id="request-button" type="button" class="btn btn-inverse">SEND</button>
       </form>
-
+      <label class="checkbox overrideMimeType hide">
+        <input type="checkbox" id="overrideMimeType" value="text/xml; charset=x-user-defined">
+        Allow image preview (overrideMimeType with "text/xml; charset=x-user-defined")
+      </label>
       <div class="well hide" id="request-headers">
         <h3>Headers</h3>
       </div>
@@ -97,6 +100,25 @@
 
 <section id="response" class="container hide">
 <h2>Response</h2>
+<div id="alertOverrideMimeType" class="hide alert alert-block alert-error fade in">
+  <a class="close" data-dismiss="alert" href="#">×</a>
+  <h4 class="alert-heading">Cannot preview image</h4>
+  <p>Your response is an image, but we need to override the mime type to preview this image. Would you like to override the mime type to "text/xml; charset=x-user-defined"
+    and re-send this request?</p>
+  <p>
+    <a class="btn btn-danger" href="#" onclick="restclient.main.overrideMimeType();return false;">Yes, please continue</a> 
+    <a class="btn" href="#" onclick="$('#alertOverrideMimeType').alert('close');return false;">No, thanks</a>
+  </p>
+</div>
+<div id="alertUnOverrideMimeType" class="hide alert alert-block alert-error fade in">
+  <a class="close" data-dismiss="alert" href="#">×</a>
+  <h4 class="alert-heading">You've overrided MIME type</h4>
+  <p>Please notice that you enabled MIME override in this request, it could cause some charset/encoding issues. Would you like to disable this override and try again?</p>
+  <p>
+    <a class="btn btn-danger" href="#" onclick="restclient.main.unOverrideMimeType();return false;">Yes, please continue</a> 
+    <a class="btn" href="#" onclick="$('#alertUnOverrideMimeType').alert('close');return false;">No, thanks</a>
+  </p>
+</div>
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
   <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
@@ -108,13 +130,13 @@
     <pre class="prettyprint linenums"></pre>
   </div>
   <div class="tab-pane" id="response-body-raw">
-    <pre class=""></pre>
+    <pre class="span12" style="margin-left:0px"></pre>
   </div>
   <div class="tab-pane" id="response-body-highlight">
-    <pre class="prettyprint linenums"></pre>
+    <pre class="prettyprint linenums span12" style="margin-left:0px"></pre>
   </div>
   <div class="tab-pane" id="response-body-preview">
-    <div class="pre"></div>
+    <div class="pre span12" style="margin-left:0px"></div>
   </div>
 </div>
 <br />
@@ -125,41 +147,6 @@
 <br />
 <footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
 </section>
-<!--<section id="response" class="container hide">
-  <h2>Response</h2>
-  <header class="jumbotron subhead">
-    <div class="subnav">
-      <ul class="nav nav-pills">
-        <li><a href="#response-headers">Response Headers</a></li>
-        <li><a href="#response-body-raw">Response Body (Raw)</a></li>
-        <li><a href="#response-body-highlight">Respone Body (Highlight)</a></li>
-        <li><a href="#response-body-preview">Respone Body (Preview)</a></li>
-      </ul>
-    </div>
-  </header>
-
-  <div id="response-headers">
-    <h3>Headers</h3>
-    <pre class="pre-scrollable prettyprint linenums"></pre>
-  </div>
-
-  <div id="response-body-raw">
-    <h3>Body (Raw)</h3>
-    <pre class="pre-scrollable"></pre>
-  </div>
-
-  <div id="response-body-highlight">
-    <h3>Body (Highlight)</h3>
-    <pre class="pre-scrollable prettyprint linenums"></pre>
-  </div>
-
-  <div id="response-body-preview">
-    <h3>Body (Preview)</h3>
-    <div class="pre"></div>
-  </div>
-
-  <footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
-</section>//-->
 
 <div class="modal fade hide" id="modal-basic-authorization">
   <div class="modal-header">
@@ -307,6 +294,19 @@
     <input type="checkbox" name="remember" style="margin-right: 6px;"><span style="margin-top: 10px;">Save to favorite</span>
     </div>
     <input class="btn btn-inverse" type="button" value="Okay" onclick="restclient.main.addCustomHeader();">
+    <input class="btn btnClose" type="button" value="Cancel">
+  </div>
+</div>
+<div class="modal fade hide" id="modal-dialog">
+  <div class="modal-header">
+    <a class="close btnClose">×</a>
+    <h3 class="title">Request Header</h3>
+  </div>
+  <div class="modal-body">
+    <p class="content"></p>
+  </div>
+  <div class="modal-footer">
+    <input class="btn btnOkay btn-inverse" type="button" value="Okay">
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>

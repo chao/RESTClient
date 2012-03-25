@@ -23,11 +23,12 @@ restclient.main = {
       var method = $('#request-method').val(),
           url = $('#request-url').val(),
           body = $('#request-body').val(),
+          overrideMimeType = ($('#overrideMimeType').attr('checked') == 'checked') ? $('#overrideMimeType').val() : false,
           headers = [];
       $('#request-headers .label').each(function(){
         headers.push($(this).attr('header-name'), $(this).attr('header-value'));
       });
-      restclient.http.sendRequest(method, url, headers, body);
+      restclient.http.sendRequest(method, url, headers, overrideMimeType, body);
     });
     $('#request-url').bind('keypress', function(evt){
       if(evt.keyCode == 13) {
@@ -35,7 +36,8 @@ restclient.main = {
         return false;
       }
     }).focus().select();
-    
+    if ($('#overrideMimeType').attr('checked') == 'checked')
+      $('.overrideMimeType').show();
   },
   processScroll: function () {
     var scrollTop = $(window).scrollTop();
@@ -106,6 +108,12 @@ restclient.main = {
     });
     return false;
   },
+  showMessage: function(title, content, callback){
+    $('#modal-dialog .title').text(title);
+    $('#modal-dialog .content').text(content);
+    $('#modal-dialog .btnOkay').bind('click', callback);
+    $('#modal-dialog').modal('show');
+  },
   addBasicAuthorization: function() {
     var username = $("#modal-basic-authorization [name='username']"),
         password = $("#modal-basic-authorization [name='password']");
@@ -125,7 +133,7 @@ restclient.main = {
     restclient.main.addHttpRequestHeader('Authorization', strBase64);
     if( $("#modal-basic-authorization [name='remember']").attr('checked') === 'checked') {
       var basicAuth = JSON.stringify({'user': username.val(), 'pass': password.val()});
-      console.log(basicAuth);
+      //console.log(basicAuth);
       restclient.setPref("basicAuth", basicAuth);
     }
     else {
@@ -283,13 +291,24 @@ restclient.main = {
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader('');
+    $('[href="#response-headers"]').click();
   },
-  display: function(xhr) {
-    var responseData = xhr.responseText;
+  checkMimeType: function(){
+    var contentType = this.xhr.getResponseHeader("Content-Type");
+    if (contentType.indexOf('image') >= 0) {
+      if(this.mimeType === false && $('#alertOverrideMimeType').length > 0)
+        $('#alertOverrideMimeType').show();
+    }
+    else
+      if(this.mimeType !== false && $('#alertUnOverrideMimeType').length > 0)
+        $('#alertUnOverrideMimeType').show();
+  },
+  display: function() {
+    var responseData = this.xhr.responseText;
     $('#response-body-raw pre').text(responseData);
   },
-  displayHtml: function(xhr) {
-    var responseData = xhr.responseText,
+  displayHtml: function() {
+    var responseData = this.xhr.responseText,
         iframe = $("<iframe></firame>")
           .attr("type", "content")
           .attr("src", "data:text/html," + encodeURIComponent(responseData));
@@ -302,8 +321,8 @@ restclient.main = {
     $('.nav-tabs [href="#response-body-preview"]').show();
     $('.nav-tabs [href="#response-body-highlight"]').show();
   },
-  displayXml: function(xhr) {
-    var responseData = xhr.responseText,
+  displayXml: function() {
+    var responseData = this.xhr.responseText,
         iframe = $("<iframe></firame>")
           .attr("type", "content")
           .attr("src", "data:text/xml," + encodeURIComponent(responseData));
@@ -315,8 +334,8 @@ restclient.main = {
     $('.nav-tabs [href="#response-body-preview"]').show();
     $('.nav-tabs [href="#response-body-highlight"]').show();
   },
-  displayJson: function(xhr) {
-    var responseData = xhr.responseText;
+  displayJson: function() {
+    var responseData = this.xhr.responseText;
     
     $('#response-body-raw pre').text(responseData);
     var reformatted = responseData;
@@ -327,9 +346,9 @@ restclient.main = {
     
     $('.nav-tabs [href="#response-body-highlight"]').show();
   },
-  displayImage: function(xhr) {
-    var responseData = xhr.responseText,
-        contentType = xhr.getResponseHeader("Content-Type");
+  displayImage: function() {
+    var responseData = this.xhr.responseText,
+        contentType = this.xhr.getResponseHeader("Content-Type");
     var toConvert = "";
     for(var i = 0; i < responseData.length; i++){
       toConvert += String.fromCharCode(responseData.charCodeAt(i) & 0xff);
@@ -344,6 +363,25 @@ restclient.main = {
     $('#response-body-raw pre').text(imgSrc);
     
     $('.nav-tabs [href="#response-body-preview"]').show();
+  },
+  displayImageRaw: function() {
+    var responseData = this.xhr.responseText,
+        contentType = this.xhr.getResponseHeader("Content-Type");
+
+    $('#response-body-raw pre').text(responseData);
+  },
+  saveCurrentRequest: function(){
+    this.showMessage('Save Current Request');
+  },
+  overrideMimeType: function(){
+    $('label.overrideMimeType').show().find('input').attr('checked', true);
+    $('#request-button').click();
+    $('#alertOverrideMimeType').alert('close');
+  },
+  unOverrideMimeType: function(){
+    $('label.overrideMimeType').show().find('input').removeAttr('checked');
+    $('#request-button').click();
+    $('#alertUnOverrideMimeType').alert('close');
   }
 };
 

@@ -49,7 +49,7 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">View <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Request</a></li>
+              <li><a href="#" class="request-menu">Request</a></li>
               <li><a href="#response" onclick="restclient.main.showResponse();">Response</a></li>
             </ul>
           </li>
@@ -78,11 +78,11 @@
       <form class="form-inline" onsubmit="return false;">
         <label>Method</label>
         <select id="request-method" style="width:130px;">
-          <option>GET</option>
-          <option>POST</option>
-          <option>PUT</option>
-          <option>DELETE</option>
-          <option>SEND</option>
+          <option value="GET">GET</option>
+          <option value="POST">POST</option>
+          <option value="PUT">PUT</option>
+          <option value="DELETE">DELETE</option>
+          <option value="SEND">SEND</option>
         </select>
         <input id="request-url" type="URL" class="span9" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source="">
         <button id="request-button" type="button" class="btn btn-inverse">SEND</button>
@@ -133,7 +133,7 @@
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="response-headers">
-      <pre class="prettyprint linenums"></pre>
+      <pre></pre>
     </div>
     <div class="tab-pane" id="response-body-raw">
       <pre class="span12" style="margin-left:0px"></pre>
@@ -189,7 +189,7 @@
     <h3>oAuth</h3>
   </div>
   <div class="modal-body">
-    <form class="form-horizontal">
+    <form class="form-horizontal" onsubmit="return false;">
       <fieldset>
       <legend>Signing Requests</legend>
       <div class="control-group">
@@ -309,7 +309,7 @@
     <h3 class="title">Save Current Request</h3>
   </div>
   <div class="modal-body">
-    <form class="offset1">
+    <form class="offset1" onsubmit="return false;">
       <div class="control-group">
        <label for="saved-request-name">Request Name</label>
        <div class="controls">

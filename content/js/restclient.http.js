@@ -50,8 +50,8 @@ restclient.http = {
       restclient.http.xhr = xhr;
       xhr.send(requestBody);
     } catch (e) {
-      restclient.main.setResponseHeader("Error: Could not connect to server\n" 
-        + "Error:" + e.getMessage(), false);
+      restclient.main.setResponseHeader([["Error", "Could not connect to server"], 
+        ["Error", e.getMessage()]], false);
     }
   },
   onprogress: function(evt) {
@@ -62,21 +62,28 @@ restclient.http = {
       restclient.main.updateProgressBar(-1, 'Sending data...');
   },
   onerror: function(xhr) {
-    //console.log(xhr);
     restclient.main.clearResult();
     restclient.main.updateProgressBar(-1);
-    restclient.main.setResponseHeader("Error: Could not connect to server", false);
+    restclient.main.setResponseHeader([["Error", "Could not connect to server"]], false);
   },
   onload: function(xhr) {
-    //console.log(xhr);
     restclient.main.clearResult();
     xhr = xhr.target;
-    var responseHeader = "";
-    responseHeader += "Status Code: " + xhr.status + " " + xhr.statusText + "\n";
+    var headers = [];
+    headers.push(["Status Code", xhr.status + " " + xhr.statusText]);
+    
+    var headersText = xhr.getAllResponseHeaders();
+    var responseHeaders = headersText.split("\n");
 
-    responseHeader += xhr.getAllResponseHeaders();
-    //console.log(responseHeader);
-    restclient.main.setResponseHeader(responseHeader);
+    for (var i = 0, header; header = responseHeaders[i]; i++) {
+      if(header.indexOf(":") > 0) {
+        var key = header.substring(0, header.indexOf(":"));
+        var headValue = header.substr(header.indexOf(":") + 2);
+        headValue = headValue.replace(/\s$/, "");
+        headers.push([key, headValue]);
+      }
+    }
+    restclient.main.setResponseHeader(headers);
     
     var contentType = xhr.getResponseHeader("Content-Type");
     

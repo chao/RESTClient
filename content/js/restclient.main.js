@@ -46,7 +46,7 @@ restclient.main = {
     
     this.initModal();
     this.updateFavoriteHeadersMenu();
-    this.updateFavoriteRequest();
+    this.updateFavoriteRequestMenu();
     
     $('#request-button').bind('click',function(){
       var request = restclient.main.getRequest();
@@ -205,6 +205,12 @@ restclient.main = {
     }
     return false;
   },
+  removeHttpRequestHeaders: function(){
+    $('#request-headers span.label').remove();
+    if( $('#request-headers span.label').length == 0 ) {
+      $('#request-headers').hide();
+    }
+  },
   editHttpRequestHeader: function() {
     
   },
@@ -306,19 +312,40 @@ restclient.main = {
         request.overrideMimeType = ($('#overrideMimeType').attr('checked') == 'checked') ? $('#overrideMimeType').val() : false;
     var headers = [];
     $('#request-headers .label').each(function(){
-      headers.push($(this).attr('header-name'), $(this).attr('header-value'));
+      headers.push([$(this).attr('header-name'), $(this).attr('header-value')]);
     });
     request.headers = headers;
     return request;
   },
   setResponseHeader: function(headers, line) {
-    $('#response-headers pre').text(headers);
+    console.log(headers);
+    if(!headers) {
+      $('#response-headers pre').text('');
+      return false;
+    }
     if(typeof line === 'boolean' && line == false) {
-      $('#response-headers pre').removeClass('linenums');
+      var text = "";
+      for(var i=0, header; header = headers[i]; i++) {
+        text += header.join(" ") + "\n";
+      }
+      $('#response-headers pre').text(text);
     }
     else
     {
-      $('#response-headers pre').addClass('linenums');
+      var ol = $('<ol class="linenums"></ol>');
+      for(var i=0, header; header = headers[i]; i++) {
+        ol.append($('<li></li>').append(
+          $('<span class="header-name"></span>').text(header[0])
+        )
+        .append(
+          $('<span class="header-split"></span>').text(': ')
+        )
+        .append(
+          $('<span class="header-value"></span>').text(header[1])
+        )
+        );
+      }
+      $('#response-headers pre').empty().append(ol);
     }
   },
   updateProgressBar: function(idx, status) {
@@ -357,7 +384,7 @@ restclient.main = {
     $("#response-body-preview div.pre").html('');
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
-    restclient.main.setResponseHeader('');
+    restclient.main.setResponseHeader();
     $('[href="#response-headers"]').click();
   },
   checkMimeType: function(){
@@ -447,9 +474,9 @@ restclient.main = {
     var savedRequest = restclient.getPref('savedRequest', '');
     if(savedRequest != '')
     {
-      console.log(savedRequest);
+      //console.log(savedRequest);
       savedRequest = JSON.parse(savedRequest);
-      console.log(typeof savedRequest[name.val()]);
+      //console.log(typeof savedRequest[name.val()]);
       if(typeof $('#modal-save-request .btnOkay').attr('request-name') == 'undefined' &&
               typeof savedRequest[name.val()] != 'undefined') {
         name.next().text('Name existed, you can either change a name or overwrite it.').show();
@@ -465,8 +492,10 @@ restclient.main = {
     savedRequest[name.val()] = request;
     restclient.setPref('savedRequest', JSON.stringify(savedRequest));
     $('#modal-save-request').modal('hide');
+    this.updateFavoriteRequestMenu();
+    $('.request-menu').click();
   },
-  updateFavoriteRequest: function() {
+  updateFavoriteRequestMenu: function() {
     $('ul.savedRequest .favorite').remove();
     var savedRequest = restclient.getPref('savedRequest', '');
     if(savedRequest == '')
@@ -481,7 +510,8 @@ restclient.main = {
         name = name.substr(0, restclient.main.requestMenuMaxLength -3) + "...";
       
       var a =   $('<a class="favorite" href="#"></a>').text(name)
-        .data('request', savedRequest[name]);
+        .data('request', savedRequest[name])
+        .data('request-name', name);
       $('.savedRequest').prepend($('<li></li>').append(a));
     }
     if( $('.savedRequest a.favorite').length > 0 )
@@ -490,7 +520,7 @@ restclient.main = {
       $('li.manage-request').hide();
       
     $('.savedRequest a.favorite').bind('click', function(evt) {
-      //restclient.main.addHttpRequestHeader($(this).attr('header-name'), $(this).attr('header-value'));
+      restclient.main.applyFavoriteRequest($(this).data('request-name'));
       evt.preventDefault();
     })
     $('.savedRequest .favorite:last').after($('<li class="divider favorite"></li>'));
@@ -533,7 +563,7 @@ restclient.main = {
         }catch(e){ alert('Cannot import the json file.'); }
       });
     }
-    restclient.main.updateFavoriteRequest();
+    restclient.main.updateFavoriteRequestMenu();
     alert('import requests succeed');
     return false;
   },
@@ -609,7 +639,7 @@ restclient.main = {
       var result = restclient.main.removeFavoriteRequest(name);
       if(result) {
         $(this).parents('div.accordion-group').hide().remove();
-        restclient.main.updateFavoriteRequest();
+        restclient.main.updateFavoriteRequestMenu();
       }
     }));
     
@@ -638,8 +668,39 @@ restclient.main = {
       return false;
     favorites = JSON.parse(favorites);
     if(name in favorites) {
-      request = favorites[name];
+      var request = favorites[name];
+      if(request.method) {
+        $('#request-method option[value="' + request.method + '"]').attr('selected', true);
+      }
+      else
+        $('#request-method option[value="GET"]').attr('selected', true);
+        
+      if(request.url) {
+        $('#request-url').val(request.url);
+      }
+      else
+        $('#request-url').val('');
+        
+      if(request.overrideMimeType) {
+        $('#overrideMimeType').attr('checked', true);
+        $('.overrideMimeType').show();
+      }
+      else
+        $('#overrideMimeType').removeAttr('checked');
       
+      if(request.body) {
+        $('#request-body').val(request.body);
+      }
+      else
+        $('#request-body').val('');
+        
+      if(request.headers) {
+        restclient.main.removeHttpRequestHeaders();
+        //console.log(request.headers);
+        for(var i = 0, header; header = request.headers[i]; i++) {
+          restclient.main.addHttpRequestHeader(header[0], header[1]);
+        }
+      }
       return true;
     }
     return false;

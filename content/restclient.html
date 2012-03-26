@@ -11,6 +11,7 @@
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/restclient.css" rel="stylesheet">
     <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/jumbotron.css" rel="stylesheet">
     
     <link rel="shortcut icon" href="images/favicon.ico" />
   </head>
@@ -45,19 +46,22 @@
               <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Clear Favorites</a></li>
             </ul>
           </li>
-          <li><a href="#">Request</a></li>
-          <li><a href="#" onclick="restclient.main.showResponse();">Response</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">View <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Request</a></li>
+              <li><a href="#response" onclick="restclient.main.showResponse();">Response</a></li>
+            </ul>
+          </li>
         </ul>
         <ul class="nav pull-right">
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Favorite Requests <b class="caret"></b></a>
             <ul class="dropdown-menu savedRequest">
-              <li><a class="favorite" href="#">Accept</a></li>
-              <li class="divider favorite"></li>
-              <li><a href="#">Import Requests</a></li>
-              <li><a href="#">Export Requests</a></li>
+              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import Favorite Requests</a></li>
+              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export Favorite Requests</a></li>
               <li class="divider"></li>
-              <li><a href="#">Manage Saved Requests</a></li>
+              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage Favorite Requests</a></li>
               <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Save Current Request</a></li>
             </ul>
           </li>
@@ -330,8 +334,18 @@
   </div>
   <p><a class="btn btn-danger" onclick="restclient.http.abortRequest();">Abort</a></p>
 </div></div>
-
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<div id="window-manage-request" class="window-overlay" style="display:none">
+  <div class="window">
+    <div class="window-wrapper clearfix">
+      <a class="close btnClose">&times;</a>
+      <h4>Favorite Requests</h4>
+      <div class="accordion" id="favorite-request-list">
+        
+      </div>
+    </div><!--end window-wrapper//-->
+  </div>
+</div>
+<script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/restclient.js"></script>
 <script type="text/javascript" src="js/restclient.main.js"></script>

@@ -1,3 +1,31 @@
+/* ***** BEGIN LICENSE BLOCK *****
+Copyright (c) 2007-2012, Chao ZHOU (chao@zhou.fr). All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the author nor the names of its contributors may
+      be used to endorse or promote products derived from this software
+      without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * ***** END LICENSE BLOCK ***** */
+ 
 "use strict";
 
 restclient.main = {
@@ -41,6 +69,10 @@ restclient.main = {
       {
         $('#modal-save-request .btnOkay').attr('overwrite', '0').val('Save'); 
       }
+    });
+    
+    $('#window-manage-request .btnClose').bind('click', function(){
+      $('#window-manage-request').hide();
     });
   },
   processScroll: function () {
@@ -113,7 +145,7 @@ restclient.main = {
         savedRequest = JSON.parse(savedRequest);
         var names = [];
         for(var name in savedRequest) {
-          if(savedRequest.hasOwnProperty[name])
+          if(!savedRequest.hasOwnProperty(name))
             continue;
           names.push(name);
         }
@@ -176,7 +208,7 @@ restclient.main = {
   editHttpRequestHeader: function() {
     
   },
-  addHttpRequestHeader: function(name, value){
+  addHttpRequestHeader: function(name, value) {
     if(this.uniqueHeaders.indexOf(name.toLowerCase()) >= 0)
       restclient.main.removeHttpRequestHeaderByName(name);
    
@@ -239,7 +271,7 @@ restclient.main = {
     }
     $('#modal-custom-header').modal('hide');
   },
-  updateFavoriteHeadersMenu: function(){
+  updateFavoriteHeadersMenu: function() {
     $('ul.headers .favorite').remove();
     var favoriteHeaders = restclient.getPref('favoriteHeaders', '');
     if(favoriteHeaders == '')
@@ -262,11 +294,11 @@ restclient.main = {
     })
     $('.custom-header').after($('<li class="divider favorite"></li>'));
   },
-  clearFavoriteHeaders: function(){
+  clearFavoriteHeaders: function() {
     restclient.setPref('favoriteHeaders', '');
     this.updateFavoriteHeadersMenu();
   },
-  getRequest: function(){
+  getRequest: function() {
     var request = {};
         request.method = $('#request-method').val();
         request.url = $('#request-url').val();
@@ -279,7 +311,7 @@ restclient.main = {
     request.headers = headers;
     return request;
   },
-  setResponseHeader: function(headers, line){
+  setResponseHeader: function(headers, line) {
     $('#response-headers pre').text(headers);
     if(typeof line === 'boolean' && line == false) {
       $('#response-headers pre').removeClass('linenums');
@@ -304,11 +336,19 @@ restclient.main = {
       $('.mainOverlay .status').text(status);
     }
   },
-  showResponse: function(){
-    $('html, body').animate({scrollTop: $("#response").show().offset().top}, 1000);
+  showResponse: function() {
+    
+    $("#response").show();
+      
+    //document.getElementById('response').scrollIntoView(true);
+    var top = $("#response").offset().top;
+    //
+    //alert(top);
+    document.getElementById('response').scrollIntoView(true);
+    //$('html, body').animate({scrollTop: top}, 1000);
     return false;
   },
-  clearResult: function(){
+  clearResult: function() {
     $('.nav-tabs [href="#response-body-preview"]').hide();
     $('.nav-tabs [href="#response-body-highlight"]').hide();
     $('.nav-tabs li').removeClass('active');
@@ -397,7 +437,7 @@ restclient.main = {
 
     $('#response-body-raw pre').text(responseData);
   },
-  saveCurrentRequest: function(){
+  saveCurrentRequest: function() {
     var name = $('[name="saved-request-name"]');
     if(name.val() == '') {
       name.next().text('Please give this request a name for future usage.').show();
@@ -426,7 +466,7 @@ restclient.main = {
     restclient.setPref('savedRequest', JSON.stringify(savedRequest));
     $('#modal-save-request').modal('hide');
   },
-  updateFavoriteRequest: function(){
+  updateFavoriteRequest: function() {
     $('ul.savedRequest .favorite').remove();
     var savedRequest = restclient.getPref('savedRequest', '');
     if(savedRequest == '')
@@ -435,7 +475,7 @@ restclient.main = {
       savedRequest = JSON.parse(savedRequest);
     
     for(var name in savedRequest) {
-      if(savedRequest.hasOwnProperty[name])
+      if(!savedRequest.hasOwnProperty(name))
         continue;
       if (name.length > restclient.main.requestMenuMaxLength)
         name = name.substr(0, restclient.main.requestMenuMaxLength -3) + "...";
@@ -444,21 +484,165 @@ restclient.main = {
         .data('request', savedRequest[name]);
       $('.savedRequest').prepend($('<li></li>').append(a));
     }
+    if( $('.savedRequest a.favorite').length > 0 )
+      $('li.manage-request').show();
+    else
+      $('li.manage-request').hide();
+      
     $('.savedRequest a.favorite').bind('click', function(evt) {
       //restclient.main.addHttpRequestHeader($(this).attr('header-name'), $(this).attr('header-value'));
       evt.preventDefault();
     })
     $('.savedRequest .favorite:last').after($('<li class="divider favorite"></li>'));
   },
-  overrideMimeType: function(){
+  overrideMimeType: function() {
     $('label.overrideMimeType').show().find('input').attr('checked', true);
     $('#request-button').click();
     $('#alertOverrideMimeType').alert('close');
   },
-  unOverrideMimeType: function(){
+  unOverrideMimeType: function() {
     $('label.overrideMimeType').show().find('input').removeAttr('checked');
     $('#request-button').click();
     $('#alertUnOverrideMimeType').alert('close');
+  },
+  importFavoriteRequests: function() {
+    var nsIFilePicker = Components.interfaces.nsIFilePicker,
+        fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, "Please select a exported JSON file to import", nsIFilePicker.modeOpen);
+    fp.appendFilter("JSON","*.json");
+    var res = fp.show();
+    if (res == nsIFilePicker.returnOK) {
+
+      restclient.NetUtil.asyncFetch(fp.file, function(inputStream, status) {
+        if (!Components.isSuccessCode(status)) {
+          alert('Cannot import the json file.');
+          return;
+        }
+        
+        var data = restclient.NetUtil.readInputStreamToString(inputStream, inputStream.available());
+        
+        var utf8Converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].  
+            getService(Components.interfaces.nsIUTF8ConverterService);
+        var setting = utf8Converter.convertURISpecToUTF8(data, "UTF-8");
+        try{
+          if(setting == '') {
+            alert('This is an empty file.');
+            return;
+          }
+          restclient.setPref('savedRequest', setting);
+        }catch(e){ alert('Cannot import the json file.'); }
+      });
+    }
+    restclient.main.updateFavoriteRequest();
+    alert('import requests succeed');
+    return false;
+  },
+  exportFavoriteRequests: function() {
+    var savedRequest = restclient.getPref('savedRequest', ''),
+        nsIFilePicker = Components.interfaces.nsIFilePicker,
+        fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, "Please select a export directory", nsIFilePicker.modeSave);
+    fp.appendFilter("JSON","*.json");
+    var res = fp.show();
+    if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace) {
+      var ostream = restclient.FileUtils.openSafeFileOutputStream(fp.file),
+          converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
+                      createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+      converter.charset = "UTF-8";
+      var istream = converter.convertToInputStream(savedRequest);
+
+      restclient.NetUtil.asyncCopy(istream, ostream, function(status) {
+        if (!Components.isSuccessCode(status)) {
+          alert('cannotExportJSONError');
+          return;
+        }
+      });
+    }
+    return false;
+  },
+  manageFavoriteRequests: function(){
+    $('#favorite-request-list .accordion-group').remove();
+    var favoriteRequest = restclient.getPref('savedRequest', '');
+    if(favoriteRequest != '') {
+      favoriteRequest = JSON.parse(favoriteRequest);
+      var i = 0;
+      for(var name in favoriteRequest) {
+        if(!favoriteRequest.hasOwnProperty(name))
+          continue;
+        
+        var html = this.getFavoriteRequestHtml("favorite-request-" + (++i), name, favoriteRequest[name]);
+        $('#favorite-request-list').append(html);
+      }
+    }
+    
+    $('#window-manage-request').show();
+    
+  },
+  getFavoriteRequestHtml: function(id, name, request) {
+    var group = $('<div class="accordion-group"></div>'),
+      heading = $('<div class="accordion-heading"></div>')
+                  .append(
+                    $('<a class="accordion-toggle" data-toggle="collapse" data-parent="#favorite-request-list"></a>').attr('href', '#' + id)
+                    .text(name)
+                  ),
+      body = $('<div class="accordion-body collapse"></div>').attr('id', id),
+      inner = $('<div class="accordion-inner"></div>');
+    
+    inner.append($('<h5></h5>').text('Request'));
+    inner.append($('<p></p>').text(request.method + ' ' + request.url));
+    var ul = $('<ul></ul>');
+    if(request.overrideMimeType)
+      ul.append( $('<li class="overrideMimeType"></li>').text('overrideMimeType: ' + request.overrideMimeType) );
+    for(var i=0, header; header = request.headers[i]; i++) {
+      ul.append( $('<li></li>').text(header[0] + ': ' + header[1]) );
+    }
+    inner.append(ul);
+    inner.append($('<h5></h5>').text('Body'));
+    inner.append($('<div class="body pre-scrollable"></div>').text(request.body));
+    
+    var buttons = $('<div class="buttons"></div>');
+    buttons.append($('<button class="btn btn-success"></button>').text('Apply this request').bind('click', function(){
+      restclient.main.applyFavoriteRequest(name);
+      $('#window-manage-request').hide();
+    }));
+    buttons.append($('<button class="btn btn-danger"></button>').text('Remove from favorite').bind('click', function(){
+      var result = restclient.main.removeFavoriteRequest(name);
+      if(result) {
+        $(this).parents('div.accordion-group').hide().remove();
+        restclient.main.updateFavoriteRequest();
+      }
+    }));
+    
+    inner.append(buttons);
+    body.append(inner);
+    
+    group.append(heading).append(body);
+    
+    return group;
+  },
+  removeFavoriteRequest: function(name) {
+    var favorites = restclient.getPref('savedRequest', '');
+    if(favorites == '')
+      return false;
+    favorites = JSON.parse(favorites);
+    if(name in favorites) {
+      delete favorites[name];
+      restclient.setPref('savedRequest', JSON.stringify(favorites));
+      return true;
+    }
+    return false;
+  },
+  applyFavoriteRequest: function(name) {
+    var favorites = restclient.getPref('savedRequest', '');
+    if(favorites == '')
+      return false;
+    favorites = JSON.parse(favorites);
+    if(name in favorites) {
+      request = favorites[name];
+      
+      return true;
+    }
+    return false;
   }
 };
 

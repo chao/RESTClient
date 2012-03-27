@@ -203,12 +203,19 @@ body {
 #window-manage-request button {
   margin-left: 5px;
 }
+span.line {
+  display: inline-block;
+  width: 100;
+}
 span.header-name {
   color: teal;
+  float: left;
 }
 span.header-split{
   color: #93a1a1;
+  float: left;
 }
 span.header-value {
   color: #D14;
+  float: left;
 }

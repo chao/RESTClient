@@ -173,10 +173,10 @@ restclient.main = {
       password.focus();
       return false;
     }
-    var strValue = "Basic " + username.val() + ":" + password.val(),
+    var strValue = username.val() + ":" + password.val(),
         strBase64 = btoa(strValue).replace(/.{76}(?=.)/g,'$&\n');
     
-    restclient.main.addHttpRequestHeader('Authorization', strBase64);
+    restclient.main.addHttpRequestHeader('Authorization', "Basic " + strBase64);
     if( $("#modal-basic-authorization [name='remember']").attr('checked') === 'checked') {
       var basicAuth = JSON.stringify({'user': username.val(), 'pass': password.val()});
       //console.log(basicAuth);
@@ -318,7 +318,7 @@ restclient.main = {
     return request;
   },
   setResponseHeader: function(headers, line) {
-    console.log(headers);
+    //console.log(headers);
     if(!headers) {
       $('#response-headers pre').text('');
       return false;
@@ -334,18 +334,40 @@ restclient.main = {
     {
       var ol = $('<ol class="linenums"></ol>');
       for(var i=0, header; header = headers[i]; i++) {
-        ol.append($('<li></li>').append(
-          $('<span class="header-name"></span>').text(header[0])
+        var val = header[1];
+        var result = "";
+        if(val.length > 80)
+        {
+          for (var j = 0, np = ''; j < val.length; j += 80, np = '\n') {
+            np += val.substr(j, 80);
+            result += np;
+          }
+        }
+        else
+          result = val;
+        
+        var headerName = $('<span class="header-name"></span>').text(header[0]);
+        var li = $('<li></li>');
+        li.append($('<span class="line"></span>').append(
+          headerName
         )
         .append(
           $('<span class="header-split"></span>').text(': ')
         )
         .append(
-          $('<span class="header-value"></span>').text(header[1])
+          $('<span class="header-value"></span>').text(result)
         )
         );
+        
+        ol.append(li);
       }
       $('#response-headers pre').empty().append(ol);
+      var maxWidth = 0;
+      $('#response-headers .header-name').each(function(){
+        maxWidth = ($(this).outerWidth() > maxWidth) ? $(this).outerWidth() : maxWidth;
+      });
+      $('#response-headers .header-name').width(maxWidth + 10);
+      //$('#response-headers .header-value').css('margin-left', maxWidth + 20 + 'px');
     }
   },
   updateProgressBar: function(idx, status) {
@@ -380,11 +402,13 @@ restclient.main = {
     $('.nav-tabs [href="#response-body-highlight"]').hide();
     $('.nav-tabs li').removeClass('active');
     $('.nav-tabs li').first().addClass('active');
+    $('.nav-tabs').tab('show');
     
     $("#response-body-preview div.pre").html('');
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader();
+    
     $('[href="#response-headers"]').click();
   },
   checkMimeType: function(){
@@ -402,18 +426,20 @@ restclient.main = {
     $('#response-body-raw pre').text(responseData);
   },
   displayHtml: function() {
-    var responseData = this.xhr.responseText,
-        iframe = $("<iframe></firame>")
-          .attr("type", "content")
-          .attr("src", "data:text/html," + encodeURIComponent(responseData));
-    
-    $("#response-body-preview div.pre").append(iframe);
+    var responseData = this.xhr.responseText;
+        
+    if(responseData.length > 0) {
+      var iframe = $("<iframe></firame>")
+        .attr("type", "content")
+        .attr("src", "data:text/html," + encodeURIComponent(responseData));
+      $("#response-body-preview div.pre").append(iframe);
+      $('.nav-tabs [href="#response-body-preview"]').show();
+      
+      $('#response-body-highlight pre').text(responseData);
+      $('.nav-tabs [href="#response-body-highlight"]').show();
+    }
     
     $('#response-body-raw pre').text(responseData);
-    $('#response-body-highlight pre').text(responseData);
-    
-    $('.nav-tabs [href="#response-body-preview"]').show();
-    $('.nav-tabs [href="#response-body-highlight"]').show();
   },
   displayXml: function() {
     var responseData = this.xhr.responseText,

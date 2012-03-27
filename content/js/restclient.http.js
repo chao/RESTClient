@@ -90,7 +90,7 @@ restclient.http = {
     var displayHandler = 'display';
     
     if(contentType.indexOf('html') >= 0) {
-      displayHandler = 'displayXml';
+      displayHandler = 'displayHtml';
     }
     if(contentType.indexOf('xml') >= 0) {
       displayHandler = 'displayXml';
@@ -104,10 +104,12 @@ restclient.http = {
       else
         displayHandler = 'displayImage';
     }
+    //console.log(displayHandler);
+    //console.log(contentType);
     restclient.main.checkMimeType.apply(restclient.http, []);
     restclient.main[displayHandler].apply(restclient.http, []);
     window.prettyPrint && prettyPrint();
-    //restclient.main.updateProgressBar(-1);
+    restclient.main.updateProgressBar(-1);
   },
   abortRequest: function(){
     if(!restclient.http.xhr)

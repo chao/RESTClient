@@ -32,7 +32,7 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;">Basic Auth</a></li>
+              <li><a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;">Basic Authorization</a></li>
               <li><a href="#" onclick="restclient.main.showModal('modal-oauth');return false;">oAuth</a></li>
             </ul>
           </li>
@@ -177,7 +177,7 @@
   </div>
   <div class="modal-footer">
     <div style="float:left;margin-top:8px; ">
-    <input type="checkbox" name="remember" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember me on this computer</span>
+    <input type="checkbox" name="remember" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember me</span>
     </div>
     <input class="btn btn-inverse" type="button" value="Okay" onclick="restclient.main.addBasicAuthorization();">
     <input class="btn btnClose" type="button" value="Cancel">
@@ -193,12 +193,21 @@
       <fieldset>
       <legend>Signing Requests</legend>
       <div class="control-group">
-        <label class="control-label">Signature Methods</label>
+        <label class="control-label" for="oauth_signature_method">Signature Methods</label>
         <div class="controls">
-          <select id="select01" class="input-xlarge">
-            <option>HMAC-SHA1</option>
-            <option>RSA-SHA1</option>
-            <option>PLAINTEXT</option>
+          <select id="oauth_signature_method" class="input-xlarge">
+            <option value="HMAC-SHA1">HMAC-SHA1</option>
+            <option value="RSA-SHA1">RSA-SHA1</option>
+            <option value="PLAINTEXT">PLAINTEXT</option>
+          </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label for="oauth_version" class="control-label">oAuth Version</label>
+        <div class="controls">
+          <select id="oauth_version" class="input-xlarge">
+            <option value="1.0a">1.0a</option>
+            <option value="2.0">2.0</option>
           </select>
         </div>
       </div>
@@ -224,7 +233,7 @@
           </div>
         </div>
         <div class="control-group">
-          <label for="input01" class="control-label">Token</label>
+          <label for="input01" class="control-label">Token Key</label>
           <div class="controls">
             <input type="text" id="input01" class="input-xlarge">
           </div>
@@ -239,26 +248,18 @@
       <fieldset>
         <legend>Metadata</legend>
         <div class="control-group">
-          <label for="input01" class="control-label">Accessor Secret</label>
+          <label for="oauth_nonce" class="control-label">oAuth Nonce</label>
           <div class="controls">
             <div class="input-append">
-            <input class="input-large disabled" id="appendedInput" size="16" type="text" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
+            <input class="input-large disabled" id="oauth_nonce" size="16" type="text" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
             </div>
           </div>
         </div>
         <div class="control-group">
-          <label for="input01" class="control-label">Version</label>
+          <label for="oauth_timestamp" class="control-label">oAuth Timestamp</label>
           <div class="controls">
             <div class="input-append">
-            <input class="input-large disabled" id="appendedInput" size="16" type="text" value="1.0" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
-            </div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="input01" class="control-label">Timestamp</label>
-          <div class="controls">
-            <div class="input-append">
-            <input class="input-large disabled" id="appendedInput" size="16" type="text" value="12312312.123" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
+            <input class="input-large disabled" id="oauth_timestamp" size="16" type="text" value="12312312.123" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
             </div>
             <p class="help-block">Tue Mar 20 21:51:29 CST 2012</p>
           </div>
@@ -268,10 +269,11 @@
   </div>
   <div class="modal-footer">
     <div style="float:left;margin-top:8px; ">
-    <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember me on this computer</span>
+    <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember me</span>
     </div>
-    <input class="btn btn-inverse" type="submit" value="Okay" onclick="restclient.main.addBasicAuthorization();">
-    <input class="btn btnClose" type="button" value="Cancel">
+    <input class="btn btn-primary" type="button" value="Authorize">
+    <input class="btn btn-success" type="button" value="Apply" onclick="restclient.main.addBasicAuthorization();">
+    <input class="btn btn-info btnClose" type="button" value="Close">
   </div>
 </div>
 <div class="modal fade hide" id="modal-custom-header">

@@ -789,8 +789,7 @@ restclient.main = {
       
       var parameters = {
         oauth_version: oauth_version.val(),
-        oauth_signature_method: oauth_signature_method.val(),
-        oauth_consumer_key: authorize_consumer_secret.val()
+        oauth_signature_method: oauth_signature_method.val()
       };
       (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
       (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();

@@ -33,7 +33,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;">Basic Authorization</a></li>
-              <li><a href="#" onclick="restclient.main.showModal('modal-oauth');return false;">oAuth</a></li>
+              <li><a href="#" onclick="restclient.main.showOAuthWindow();return false;">OAuth Signing</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -183,99 +183,6 @@
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>
-<div class="modal fade hide" id="modal-oauth">
-  <div class="modal-header">
-    <a class="close btnClose">×</a>
-    <h3>oAuth</h3>
-  </div>
-  <div class="modal-body">
-    <form class="form-horizontal" onsubmit="return false;">
-      <fieldset>
-      <legend>Signing Requests</legend>
-      <div class="control-group">
-        <label class="control-label" for="oauth_signature_method">Signature Methods</label>
-        <div class="controls">
-          <select id="oauth_signature_method" class="input-xlarge">
-            <option value="HMAC-SHA1">HMAC-SHA1</option>
-            <option value="RSA-SHA1">RSA-SHA1</option>
-            <option value="PLAINTEXT">PLAINTEXT</option>
-          </select>
-        </div>
-      </div>
-      <div class="control-group">
-        <label for="oauth_version" class="control-label">oAuth Version</label>
-        <div class="controls">
-          <select id="oauth_version" class="input-xlarge">
-            <option value="1.0a">1.0a</option>
-            <option value="2.0">2.0</option>
-          </select>
-        </div>
-      </div>
-      </fieldset>
-      <fieldset>
-        <legend>Credentials</legend>
-        <div class="control-group">
-          <label for="input01" class="control-label">Accessor Secret</label>
-          <div class="controls">
-            <input type="text" id="input01" class="input-xlarge">
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="input01" class="control-label">Consumer Key</label>
-          <div class="controls">
-            <input type="text" id="input01" class="input-xlarge">
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="input01" class="control-label">Consumer Secret</label>
-          <div class="controls">
-            <input type="text" id="input01" class="input-xlarge">
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="input01" class="control-label">Token Key</label>
-          <div class="controls">
-            <input type="text" id="input01" class="input-xlarge">
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="input01" class="control-label">Token Secret</label>
-          <div class="controls">
-            <input type="text" id="input01" class="input-xlarge">
-          </div>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Metadata</legend>
-        <div class="control-group">
-          <label for="oauth_nonce" class="control-label">oAuth Nonce</label>
-          <div class="controls">
-            <div class="input-append">
-            <input class="input-large disabled" id="oauth_nonce" size="16" type="text" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
-            </div>
-          </div>
-        </div>
-        <div class="control-group">
-          <label for="oauth_timestamp" class="control-label">oAuth Timestamp</label>
-          <div class="controls">
-            <div class="input-append">
-            <input class="input-large disabled" id="oauth_timestamp" size="16" type="text" value="12312312.123" disabled><span class="add-on"><input type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
-            </div>
-            <p class="help-block">Tue Mar 20 21:51:29 CST 2012</p>
-          </div>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <div style="float:left;margin-top:8px; ">
-    <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember me</span>
-    </div>
-    <input class="btn btn-primary" type="button" value="Authorize">
-    <input class="btn btn-success" type="button" value="Apply" onclick="restclient.main.addBasicAuthorization();">
-    <input class="btn btn-info btnClose" type="button" value="Close">
-  </div>
-</div>
 <div class="modal fade hide" id="modal-custom-header">
   <div class="modal-header">
     <a class="close btnClose">×</a>
@@ -347,12 +254,164 @@
     </div><!--end window-wrapper//-->
   </div>
 </div>
+<div id="window-oauth" class="window-overlay">
+  <div class="window">
+    <div class="window-wrapper clearfix">
+      <div class="window-header">
+        <a class="close btnClose">×</a>
+        <h3>OAuth</h3>
+      </div>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#get-access-token" data-toggle="tab">Get access token</a></li>
+        <li><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
+        <li><a href="#oauth-setting" data-toggle="tab">OAuth setting</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="get-access-token">
+          <form class="form-horizontal" onsubmit="return false;">
+            <div class="control-group">
+              <label for="consumer_key" class="control-label">Consumer key</label>
+              <div class="controls">
+                <input type="text" name="consumer_key" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP" value="key">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="consumer_secret" class="control-label">Consumer secret</label>
+              <div class="controls">
+                <input type="text" name="consumer_secret" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg" value="secret">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="request_token_url" class="control-label">Request token URL</label>
+              <div class="controls">
+                <input type="text" name="request_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/request_token" value="http://term.ie/oauth/example/request_token.php">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="authorize_url" class="control-label">Authorize URL</label>
+              <div class="controls">
+                <input type="text" name="authorize_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/authorize" value="http://term.ie/oauth/example/access_token.php">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="access_token_url" class="control-label">Access token URL</label>
+              <div class="controls">
+                <input type="text" name="access_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/access_token" value="http://term.ie/oauth/example/echo_api.php">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="callback_url" class="control-label">Callback URL</label>
+              <div class="controls">
+                <input type="text" name="callback_url" class="input-xxlarge" placeholder="https://api.example.com/oauth/callback">
+              </div>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <div style="float:left;margin-top:8px; ">
+            <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember the setting</span>
+            </div>
+            <input class="btn btn-success btnOkay" type="button" value="Authorize">
+            <input class="btn btn-info btnClose" type="button" value="Close">
+          </div>
+        </div>
+        <div class="tab-pane" id="signature-request">
+          <form class="form-horizontal" onsubmit="return false;">
+            <div class="control-group">
+              <label for="input01" class="control-label">Consumer key</label>
+              <div class="controls">
+                <input type="text" id="input01" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="input01" class="control-label">Consumer secret</label>
+              <div class="controls">
+                <input type="text" id="input01" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="input01" class="control-label">Access token</label>
+              <div class="controls">
+                <input type="text" id="input01" class="input-xxlarge" placeholder="1405721-iICeQLXdqTlEuYx2ipSlpa1KkPhnbxiN9KJporshQ">
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="input01" class="control-label">Access token secret</label>
+              <div class="controls">
+                <input type="text" id="input01" class="input-xxlarge" placeholder="LgrNoNX4JNT3v03b2j6hPqQf6gHntUX5uI0CTLZs">
+              </div>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <div style="float:left;margin-top:8px; ">
+            <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember the setting</span>
+            </div>
+            <input class="btn btn-info btnClose" type="button" value="Close" style="float:right;">
+            <div class="btn-group dropup" style="float:right; margin-right: 4px;">
+              <button class="btn btn-success" style="padding: 5px 15px;">Insert</button>
+              <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 5px 6px;"><span class="caret"></span></button>
+              <ul class="dropdown-menu pull-right">
+                <li><a href="#">Insert as header</a></li>
+                <li><a href="#">Insert as query string</a></li>
+              </ul>
+            </div>
+            
+          </div>
+        </div>
+        <div class="tab-pane" id="oauth-setting">
+          <form class="form-horizontal" onsubmit="return false;">
+            <div class="control-group">
+              <label class="control-label" for="oauth_signature_method">Signature Methods</label>
+              <div class="controls">
+                <select id="oauth_signature_method" class="input-xlarge">
+                  <option value="HMAC-SHA1" selected>HMAC-SHA1</option>
+                  <option value="PLAINTEXT">PLAINTEXT</option>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="oauth_version" class="control-label">oAuth Version</label>
+              <div class="controls">
+                <select id="oauth_version" class="input-xlarge">
+                  <option value="1.0" selected>1.0</option>
+                  <option value="2.0">2.0</option>
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="oauth_nonce" class="control-label">oAuth Nonce</label>
+              <div class="controls">
+                <div class="input-append">
+                <input class="input-large disabled" id="oauth_nonce" size="16" type="text" disabled><span class="add-on"><input id="auto_oauth_nonce" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
+                </div>
+              </div>
+            </div>
+            <div class="control-group">
+              <label for="oauth_timestamp" class="control-label">oAuth Timestamp</label>
+              <div class="controls">
+                <div class="input-append">
+                <input class="input-large disabled" id="oauth_timestamp" size="16" type="text" disabled><span class="add-on"><input id="auto_oauth_timestamp" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
+                </div>
+                <p class="help-block hide">Tue Mar 20 21:51:29 CST 2012</p>
+              </div>
+            </div>
+          </form>
+          <div class="modal-footer">
+            <input class="btn btn-success btnOkay" type="button" value="Save">
+            <input class="btn btn-info btnClose" type="button" value="Close">
+          </div>
+        </div>
+      </div>
+    </div><!--end window-wrapper//-->
+  </div>
+</div> 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/restclient.js"></script>
 <script type="text/javascript" src="js/restclient.main.js"></script>
+<script type="text/javascript" src="js/restclient.oauth.js"></script>
 <script type="text/javascript" src="js/restclient.headers.js"></script>
 <script type="text/javascript" src="js/restclient.http.js"></script>
 <script type="text/javascript" src="js/prettify.js"></script>
+<script type="text/javascript" src="js/sha1.js"></script>
 </body>
 </html>

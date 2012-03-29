@@ -45,6 +45,7 @@ restclient.main = {
     });
     
     this.initModal();
+    this.initOAuthWindow();
     this.updateFavoriteHeadersMenu();
     this.updateFavoriteRequestMenu();
     
@@ -73,6 +74,10 @@ restclient.main = {
     
     $('#window-manage-request .btnClose').bind('click', function(){
       $('#window-manage-request').hide();
+    });
+    
+    $('input, textarea').focus(function(){
+      $(this).select();
     });
   },
   processScroll: function () {
@@ -730,6 +735,161 @@ restclient.main = {
       return true;
     }
     return false;
+  },
+  initOAuthWindow: function() {
+    var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
+        authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
+        authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
+        authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
+        authorize_access_token_url  = $('#get-access-token [name="access_token_url"]'),
+        authorize_callback_url      = $('#get-access-token [name="callback_url"]'),
+        
+        oauth_signature_method      = $('#oauth_signature_method'),
+        oauth_version               = $('#oauth_version'),
+        oauth_nonce                 = $('#oauth_nonce'),
+        oauth_timestamp             = $('#oauth_timestamp');
+        
+    $('#get-access-token .btnOkay').bind('click', function() {
+      var errors = [];
+      if(authorize_consumer_key.val() == '') {
+        authorize_consumer_key.parents('.control-group').addClass('error');
+        errors.push(authorize_consumer_key);
+      }
+      
+      if(authorize_consumer_secret.val() == '') {
+        authorize_consumer_secret.parents('.control-group').addClass('error');
+        errors.push(authorize_consumer_secret);
+      }
+      
+      if(authorize_request_token_url.val() == '') {
+        authorize_request_token_url.parents('.control-group').addClass('error');
+        errors.push(authorize_request_token_url);
+      }
+        
+      if(authorize_authorize_url.val() == '') {
+        authorize_authorize_url.parents('.control-group').addClass('error');
+        errors.push(authorize_authorize_url);
+      }
+        
+      if(authorize_access_token_url.val() == '') {
+        authorize_access_token_url.parents('.control-group').addClass('error');
+        errors.push(authorize_access_token_url);
+      }
+        
+      if(errors.length > 0) {
+        var el = errors.shift();
+        el.focus();
+        return false;
+      }
+      
+      var secrets = {
+        consumer_key: authorize_consumer_key.val(),
+        consumer_secret: authorize_consumer_secret.val()
+      };
+      
+      var parameters = {
+        oauth_version: oauth_version.val(),
+        oauth_signature_method: oauth_signature_method.val(),
+        oauth_consumer_key: authorize_consumer_secret.val()
+      };
+      (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
+      (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
+      
+      var signature = restclient.oauth.sign({
+        action: 'GET',
+        path: authorize_request_token_url.val(),
+        signatures: secrets,
+        parameters: parameters
+      });
+      console.log(signature);
+    });
+    
+    var auto_oauth_timestamp   = $('#auto_oauth_timestamp'),
+        oauth_timestamp        = $('#oauth_timestamp'),
+        auto_oauth_nonce       = $('#auto_oauth_nonce'),
+        oauth_nonce            = $('#oauth_nonce'),
+        oauth_signature_method = $('#oauth_signature_method'),
+        oauth_version          = $('#oauth_version');
+        
+    $('#oauth-setting .btnOkay').click(function(){
+      var param = {};
+      param.auto_oauth_timestamp    = (auto_oauth_timestamp.attr('checked') == 'checked');
+      param.oauth_timestamp         = oauth_timestamp.val();
+      param.auto_oauth_nonce        = (auto_oauth_nonce.attr('checked') == 'checked');
+      param.oauth_nonce             = oauth_nonce.val();
+      param.oauth_signature_method  = oauth_signature_method.val();
+      param.oauth_version           = oauth_version.val();
+      restclient.setPref('OAuth.setting', JSON.stringify(param));
+    });
+    
+    function autoTimeStamp(){
+      if($('#auto_oauth_timestamp').attr('checked') == 'checked') { 
+        $('#oauth_timestamp').val('').addClass('disabled').attr('disabled',true);
+        $('#oauth_timestamp').parent().next().hide();
+      }
+      else {
+        var ts = restclient.oauth.getTimeStamp();
+        $('#oauth_timestamp').val(ts).removeClass('disabled').removeAttr('disabled');
+        $('#oauth_timestamp').parent().next().text(new Date(ts*1000)).show();
+      }
+    }
+    
+    function autoNonce(){
+      if($('#auto_oauth_nonce').attr('checked') == 'checked') { 
+        $('#oauth_nonce').val('').addClass('disabled').attr('disabled',true);
+      }
+      else
+        $('#oauth_nonce').val(restclient.oauth.getNonce()).removeClass('disabled').removeAttr('disabled');
+    }
+    
+    $('#auto_oauth_timestamp').click(autoTimeStamp);
+    
+    $('#auto_oauth_nonce').click(autoNonce);
+    
+    $('#window-oauth .btnClose').click(function() {
+      $('#window-oauth').hide();
+    });
+    
+    var setting = restclient.setPref('OAuth.setting', '');
+    if(setting != '') {
+      setting = JSON.parse(setting);
+      if(setting.auto_oauth_timestamp) 
+        $('#auto_oauth_timestamp').attr('checked', true);
+      else
+        $('#auto_oauth_timestamp').removeAttr('checked');
+      
+      if(setting.auto_oauth_nonce) 
+        $('#auto_oauth_nonce').attr('checked', true);
+      else
+        $('#auto_oauth_nonce').removeAttr('checked');
+      
+      oauth_timestamp.val(setting.oauth_timestamp);
+      oauth_nonce.val(setting.oauth_nonce);
+      
+      $('#oauth_signature_method option[value="' + setting.oauth_signature_method + '"]').attr('selected', true);
+      $('#oauth_version option[value="' + setting.oauth_version + '"]').attr('selected', true);
+      
+      autoTimeStamp();
+      autoNonce();
+    }
+    else
+    {
+      $('#auto_oauth_timestamp').attr('checked', true);
+      $('#auto_oauth_nonce').attr('checked', true);
+      autoTimeStamp();
+      autoNonce();
+    }
+    
+    $('#oauth_timestamp').val('');
+    $('#oauth_timestamp').parent().next().hide();
+    $('#auto_oauth_nonce').attr('checked', true);
+    $('#oauth_nonce').val('');
+    $('#oauth_nonce').parent().next().hide();
+  },
+  showOAuthWindow: function() {
+    
+    
+    $('#window-oauth').show();
   }
 };
 

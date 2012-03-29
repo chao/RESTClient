@@ -185,12 +185,15 @@ body {
   padding-top: 60px;
   padding-bottom:80px;
   position:absolute;
-  width:690px;
+  width:720px;
   left: 50%;
-  margin-left: -345px;
+  margin-left: -360px;
   z-index:1020;
 }
-#window-manage-request a.close {
+.window-header {
+  padding: 9px 0;
+}
+.window-overlay a {
   text-decoration: none;
 }
 #window-manage-request h4 {

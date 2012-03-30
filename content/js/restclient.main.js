@@ -737,71 +737,12 @@ restclient.main = {
     return false;
   },
   initOAuthWindow: function() {
-    var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
-        authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
-        authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
-        authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
-        authorize_access_token_url  = $('#get-access-token [name="access_token_url"]'),
-        authorize_callback_url      = $('#get-access-token [name="callback_url"]'),
-        
-        oauth_signature_method      = $('#oauth_signature_method'),
+    var oauth_signature_method      = $('#oauth_signature_method'),
         oauth_version               = $('#oauth_version'),
         oauth_nonce                 = $('#oauth_nonce'),
         oauth_timestamp             = $('#oauth_timestamp');
         
-    $('#get-access-token .btnOkay').bind('click', function() {
-      var errors = [];
-      if(authorize_consumer_key.val() == '') {
-        authorize_consumer_key.parents('.control-group').addClass('error');
-        errors.push(authorize_consumer_key);
-      }
-      
-      if(authorize_consumer_secret.val() == '') {
-        authorize_consumer_secret.parents('.control-group').addClass('error');
-        errors.push(authorize_consumer_secret);
-      }
-      
-      if(authorize_request_token_url.val() == '') {
-        authorize_request_token_url.parents('.control-group').addClass('error');
-        errors.push(authorize_request_token_url);
-      }
-        
-      if(authorize_authorize_url.val() == '') {
-        authorize_authorize_url.parents('.control-group').addClass('error');
-        errors.push(authorize_authorize_url);
-      }
-        
-      if(authorize_access_token_url.val() == '') {
-        authorize_access_token_url.parents('.control-group').addClass('error');
-        errors.push(authorize_access_token_url);
-      }
-        
-      if(errors.length > 0) {
-        var el = errors.shift();
-        el.focus();
-        return false;
-      }
-      
-      var secrets = {
-        consumer_key: authorize_consumer_key.val(),
-        consumer_secret: authorize_consumer_secret.val()
-      };
-      
-      var parameters = {
-        oauth_version: oauth_version.val(),
-        oauth_signature_method: oauth_signature_method.val()
-      };
-      (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
-      (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
-      
-      var signature = restclient.oauth.sign({
-        action: 'GET',
-        path: authorize_request_token_url.val(),
-        signatures: secrets,
-        parameters: parameters
-      });
-      console.log(signature);
-    });
+    $('#get-access-token .btnOkay').bind('click', restclient.main.oauthAuthorize);
     
     var auto_oauth_timestamp   = $('#auto_oauth_timestamp'),
         oauth_timestamp        = $('#oauth_timestamp'),
@@ -849,7 +790,8 @@ restclient.main = {
       $('#window-oauth').hide();
     });
     
-    var setting = restclient.setPref('OAuth.setting', '');
+    //Load setting from preferences
+    var setting = restclient.getPref('OAuth.setting', '');
     if(setting != '') {
       setting = JSON.parse(setting);
       if(setting.auto_oauth_timestamp) 
@@ -884,11 +826,140 @@ restclient.main = {
     $('#auto_oauth_nonce').attr('checked', true);
     $('#oauth_nonce').val('');
     $('#oauth_nonce').parent().next().hide();
+    
+    //Load authorize from preferences
+    var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
+        authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
+        authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
+        authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
+        authorize_access_token_url  = $('#get-access-token [name="access_token_url"]'),
+        authorize_callback_url      = $('#get-access-token [name="callback_url"]'),
+        authorize_remember          = $('#get-access-token [name="remember"]');
+    
+    var authorize = restclient.getPref('OAuth.authorize', '');
+    if(authorize != '') {
+      authorize = JSON.parse(authorize);
+      authorize_consumer_key.val(authorize.consumer_key);
+      authorize_consumer_secret.val(authorize.consumer_secret);
+      authorize_request_token_url.val(authorize.request_token_url);
+      authorize_authorize_url.val(authorize.authorize_url);
+      authorize_access_token_url.val(authorize.access_token_url);
+      authorize_callback_url.val(authorize.callback_url);
+      (authorize.remember === true) ? authorize_remember.attr('checked', true) : authorize_remember.removeAttr('checked');
+    }
+    else
+    {
+      
+    }
   },
   showOAuthWindow: function() {
-    
-    
     $('#window-oauth').show();
+  },
+  oauthAuthorize: function() {
+    var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
+        authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
+        authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
+        authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
+        authorize_access_token_url  = $('#get-access-token [name="access_token_url"]'),
+        authorize_callback_url      = $('#get-access-token [name="callback_url"]'),
+        authorize_remember          = $('#get-access-token [name="remember"]'),
+        oauth_signature_method      = $('#oauth_signature_method'),
+        oauth_version               = $('#oauth_version'),
+        oauth_nonce                 = $('#oauth_nonce'),
+        oauth_timestamp             = $('#oauth_timestamp'),
+        authorize_okay              = $('#get-access-token .btnOkay'),
+        errors = [];
+
+    if(authorize_consumer_key.val() == '') {
+      authorize_consumer_key.parents('.control-group').addClass('error');
+      errors.push(authorize_consumer_key);
+    }
+
+    if(authorize_consumer_secret.val() == '') {
+      authorize_consumer_secret.parents('.control-group').addClass('error');
+      errors.push(authorize_consumer_secret);
+    }
+
+    if(authorize_request_token_url.val() == '') {
+      authorize_request_token_url.parents('.control-group').addClass('error');
+      errors.push(authorize_request_token_url);
+    }
+  
+    if(authorize_authorize_url.val() == '') {
+      authorize_authorize_url.parents('.control-group').addClass('error');
+      errors.push(authorize_authorize_url);
+    }
+
+    if(authorize_access_token_url.val() == '') {
+      authorize_access_token_url.parents('.control-group').addClass('error');
+      errors.push(authorize_access_token_url);
+    }
+
+    if(errors.length > 0) {
+      var el = errors.shift();
+      el.focus();
+      //console.error(el);
+      return false;
+    }
+
+    authorize_okay.button('loading');
+    if(authorize_remember.attr('checked') == 'checked') {
+      var setting = {
+        consumer_key      : authorize_consumer_key.val(),
+        consumer_secret   : authorize_consumer_secret.val(),
+        request_token_url : authorize_request_token_url.val(),
+        authorize_url     : authorize_authorize_url.val(),
+        access_token_url  : authorize_access_token_url.val(),
+        callback_url      : authorize_callback_url.val(),
+        remember          : true
+      };
+      console.log(setting);
+      restclient.setPref('OAuth.authorize', JSON.stringify(setting));
+    }
+    else
+      restclient.setPref('OAuth.authorize', '');
+    
+    var secrets = {
+      consumer_key: authorize_consumer_key.val(),
+      consumer_secret: authorize_consumer_secret.val()
+    };
+
+    var parameters = {
+      oauth_version: oauth_version.val(),
+      oauth_signature_method: oauth_signature_method.val()
+    };
+    (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
+    (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
+    
+    console.log(secrets);
+    console.log(parameters);
+    
+    var signature = restclient.oauth.sign({
+      action: 'GET',
+      path: authorize_request_token_url.val(),
+      signatures: secrets,
+      parameters: parameters
+    });
+    
+    var oauth_token, oauth_token_secret;
+    $.ajax({
+      url: signature.signed_url, 
+      action: 'GET',
+      async: false,
+      success: function(data, textStatus, jqXHR) {
+        console.log(data);
+        var params = parseParameterString(data);
+        if(typeof params['oauth_token'] != 'undefined')
+          oauth_token = params['oauth_token'];
+        if(typeof params['oauth_token_secret'] != 'undefined')
+          oauth_token_secret = params['oauth_token_secret'];
+      },
+      error: function() {
+        
+      }
+    });
+    console.log(signature);
+    authorize_okay.button('reset');
   }
 };
 

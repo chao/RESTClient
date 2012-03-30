@@ -272,31 +272,31 @@
             <div class="control-group">
               <label for="consumer_key" class="control-label">Consumer key</label>
               <div class="controls">
-                <input type="text" name="consumer_key" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP" value="key">
+                <input type="text" name="consumer_key" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
               </div>
             </div>
             <div class="control-group">
               <label for="consumer_secret" class="control-label">Consumer secret</label>
               <div class="controls">
-                <input type="text" name="consumer_secret" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg" value="secret">
+                <input type="text" name="consumer_secret" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg">
               </div>
             </div>
             <div class="control-group">
               <label for="request_token_url" class="control-label">Request token URL</label>
               <div class="controls">
-                <input type="text" name="request_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/request_token" value="http://term.ie/oauth/example/request_token.php">
+                <input type="text" name="request_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/request_token">
               </div>
             </div>
             <div class="control-group">
               <label for="authorize_url" class="control-label">Authorize URL</label>
               <div class="controls">
-                <input type="text" name="authorize_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/authorize" value="http://term.ie/oauth/example/access_token.php">
+                <input type="text" name="authorize_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/authorize">
               </div>
             </div>
             <div class="control-group">
               <label for="access_token_url" class="control-label">Access token URL</label>
               <div class="controls">
-                <input type="text" name="access_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/access_token" value="http://term.ie/oauth/example/echo_api.php">
+                <input type="text" name="access_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/access_token">
               </div>
             </div>
             <div class="control-group">
@@ -308,9 +308,9 @@
           </form>
           <div class="modal-footer">
             <div style="float:left;margin-top:8px; ">
-            <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember the setting</span>
+            <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
             </div>
-            <input class="btn btn-success btnOkay" type="button" value="Authorize">
+            <input class="btn btn-success btnOkay" type="button" value="Authorize" data-loading-text="Processing">
             <input class="btn btn-info btnClose" type="button" value="Close">
           </div>
         </div>

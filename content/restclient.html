@@ -14,6 +14,41 @@
     <link href="css/jumbotron.css" rel="stylesheet">
     
     <link rel="shortcut icon" href="images/favicon.ico" />
+    <style>
+    .request-method-dropdown {
+      border-radius: 0 3px 3px 0;
+      margin-left: -1px;
+      background-color: #EEEEEE;
+      border: 1px solid #CCCCCC;
+      display: inline-block;
+      font-weight: normal;
+      height: 18px;
+      line-height: 18px;
+      min-width: 16px;
+      padding: 4px 5px;
+      text-align: center;
+      text-shadow: 0 1px 0 #FFFFFF;
+      vertical-align: middle;
+      width: auto;
+      cursor: pointer;
+    }
+    .request-method-dropdown .caret{
+      margin-top: 7px;
+    }
+    #request-method {
+      border-radius: 3px 0 3px 0;
+      border-right: none;
+      width: 94px;
+      margin: 0 auto; 
+    }
+    #request-method-list {
+      left: auto;
+      min-width: 100px;
+      right: 0;
+      text-align: left;
+      width: 128px !important;
+    }
+    </style>
   </head>
 
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
@@ -77,13 +112,11 @@
     <div class="well">
       <form class="form-inline" onsubmit="return false;">
         <label>Method</label>
-        <select id="request-method" style="width:130px;">
-          <option value="GET">GET</option>
-          <option value="POST">POST</option>
-          <option value="PUT">PUT</option>
-          <option value="DELETE">DELETE</option>
-          <option value="SEND">SEND</option>
-        </select>
+        <input id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source=""><span class="request-method-dropdown dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b class="caret"></b></a>
+          <ul id="request-method-list" class="dropdown-menu">
+          </ul>
+        </span>
         <input id="request-url" type="URL" class="span9" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source="">
         <button id="request-button" type="button" class="btn btn-inverse">SEND</button>
       </form>
@@ -245,12 +278,12 @@
         <h3>OAuth</h3>
       </div>
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#get-access-token" data-toggle="tab">Get access token</a></li>
-        <li><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
+        <li class="hide"><a href="#get-access-token" data-toggle="tab">Get access token</a></li>
+        <li class="active"><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
         <li><a href="#oauth-setting" data-toggle="tab">OAuth setting</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="get-access-token">
+        <div class="tab-pane hide" id="get-access-token">
           <form class="form-horizontal" onsubmit="return false;">
             <div class="control-group">
               <label for="consumer_key" class="control-label">Consumer key</label>
@@ -297,36 +330,36 @@
             <input class="btn btn-info btnClose" type="button" value="Close">
           </div>
         </div>
-        <div class="tab-pane" id="signature-request">
+        <div class="tab-pane active" id="signature-request">
           <form class="form-horizontal" onsubmit="return false;">
             <div class="control-group">
-              <label for="input01" class="control-label">Consumer key</label>
+              <label for="consumer_key" class="control-label">Consumer key</label>
               <div class="controls">
-                <input type="text" id="input01" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
+                <input type="text" name="consumer_key" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
               </div>
             </div>
             <div class="control-group">
-              <label for="input01" class="control-label">Consumer secret</label>
+              <label for="consumer_secret" class="control-label">Consumer secret</label>
               <div class="controls">
-                <input type="text" id="input01" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg">
+                <input type="text" name="consumer_secret" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg">
               </div>
             </div>
             <div class="control-group">
-              <label for="input01" class="control-label">Access token</label>
+              <label for="access_token" class="control-label">Access token</label>
               <div class="controls">
-                <input type="text" id="input01" class="input-xxlarge" placeholder="1405721-iICeQLXdqTlEuYx2ipSlpa1KkPhnbxiN9KJporshQ">
+                <input type="text" name="access_token" class="input-xxlarge" placeholder="1405721-iICeQLXdqTlEuYx2ipSlpa1KkPhnbxiN9KJporshQ">
               </div>
             </div>
             <div class="control-group">
-              <label for="input01" class="control-label">Access token secret</label>
+              <label for="access_token_secret" class="control-label">Access token secret</label>
               <div class="controls">
-                <input type="text" id="input01" class="input-xxlarge" placeholder="LgrNoNX4JNT3v03b2j6hPqQf6gHntUX5uI0CTLZs">
+                <input type="text" name="access_token_secret" class="input-xxlarge" placeholder="LgrNoNX4JNT3v03b2j6hPqQf6gHntUX5uI0CTLZs">
               </div>
             </div>
           </form>
           <div class="modal-footer">
             <div style="float:left;margin-top:8px; ">
-            <input type="checkbox" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember the setting</span>
+            <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
             </div>
             <input class="btn btn-info btnClose" type="button" value="Close" style="float:right;">
             <div class="btn-group dropup" style="float:right; margin-right: 4px;">
@@ -334,7 +367,7 @@
               <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 5px 6px;"><span class="caret"></span></button>
               <ul class="dropdown-menu pull-right">
                 <li><a href="#">Insert as header</a></li>
-                <li><a href="#">Insert as query string</a></li>
+                <li class="hide"><a href="#">Insert as query string</a></li>
               </ul>
             </div>
             

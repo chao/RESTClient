@@ -46,6 +46,7 @@ restclient.main = {
     
     this.initModal();
     this.initOAuthWindow();
+    this.initRequestMethod();
     this.updateFavoriteHeadersMenu();
     this.updateFavoriteRequestMenu();
     
@@ -88,6 +89,18 @@ restclient.main = {
     else
       if (scrollTop <= restclient.main.navTop && $('.subnav').hasClass('subnav-fixed'))
         $('.subnav').removeClass('subnav-fixed');
+  },
+  initRequestMethod: function() {
+    $('#request-method').attr('data-source', JSON.stringify(restclient.http.methods));
+    for(var i=0, m; m = restclient.http.methods[i]; i++)
+    {
+      $('#request-method-list').append($('<li></li>').append(
+          $('<a href="#"></a>').text(m)
+        ).bind('click', function(){
+          $('#request-method').val($(this).text())
+        })
+      );
+    }
   },
   initModal: function() {
     $('#modal-basic-authorization').on('show', function(){
@@ -879,6 +892,22 @@ restclient.main = {
     {
       
     }
+    
+    //Load authorize from preferences
+    var sign_consumer_key         = $('#signature-request [name="consumer_key"]'),
+        sign_consumer_secret      = $('#signature-request [name="consumer_secret"]'),
+        sign_access_token         = $('#signature-request [name="access_token"]'),
+        sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
+        sign_remember             = $('#signature-request [name="remember"]'),
+        sign = restclient.getPref('OAuth.sign', '');
+    if(sign != '') {
+      sign = JSON.parse(sign);
+      sign_consumer_key.val(     sign.consumer_key);
+      sign_consumer_secret.val(  sign.consumer_secret);
+      sign_access_token.val(     sign.request_token_url);
+      sign_authorize_url.val(    sign.authorize_url);
+      (sign.remember === true) ? sign_remember.attr('checked', true) : sign_remember.removeAttr('checked');
+    }
   },
   showOAuthWindow: function() {
     $('#window-oauth').show();
@@ -1011,7 +1040,7 @@ restclient.main = {
     
     secrets.oauth_token = oauth_token;
     secrets.oauth_token_secret = oauth_token_secret;
-    
+    parameters['oauth_callback'] = authorize_callback_url.val();
     restclient.oauth.reset();
     signature = restclient.oauth.sign({
       action: 'GET',
@@ -1023,6 +1052,74 @@ restclient.main = {
     restclient.message.appendButton(message,{title: 'Open authorize page for authorize your key', href: signature.signed_url});
     console.log(signature);
     authorize_okay.button('reset');
+  },
+  oauthSign: function(){
+    var sign_consumer_key         = $('#signature-request [name="consumer_key"]'),
+        sign_consumer_secret      = $('#signature-request [name="consumer_secret"]'),
+        sign_access_token         = $('#signature-request [name="access_token"]'),
+        sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
+        sign_remember             = $('#signature-request [name="remember"]'),
+        oauth_signature_method    = $('#oauth_signature_method'),
+        oauth_version             = $('#oauth_version'),
+        oauth_nonce               = $('#oauth_nonce'),
+        oauth_timestamp           = $('#oauth_timestamp'),
+        sign_okay                 = $('#signature-request .btnOkay'),
+        errors = [];
+    
+    if(sign_consumer_key.val() == '') {
+      sign_consumer_key.parents('.control-group').addClass('error');
+      errors.push(sign_consumer_key);
+    }
+    
+    if(sign_consumer_secret.val() == '') {
+      sign_consumer_secret.parents('.control-group').addClass('error');
+      errors.push(sign_consumer_secret);
+    }
+    
+    if(errors.length > 0) {
+      var el = errors.shift();
+      el.focus();
+      //console.error(el);
+      return false;
+    }
+    
+    sign_okay.button('loading');
+    if(sign_remember.attr('checked') == 'checked') {
+      var setting = {
+        consumer_key        : sign_consumer_key.val(),
+        consumer_secret     : sign_consumer_secret.val(),
+        access_token        : sign_access_token.val(),
+        access_token_secret : sign_access_token_secret.val(),
+        remember            : true
+      };
+      restclient.setPref('OAuth.sign', JSON.stringify(setting));
+    }
+    else
+      restclient.setPref('OAuth.sign', '');
+    
+    var secrets = {
+      consumer_key        : sign_consumer_key.val(),
+      consumer_secret     : sign_consumer_secret.val(),
+      access_token        : sign_access_token.val(),
+      access_secret       : sign_access_token_secret.val()
+    };
+    
+    var parameters = {
+      oauth_version: oauth_version.val(),
+      oauth_signature_method: oauth_signature_method.val()
+    };
+    (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
+    (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
+    
+    console.log(secrets);
+    console.log(parameters);
+    var url = $('#request-url').val();
+    var signature = restclient.oauth.sign({
+      action: $('#request-method').val(),
+      path: url,
+      signatures: secrets,
+      parameters: parameters
+    });
   }
 };
 

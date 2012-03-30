@@ -32,6 +32,9 @@ body {
   background-repeat: repeat-x;
   background-position: 0 40px;
 }
+a {
+  text-decoration: none;
+}
 .navbar-fixed-top .brand {
   padding-right: 0;
   padding-left: 0;
@@ -221,4 +224,17 @@ span.header-split{
 span.header-value {
   color: #D14;
   float: left;
+}
+.messages-overlay{
+  background-color:rgba(0, 0, 0, 0.6);
+  z-index: 999999;
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  overflow-y: scroll;
+  padding-top: 60px;
 }

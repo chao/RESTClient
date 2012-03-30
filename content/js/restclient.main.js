@@ -419,12 +419,40 @@ restclient.main = {
   checkMimeType: function(){
     var contentType = this.xhr.getResponseHeader("Content-Type");
     if (contentType.indexOf('image') >= 0) {
-      if(this.mimeType === false && $('#alertOverrideMimeType').length > 0)
-        $('#alertOverrideMimeType').show();
+      if($('#overrideMimeType').attr('checked') !== 'checked' && restclient.getPref('imageWarning', true))
+        restclient.message.show({
+          id: 'alertOverrideMimeType',
+          type: 'warning',
+          title: 'Cannot preview image',
+          message: 'Your response is an image, but we need to override the mime type to preview this image. Would you like to override the mime type to "text/xml; charset=x-user-defined" and re-send this request?',
+          buttons: [
+            {title: 'Yes, please continue', class: 'btn-danger', callback: restclient.main.overrideMimeType},
+            [
+              {title: 'No, thanks', class: 'btn-warning', callback: function(){ $('#alertOverrideMimeType').alert('close'); }},
+              {title: 'No, and please don\'t remind me again', callback: function(){ $('#alertOverrideMimeType').alert('close'); restclient.setPref('imageWarning', false); }}
+            ]
+          ],
+          parent: $('.overrideMimeTypeMessage'),
+          exclude: true
+        });
     }
     else
-      if(this.mimeType !== false && $('#alertUnOverrideMimeType').length > 0)
-        $('#alertUnOverrideMimeType').show();
+      if($('#overrideMimeType').attr('checked') == 'checked' && restclient.getPref('textMimeWarning', true))
+        restclient.message.show({
+          id: 'alertUnOverrideMimeType',
+          type: 'warning',
+          title: 'You\'ve overrided MIME type',
+          message: 'Please notice that you enabled MIME override in this request, it could cause some charset/encoding issues. Would you like to disable this override and try again?',
+          buttons: [
+            {title: 'Yes, please continue', class: 'btn-danger', callback: restclient.main.unOverrideMimeType},
+            [
+              {title: 'No, thanks', class: 'btn-warning', callback: function(){ $('#alertUnOverrideMimeType').alert('close'); }},
+              {title: 'No, and please don\'t remind me again', callback: function(){ $('#alertUnOverrideMimeType').alert('close'); restclient.setPref('textMimeWarning', false); }}
+            ]
+          ],
+          parent: $('.overrideMimeTypeMessage'),
+          exclude: true
+        });
   },
   display: function() {
     var responseData = this.xhr.responseText;
@@ -941,6 +969,20 @@ restclient.main = {
       parameters: parameters
     });
     
+    $('#window-oauth').hide();
+    var message = restclient.message.show({
+      id: 'alert-oauth-authorize',
+      type: 'message',
+      title: 'Start to do OAuth authorize',
+      message: 'Try to getting a request Token from: ',
+      buttons: [
+        {title: 'Close', class: 'btn-danger', callback: function(){ $('#alert-oauth-authorize').alert('close'); }}
+      ],
+      closed: function() { $('#window-oauth').show(); }
+    });
+    
+    restclient.message.appendCode(message,signature.signed_url);
+    
     var oauth_token, oauth_token_secret;
     $.ajax({
       url: signature.signed_url, 
@@ -948,16 +990,37 @@ restclient.main = {
       async: false,
       success: function(data, textStatus, jqXHR) {
         console.log(data);
-        var params = parseParameterString(data);
+        var params = restclient.oauth.parseParameterString(data);
         if(typeof params['oauth_token'] != 'undefined')
           oauth_token = params['oauth_token'];
         if(typeof params['oauth_token_secret'] != 'undefined')
           oauth_token_secret = params['oauth_token_secret'];
+        restclient.message.appendMessage(message,'Get result:');
+        restclient.message.appendCode(message,data);
       },
       error: function() {
         
       }
     });
+    if(!oauth_token || !oauth_token_secret)
+    {
+      restclient.message.appendMessage(message,'Unable to parse oauth_token or oauth_token_secret from request token url response.');
+      authorize_okay.button('reset');
+      return false; 
+    }
+    
+    secrets.oauth_token = oauth_token;
+    secrets.oauth_token_secret = oauth_token_secret;
+    
+    restclient.oauth.reset();
+    signature = restclient.oauth.sign({
+      action: 'GET',
+      path: authorize_authorize_url.val(),
+      signatures: secrets,
+      parameters: parameters
+    });
+    
+    restclient.message.appendButton(message,{title: 'Open authorize page for authorize your key', href: signature.signed_url});
     console.log(signature);
     authorize_okay.button('reset');
   }

@@ -106,25 +106,8 @@
 
 <section id="response" class="container hide">
   <h2>Response</h2>
-  <div id="alertOverrideMimeType" class="hide alert alert-block alert-error fade in">
-    <a class="close" data-dismiss="alert" href="#">×</a>
-    <h4 class="alert-heading">Cannot preview image</h4>
-    <p>Your response is an image, but we need to override the mime type to preview this image. Would you like to override the mime type to "text/xml; charset=x-user-defined"
-      and re-send this request?</p>
-    <p>
-      <a class="btn btn-danger" href="#" onclick="restclient.main.overrideMimeType();return false;">Yes, please continue</a> 
-      <a class="btn" href="#" onclick="$('#alertOverrideMimeType').alert('close');return false;">No, thanks</a>
-    </p>
-  </div>
-  <div id="alertUnOverrideMimeType" class="hide alert alert-block alert-error fade in">
-    <a class="close" data-dismiss="alert" href="#">×</a>
-    <h4 class="alert-heading">You've overrided MIME type</h4>
-    <p>Please notice that you enabled MIME override in this request, it could cause some charset/encoding issues. Would you like to disable this override and try again?</p>
-    <p>
-      <a class="btn btn-danger" href="#" onclick="restclient.main.unOverrideMimeType();return false;">Yes, please continue</a> 
-      <a class="btn" href="#" onclick="$('#alertUnOverrideMimeType').alert('close');return false;">No, thanks</a>
-    </p>
-  </div>
+  <div class="overrideMimeTypeMessage"></div>
+
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
     <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
@@ -404,6 +387,11 @@
     </div><!--end window-wrapper//-->
   </div>
 </div> 
+
+<div class="messages-overlay" style="display: none">
+  <div class="container">
+  </div>
+</div>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/restclient.js"></script>
@@ -411,6 +399,7 @@
 <script type="text/javascript" src="js/restclient.oauth.js"></script>
 <script type="text/javascript" src="js/restclient.headers.js"></script>
 <script type="text/javascript" src="js/restclient.http.js"></script>
+<script type="text/javascript" src="js/restclient.message.js"></script>
 <script type="text/javascript" src="js/prettify.js"></script>
 <script type="text/javascript" src="js/sha1.js"></script>
 </body>

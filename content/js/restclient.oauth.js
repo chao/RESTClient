@@ -32,6 +32,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 restclient.oauth = {
   _nonceRange : "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+  reset: function() {
+    delete this._parameters;
+    delete this._path;
+    delete this._secret;
+  },
   sign: function(arg) {
     //console.log(arg);
     if(arg.action)
@@ -96,10 +101,21 @@ restclient.oauth = {
       this._secrets.consumer_secret = signatures.consumer_secret;
     else
       throw('Missing required consumer_secret in resclient.oauth.setSignatures');
-    //oauth_token_key
-    //oauth_token_secret
-    //access_token_key
-    //access_token_secret
+    
+    if(signatures.access_token)
+      this._secrets.oauth_token = signatures.access_token;
+   
+    if(signatures.access_secret)
+      this._secrets.oauth_secret = signatures.access_secret;
+        
+    if(signatures.oauth_token)
+      this._secrets.oauth_token = signatures.oauth_token;
+    
+    if(signatures.oauth_token_secret)
+      this._secrets.oauth_secret = signatures.oauth_token_secret;
+    
+    if(typeof signatures.oauth_token == 'string' && typeof this._secrets.oauth_secret == 'undefined')
+      throw('Missing required oauth_secret in resclient.oauth.setSignatures');
   },
   setConsumerKey: function() {
     if (!this._secrets['consumer_key']) 
@@ -152,11 +168,12 @@ restclient.oauth = {
     }
     if (encrypt == 'HMAC-SHA1')
     {
-      //console.log(this._parameters);
+      console.log(this._parameters);
+      console.log(secretKey);
       var toSign = restclient.oauth.oauthEscape(this._action)
                         + '&' + restclient.oauth.oauthEscape(this._path)
                         + '&' + restclient.oauth.oauthEscape(str);
-      //console.log(toSign);
+      console.log(toSign);
       //console.log(secretKey);
       return this.b64_hmac_sha1(secretKey, toSign);
     }

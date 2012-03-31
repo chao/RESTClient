@@ -47,6 +47,7 @@ restclient.main = {
     this.initModal();
     this.initOAuthWindow();
     this.initRequestMethod();
+    this.initRequestUrl();
     this.updateFavoriteHeadersMenu();
     this.updateFavoriteRequestMenu();
     
@@ -54,16 +55,13 @@ restclient.main = {
       var request = restclient.main.getRequest();
       restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
     });
-    $('#request-url').bind('keypress', function(evt){
-      if(evt.keyCode == 13) {
-        $('#request-button').click();
-        return false;
-      }
-    }).focus().select();
+    $('#request-url').bind('keyup', restclient.main.requestUrlInputed).focus().select();
+    $('#request-url').bind('change', restclient.main.updateFavoriteUrlIcon);
+    
     if ($('#overrideMimeType').attr('checked') == 'checked')
       $('.overrideMimeType').show();
       
-    $('[name="saved-request-name"]').bind('keypress', function(){
+    $('[name="saved-request-name"]').bind('keyup', function(){
       if($(this).val() == $('#modal-save-request .btnOkay').attr('request-name') ) {
         $('#modal-save-request .btnOkay').attr('overwrite', '1').val('Overwrite'); 
       }
@@ -80,6 +78,91 @@ restclient.main = {
     $('input, textarea').focus(function(){
       $(this).select();
     });
+    
+    $('.favorite-icon').click(restclient.main.favoriteUrl);
+  },
+  initRequestUrl: function() {
+    var urls = restclient.main.getCachedUrls();
+    $('#request-url').attr('data-source', JSON.stringify(urls));
+  },
+  getCachedUrls: function() {
+    if(restclient.main.cachedUrls)
+      return restclient.main.cachedUrls;
+    var urls = restclient.getPref('cachedUrls', '');
+    if(urls == '')
+      return [];
+    else{
+      restclient.main.cachedUrls = JSON.parse(urls);
+      return restclient.main.cachedUrls;
+    }
+  },
+  saveUrlToCache: function(url){
+    var urls = restclient.main.getCachedUrls();
+    if(urls.indexOf(url) !== -1)
+      return false;
+    urls.push(url);
+    restclient.setPref('cachedUrls', JSON.stringify(urls));
+    restclient.main.cachedUrls = null;
+    $('#request-url').data('active', true);
+    $('#request-url').data('typeahead').source = urls;
+    //trigger keyup on the typeahead to make it search
+    $('#request-url').trigger('keyup');
+    //All done, set to false to prepare for the next remote query.
+    $('#request-url').data('active', false);
+    //$('#request-url').typeahead({source: urls}).typeahead('show');
+    return false;
+  },
+  removeUrlFromCache: function(url){
+    var urls = restclient.main.getCachedUrls();
+    var pos = urls.indexOf(url);
+    if(pos === -1)
+      return true;
+    urls = urls.slice(0,pos).concat( urls.slice(pos+1) );
+    restclient.setPref('cachedUrls', JSON.stringify(urls));
+    $('#request-url').data('active', true);
+    $('#request-url').data('typeahead').source = urls;
+    //trigger keyup on the typeahead to make it search
+    $('#request-url').trigger('keyup');
+    //All done, set to false to prepare for the next remote query.
+    $('#request-url').data('active', false);
+    //.typeahead({source: urls}).typeahead('show');
+  },
+  updateFavoriteUrlIcon: function(url) {
+    var url = (typeof url == 'string') ? url : $('#request-url').val();
+    //console.log(url);
+    var urls = restclient.main.getCachedUrls();
+    //console.log(urls.indexOf(url));
+    if(urls.indexOf(url) > -1)
+      $('.favorite-icon').removeClass('icon-star-empty').addClass('icon-star');
+    else
+      $('.favorite-icon').addClass('icon-star-empty').removeClass('icon-star');
+  },
+  favoriteUrl: function(){
+    var url = $('#request-url').val();
+    if(url == '')
+      return false;
+    if($('.favorite-icon').hasClass('icon-star-empty'))
+    {
+      restclient.main.saveUrlToCache(url);
+      $(this).removeClass('icon-star-empty').addClass('icon-star');
+    }
+    else
+    {
+      restclient.main.removeUrlFromCache(url);
+      $(this).addClass('icon-star-empty').removeClass('icon-star');
+    }
+  },
+  requestUrlInputed: function(evt) {
+    if(evt.keyCode == 13) {
+      $('#request-button').click();
+      return false;
+    }
+    else{
+      var url = $(this).val();// + String.fromCharCode(evt.keyCode);
+      //console.log(url);
+      restclient.main.updateFavoriteUrlIcon(url);
+    }
+      
   },
   processScroll: function () {
     var scrollTop = $(window).scrollTop();
@@ -97,7 +180,8 @@ restclient.main = {
       $('#request-method-list').append($('<li></li>').append(
           $('<a href="#"></a>').text(m)
         ).bind('click', function(){
-          $('#request-method').val($(this).text())
+          $('#request-method').val($(this).text());
+          return false;
         })
       );
     }

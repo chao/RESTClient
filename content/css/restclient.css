@@ -238,3 +238,42 @@ span.header-value {
   overflow-y: scroll;
   padding-top: 60px;
 }
+
+.request-method-dropdown, .request-url-favorite {
+  border-radius: 0 3px 3px 0;
+  margin-left: -1px;
+  background-color: #EEEEEE;
+  border: 1px solid #CCCCCC;
+  display: inline-block;
+  font-weight: normal;
+  height: 18px;
+  line-height: 18px;
+  min-width: 16px;
+  padding: 4px 5px;
+  text-align: center;
+  text-shadow: 0 1px 0 #FFFFFF;
+  vertical-align: middle;
+  width: auto;
+  cursor: pointer;
+}
+.request-method-dropdown .caret{
+  margin-top: 7px;
+}
+#request-method {
+  border-radius: 3px 0 3px 0;
+  border-right: none;
+  width: 94px;
+  margin: 0 auto; 
+}
+#request-url {
+  border-radius: 3px 0 3px 0;
+  border-right: none;
+  margin: 0 auto; 
+}
+#request-method-list {
+  left: auto;
+  min-width: 100px;
+  right: 0;
+  text-align: left;
+  width: 128px !important;
+}

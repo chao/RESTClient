@@ -36,6 +36,7 @@ restclient.http = {
       restclient.main.updateProgressBar(100);
       restclient.main.showResponse();
       restclient.http.mimeType = mimeType;
+      console.log(requestMethod);
       var xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
       xhr.onerror = restclient.http.onerror;
       xhr.onload = restclient.http.onload;
@@ -52,7 +53,8 @@ restclient.http = {
       xhr.send(requestBody);
     } catch (e) {
       restclient.main.setResponseHeader([["Error", "Could not connect to server"], 
-        ["Error", e.getMessage()]], false);
+        ["Error", e.message]], false);
+      restclient.main.updateProgressBar(-1);
     }
   },
   onprogress: function(evt) {

@@ -51,10 +51,7 @@ restclient.main = {
     this.updateFavoriteHeadersMenu();
     this.updateFavoriteRequestMenu();
     
-    $('#request-button').bind('click',function(){
-      var request = restclient.main.getRequest();
-      restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
-    });
+    $('#request-button').bind('click', restclient.main.sendRequest);
     $('#request-url').bind('keyup', restclient.main.requestUrlInputed).focus().select();
     $('#request-url').bind('change', restclient.main.updateFavoriteUrlIcon);
     
@@ -314,7 +311,58 @@ restclient.main = {
     }
   },
   editHttpRequestHeader: function() {
-    
+    if(!$(this).data('oauth-authorization')) {
+      $('#modal-custom-header').data('source', $(this));
+      $('#modal-custom-header').modal('show');
+    }
+    else
+    {
+      var id = $(this).attr('id');
+      var signature = $(this).data('oauth-authorization'),
+          headerString = signature.headerString;
+      var title = $('<div></div>')
+                      .text('OAuth')
+                      .append(
+                        $('<a style="float:right;font-size: 14px;" href="#" class="close btnClose"></a>').text('x')
+                      );
+      var buttonAutoRefresh = $('<button class="btn btn-warning btn-small btnAutoRefresh" data-toggle="button"></button>').text('Auto refresh');
+      if($(this).attr('auto-refresh') == 'yes')
+        buttonAutoRefresh.addClass('active');
+      else
+        buttonAutoRefresh.removeClass('active');
+      
+      
+      var buttonRefresh = $('<button class="btn btn-warning btn-small btnRefresh" style="margin-left: 6px"></button>').text('Refresh');
+
+      var container = $('<div></div>')
+                      .append($('<code style="width: 180px"></code>').text(headerString).attr('data-id', id))
+                      .append(
+                        $('<p style="margin-top: 10px;text-align:right"></p>').append(buttonAutoRefresh)
+                        .append(buttonRefresh)
+                      );
+      //$('.popover').remove();
+      //console.log(container.html());
+      
+      $(this).removeAttr('title').attr('data-content', container.html()).popover({
+                                            title: title.html(), 
+                                            content: container.html(), 
+                                            trigger : 'manual', 
+                                            placement: 'bottom'
+                                          }).popover('show');
+      $('.popover-title .btnClose').click( function(){
+        $(this).parents('.popover').removeClass('in');
+      });
+      $('.popover-content .btnAutoRefresh').click(function(){
+        if($(this).hasClass('active'))
+          $('#' + id).attr('auto-refresh', 'no');
+        else
+          $('#' + id).attr('auto-refresh', 'yes');
+      });
+      $('.popover-content .btnRefresh').click(function(){
+        //console.log(popoverContent);
+        restclient.main.updateOAuthSign(id);
+      });
+    }
   },
   addHttpRequestHeader: function(name, value) {
     if(this.uniqueHeaders.indexOf(name.toLowerCase()) >= 0)
@@ -324,14 +372,12 @@ restclient.main = {
    
    if (text.length > restclient.main.headerLabelMaxLength)
      text = text.substr(0, restclient.main.headerLabelMaxLength - 3) + "...";
-    var span = $('<span />').addClass('label').text(text)
+   var id = "header-" + (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+   
+   var span = $('<span />').addClass('label').text(text).attr('id', id)
               .attr("title", name + ": " + value)
               .attr('header-name', name)
               .attr('header-value', value)
-              .bind('click', function(){
-                $('#modal-custom-header').data('source', $(this));
-                $('#modal-custom-header').modal('show');
-              })
               .append($('<a />').addClass('close').text('×').bind('click', restclient.main.removeHttpRequestHeader));
     span.bind('click', restclient.main.editHttpRequestHeader);
     $('#request-headers').append(span);
@@ -339,6 +385,7 @@ restclient.main = {
     if( $('#request-headers span.label').length > 0 ) {
       $('#request-headers').show();
     }
+    return span;
   },
   addCustomHeader: function() {
     var remember = $('#modal-custom-header [name="remember"]'),
@@ -986,12 +1033,18 @@ restclient.main = {
         sign = restclient.getPref('OAuth.sign', '');
     if(sign != '') {
       sign = JSON.parse(sign);
-      sign_consumer_key.val(     sign.consumer_key);
-      sign_consumer_secret.val(  sign.consumer_secret);
-      sign_access_token.val(     sign.request_token_url);
-      sign_authorize_url.val(    sign.authorize_url);
+      if(sign.consumer_key)
+        sign_consumer_key.val(     sign.consumer_key);
+      if(sign.consumer_secret)
+        sign_consumer_secret.val(  sign.consumer_secret);
+      if(sign.access_token)
+        sign_access_token.val(     sign.access_token);
+      if(sign.access_token_secret)
+        sign_access_token_secret.val(    sign.access_token_secret);
       (sign.remember === true) ? sign_remember.attr('checked', true) : sign_remember.removeAttr('checked');
     }
+    
+    $('#signature-request .btnInsertAsHeader').bind('click', restclient.main.oauthSign);
   },
   showOAuthWindow: function() {
     $('#window-oauth').show();
@@ -1054,7 +1107,7 @@ restclient.main = {
         callback_url      : authorize_callback_url.val(),
         remember          : true
       };
-      console.log(setting);
+      //console.log(setting);
       restclient.setPref('OAuth.authorize', JSON.stringify(setting));
     }
     else
@@ -1072,8 +1125,8 @@ restclient.main = {
     (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
     (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
     
-    console.log(secrets);
-    console.log(parameters);
+    //console.log(secrets);
+    //console.log(parameters);
     
     var signature = restclient.oauth.sign({
       action: 'GET',
@@ -1102,7 +1155,7 @@ restclient.main = {
       action: 'GET',
       async: false,
       success: function(data, textStatus, jqXHR) {
-        console.log(data);
+        //console.log(data);
         var params = restclient.oauth.parseParameterString(data);
         if(typeof params['oauth_token'] != 'undefined')
           oauth_token = params['oauth_token'];
@@ -1134,7 +1187,7 @@ restclient.main = {
     });
     
     restclient.message.appendButton(message,{title: 'Open authorize page for authorize your key', href: signature.signed_url});
-    console.log(signature);
+    //console.log(signature);
     authorize_okay.button('reset');
   },
   oauthSign: function(){
@@ -1195,8 +1248,9 @@ restclient.main = {
     (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
     (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
     
-    console.log(secrets);
-    console.log(parameters);
+    //console.log(secrets);
+    //console.log(parameters);
+    restclient.oauth.reset();
     var url = $('#request-url').val();
     var signature = restclient.oauth.sign({
       action: $('#request-method').val(),
@@ -1204,6 +1258,80 @@ restclient.main = {
       signatures: secrets,
       parameters: parameters
     });
+    var headerSpan = restclient.main.addHttpRequestHeader('Authorization', signature.headerString);
+    headerSpan.data('oauth-authorization', signature);
+    headerSpan.data('oauth-parameters', parameters);
+    headerSpan.data('oauth-secrets', secrets);
+    
+    $('#window-oauth').css('display', 'none');
+    
+    if(restclient.getPref('sign-warning', '') == '')
+      var message = restclient.message.show({
+        id: 'alert-oauth-sign',
+        type: 'warning',
+        class: 'span5 offset3',
+        title: 'Notice',
+        message: 'Do you want RESTClient to refresh OAuth signature before sending your request?',
+        buttons: [
+          [
+            {title: 'Yes, please', class: 'btn-danger', callback: function(){ headerSpan.attr('auto-refresh', "yes"); $('#alert-oauth-sign').alert('close'); }},
+            {title: 'Yes, and please remember my descision', callback: function(){ headerSpan.attr('auto-refresh', "yes"); restclient.setPref('OAuth.refresh', "yes");  restclient.setPref('sign-warning', 'false'); $('#alert-oauth-sign').alert('close');}}
+          ],
+          [
+            {title: 'No, thanks', class: 'btn-warning', callback: function(){ headerSpan.attr('auto-refresh', "no"); $('#alert-oauth-sign').alert('close'); }}, 
+            {title: 'No, and please don\'t remind me again', callback: function(){ headerSpan.attr('auto-refresh', "no"); restclient.setPref('OAuth.refresh', "no"); restclient.setPref('sign-warning', 'false'); $('#alert-oauth-sign').alert('close'); }}
+          ]
+        ]
+      });
+    else
+    {
+      var autoRefresh = restclient.getPref('OAuth.refresh', "yes");
+      headerSpan.attr('auto-refresh', autoRefresh);
+    }
+    
+    
+  },
+  updateOAuthSign: function(headerSpanId){
+    
+    var headerSpan  = $('#' + headerSpanId),
+    secrets         = headerSpan.data('oauth-secrets'),
+    parameters      = headerSpan.data('oauth-parameters');
+    
+    var requestMethod = $('#request-method').val(),
+        requestUrl    = $('#request-url').val();
+    
+    restclient.oauth.reset();
+    var signature     = restclient.oauth.sign({
+                action: requestMethod,
+                path: requestUrl,
+                signatures: secrets,
+                parameters: parameters
+              });
+    //console.log(headerSpan);
+    headerSpan.data('oauth-authorization', signature);
+    //console.log(signature);
+    var text = 'Authorization: ' + signature.headerString;
+
+     if (text.length > restclient.main.headerLabelMaxLength)
+       text = text.substr(0, restclient.main.headerLabelMaxLength - 3) + "...";
+    headerSpan.text(text)
+                .attr('header-name', 'Authorization')
+                .attr('header-value', signature.headerString)
+                .append($('<a />').addClass('close').text('×').bind('click', restclient.main.removeHttpRequestHeader));
+    console.log(signature.headerString);
+    console.log('[data-id="' + headerSpanId + '"]');
+    $('[data-id="' + headerSpanId + '"]').text(signature.headerString);
+  },
+  sendRequest: function(){
+    $('.popover').removeClass('in');
+    if( $('[auto-refresh="yes"]').length > 0)
+    {
+      var id = $('[auto-refresh="yes"]').attr('id');
+      restclient.main.updateOAuthSign(id);
+      //console.log('resigned');
+    }
+    var request = restclient.main.getRequest();
+    restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   }
 };
 

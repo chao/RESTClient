@@ -34,6 +34,9 @@ restclient.message = {
     var container = $('<div class="alert alert-block fade in"></div>'),
         id = (arg.id) ? arg.id : (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     container.attr('id', id);
+    if(arg.class)
+      container.addClass(arg.class);
+      
     if(arg.type)
       container.addClass('alert-' + arg.type);
     container.append($('<a class="close" data-dismiss="alert" href="#"></a>').text('x'));

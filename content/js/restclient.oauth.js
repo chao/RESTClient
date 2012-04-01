@@ -57,7 +57,8 @@ restclient.oauth = {
     return {
         parameters: this._parameters,
         signature: this.oauthEscape(oauth_signature),
-        signed_url: this._path + '?' + this.normalizeToString()
+        signed_url: this._path + '?' + this.normalizeToString(),
+        headerString: this.getHeaderString()
     };
   },
   setAction: function(action) {
@@ -168,12 +169,12 @@ restclient.oauth = {
     }
     if (encrypt == 'HMAC-SHA1')
     {
-      console.log(this._parameters);
-      console.log(secretKey);
+      //console.log(this._parameters);
+      //console.log(secretKey);
       var toSign = restclient.oauth.oauthEscape(this._action)
                         + '&' + restclient.oauth.oauthEscape(this._path)
                         + '&' + restclient.oauth.oauthEscape(str);
-      console.log(toSign);
+      //console.log(toSign);
       //console.log(secretKey);
       return this.b64_hmac_sha1(secretKey, toSign);
     }
@@ -295,5 +296,28 @@ restclient.oauth = {
         }
     }
     return result;
+  },
+  getHeaderString: function() {
+    var j,pName,pLength,result = 'OAuth ';
+    for (pName in this._parameters)
+    {
+      if (typeof pName.match(/^oauth/) === 'undefined') {
+        continue;
+      }
+      
+      if ((this._parameters[pName]) instanceof Array)
+      {
+        pLength = this._parameters[pName].length;
+        for (j=0;j<pLength;j++)
+        {
+          result += pName +'="'+this.oauthEscape(this._parameters[pName][j])+'", ';
+        }
+      }
+      else
+      {
+        result += pName + '="'+this.oauthEscape(this._parameters[pName])+'", ';
+      }
+    }
+    return result.replace(/,\s+$/, '');
   }
 }

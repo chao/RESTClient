@@ -134,8 +134,12 @@
   <br />
   <br />
   <br />
-  <footer class="footer"><p class="pull-right"><a href="#">Back to top</a></p></footer>
 </section>
+
+<footer class="footer container">
+  <p style="float:left"><a href="http://www.restclient.net" target="_blank">Home</a> | <a href="https://github.com/chao/RESTClient" target="_blank">Github</a> | <a href="https://github.com/chao/RESTClient/issues" target="_blank">Issues</a></p>
+  <p class="pull-right"><a href="#">Back to top</a></p>
+</footer>
 
 <div class="modal fade hide" id="modal-basic-authorization">
   <div class="modal-header">
@@ -330,10 +334,10 @@
             </div>
             <input class="btn btn-info btnClose" type="button" value="Close" style="float:right;">
             <div class="btn-group dropup" style="float:right; margin-right: 4px;">
-              <button class="btn btn-success" style="padding: 5px 15px;">Insert</button>
+              <button class="btn btn-success btnInsertAsHeader" style="padding: 5px 15px;">Insert</button>
               <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 5px 6px;"><span class="caret"></span></button>
               <ul class="dropdown-menu pull-right">
-                <li><a href="#">Insert as header</a></li>
+                <li><a href="#" class="btnInsertAsHeader">Insert as header</a></li>
                 <li class="hide"><a href="#">Insert as query string</a></li>
               </ul>
             </div>

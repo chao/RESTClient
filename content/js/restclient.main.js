@@ -172,13 +172,13 @@ restclient.main = {
   },
   initRequestMethod: function() {
     $('#request-method').attr('data-source', JSON.stringify(restclient.http.methods));
+    
     for(var i=0, m; m = restclient.http.methods[i]; i++)
     {
       $('#request-method-list').append($('<li></li>').append(
-          $('<a href="#"></a>').text(m)
+          $('<a></a>').text(m)
         ).bind('click', function(){
           $('#request-method').val($(this).text());
-          return false;
         })
       );
     }
@@ -312,8 +312,20 @@ restclient.main = {
   },
   editHttpRequestHeader: function() {
     if(!$(this).data('oauth-authorization')) {
-      $('#modal-custom-header').data('source', $(this));
-      $('#modal-custom-header').modal('show');
+      if($(this).attr('header-name') == 'Authorization')
+      {
+        var hashed = $(this).attr('header-value'),
+            basic = atob(hashed.substring(6)),
+            user = basic.split(':');
+        $('#modal-basic-authorization [name="username"]').val(user[0]);
+        $('#modal-basic-authorization [name="password"]').val(user[1]);
+        $('#modal-basic-authorization').modal('show');
+      }
+      else
+      {
+        $('#modal-custom-header').data('source', $(this));
+        $('#modal-custom-header').modal('show');
+      }
     }
     else
     {

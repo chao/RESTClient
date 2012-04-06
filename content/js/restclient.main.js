@@ -478,6 +478,19 @@ restclient.main = {
     request.headers = headers;
     return request;
   },
+  wrapText: function(str, len) {
+    var result = "";
+    if(str.length > len)
+    {
+      for (var j = 0, np = ''; j < str.length; j += len, np = '\n') {
+        np += str.substr(j, len);
+        result += np;
+      }
+      return result;
+    }
+    else
+      return str;
+  },
   setResponseHeader: function(headers, line) {
     //console.log(headers);
     if(!headers) {
@@ -485,41 +498,38 @@ restclient.main = {
       return false;
     }
     if(typeof line === 'boolean' && line == false) {
-      var text = "";
-      for(var i=0, header; header = headers[i]; i++) {
-        text += header.join(" ") + "\n";
-      }
+      var text = headers.join("\n");
       $('#response-headers pre').text(text);
     }
     else
     {
       var ol = $('<ol class="linenums"></ol>');
-      for(var i=0, header; header = headers[i]; i++) {
-        var val = header[1];
-        var result = "";
-        if(val.length > 80)
-        {
-          for (var j = 0, np = ''; j < val.length; j += 80, np = '\n') {
-            np += val.substr(j, 80);
-            result += np;
-          }
+      for(var name in headers) {
+        if(!headers.hasOwnProperty(name))
+          continue;
+        var val     = headers[name],
+            valHtml = null;
+        
+        if(typeof val == 'string'){
+          val = restclient.main.wrapText(val, 80);
+          valHtml = $('<span class="header-value"></span>').text(val)
         }
         else
-          result = val;
-        
-        var headerName = $('<span class="header-name"></span>').text(header[0]);
+        {
+          valHtml = $('<ul class="multivalues"></ul>');
+          for(var k=0, value; value = val[k]; k++) {
+            valHtml.append($('<li></li>').text(value));
+          }
+          valHtml = $('<span class="header-value"></span>').append(valHtml);
+        }
+        var headerName = $('<span class="header-name"></span>').text(name);
         var li = $('<li></li>');
-        li.append($('<span class="line"></span>').append(
-          headerName
-        )
-        .append(
-          $('<span class="header-split"></span>').text(': ')
-        )
-        .append(
-          $('<span class="header-value"></span>').text(result)
-        )
+        li.append(
+          $('<span class="line"></span>').append(headerName)
+          .append($('<span class="header-split"></span>').text(': '))
+          .append(valHtml)
         );
-        
+      
         ol.append(li);
       }
       $('#response-headers pre').empty().append(ol);

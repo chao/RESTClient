@@ -277,3 +277,11 @@ span.header-value {
   text-align: left;
   width: 128px !important;
 }
+.multivalues {
+  list-style: none;
+  margin-left: 0px;
+}
+.multivalues li{
+  padding-left: 0px !important;
+  color: #DD1144 !important;
+}

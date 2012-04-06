@@ -34,14 +34,14 @@ restclient.main = {
   uniqueHeaders: ['authorization'],
   navTop: null,
   hotkey: {
-    send: 'alt+meta+s',
-    url: 'alt+meta+u',
-    method: 'alt+meta+m',
-    reqBody: 'alt+meta+b',
-    rep1: 'alt+meta+1',
-    rep2: 'alt+meta+2',
-    rep3: 'alt+meta+3',
-    rep4: 'alt+meta+4'
+    send:     's',
+    url:      'u',
+    method:   'm',
+    reqBody:  'b',
+    rep1:     '1',
+    rep2:     '2',
+    rep3:     '3',
+    rep4:     '4'
   },
   init: function() {
     this.initSkin();

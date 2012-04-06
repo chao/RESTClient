@@ -27,8 +27,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
  
 #restclient-navbar-button {
-  list-style-image: url("chrome://restclient/content/images/menu.png") !important;
+  list-style-image: url("chrome://restclient/content/images/icon16.png") !important;
 }
 #restclient-tools-menu, #restclient-app-menu {
-  list-style-image: url("chrome://restclient/content/images/menu.png") !important;
+  list-style-image: url("chrome://restclient/content/images/icon16.png") !important;
 }

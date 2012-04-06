@@ -467,6 +467,19 @@ restclient.main = {
     var remember = $('#modal-custom-header [name="remember"]'),
         inputName = $('#modal-custom-header [name="name"]'),
         inputValue = $('#modal-custom-header [name="value"]');
+    if(inputName.val() == '') {
+      inputName.next().text('Please input the http request header name').show();
+      inputName.focus();
+      return false;
+    }
+    if(inputValue.val() == '') {
+      inputValue.next().text('Please input the http request header value').show();
+      inputValue.focus();
+      return false;
+    }
+    inputName.next().hide();
+    inputValue.next().hide();
+    
     if(remember.attr('checked') == 'checked') {
       var favoriteHeaders = restclient.getPref('favoriteHeaders', '');
       if(favoriteHeaders == '')

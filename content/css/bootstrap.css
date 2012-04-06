@@ -1,17 +1,3 @@
-/*@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');*/
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url('OpenSans-Bold.woff') format('woff');
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url('OpenSans.woff') format('woff');
-}
-
 /*!
  * Bootstrap v2.0.2
  *

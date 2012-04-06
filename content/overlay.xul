@@ -20,7 +20,7 @@
      <toolbarbutton id="restclient-navbar-button" 
                     class="toolbarbutton-1 chromeclass-toolbar-additional"
                     label="RESTClient"
-                    image="chrome://restclient/content/images/menu.png"
+                    image="chrome://restclient/content/images/icon16.png"
                     tooltiptext="RESTClient, a debugger for RESTful web services."
                     oncommand="restclient.overlay.open()">
      </toolbarbutton>

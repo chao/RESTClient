@@ -7,11 +7,10 @@
     <meta name="description" content="RESTClient, a debugger for RESTful web services.">
     <meta name="author" content="Chao ZHOU (chao@zhou.fr)">
 
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.cerulean.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/restclient.css" rel="stylesheet">
     <link href="css/prettify.css" rel="stylesheet">
-    <link href="css/jumbotron.css" rel="stylesheet">
     
     <link rel="shortcut icon" href="images/favicon.ico" />
   </head>
@@ -63,6 +62,17 @@
               <li class="divider"></li>
               <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage Favorite Requests</a></li>
               <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Save Current Request</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Skins <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#" css="bootstrap.cerulean.css">Cerulean</a></li>
+              <li><a href="#" css="bootstrap.jumbotron.css">Jumbotron</a></li>
+              <li><a href="#" css="bootstrap.simplex.css">Simplex</a></li>
+              <li><a href="#" css="bootstrap.united.css">United</a></li>
+              <li class="divider"></li>
+              <li><a href="http://bootswatch.com/" target="_blank">Skin from bootswatch</a></li>
             </ul>
           </li>
         </ul>

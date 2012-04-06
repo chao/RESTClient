@@ -44,6 +44,7 @@ restclient.main = {
     rep4: 'alt+meta+4'
   },
   init: function() {
+    this.initSkin();
     restclient.init();
     
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
@@ -61,6 +62,7 @@ restclient.main = {
     this.initRequestUrl();
     this.updateFavoriteHeadersMenu();
     this.updateFavoriteRequestMenu();
+    
     
     $('#request-button').bind('click', restclient.main.sendRequest);
     $('#request-url').bind('keyup', restclient.main.requestUrlInputed).focus().select();
@@ -88,6 +90,32 @@ restclient.main = {
     });
     
     $('.favorite-icon').click(restclient.main.favoriteUrl);
+  },
+  initSkin: function(){
+    $('a[css]').click(function(){
+      $("link").remove();
+      $("<link/>", {
+         rel: "stylesheet",
+         type: "text/css",
+         href: "css/" + $(this).attr('css')
+      }).appendTo("head");
+      $("<link/>", {
+         rel: "stylesheet",
+         type: "text/css",
+         href: "css/bootstrap-responsive.css"
+      }).appendTo("head");
+      $("<link/>", {
+         rel: "stylesheet",
+         type: "text/css",
+         href: "css/restclient.css"
+      }).appendTo("head");
+      $("<link/>", {
+         rel: "stylesheet",
+         type: "text/css",
+         href: "css/prettify.css"
+      }).appendTo("head");
+      return false;
+    });
   },
   initHotKeys: function() {
     $('#request-button').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.send);

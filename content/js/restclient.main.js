@@ -376,7 +376,7 @@ restclient.main = {
     }
   },
   editHttpRequestHeader: function() {
-    if(!$(this).data('oauth-authorization')) {
+    if(!$(this).attr('oauth-secrets')) {
       if($(this).attr('header-name') == 'Authorization')
       {
         var hashed = $(this).attr('header-value'),
@@ -394,10 +394,9 @@ restclient.main = {
     }
     else
     {
-      var id = $(this).attr('id');
-      var signature = $(this).data('oauth-authorization'),
-          headerString = signature.headerString;
-      var title = $('<div></div>')
+      var id = $(this).attr('id'),
+          headerString = $(this).attr('header-value'),
+          title = $('<div></div>')
                       .text('OAuth')
                       .append(
                         $('<a style="float:right;font-size: 14px;" href="#" class="close btnClose"></a>').text('x')
@@ -412,7 +411,7 @@ restclient.main = {
       var buttonRefresh = $('<button class="btn btn-warning btn-small btnRefresh" style="margin-left: 6px"></button>').text('Refresh');
 
       var container = $('<div></div>')
-                      .append($('<code style="width: 180px"></code>').text(headerString).attr('data-id', id))
+                      .append($('<textarea style="width: 445px; height: 100px;"></textarea>').text(headerString).attr('data-id', id))
                       .append(
                         $('<p style="margin-top: 10px;text-align:right"></p>').append(buttonAutoRefresh)
                         .append(buttonRefresh)
@@ -539,7 +538,14 @@ restclient.main = {
     var headers = [];
     $('#request-headers .label').each(function(){
       headers.push([$(this).attr('header-name'), $(this).attr('header-value')]);
-    });//Fix me, save oauth data
+      if($(this).attr('oauth-secrets'))
+      {
+        request.oauth = {};
+        request.oauth.oauth_secrets = $(this).attr('oauth-secrets');
+        request.oauth.oauth_parameters = $(this).attr('oauth-parameters');
+        request.oauth.auto_refresh = $(this).attr('auto-refresh');
+      }
+    });
     request.headers = headers;
     return request;
   },
@@ -994,9 +1000,16 @@ restclient.main = {
         restclient.main.removeHttpRequestHeaders();
         //console.log(request.headers);
         for(var i = 0, header; header = request.headers[i]; i++) {
-          restclient.main.addHttpRequestHeader(header[0], header[1]);
+          var headerSpan = restclient.main.addHttpRequestHeader(header[0], header[1]);
+          if(header[0].toLowerCase() == 'authorization' && request.oauth) {
+            headerSpan.attr('oauth-secrets', request.oauth.oauth_secrets);
+            headerSpan.attr('oauth-parameters', request.oauth.oauth_parameters);
+            headerSpan.attr('auto-refresh', request.oauth.auto_refresh);
+          }
         }
       }
+      
+      
       return true;
     }
     return false;
@@ -1353,7 +1366,7 @@ restclient.main = {
     (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
     
     //console.log(secrets);
-    //console.log(parameters);
+    console.log(parameters);
     restclient.oauth.reset();
     var url = $('#request-url').val();
     var method = $('#request-method').val().toLowerCase();
@@ -1373,9 +1386,9 @@ restclient.main = {
       parameters: param, 
     });
     var headerSpan = restclient.main.addHttpRequestHeader('Authorization', signature.headerString);
-    headerSpan.data('oauth-authorization', signature);
-    headerSpan.data('oauth-parameters', parameters);
-    headerSpan.data('oauth-secrets', secrets);
+    //headerSpan.data('oauth-authorization', signature);
+    headerSpan.attr('oauth-parameters', JSON.stringify(parameters));
+    headerSpan.attr('oauth-secrets', JSON.stringify(secrets));
     
     $('#window-oauth').css('display', 'none');
     
@@ -1408,8 +1421,8 @@ restclient.main = {
   updateOAuthSign: function(headerSpanId){
     
     var headerSpan  = $('#' + headerSpanId),
-    secrets         = headerSpan.data('oauth-secrets'),
-    parameters      = headerSpan.data('oauth-parameters');
+    secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
+    parameters      = JSON.parse(headerSpan.attr('oauth-parameters'));
     
     var requestMethod = $('#request-method').val(),
         requestUrl    = $('#request-url').val(),
@@ -1424,6 +1437,9 @@ restclient.main = {
         param = $.extend(parameters, p);
       }
     }
+    console.log(secrets);
+    console.log(param);
+    
     var signature = restclient.oauth.sign({
                               action: requestMethod,
                               path: requestUrl,
@@ -1431,19 +1447,21 @@ restclient.main = {
                               parameters: param
                             });
     //console.log(headerSpan);
-    headerSpan.data('oauth-authorization', signature);
-    //console.log(signature);
+    //headerSpan.data('oauth-authorization', signature);
+    console.log(signature);
     var text = 'Authorization: ' + signature.headerString;
 
-     if (text.length > restclient.main.headerLabelMaxLength)
-       text = text.substr(0, restclient.main.headerLabelMaxLength - 3) + "...";
+    if (text.length > restclient.main.headerLabelMaxLength)
+      text = text.substr(0, restclient.main.headerLabelMaxLength - 3) + "...";
+    console.log(text);
     headerSpan.text(text)
                 .attr('header-name', 'Authorization')
                 .attr('header-value', signature.headerString)
                 .append($('<a />').addClass('close').text('×').bind('click', restclient.main.removeHttpRequestHeader));
     //console.log(signature.headerString);
-    //console.log('[data-id="' + headerSpanId + '"]');
-    $('[data-id="' + headerSpanId + '"]').text(signature.headerString);
+    console.log('[data-id="' + headerSpanId + '"]');
+    console.log(signature.headerString);
+    $('[data-id="' + headerSpanId + '"]').val(signature.headerString);
   },
   sendRequest: function(){
     $('.popover').removeClass('in').remove();

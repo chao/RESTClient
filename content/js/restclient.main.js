@@ -427,7 +427,7 @@ restclient.main = {
                                             placement: 'bottom'
                                           }).popover('show');
       $('.popover-title .btnClose').click( function(){
-        $(this).parents('.popover').removeClass('in');
+        $(this).parents('.popover').removeClass('in').remove();
       });
       $('.popover-content .btnAutoRefresh').click(function(){
         if($(this).hasClass('active'))
@@ -539,7 +539,7 @@ restclient.main = {
     var headers = [];
     $('#request-headers .label').each(function(){
       headers.push([$(this).attr('header-name'), $(this).attr('header-value')]);
-    });
+    });//Fix me, save oauth data
     request.headers = headers;
     return request;
   },
@@ -1055,28 +1055,45 @@ restclient.main = {
       $('#window-oauth').hide();
     });
     
+    $('#auto_oauth_timestamp').attr('checked', true);
+    $('#oauth_timestamp').val('');
+    $('#oauth_timestamp').parent().next().hide();
+    $('#auto_oauth_nonce').attr('checked', true);
+    $('#oauth_nonce').val('');
+    
+    
     //Load setting from preferences
     var setting = restclient.getPref('OAuth.setting', '');
     if(setting != '') {
       setting = JSON.parse(setting);
-      if(setting.auto_oauth_timestamp) 
+      
+      if(setting.auto_oauth_timestamp) {
         $('#auto_oauth_timestamp').attr('checked', true);
+        oauth_timestamp.val('').addClass('disabled').attr('disabled',true);
+      }
       else
+      {
         $('#auto_oauth_timestamp').removeAttr('checked');
-      
-      if(setting.auto_oauth_nonce) 
+        console.log(setting.oauth_timestamp);
+        oauth_timestamp.removeClass('disabled').removeAttr('disabled',true).val(setting.oauth_timestamp);
+        console.log(oauth_timestamp.val());
+        $('#oauth_timestamp').parent().next().show().text(new Date(setting.oauth_timestamp*1000));
+      }
+        
+      if(setting.auto_oauth_nonce) {
         $('#auto_oauth_nonce').attr('checked', true);
+        oauth_nonce.val('').addClass('disabled').attr('disabled',true);
+      }
       else
+      {
         $('#auto_oauth_nonce').removeAttr('checked');
-      
-      oauth_timestamp.val(setting.oauth_timestamp);
-      oauth_nonce.val(setting.oauth_nonce);
+        console.log(setting.oauth_nonce);
+        oauth_nonce.removeClass('disabled').removeAttr('disabled',true).val(setting.oauth_nonce);
+        console.log(oauth_nonce.val());
+      }
       
       $('#oauth_signature_method option[value="' + setting.oauth_signature_method + '"]').attr('selected', true);
       $('#oauth_version option[value="' + setting.oauth_version + '"]').attr('selected', true);
-      
-      autoTimeStamp();
-      autoNonce();
     }
     else
     {
@@ -1085,12 +1102,6 @@ restclient.main = {
       autoTimeStamp();
       autoNonce();
     }
-    
-    $('#oauth_timestamp').val('');
-    $('#oauth_timestamp').parent().next().hide();
-    $('#auto_oauth_nonce').attr('checked', true);
-    $('#oauth_nonce').val('');
-    $('#oauth_nonce').parent().next().hide();
     
     //Load authorize from preferences
     var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
@@ -1345,11 +1356,21 @@ restclient.main = {
     //console.log(parameters);
     restclient.oauth.reset();
     var url = $('#request-url').val();
+    var method = $('#request-method').val().toLowerCase();
+    var param = parameters;
+    if(["put", "post"].indexOf(method) > -1) {
+      var requestBody = $('#request-body').val();
+      if(requestBody != '' && requestBody.indexOf('=') > -1){
+        var p = restclient.oauth.parseParameterString(requestBody);
+        param = $.extend(parameters, p);
+      }
+    }
+      
     var signature = restclient.oauth.sign({
       action: $('#request-method').val(),
       path: url,
       signatures: secrets,
-      parameters: parameters
+      parameters: param, 
     });
     var headerSpan = restclient.main.addHttpRequestHeader('Authorization', signature.headerString);
     headerSpan.data('oauth-authorization', signature);
@@ -1391,15 +1412,24 @@ restclient.main = {
     parameters      = headerSpan.data('oauth-parameters');
     
     var requestMethod = $('#request-method').val(),
-        requestUrl    = $('#request-url').val();
+        requestUrl    = $('#request-url').val(),
+        requestBody   = $('#request-body').val();
     
     restclient.oauth.reset();
-    var signature     = restclient.oauth.sign({
-                action: requestMethod,
-                path: requestUrl,
-                signatures: secrets,
-                parameters: parameters
-              });
+    var param = parameters;
+    if(["put", "post"].indexOf(requestMethod) > -1) {
+      var requestBody = $('#request-body').val();
+      if(requestBody != '' && requestBody.indexOf('=') > -1){
+        var p = restclient.oauth.parseParameterString(requestBody);
+        param = $.extend(parameters, p);
+      }
+    }
+    var signature = restclient.oauth.sign({
+                              action: requestMethod,
+                              path: requestUrl,
+                              signatures: secrets,
+                              parameters: param
+                            });
     //console.log(headerSpan);
     headerSpan.data('oauth-authorization', signature);
     //console.log(signature);
@@ -1416,7 +1446,7 @@ restclient.main = {
     $('[data-id="' + headerSpanId + '"]').text(signature.headerString);
   },
   sendRequest: function(){
-    $('.popover').removeClass('in');
+    $('.popover').removeClass('in').remove();
     if( $('[auto-refresh="yes"]').length > 0)
     {
       var id = $('[auto-refresh="yes"]').attr('id');
@@ -1424,6 +1454,7 @@ restclient.main = {
       //console.log('resigned');
     }
     var request = restclient.main.getRequest();
+    console.log(request);
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   }
 };

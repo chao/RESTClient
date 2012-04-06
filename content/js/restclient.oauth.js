@@ -301,7 +301,7 @@ restclient.oauth = {
     var j,pName,pLength,result = 'OAuth ';
     for (pName in this._parameters)
     {
-      if (typeof pName.match(/^oauth/) === 'undefined') {
+      if (!pName.match(/^oauth/)) {
         continue;
       }
       

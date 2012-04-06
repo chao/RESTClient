@@ -18,10 +18,9 @@
     
   <toolbarpalette id="BrowserToolbarPalette">
      <toolbarbutton id="restclient-navbar-button" 
-                    insertafter="javascriptConsole,devToolsSeparator"    
                     class="toolbarbutton-1 chromeclass-toolbar-additional"
                     label="RESTClient"
-                    image="chrome://restclient/content/images/icon16_grey.png"
+                    image="chrome://restclient/content/images/menu.png"
                     tooltiptext="RESTClient, a debugger for RESTful web services."
                     oncommand="restclient.overlay.open()">
      </toolbarbutton>
@@ -35,7 +34,6 @@
               class="menuitem-iconic"
               image="chrome://restclient/content/images/icon16.png"
               command="openRESTClient"
-              insertafter="appmenu_webConsole"
               hidden="false" />
   </menupopup>
   
@@ -47,7 +45,6 @@
               class="menuitem-iconic"
               image="chrome://restclient/content/images/icon16.png"
               command="openRESTClient"
-              insertafter="appmenu_webConsole"
               hidden="false" />
 	</menupopup>
   	
@@ -56,7 +53,6 @@
               label="RESTClient"
               key="key_open_restclient"
               command="openRESTClient"
-              insertbefore="sanitizeSeparator,prefSep"
               accesskey="R"
               class="menuitem-iconic"
               image="chrome://restclient/content/images/icon16.png"/>

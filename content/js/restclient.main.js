@@ -33,6 +33,16 @@ restclient.main = {
   headerMenuMaxLength: 25,
   uniqueHeaders: ['authorization'],
   navTop: null,
+  hotkey: {
+    send: 'alt+meta+s',
+    url: 'alt+meta+u',
+    method: 'alt+meta+m',
+    reqBody: 'alt+meta+b',
+    rep1: 'alt+meta+1',
+    rep2: 'alt+meta+2',
+    rep3: 'alt+meta+3',
+    rep4: 'alt+meta+4'
+  },
   init: function() {
     restclient.init();
     
@@ -44,6 +54,7 @@ restclient.main = {
       return false;
     });
     
+    this.initHotKeys();
     this.initModal();
     this.initOAuthWindow();
     this.initRequestMethod();
@@ -77,6 +88,60 @@ restclient.main = {
     });
     
     $('.favorite-icon').click(restclient.main.favoriteUrl);
+  },
+  initHotKeys: function() {
+    $('#request-button').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.send);
+    $(document).bind('keydown', restclient.main.hotkey.send, function(){
+      $('#request-button').click();
+      return false;
+    });
+    
+    $('#request-url').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.url);
+    $(document).bind('keydown', restclient.main.hotkey.url, function(){
+      $('#request-url').focus().select();
+      return false;
+    });
+    
+    $('.request-method-dropdown a.dropdown-toggle').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.method);
+    $(document).bind('keydown', restclient.main.hotkey.method, function(){
+      $('.request-method-dropdown a.dropdown-toggle').click();
+      return false;
+    });
+    
+    $('#request-body').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.reqBody);
+    $(document).bind('keydown', restclient.main.hotkey.reqBody, function(){
+      $('#request-body').focus().select();
+      return false;
+    });
+    
+    $('.nav-tabs li a').eq(0).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep1);
+    $(document).bind('keydown', restclient.main.hotkey.rep1, function(){
+      $('.nav-tabs li a').eq(0).click();
+      return false;
+    });
+    
+    $('.nav-tabs li a').eq(1).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep2);
+    $(document).bind('keydown', restclient.main.hotkey.rep2, function(){
+      $('.nav-tabs li a').eq(1).click();
+      return false;
+    });
+    
+    $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
+    $(document).bind('keydown', restclient.main.hotkey.rep3, function(){
+      if($('.nav-tabs li a').eq(2).is(":visible"))
+        $('.nav-tabs li a').eq(2).click();
+      else
+        if($('.nav-tabs li a').eq(3).is(":visible"))
+          $('.nav-tabs li a').eq(3).click();
+      return false;
+    });
+    
+    $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep4);
+    $(document).bind('keydown', restclient.main.hotkey.rep4, function(){
+      if($('.nav-tabs li a').eq(3).is(":visible"))
+        $('.nav-tabs li a').eq(3).click();
+      return false;
+    });
   },
   initRequestUrl: function() {
     var urls = restclient.main.getCachedUrls();
@@ -636,6 +701,8 @@ restclient.main = {
       
       $('#response-body-highlight pre').text(responseData);
       $('.nav-tabs [href="#response-body-highlight"]').show();
+      $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
+      $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep4);
     }
     
     $('#response-body-raw pre').text(responseData);
@@ -652,6 +719,8 @@ restclient.main = {
     
     $('.nav-tabs [href="#response-body-preview"]').show();
     $('.nav-tabs [href="#response-body-highlight"]').show();
+    $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
+    $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep4);
   },
   displayJson: function() {
     var responseData = this.xhr.responseText;
@@ -664,6 +733,7 @@ restclient.main = {
     $('#response-body-highlight pre').text(reformatted);
     
     $('.nav-tabs [href="#response-body-highlight"]').show();
+    $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
   },
   displayImage: function() {
     var responseData = this.xhr.responseText,
@@ -682,6 +752,7 @@ restclient.main = {
     $('#response-body-raw pre').text(imgSrc);
     
     $('.nav-tabs [href="#response-body-preview"]').show();
+    $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
   },
   displayImageRaw: function() {
     var responseData = this.xhr.responseText,
@@ -1340,8 +1411,8 @@ restclient.main = {
                 .attr('header-name', 'Authorization')
                 .attr('header-value', signature.headerString)
                 .append($('<a />').addClass('close').text('×').bind('click', restclient.main.removeHttpRequestHeader));
-    console.log(signature.headerString);
-    console.log('[data-id="' + headerSpanId + '"]');
+    //console.log(signature.headerString);
+    //console.log('[data-id="' + headerSpanId + '"]');
     $('[data-id="' + headerSpanId + '"]').text(signature.headerString);
   },
   sendRequest: function(){

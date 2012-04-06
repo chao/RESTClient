@@ -36,7 +36,7 @@ restclient.http = {
       restclient.main.updateProgressBar(100);
       restclient.main.showResponse();
       restclient.http.mimeType = mimeType;
-      console.log(requestMethod);
+      //console.log(requestMethod);
       var xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
       xhr.onerror = restclient.http.onerror;
       xhr.onload = restclient.http.onload;

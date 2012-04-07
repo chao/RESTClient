@@ -12,5 +12,6 @@
   * Bind hotkeys to send request, input url, etc.
   * Fixed multiple set-cookie response bug  (isseue #26)
   * Allow to copy response headers
+  * Added theme support
   
   

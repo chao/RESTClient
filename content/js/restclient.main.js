@@ -1515,6 +1515,9 @@ restclient.main = {
     var request = restclient.main.getRequest();
     console.log(request);
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
+  },
+  donate: function() {
+    $('#paypal_donate').click();
   }
 };
 

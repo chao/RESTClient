@@ -16,7 +16,7 @@
 
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
 
-<div class="navbar navbar-fixed-top hide showForStartup">
+<div class="navbar navbar-fixed-top hide showForStartup" style="display:none;">
   <div class="navbar-inner">
     <div class="container">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -80,44 +80,45 @@
   </div>
 </div>
 
-<div id="request" class="container hide showForStartup">
+<div id="request" class="container hide showForStartup" style="display:none;">
   <div class="row-fluid">
-    <h2>[<a href="#" class="toggle-request" title="hotkey: alt+q">-</a>] Request</h2>
-    <div id="request-container" class="well">
-      <form class="form-inline" onsubmit="return false;" style="margin-bottom: 18px;">
+    <h2 style="color: #999;">[<a href="#" class="toggle-request" title="hotkey: alt+q" style="color: #999;">-</a>] Request</h2>
+    <div id="request-container" style="margin-bottom: 18px;">
+    <div class="well">
+      <form class="form-inline" onsubmit="return false;" style="margin-bottom:0px">
         <label style="margin-left: 5px;">Method</label>
         <input id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span class="request-method-dropdown dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="request-method-icon icon-chevron-down"></i></a>
           <ul id="request-method-list" class="dropdown-menu">
           </ul>
         </span>
-        <label style="margin-left: 8px;">URL</label>
+        <label style="margin-left: 15px;">URL</label>
         <input id="request-url" type="text" autocomplete="on" style="margin: 0 auto;" placeholder="http://www.example.com"><span class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="favorite-list-icon icon-chevron-down"></i></a>
           <ul id="request-url-list" class="dropdown-menu">
           </ul>
         </span></span>
-        <button id="request-button" type="button" class="btn btn-inverse" style="margin-left: 10px; padding-left: 18px; padding-right: 18px;">SEND</button>
+        <button id="request-button" type="button" class="btn btn-danger" style="margin-left: 20px; padding-left: 18px; padding-right: 18px;">SEND</button>
       </form>
       <label class="checkbox overrideMimeType hide">
         <input type="checkbox" id="overrideMimeType" value="text/xml; charset=x-user-defined">
         Allow image preview (overrideMimeType with "text/xml; charset=x-user-defined")
       </label>
-      <div class="well hide" id="request-headers">
-        <h3>Headers</h3>
-      </div>
-      
-      <div class="well" style="margin-bottom:0px;">
-        <h3>Body</h3>
-        <textarea id="request-body" class="span11" style="margin: 0 auto;" rows="9" placeholder="Request Body"></textarea>
-      </div>
+    </div>
+    <div class="well hide" id="request-headers">
+      <h4>Headers</h4>
+    </div>
+    <div class="well" style="margin-bottom:0px;">
+      <h4>Body</h4>
+      <textarea id="request-body" style="margin: 0 auto;width:-moz-calc(100% - 10px);" rows="9" placeholder="Request Body"></textarea>
+    </div>
+    
     </div>
   </div>
-  
 </div>
 
 <section id="response" class="container hide">
-  <h2>[<a href="#" class="toggle-response" title="hotkey: alt+s">-</a>] Response</h2>
+  <h2 style="color: #999;">[<a href="#" class="toggle-response" title="hotkey: alt+s" style="color: #999;">-</a>] Response</h2>
   <div id="response-container">
   <div class="overrideMimeTypeMessage"></div>
 
@@ -150,7 +151,7 @@
   </div>
 </section>
 
-<footer class="footer container hide showForStartup">
+<footer class="footer container hide showForStartup" style="display:none;">
   <p style="float:left"><a href="http://www.restclient.net" target="_blank">Home</a> | <a href="https://github.com/chao/RESTClient" target="_blank">Github</a> | <a href="https://github.com/chao/RESTClient/issues" target="_blank">Issues</a> | <a href="#" onclick="restclient.main.donate();return false;">Donate</a></p>
   <p class="pull-right"><a href="#">Back to top</a></p>
 </footer>

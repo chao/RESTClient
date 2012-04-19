@@ -28,8 +28,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
 body {
   position: relative;
-  background-repeat: repeat-x;
   background-position: 0 40px;
+  font: 13px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 a, a:hover {
   text-decoration: none;
@@ -46,6 +46,11 @@ a, a:hover {
 }
 .navbar-fixed-top .brand:hover {
   text-decoration: none;
+}
+.well {
+  background-color: #FAFAFA;
+  border: medium none;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
 }
 #request-headers .label {
   padding: 8px 12px;
@@ -82,12 +87,19 @@ a, a:hover {
 #request h2{
   margin-bottom: 18px;
 }
+#request h4{
+  margin-bottom: 8px;
+}
 #request label {
-  font-weight: bold;
   margin-right: 4px;
 }
 #request button {
   margin-left: 2px;
+}
+#request .well {
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 18px;
 }
 #response h2 {
   margin-bottom: 18px;
@@ -164,7 +176,7 @@ a, a:hover {
 }
 .overrideMimeType {
   font-weight: normal !important;
-  margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 .window-overlay{

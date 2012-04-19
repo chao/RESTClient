@@ -126,7 +126,7 @@ restclient.main = {
     setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
   },
   initSkin: function(){
-    var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.cerulean.css');
+    var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.simplex.css');
     restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function(){
       restclient.main.changeSkin($(this).attr('css'));
@@ -134,7 +134,7 @@ restclient.main = {
       return false;
     });
     //wait for css load
-    setTimeout(function(){ $('.showForStartup').removeClass('hide'); }, 200);
+    setTimeout(function(){ $('.showForStartup').show(); }, 200);
   },
   initHotKeys: function() {
     $('#request-button').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.send);

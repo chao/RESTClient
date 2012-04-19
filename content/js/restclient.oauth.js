@@ -27,7 +27,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
- 
+
 "use strict";
 
 restclient.oauth = {
@@ -47,13 +47,13 @@ restclient.oauth = {
       this.setParameters(arg.parameters);
     if(arg.path)
       this.setPath(arg.path);
-      
+
     var normParams = this.normalizeToString();
     //console.log(normParams);
     var oauth_signature = this.generateSignature(normParams);
     //console.error(oauth_signature);
     this._parameters['oauth_signature'] = oauth_signature;
-    
+
     return {
         parameters: this._parameters,
         signature: this.oauthEscape(oauth_signature),
@@ -92,43 +92,43 @@ restclient.oauth = {
   setSignatures: function(signatures) {
     if(!this._secrets)
       this._secrets = {};
-      
+
     if(signatures.consumer_key)
       this._secrets.consumer_key = signatures.consumer_key;
     else
       throw('Missing required consumer_key in resclient.oauth.setSignatures');
-    
+
     if(signatures.consumer_secret)
       this._secrets.consumer_secret = signatures.consumer_secret;
     else
       throw('Missing required consumer_secret in resclient.oauth.setSignatures');
-    
+
     if(signatures.access_token)
       this._secrets.oauth_token = signatures.access_token;
-   
+
     if(signatures.access_secret)
       this._secrets.oauth_secret = signatures.access_secret;
-        
+
     if(signatures.oauth_token)
       this._secrets.oauth_token = signatures.oauth_token;
-    
+
     if(signatures.oauth_token_secret)
       this._secrets.oauth_secret = signatures.oauth_token_secret;
-    
+
     if(typeof signatures.oauth_token == 'string' && typeof this._secrets.oauth_secret == 'undefined')
       throw('Missing required oauth_secret in resclient.oauth.setSignatures');
   },
   setConsumerKey: function() {
-    if (!this._secrets['consumer_key']) 
+    if (!this._secrets['consumer_key'])
         throw('No consumer_key set for restclient.oauth.setConsumerKey');
-    
+
     return this._parameters['oauth_consumer_key'] = this._secrets.consumer_key;
   },
   setAccessToken: function() {
     if (!this._secrets['oauth_secret'])
         return '';
-        
-    if (!this._secrets['oauth_token']) 
+
+    if (!this._secrets['oauth_token'])
         throw('No oauth_token (access_token) set for restclient.oauth.setAccessToken');
     return this._parameters['oauth_token'] = this._secrets.oauth_token;
   },
@@ -160,8 +160,8 @@ restclient.oauth = {
     var consumer_secret = this._secrets['consumer_secret'],
         oauth_secret = this._secrets['oauth_secret'],
         encrypt = this._parameters['oauth_signature_method'] || 'PLAINTEXT';
-        
-    var secretKey = restclient.oauth.oauthEscape(consumer_secret) + '&' + 
+
+    var secretKey = restclient.oauth.oauthEscape(consumer_secret) + '&' +
         restclient.oauth.oauthEscape(oauth_secret);
     if (encrypt == 'PLAINTEXT')
     {
@@ -187,11 +187,11 @@ restclient.oauth = {
     for(var n in parameters) {
       if(!parameters.hasOwnProperty(n))
         continue;
-      
+
       names.push(n);
     }
     names = names.sort();
-    
+
     for(var i=0, n; n = names[i]; i++) {
       //console.log(n);
       if(n.match(/\w+_secret/))
@@ -207,7 +207,7 @@ restclient.oauth = {
         }
         continue;
       }
-      
+
       result.push(
         restclient.oauth.oauthEscape(n) + "=" + restclient.oauth.oauthEscape(parameters[n])
       );
@@ -236,7 +236,7 @@ restclient.oauth = {
     if( typeof len === 'undefined') {
       len = 15;
     }
-    
+
     var result = "";
     for (var i = 0; i < len; ++i) {
         var rnum = Math.floor(Math.random() * restclient.oauth._nonceRange.length);
@@ -304,7 +304,7 @@ restclient.oauth = {
       if (!pName.match(/^oauth/)) {
         continue;
       }
-      
+
       if ((this._parameters[pName]) instanceof Array)
       {
         pLength = this._parameters[pName].length;

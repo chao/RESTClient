@@ -25,7 +25,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
- 
+
 "use strict";
 
 restclient.http = {
@@ -44,19 +44,19 @@ restclient.http = {
 
       xhr.open(requestMethod, requestUrl, true);
       xhr.setRequestHeader("Accept-Language", null);
-      
+
       for(var i=0, header; header = requestHeaders[i]; i++) {
         xhr.setRequestHeader(header[0], header[1]);
       }
-      
+
       if(typeof mimeType == 'string')
         xhr.overrideMimeType(mimeType);
-      
+
       restclient.http.xhr = xhr;
       xhr.send(requestBody);
     } catch (e) {
       restclient.main.setResponseHeader({"Error": [
-                                                  "Could not connect to server", 
+                                                  "Could not connect to server",
                                                   e.message
                                                   ]}, false);
       restclient.main.updateProgressBar(-1);
@@ -79,7 +79,7 @@ restclient.http = {
     xhr = xhr.target;
     var headers = {};
     headers["Status Code"] = xhr.status + " " + xhr.statusText;
-    
+
     var headersText = xhr.getAllResponseHeaders();
     var responseHeaders = headersText.split("\n");
     var key, headValue;
@@ -102,9 +102,9 @@ restclient.http = {
     }
     restclient.main.setResponseHeader(headers);
     var contentType = xhr.getResponseHeader("Content-Type");
-    
+
     var displayHandler = 'display';
-    
+
     if(contentType.indexOf('html') >= 0) {
       displayHandler = 'displayHtml';
     }

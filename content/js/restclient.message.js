@@ -25,7 +25,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
- 
+
 "use strict";
 
 restclient.message = {
@@ -36,21 +36,21 @@ restclient.message = {
     container.attr('id', id);
     if(arg.class)
       container.addClass(arg.class);
-      
+
     if(arg.type)
       container.addClass('alert-' + arg.type);
     container.append($('<a class="close" data-dismiss="alert" href="#"></a>').text('x'));
-    
+
     if(arg.title)
       container.append($('<h4 class="alert-heading" style="margin-bottom: 15px;"></h4>').text(arg.title));
-    
+
     if(typeof arg.message == 'string')
       container.append($('<p></p>').text(arg.message));
-    
+
     if(typeof arg.message == 'object' && arg.message.length > 0)
       for(var i=0, m; m = arg.message[i]; i++)
         container.append($('<p></p>').text(m));
-    
+
     if(arg.buttons){
       var p = $('<div class="btn-toolbar" style="margin-top: 18px; margin-bottom:0px;"></div>');
       for(var i=0, button; button = arg.buttons[i]; i++) {
@@ -81,7 +81,7 @@ restclient.message = {
       container.append(p);
     }
     //console.log(container);
-    if(arg.parent) 
+    if(arg.parent)
     {
       if(arg.exclude)
         arg.parent.find('.alert').alert('close');
@@ -94,22 +94,22 @@ restclient.message = {
         if($('.messages-overlay .container').find('.alert').length == 1) {
           $('.messages-overlay').hide();
         }
-          
+
         if(typeof arg.closed == 'function')
           arg.closed.apply(restclient.main, []);
       });
     }
     return container;
   },
-  
+
   appendMessage: function(alert, message) {
     alert.find('p:last').after($('<p></p>').text(message));
   },
-  
+
   appendCode: function(alert, code) {
     alert.find('p:last').after($('<p></p>').append($('<pre></pre>').text(code)));
   },
-  
+
   appendButton: function(alert, button) {
     var p = $('<p></p>'),
         b = $('<a class="btn" style="margin: 5px 5px;"></a>');
@@ -118,10 +118,10 @@ restclient.message = {
       b.addClass(button.class);
     if(button.callback)
       b.bind('click', button.callback);
-      
+
     if(button.href)
       b.attr('href', button.href).attr('target', '_blank');
-    
+
     p.append(b);
     alert.find('p:last').after(p);
   }

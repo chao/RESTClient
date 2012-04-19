@@ -25,8 +25,8 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
- 
-"use strict"; 
+
+"use strict";
 
 if (typeof (restclient) === "undefined") {
 
@@ -47,7 +47,7 @@ if (typeof (restclient) === "undefined") {
     getPref : function (name, value) {
       return restclient.Preferences.get("extension.restclient." + name, value);
     },
-    
+
     i18n : function (n, arg) {
         i18nStrings = new restclient.StringBundle("chrome://restclient/locale/restclient.properties");
       try {

@@ -25,7 +25,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
- 
+
 "use strict";
 
 restclient.overlay = {
@@ -42,12 +42,12 @@ restclient.overlay = {
       navbar.currentSet = newset;
       navbar.setAttribute("currentset", newset );
       document.persist("nav-bar", "currentset");
-      gBrowser.selectedTab = gBrowser.addTab("http://www.restclient.net/");  
+      gBrowser.selectedTab = gBrowser.addTab("http://www.restclient.net/");
       restclient.setPref(firstRunPref, true);
     }
   },
   open: function(){
-    gBrowser.selectedTab = gBrowser.addTab("chrome://restclient/content/restclient.html");  
+    gBrowser.selectedTab = gBrowser.addTab("chrome://restclient/content/restclient.html");
   }
 }
 window.addEventListener("load", function(){ restclient.overlay.init();  }, false);

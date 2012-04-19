@@ -41,11 +41,14 @@ restclient.main = {
     rep1:     '1',
     rep2:     '2',
     rep3:     '3',
-    rep4:     '4'
+    rep4:     '4',
+    toggleRequest: 'alt+q',
+    toggleResponse: 'alt+s'
   },
   init: function() {
     this.initSkin();
     restclient.init();
+    $(window).resize(restclient.main.resizeRequestForm).resize();
     
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
     $(window).on('scroll', restclient.main.processScroll).scroll();
@@ -90,6 +93,8 @@ restclient.main = {
     });
     
     $('.favorite-icon').click(restclient.main.favoriteUrl);
+    $('.toggle-request').click(restclient.main.toggleRequest);
+    $('.toggle-response').click(restclient.main.toggleResponse);
   },
   initSkin: function(){
     $('a[css]').click(function(){
@@ -170,6 +175,65 @@ restclient.main = {
         $('.nav-tabs li a').eq(3).click();
       return false;
     });
+    $(document).bind('keydown', restclient.main.hotkey.toggleRequest, function(){ 
+      restclient.main.toggleRequest();
+      return false;
+    });
+    $(document).bind('keydown', restclient.main.hotkey.toggleResponse, function(){ 
+      restclient.main.toggleResponse();
+      return false;
+    });
+  },
+  resizeRequestForm: function() {
+    var formWidth = $('#request form').innerWidth(),
+        labelWidth = 0,
+        buttonWidth = $('#request-button').outerWidth(true),
+        spanWidth = $('.request-method-dropdown').outerWidth(true) + $('.request-url-favorite').outerWidth(true);
+    $('#request form label').each(function(){
+      labelWidth += $(this).outerWidth(true);
+    });
+    if(formWidth < 684)
+      $('#request-url').width(formWidth - (labelWidth + buttonWidth + spanWidth) -80);
+    else
+      $('#request-url').css('width', '');
+  },
+  toggleRequest: function(e) {
+    var toggle = $('.toggle-request');
+    $('#request-container').slideToggle('slow', function() {
+        toggle.text(toggle.text() == '-' ? '+' : '-');
+    });
+    if(e) e.preventDefault();
+    return false;
+  },
+  toggleResponse: function(e) {
+    var toggle = $('.toggle-response');
+    $('#response-container').slideToggle('slow', function() {
+        toggle.text(toggle.text() == '-' ? '+' : '-');
+    });
+    if(e) e.preventDefault();
+    return false;
+  },
+  toggleExpander: function(e){
+    var toggle = $(this), 
+        content = toggle.next().find('.expander-content').first();
+    console.log(toggle.text());
+    console.log(content);
+    
+    content.slideToggle('slow', function() {
+      toggle.text(toggle.text() == '+' ? '-' : '+');
+      /*  content.after($())
+        if(!content.data('origin-data')){
+          content.data('origin-data', content.html());
+          content.text('...').show();
+        }
+        else
+        {
+          content.html(content.data('origin-data'));
+          content.data('origin-data', null);
+        }*/
+    });
+    if(e) e.preventDefault();
+    return false;
   },
   initRequestUrl: function() {
     var urls = restclient.main.getCachedUrls();
@@ -610,7 +674,7 @@ restclient.main = {
       return false;
     }
     if(typeof line === 'boolean' && line == false) {
-      var text = headers.join("\n");
+      var text = (typeof headers == 'object' && headers.length > 0) ? headers.join("\n") : '';
       $('#response-headers pre').text(text);
     }
     else
@@ -756,11 +820,32 @@ restclient.main = {
   },
   displayXml: function() {
     var responseData = this.xhr.responseText,
-        iframe = $("<iframe></firame>")
-          .attr("type", "content")
-          .attr("src", "data:text/xml," + encodeURIComponent(responseData));
+        responseXml  = this.xhr.responseXML;
     
-    $("#response-body-preview div.pre").append(iframe);
+    if(responseXml != null) {
+      var xslDocument = document.implementation.createDocument("", "dummy", null);
+      xslDocument.onload = function (evt) {
+          var xsltProcessor = new XSLTProcessor();
+          xsltProcessor.importStylesheet(xslDocument);
+          var resultFragment = xsltProcessor.transformToFragment(responseXml, document);
+          $("#response-body-preview div.pre").append(resultFragment);
+          $('#response-body-preview .expander').click(restclient.main.toggleExpander);
+      };
+      xslDocument.load("chrome://restclient/content/xsl/XMLPrettyPrint.xsl");
+      
+      /*var xslDoc = document.implementation.createDocument("", "dummy", null);
+      xslDoc.onload = function (evt) {
+          var xsltProcessor = new XSLTProcessor();
+          xsltProcessor.importStylesheet(xslDoc);
+          var resultFragment = xsltProcessor.transformToFragment(responseXml, document);
+          $("#response-body-highlight pre").text($('<p></p>').append(resultFragment).html());
+          //$('#response-body-preview .expander').click(restclient.main.toggleExpander);
+          window.prettyPrint && prettyPrint();
+      };
+      xslDoc.load("chrome://restclient/content/xsl/XMLIndent.xsl");*/
+    }
+    
+    //$("#response-body-preview div.pre").append(iframe);
     $('#response-body-raw pre').text(responseData);
     $('#response-body-highlight pre').text(responseData);
     

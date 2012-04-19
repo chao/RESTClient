@@ -28,11 +28,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
 body {
   position: relative;
-  padding-top: 60px;
   background-repeat: repeat-x;
   background-position: 0 40px;
 }
-a {
+a, a:hover {
   text-decoration: none;
 }
 .navbar-fixed-top .brand {

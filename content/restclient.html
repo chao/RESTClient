@@ -10,9 +10,43 @@
     <link href="css/bootstrap.cerulean.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/restclient.css" rel="stylesheet">
+    <link href="css/XMLPrettyPrint.css" rel="stylesheet">
     <link href="css/prettify.css" rel="stylesheet">
     
     <link rel="shortcut icon" href="images/favicon.ico" />
+    <style>
+    @media (min-width: 1200px) {
+      #request-url {
+        width: 770px;
+      }
+    }
+    @media (min-width: 979px) and (max-width: 1199px) {
+      #request-url {
+        width: 540px;
+      }
+    }
+    @media (min-width: 768px) and (max-width: 979px) {
+      #request-url {
+        width: 324px;
+      }
+    }
+    @media (max-width: 767px) {
+      #request-url {
+        width: 148px;
+      }
+      #request-method{
+        width: 44px;
+      }
+      #request-button{
+        padding: 4px 6px !important;
+      }
+    }
+    @media (min-width: 980px) {
+      body{
+        padding-top: 60px;
+      }
+    }
+    </style>
   </head>
 
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
@@ -83,8 +117,8 @@
 
 <div id="request" class="container">
   <div class="row-fluid">
-    <h2>Request</h2>
-    <div class="well">
+    <h2>[<a href="#" class="toggle-request" title="hotkey: alt+q">-</a>] Request</h2>
+    <div id="request-container" class="well">
       <form class="form-inline" onsubmit="return false;" style="margin-bottom: 18px;">
         <label style="margin-left: 5px;">Method</label>
         <input id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span class="request-method-dropdown dropdown">
@@ -93,7 +127,7 @@
           </ul>
         </span>
         <label style="margin-left: 8px;">URL</label>
-        <input id="request-url" type="text" class="span8" autocomplete="off" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source=""><span class="request-url-favorite"><i class="favorite-icon icon-star-empty"></i></span>
+        <input id="request-url" type="text" autocomplete="off" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source=""><span class="request-url-favorite"><i class="favorite-icon icon-star-empty"></i></span>
         <button id="request-button" type="button" class="btn btn-inverse" style="margin-left: 10px; padding-left: 18px; padding-right: 18px;">SEND</button>
       </form>
       <label class="checkbox overrideMimeType hide">
@@ -114,7 +148,8 @@
 </div>
 
 <section id="response" class="container hide">
-  <h2>Response</h2>
+  <h2>[<a href="#" class="toggle-response" title="hotkey: alt+s">-</a>] Response</h2>
+  <div id="response-container">
   <div class="overrideMimeTypeMessage"></div>
 
   <ul class="nav nav-tabs">
@@ -143,6 +178,7 @@
   <br />
   <br />
   <br />
+  </div>
 </section>
 
 <footer class="footer container">

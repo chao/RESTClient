@@ -98,7 +98,6 @@ restclient.http = {
         }
     }
     restclient.main.setResponseHeader(headers);
-    
     var contentType = xhr.getResponseHeader("Content-Type");
     
     var displayHandler = 'display';

@@ -161,20 +161,14 @@ restclient.main = {
     
     $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
     $(document).bind('keydown', restclient.main.hotkey.rep3, function(){
-      if($('.nav-tabs li a').eq(2).is(":visible"))
         $('.nav-tabs li a').eq(2).click();
-      else
-        if($('.nav-tabs li a').eq(3).is(":visible"))
-          $('.nav-tabs li a').eq(3).click();
-      return false;
     });
     
     $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep4);
     $(document).bind('keydown', restclient.main.hotkey.rep4, function(){
-      if($('.nav-tabs li a').eq(3).is(":visible"))
         $('.nav-tabs li a').eq(3).click();
-      return false;
     });
+    
     $(document).bind('keydown', restclient.main.hotkey.toggleRequest, function(){ 
       restclient.main.toggleRequest();
       return false;
@@ -709,9 +703,9 @@ restclient.main = {
         ol.append(li);
       }
       $('#response-headers pre').empty().append(ol);
-      var maxWidth = 0;
+      var maxWidth = 120;
       $('#response-headers .header-name').each(function(){
-        maxWidth = ($(this).outerWidth() > maxWidth) ? $(this).outerWidth() : maxWidth;
+        maxWidth = ($(this).outerWidth(true) > maxWidth) ? $(this).outerWidth(true) : maxWidth;
       });
       $('#response-headers .header-name').width(maxWidth + 10);
       //$('#response-headers .header-value').css('margin-left', maxWidth + 20 + 'px');
@@ -732,31 +726,28 @@ restclient.main = {
       $('.mainOverlay .status').text(status);
     }
   },
+  showRequest: function(e) {
+    window.scrollTo(0,0);
+    e.preventDefault();
+    return false;
+  },
   showResponse: function() {
     
     $("#response").show();
       
     //document.getElementById('response').scrollIntoView(true);
-    var top = $("#response").offset().top;
-    //
     //alert(top);
     document.getElementById('response').scrollIntoView(true);
     //$('html, body').animate({scrollTop: top}, 1000);
     return false;
   },
   clearResult: function() {
-    $('.nav-tabs [href="#response-body-preview"]').hide();
-    $('.nav-tabs [href="#response-body-highlight"]').hide();
-    $('.nav-tabs li').removeClass('active');
-    $('.nav-tabs li').first().addClass('active');
-    $('.nav-tabs').tab('show');
-    
     $("#response-body-preview div.pre").html('');
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader();
     
-    $('[href="#response-headers"]').click();
+    //$('[href="#response-headers"]').click();
   },
   checkMimeType: function(){
     var contentType = this.xhr.getResponseHeader("Content-Type");
@@ -808,12 +799,8 @@ restclient.main = {
         .attr("type", "content")
         .attr("src", "data:text/html," + encodeURIComponent(responseData));
       $("#response-body-preview div.pre").append(iframe);
-      $('.nav-tabs [href="#response-body-preview"]').show();
       
       $('#response-body-highlight pre').text(responseData);
-      $('.nav-tabs [href="#response-body-highlight"]').show();
-      $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
-      $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep4);
     }
     
     $('#response-body-raw pre').text(responseData);
@@ -848,11 +835,6 @@ restclient.main = {
     //$("#response-body-preview div.pre").append(iframe);
     $('#response-body-raw pre').text(responseData);
     $('#response-body-highlight pre').text(responseData);
-    
-    $('.nav-tabs [href="#response-body-preview"]').show();
-    $('.nav-tabs [href="#response-body-highlight"]').show();
-    $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
-    $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep4);
   },
   displayJson: function() {
     var responseData = this.xhr.responseText;
@@ -863,9 +845,6 @@ restclient.main = {
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
     $('#response-body-highlight pre').text(reformatted);
-    
-    $('.nav-tabs [href="#response-body-highlight"]').show();
-    $('.nav-tabs li a').eq(2).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
   },
   displayImage: function() {
     var responseData = this.xhr.responseText,
@@ -882,9 +861,6 @@ restclient.main = {
     
     $("#response-body-preview div.pre").append(image);
     $('#response-body-raw pre').text(imgSrc);
-    
-    $('.nav-tabs [href="#response-body-preview"]').show();
-    $('.nav-tabs li a').eq(3).attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.rep3);
   },
   displayImageRaw: function() {
     var responseData = this.xhr.responseText,
@@ -1598,11 +1574,11 @@ restclient.main = {
       //console.log('resigned');
     }
     var request = restclient.main.getRequest();
-    console.log(request);
+    //console.log(request);
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   },
   donate: function() {
-    $('#paypal_donate').click();
+    $('#paypal_donate').submit();
   }
 };
 

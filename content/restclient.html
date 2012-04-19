@@ -7,46 +7,12 @@
     <meta name="description" content="RESTClient, a debugger for RESTful web services.">
     <meta name="author" content="Chao ZHOU (chao@zhou.fr)">
 
-    <link href="css/bootstrap.cerulean.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/restclient.css" rel="stylesheet">
-    <link href="css/XMLPrettyPrint.css" rel="stylesheet">
-    <link href="css/prettify.css" rel="stylesheet">
-    
+    <link href="css/bootstrap.cerulean.css" rel="stylesheet" />
+    <link href="css/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="css/restclient.css" rel="stylesheet" />
+    <link href="css/XMLPrettyPrint.css" rel="stylesheet" />
+    <link href="css/prettify.css" rel="stylesheet"/ >
     <link rel="shortcut icon" href="images/favicon.ico" />
-    <style>
-    @media (min-width: 1200px) {
-      #request-url {
-        width: 770px;
-      }
-    }
-    @media (min-width: 979px) and (max-width: 1199px) {
-      #request-url {
-        width: 540px;
-      }
-    }
-    @media (min-width: 768px) and (max-width: 979px) {
-      #request-url {
-        width: 324px;
-      }
-    }
-    @media (max-width: 767px) {
-      #request-url {
-        width: 148px;
-      }
-      #request-method{
-        width: 44px;
-      }
-      #request-button{
-        padding: 4px 6px !important;
-      }
-    }
-    @media (min-width: 980px) {
-      body{
-        padding-top: 60px;
-      }
-    }
-    </style>
   </head>
 
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
@@ -82,8 +48,8 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">View <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" class="request-menu">Request</a></li>
-              <li><a href="#response" onclick="restclient.main.showResponse();">Response</a></li>
+              <li><a style="cursor:pointer" onclick="restclient.main.showRequest();return false;" class="request-menu" >Request</a></li>
+              <li><a style="cursor:pointer" onclick="restclient.main.showResponse();return false;">Response</a></li>
             </ul>
           </li>
         </ul>
@@ -152,7 +118,7 @@
   <div id="response-container">
   <div class="overrideMimeTypeMessage"></div>
 
-  <ul class="nav nav-tabs">
+  <ul id="response-tabs" class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
     <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
     <li               ><a data-toggle="tab" href="#response-body-highlight">Respone Body (Highlight)</a></li>
@@ -442,12 +408,10 @@
   </div>
 </div>
 
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" class="hide" target="_blank">
+<form id="paypal_donate" action="https://www.paypal.com/cgi-bin/webscr" method="post" class="hide" target="_blank">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
 ">
-<input id="paypal_donate" type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
 </form>
 
 <script type="text/javascript" src="js/jquery.js"></script>

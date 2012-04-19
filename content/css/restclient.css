@@ -284,3 +284,38 @@ span.header-value {
   padding-left: 0px !important;
   color: #DD1144 !important;
 }
+
+.popover-inner {
+  width: 480px !important;
+}
+@media (min-width: 1200px) {
+  #request-url {
+    width: 770px !important;
+  }
+}
+@media (min-width: 979px) and (max-width: 1199px) {
+  #request-url {
+    width: 540px !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 979px) {
+  #request-url {
+    width: 324px !important;
+  }
+}
+@media (max-width: 767px) {
+  #request-url {
+    width: 148px;
+  }
+  #request-method{
+    width: 44px;
+  }
+  #request-button{
+    padding: 4px 6px !important;
+  }
+}
+@media (min-width: 980px) {
+  body{
+    padding-top: 60px;
+  }
+}

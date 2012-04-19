@@ -117,6 +117,9 @@ a, a:hover {
   height: 100%;
   border: none;
 }
+#response-body-preview div.pre {
+  overflow: auto;
+}
 #modal-oauth legend {
   margin-top: 0px;
   margin-bottom: 0px;

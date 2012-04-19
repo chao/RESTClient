@@ -46,8 +46,8 @@ restclient.main = {
     toggleResponse: 'alt+s'
   },
   init: function() {
-    this.initSkin();
     restclient.init();
+    this.initSkin();
     $(window).resize(restclient.main.resizeRequestForm).resize();
     
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
@@ -70,7 +70,7 @@ restclient.main = {
     $('#request-button').bind('click', restclient.main.sendRequest);
     $('#request-url').bind('keyup', restclient.main.requestUrlInputed).focus().select();
     $('#request-url').bind('change', restclient.main.updateFavoriteUrlIcon);
-    
+
     if ($('#overrideMimeType').attr('checked') == 'checked')
       $('.overrideMimeType').show();
       
@@ -96,31 +96,45 @@ restclient.main = {
     $('.toggle-request').click(restclient.main.toggleRequest);
     $('.toggle-response').click(restclient.main.toggleResponse);
   },
+  changeSkin: function(cssFileName) {
+    $("link").remove();
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/" + cssFileName
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/bootstrap-responsive.css"
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/restclient.css"
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/XMLPrettyPrint.css"
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/prettify.css"
+    }).appendTo("head");
+    setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
+  },
   initSkin: function(){
+    var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.cerulean.css');
+    restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function(){
-      $("link").remove();
-      $("<link/>", {
-         rel: "stylesheet",
-         type: "text/css",
-         href: "css/" + $(this).attr('css')
-      }).appendTo("head");
-      $("<link/>", {
-         rel: "stylesheet",
-         type: "text/css",
-         href: "css/bootstrap-responsive.css"
-      }).appendTo("head");
-      $("<link/>", {
-         rel: "stylesheet",
-         type: "text/css",
-         href: "css/restclient.css"
-      }).appendTo("head");
-      $("<link/>", {
-         rel: "stylesheet",
-         type: "text/css",
-         href: "css/prettify.css"
-      }).appendTo("head");
+      restclient.main.changeSkin($(this).attr('css'));
+      restclient.getPref('defaultSkin', $(this).attr('css'));
       return false;
     });
+    //wait for css load
+    setTimeout(function(){ $('.showForStartup').removeClass('hide'); }, 200);
   },
   initHotKeys: function() {
     $('#request-button').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.send);
@@ -182,13 +196,17 @@ restclient.main = {
     var formWidth = $('#request form').innerWidth(),
         labelWidth = 0,
         buttonWidth = $('#request-button').outerWidth(true),
-        spanWidth = $('.request-method-dropdown').outerWidth(true) + $('.request-url-favorite').outerWidth(true);
+        spanWidth = $('.request-method-dropdown').outerWidth(true) + $('.request-url-icons').outerWidth(true),
+        urlIconsWidth = $('.request-url-icons').outerWidth(true);
     $('#request form label').each(function(){
       labelWidth += $(this).outerWidth(true);
     });
     if(formWidth < 684)
       $('#request-url').width(formWidth - (labelWidth + buttonWidth + spanWidth) -80);
-    else
+    
+    $('#request-url-list').width($('#request-url').outerWidth(true) + urlIconsWidth-7);
+
+    if(formWidth >= 684) 
       $('#request-url').css('width', '');
   },
   toggleRequest: function(e) {
@@ -210,8 +228,8 @@ restclient.main = {
   toggleExpander: function(e){
     var toggle = $(this), 
         content = toggle.next().find('.expander-content').first();
-    console.log(toggle.text());
-    console.log(content);
+    //console.log(toggle.text());
+    //console.log(content);
     
     content.slideToggle('slow', function() {
       toggle.text(toggle.text() == '+' ? '-' : '+');
@@ -231,7 +249,14 @@ restclient.main = {
   },
   initRequestUrl: function() {
     var urls = restclient.main.getCachedUrls();
-    $('#request-url').attr('data-source', JSON.stringify(urls));
+    $('#request-url-list li').remove();
+    for(var i=0, url; url = urls[i]; i++) {
+      $('#request-url-list').append($('<li></li>').data('url', url).append($('<a></a>').text(url)));
+    }
+    $('#request-url-list li').click(function(){
+      $('#request-url').val($(this).data('url'));
+      restclient.main.updateFavoriteUrlIcon();
+    });
   },
   getCachedUrls: function() {
     if(restclient.main.cachedUrls)
@@ -251,13 +276,7 @@ restclient.main = {
     urls.push(url);
     restclient.setPref('cachedUrls', JSON.stringify(urls));
     restclient.main.cachedUrls = null;
-    $('#request-url').data('active', true);
-    $('#request-url').data('typeahead').source = urls;
-    //trigger keyup on the typeahead to make it search
-    $('#request-url').trigger('keyup');
-    //All done, set to false to prepare for the next remote query.
-    $('#request-url').data('active', false);
-    //$('#request-url').typeahead({source: urls}).typeahead('show');
+    restclient.main.initRequestUrl();
     return false;
   },
   removeUrlFromCache: function(url){
@@ -267,18 +286,14 @@ restclient.main = {
       return true;
     urls = urls.slice(0,pos).concat( urls.slice(pos+1) );
     restclient.setPref('cachedUrls', JSON.stringify(urls));
-    $('#request-url').data('active', true);
-    $('#request-url').data('typeahead').source = urls;
-    //trigger keyup on the typeahead to make it search
-    $('#request-url').trigger('keyup');
-    //All done, set to false to prepare for the next remote query.
-    $('#request-url').data('active', false);
-    //.typeahead({source: urls}).typeahead('show');
+    restclient.main.cachedUrls = null;
+    restclient.main.initRequestUrl();
   },
   updateFavoriteUrlIcon: function(url) {
     var url = (typeof url == 'string') ? url : $('#request-url').val();
     //console.log(url);
     var urls = restclient.main.getCachedUrls();
+    
     //console.log(urls.indexOf(url));
     if(urls.indexOf(url) > -1)
       $('.favorite-icon').removeClass('icon-star-empty').addClass('icon-star');
@@ -966,9 +981,9 @@ restclient.main = {
           restclient.setPref('savedRequest', setting);
         }catch(e){ alert('Cannot import the json file.'); }
       });
+      restclient.main.updateFavoriteRequestMenu();
+      alert('import requests succeed');
     }
-    restclient.main.updateFavoriteRequestMenu();
-    alert('import requests succeed');
     return false;
   },
   exportFavoriteRequests: function() {

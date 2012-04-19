@@ -6,7 +6,12 @@
 
 
 ### Firefox Addon
-
+* Version 2.0.1
+  * Fixed XML result indentation
+  * Remember open response tab
+  * Fixed request url input box size bug
+  * Support Firefox 12
+  
 * Version 2.0.0
   * Re-designed the UI by using [twitter bootstrap](twitter.github.com/bootstrap/)
   * Bind hotkeys to send request, input url, etc.

@@ -6,18 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="RESTClient, a debugger for RESTful web services.">
     <meta name="author" content="Chao ZHOU (chao@zhou.fr)">
-
-    <link href="css/bootstrap.cerulean.css" rel="stylesheet" />
-    <link href="css/bootstrap-responsive.css" rel="stylesheet" />
-    <link href="css/restclient.css" rel="stylesheet" />
-    <link href="css/XMLPrettyPrint.css" rel="stylesheet" />
-    <link href="css/prettify.css" rel="stylesheet"/ >
     <link rel="shortcut icon" href="images/favicon.ico" />
+    <style>
+      .hide{
+        display: none;
+      }
+    </style>
   </head>
 
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
 
-<div class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top hide showForStartup">
   <div class="navbar-inner">
     <div class="container">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -68,7 +67,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Skins <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="#" css="bootstrap.cerulean.css">Cerulean</a></li>
-              <li><a href="#" css="bootstrap.jumbotron.css">Jumbotron</a></li>
+              <li><a href="#" css="bootstrap.journal.css">Journal</a></li>
               <li><a href="#" css="bootstrap.simplex.css">Simplex</a></li>
               <li><a href="#" css="bootstrap.united.css">United</a></li>
               <li class="divider"></li>
@@ -81,19 +80,23 @@
   </div>
 </div>
 
-<div id="request" class="container">
+<div id="request" class="container hide showForStartup">
   <div class="row-fluid">
     <h2>[<a href="#" class="toggle-request" title="hotkey: alt+q">-</a>] Request</h2>
     <div id="request-container" class="well">
       <form class="form-inline" onsubmit="return false;" style="margin-bottom: 18px;">
         <label style="margin-left: 5px;">Method</label>
         <input id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span class="request-method-dropdown dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b class="caret"></b></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="request-method-icon icon-chevron-down"></i></a>
           <ul id="request-method-list" class="dropdown-menu">
           </ul>
         </span>
         <label style="margin-left: 8px;">URL</label>
-        <input id="request-url" type="text" autocomplete="off" style="margin: 0 auto;" placeholder="http://www.example.com" data-provide="typeahead" data-items="4" data-source=""><span class="request-url-favorite"><i class="favorite-icon icon-star-empty"></i></span>
+        <input id="request-url" type="text" autocomplete="on" style="margin: 0 auto;" placeholder="http://www.example.com"><span class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="favorite-list-icon icon-chevron-down"></i></a>
+          <ul id="request-url-list" class="dropdown-menu">
+          </ul>
+        </span></span>
         <button id="request-button" type="button" class="btn btn-inverse" style="margin-left: 10px; padding-left: 18px; padding-right: 18px;">SEND</button>
       </form>
       <label class="checkbox overrideMimeType hide">
@@ -147,7 +150,7 @@
   </div>
 </section>
 
-<footer class="footer container">
+<footer class="footer container hide showForStartup">
   <p style="float:left"><a href="http://www.restclient.net" target="_blank">Home</a> | <a href="https://github.com/chao/RESTClient" target="_blank">Github</a> | <a href="https://github.com/chao/RESTClient/issues" target="_blank">Issues</a> | <a href="#" onclick="restclient.main.donate();return false;">Donate</a></p>
   <p class="pull-right"><a href="#">Back to top</a></p>
 </footer>

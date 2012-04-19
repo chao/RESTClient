@@ -238,7 +238,7 @@ span.header-value {
   padding-top: 60px;
 }
 
-.request-method-dropdown, .request-url-favorite {
+.request-method-dropdown, .request-url-icons {
   border-radius: 0 3px 3px 0;
   margin-left: -1px;
   background-color: #EEEEEE;
@@ -254,6 +254,9 @@ span.header-value {
   vertical-align: middle;
   width: auto;
   cursor: pointer;
+}
+.favorite-list-icon, .favorite-icon, .request-method-icon {
+  margin: 0 1px 0 4px;
 }
 .request-method-dropdown .caret{
   margin-top: 7px;
@@ -274,7 +277,15 @@ span.header-value {
   min-width: 100px;
   right: 0;
   text-align: left;
-  width: 128px !important;
+  width: 130px !important;
+}
+#request-url-list {
+  left: auto;
+  min-width: 100px;
+  right: 0;
+  text-align: left;
+  margin-top: 6px;
+  overflow-x: hidden;
 }
 .multivalues {
   list-style: none;
@@ -290,22 +301,25 @@ span.header-value {
 }
 @media (min-width: 1200px) {
   #request-url {
-    width: 770px !important;
+    width: 742px !important;
   }
 }
 @media (min-width: 979px) and (max-width: 1199px) {
   #request-url {
-    width: 540px !important;
+    width: 512px !important;
+  }
+  #request-url-list {
+    width: 569px !important;
   }
 }
 @media (min-width: 768px) and (max-width: 979px) {
   #request-url {
-    width: 324px !important;
+    width: 295px !important;
   }
 }
 @media (max-width: 767px) {
   #request-url {
-    width: 148px;
+    width: 119px;
   }
   #request-method{
     width: 44px;

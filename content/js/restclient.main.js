@@ -761,7 +761,7 @@ restclient.main = {
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader();
-    
+    $("#response-body-preview div.pre").css('overflow', 'auto');
     //$('[href="#response-headers"]').click();
   },
   checkMimeType: function(){
@@ -860,6 +860,7 @@ restclient.main = {
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
     $('#response-body-highlight pre').text(reformatted);
+    $("#response-body-preview div.pre").css('overflow', 'none').append($('<textarea></textarea>').text(reformatted));
   },
   displayImage: function() {
     var responseData = this.xhr.responseText,
@@ -994,7 +995,13 @@ restclient.main = {
     fp.appendFilter("JSON","*.json");
     var res = fp.show();
     if (res == nsIFilePicker.returnOK || res == nsIFilePicker.returnReplace) {
-      var ostream = restclient.FileUtils.openSafeFileOutputStream(fp.file),
+      var targetFile = fp.file, path = fp.file.path;
+      if (path.match("\.json$") != ".json") {
+          targetFile = Components.classes["@mozilla.org/file/local;1"]
+              .createInstance(Components.interfaces.nsILocalFile);
+          targetFile.initWithPath(path + ".json")
+      }
+      var ostream = restclient.FileUtils.openSafeFileOutputStream(targetFile),
           converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"].
                       createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
       converter.charset = "UTF-8";
@@ -1002,7 +1009,7 @@ restclient.main = {
 
       restclient.NetUtil.asyncCopy(istream, ostream, function(status) {
         if (!Components.isSuccessCode(status)) {
-          alert('cannotExportJSONError');
+          alert('Cannot export favorite request.');
           return;
         }
       });

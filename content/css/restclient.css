@@ -117,7 +117,10 @@ a, a:hover {
   height: 100%;
   border: none;
 }
-#response-body-preview div.pre {
+#response-body-preview textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
   overflow: auto;
 }
 #modal-oauth legend {

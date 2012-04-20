@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
     <title>RESTClient</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="RESTClient, a debugger for RESTful web services.">
-    <meta name="author" content="Chao ZHOU (chao@zhou.fr)">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="RESTClient, a debugger for RESTful web services." />
+    <meta name="author" content="Chao ZHOU (chao@zhou.fr)" />
     <link rel="shortcut icon" href="images/favicon.ico" />
-    <style>
-      .hide{
-        display: none;
-      }
-    </style>
   </head>
-
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
 
 <div class="navbar navbar-fixed-top hide showForStartup" style="display:none;">
@@ -27,6 +21,12 @@
       <a class="brand" href="http://www.restclient.net/">RESTClient</a>
       <div class="nav-collapse">
         <ul class="nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a style="cursor:pointer" onclick="restclient.main.loadRequest();return false;">Load request</a></li>
+            </ul>
+          </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -49,12 +49,6 @@
             <ul class="dropdown-menu">
               <li><a style="cursor:pointer" onclick="restclient.main.showRequest();return false;" class="request-menu" >Request</a></li>
               <li><a style="cursor:pointer" onclick="restclient.main.showResponse();return false;">Response</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a style="cursor:pointer" onclick="restclient.main.loadRequest();return false;">Load request</a></li>
             </ul>
           </li>
         </ul>

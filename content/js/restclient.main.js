@@ -743,7 +743,8 @@ restclient.main = {
   },
   showRequest: function(e) {
     window.scrollTo(0,0);
-    e.preventDefault();
+    if(e) 
+      e.preventDefault();
     return false;
   },
   showResponse: function() {
@@ -761,7 +762,7 @@ restclient.main = {
     $('#response-body-raw pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader();
-    $("#response-body-preview div.pre").css('overflow', 'auto');
+    $("#response-body-preview div.pre").addClass('overflow');
     //$('[href="#response-headers"]').click();
   },
   checkMimeType: function(){
@@ -814,7 +815,8 @@ restclient.main = {
         .attr("type", "content")
         .attr("src", "data:text/html," + encodeURIComponent(responseData));
       $("#response-body-preview div.pre").append(iframe);
-
+      $("#response-body-preview div.pre").removeClass('overflow');
+      
       $('#response-body-highlight pre').text(responseData);
     }
 
@@ -860,7 +862,7 @@ restclient.main = {
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
     $('#response-body-highlight pre').text(reformatted);
-    $("#response-body-preview div.pre").css('overflow', 'none').append($('<textarea></textarea>').text(reformatted));
+    $("#response-body-preview div.pre").removeClass('overflow').append($('<textarea></textarea>').text(reformatted));
   },
   displayImage: function() {
     var responseData = this.xhr.responseText,
@@ -984,14 +986,14 @@ restclient.main = {
           request.body    = (request.requestBody)   ? request.requestBody : false;
           var headers     = (request.headers && typeof request.headers == 'object')
                                                     ? request.headers : false;
-          console.log(headers);
+          //console.log(headers);
           request.headers = [];
           if(headers)
             for(var i=0; i < headers.length; i++)
             {
               request.headers.push([headers[i], headers[++i]]);
             }
-          console.log(request);
+          //console.log(request);
           restclient.main.applyRequest(request);
         }catch(e){ alert('Cannot load this request.'); }
       });
@@ -1130,13 +1132,14 @@ restclient.main = {
     return false;
   },
   applyRequest: function(request){
+    
     $('#request-body').val('');
     $('#request-url').val('');
-    $('#request-method option[value="GET"]').attr('selected', true);
+    $('#request-method').val('GET');
     restclient.main.removeHttpRequestHeaders();
 
-    if(request.method) {
-      $('#request-method option[value="' + request.method + '"]').attr('selected', true);
+    if(typeof request.method == 'string') {
+      $('#request-method').val(request.method.toUpperCase());
     }
 
     if(request.url) {

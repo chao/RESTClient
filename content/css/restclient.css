@@ -57,8 +57,8 @@ a, a:hover {
   margin-right: 10px;
   font-weight: normal;
   line-height: 34px;
-  background-color: #ccc;
-  color: #444;
+  background-color: #ddd;
+  color: #333;
   text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.25);
   cursor: pointer;
 }
@@ -316,6 +316,10 @@ span.header-value {
 
 .popover-inner {
   width: 480px !important;
+}
+
+#response .overflow {
+  overflow: auto;
 }
 @media (min-width: 1200px) {
   #request-url {

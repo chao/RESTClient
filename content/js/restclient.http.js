@@ -104,22 +104,24 @@ restclient.http = {
     var contentType = xhr.getResponseHeader("Content-Type");
 
     var displayHandler = 'display';
-
-    if(contentType.indexOf('html') >= 0) {
-      displayHandler = 'displayHtml';
+    if(contentType && contentType != '') {
+      if(contentType.indexOf('html') >= 0) {
+        displayHandler = 'displayHtml';
+      }
+      if(contentType.indexOf('xml') >= 0) {
+        displayHandler = 'displayXml';
+      }
+      if(contentType.indexOf('json') >= 0) {
+        displayHandler = 'displayJson';
+      }
+      if(contentType.indexOf('image') >= 0) {
+        if(restclient.http.mimeType === false)
+          displayHandler = 'displayImageRaw';
+        else
+          displayHandler = 'displayImage';
+      }
     }
-    if(contentType.indexOf('xml') >= 0) {
-      displayHandler = 'displayXml';
-    }
-    if(contentType.indexOf('json') >= 0) {
-      displayHandler = 'displayJson';
-    }
-    if(contentType.indexOf('image') >= 0) {
-      if(restclient.http.mimeType === false)
-        displayHandler = 'displayImageRaw';
-      else
-        displayHandler = 'displayImage';
-    }
+    
     //console.log(displayHandler);
     //console.log(contentType);
     restclient.main.checkMimeType.apply(restclient.http, []);

@@ -29,12 +29,26 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 
 restclient.overlay = {
+  
   init : function() {
     restclient.init();
     restclient.overlay.firstRun();
   },
+  getBrowser: function(){
+    var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)  
+                           .getInterface(Components.interfaces.nsIWebNavigation)  
+                           .QueryInterface(Components.interfaces.nsIDocShellTreeItem)  
+                           .rootTreeItem  
+                           .QueryInterface(Components.interfaces.nsIInterfaceRequestor)  
+                           .getInterface(Components.interfaces.nsIDOMWindow);
+    return mainWindow.gBrowser;
+  },
   firstRun : function() {
-    var firstRunPref = "firstRunDone";
+    var firstRunPref  = "firstRunDone",
+        versionPref   = "version",
+        versionNumber = "2.0.1",
+        browser       = restclient.overlay.getBrowser();
+    
     if(!restclient.getPref(firstRunPref, false))
     {
       var navbar = document.getElementById("nav-bar");
@@ -42,12 +56,16 @@ restclient.overlay = {
       navbar.currentSet = newset;
       navbar.setAttribute("currentset", newset );
       document.persist("nav-bar", "currentset");
-      gBrowser.selectedTab = gBrowser.addTab("http://www.restclient.net/");
       restclient.setPref(firstRunPref, true);
+    }
+    if(restclient.getPref(versionPref, '') != versionNumber) {
+      browser.selectedTab = browser.addTab("http://www.restclient.net/?browser=firefox&version=" + versionNumber);
+      restclient.setPref(versionPref, versionNumber);
     }
   },
   open: function(){
-    gBrowser.selectedTab = gBrowser.addTab("chrome://restclient/content/restclient.html");
+    var browser = restclient.overlay.getBrowser();
+    browser.selectedTab = browser.addTab("chrome://restclient/content/restclient.html");
   }
 }
 window.addEventListener("load", function(){ restclient.overlay.init();  }, false);

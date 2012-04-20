@@ -11,6 +11,9 @@
   * Remember open response tab
   * Fixed request url input box size bug
   * Support Firefox 12
+  * Allow user to load old requests (exported by version 1.3.x)
+  * Updated favorite url, add a drop down list for showing favorite URLs
+  * Updated UI color, to enhance the request form
   
 * Version 2.0.0
   * Re-designed the UI by using [twitter bootstrap](twitter.github.com/bootstrap/)

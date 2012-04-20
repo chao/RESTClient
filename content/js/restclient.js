@@ -55,7 +55,6 @@ if (typeof (restclient) === "undefined") {
       } catch (e) {
         console.error(n);
         console.error(JSON.stringify(arg));
-        console.error(i18nStrings.get(n));
         console.error(e.message);
       }
     }

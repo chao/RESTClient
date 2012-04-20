@@ -955,6 +955,48 @@ restclient.main = {
     $('#request-button').click();
     $('#alertUnOverrideMimeType').alert('close');
   },
+  loadRequest: function(){
+    var nsIFilePicker = Components.interfaces.nsIFilePicker,
+        fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+    fp.init(window, "Please select a exported text file to load", nsIFilePicker.modeOpen);
+    fp.appendFilter("Plain text","*.txt");
+    var res = fp.show();
+    if (res == nsIFilePicker.returnOK) {
+      restclient.NetUtil.asyncFetch(fp.file, function(inputStream, status) {
+        if (!Components.isSuccessCode(status)) {
+          alert('Failed to open this request file.');
+          return;
+        }
+
+        var data = restclient.NetUtil.readInputStreamToString(inputStream, inputStream.available());
+
+        var utf8Converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].
+            getService(Components.interfaces.nsIUTF8ConverterService);
+        var request = utf8Converter.convertURISpecToUTF8(data, "UTF-8");
+        try{
+          if(request == '') {
+            alert('This is an empty file.');
+            return;
+          }
+          request = JSON.parse(request);
+          request.method  = (request.requestMethod) ? request.requestMethod : 'GET';
+          request.url     = (request.requestUrl)    ? request.requestUrl : false;
+          request.body    = (request.requestBody)   ? request.requestBody : false;
+          var headers     = (request.headers && typeof request.headers == 'object')
+                                                    ? request.headers : false;
+          console.log(headers);
+          request.headers = [];
+          if(headers)
+            for(var i=0; i < headers.length; i++)
+            {
+              request.headers.push([headers[i], headers[++i]]);
+            }
+          console.log(request);
+          restclient.main.applyRequest(request);
+        }catch(e){ alert('Cannot load this request.'); }
+      });
+    }
+  },
   importFavoriteRequests: function() {
     var nsIFilePicker = Components.interfaces.nsIFilePicker,
         fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
@@ -962,7 +1004,6 @@ restclient.main = {
     fp.appendFilter("JSON","*.json");
     var res = fp.show();
     if (res == nsIFilePicker.returnOK) {
-
       restclient.NetUtil.asyncFetch(fp.file, function(inputStream, status) {
         if (!Components.isSuccessCode(status)) {
           alert('Cannot import the json file.');
@@ -1088,6 +1129,44 @@ restclient.main = {
     }
     return false;
   },
+  applyRequest: function(request){
+    $('#request-body').val('');
+    $('#request-url').val('');
+    $('#request-method option[value="GET"]').attr('selected', true);
+    restclient.main.removeHttpRequestHeaders();
+
+    if(request.method) {
+      $('#request-method option[value="' + request.method + '"]').attr('selected', true);
+    }
+
+    if(request.url) {
+      $('#request-url').val(request.url);
+    }
+
+    if(request.overrideMimeType) {
+      $('#overrideMimeType').attr('checked', true);
+      $('.overrideMimeType').show();
+    }
+    else
+      $('#overrideMimeType').removeAttr('checked');
+
+    if(request.body) {
+      $('#request-body').val(request.body);
+    }
+
+    if(request.headers) {
+      //console.log(request.headers);
+      for(var i = 0, header; header = request.headers[i]; i++) {
+        var headerSpan = restclient.main.addHttpRequestHeader(header[0], header[1]);
+        if(header[0].toLowerCase() == 'authorization' && request.oauth) {
+          headerSpan.attr('oauth-secrets', request.oauth.oauth_secrets);
+          headerSpan.attr('oauth-parameters', request.oauth.oauth_parameters);
+          headerSpan.attr('auto-refresh', request.oauth.auto_refresh);
+        }
+      }
+    }
+    return true;
+  },
   applyFavoriteRequest: function(name) {
     var favorites = restclient.getPref('savedRequest', '');
     if(favorites == '')
@@ -1095,45 +1174,7 @@ restclient.main = {
     favorites = JSON.parse(favorites);
     if(name in favorites) {
       var request = favorites[name];
-      if(request.method) {
-        $('#request-method option[value="' + request.method + '"]').attr('selected', true);
-      }
-      else
-        $('#request-method option[value="GET"]').attr('selected', true);
-
-      if(request.url) {
-        $('#request-url').val(request.url);
-      }
-      else
-        $('#request-url').val('');
-
-      if(request.overrideMimeType) {
-        $('#overrideMimeType').attr('checked', true);
-        $('.overrideMimeType').show();
-      }
-      else
-        $('#overrideMimeType').removeAttr('checked');
-
-      if(request.body) {
-        $('#request-body').val(request.body);
-      }
-      else
-        $('#request-body').val('');
-
-      if(request.headers) {
-        restclient.main.removeHttpRequestHeaders();
-        //console.log(request.headers);
-        for(var i = 0, header; header = request.headers[i]; i++) {
-          var headerSpan = restclient.main.addHttpRequestHeader(header[0], header[1]);
-          if(header[0].toLowerCase() == 'authorization' && request.oauth) {
-            headerSpan.attr('oauth-secrets', request.oauth.oauth_secrets);
-            headerSpan.attr('oauth-parameters', request.oauth.oauth_parameters);
-            headerSpan.attr('auto-refresh', request.oauth.auto_refresh);
-          }
-        }
-      }
-
-
+      restclient.main.applyRequest(request);
       return true;
     }
     return false;

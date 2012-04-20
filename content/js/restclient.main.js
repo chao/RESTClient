@@ -767,7 +767,7 @@ restclient.main = {
   },
   checkMimeType: function(){
     var contentType = this.xhr.getResponseHeader("Content-Type");
-    if (contentType.indexOf('image') >= 0) {
+    if (contentType && contentType.indexOf('image') >= 0) {
       if($('#overrideMimeType').attr('checked') !== 'checked' && restclient.getPref('imageWarning', true))
         restclient.message.show({
           id: 'alertOverrideMimeType',
@@ -1640,8 +1640,26 @@ restclient.main = {
       //console.log('resigned');
     }
     var request = restclient.main.getRequest();
-    //console.log(request);
+    if(!restclient.main.validateUrl(request.url))
+    {
+      restclient.message.show({
+        id: 'alertInvalidRequestUrl',
+        type: 'error',
+        title: 'The request URL is invalidate',
+        message: 'Please check your request URL!',
+        buttons: [
+          {title: 'Okay', class: 'btn-danger', callback: function(){ $('#request-url').focus().select(); $('#alertInvalidRequestUrl').alert('close');  }}
+        ],
+        parent: $('#request-error'),
+        exclude: true
+      });
+      return false;
+    }
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
+  },
+  validateUrl: function (url) {
+    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+    return regexp.test(url);
   },
   donate: function() {
     $('#paypal_donate').submit();

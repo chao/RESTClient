@@ -66,6 +66,8 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Skins <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li><a style="cursor:pointer" class="toggle-lyaout" data-layout="fixed">Switch to percentage page layout</a></li>
+              <li class="divider"></li>
               <li><a href="#" css="bootstrap.cerulean.css">Cerulean</a></li>
               <li><a href="#" css="bootstrap.journal.css">Journal</a></li>
               <li><a href="#" css="bootstrap.simplex.css">Simplex</a></li>
@@ -111,7 +113,7 @@
     </div>
     <div class="well" style="margin-bottom:0px;">
       <h4>Body</h4>
-      <textarea id="request-body" style="margin: 0 auto;width:-moz-calc(100% - 10px);" rows="9" placeholder="Request Body"></textarea>
+      <textarea id="request-body" style="width: 99%;margin: 0;" rows="9" placeholder="Request Body"></textarea>
     </div>
     
     </div>
@@ -134,13 +136,13 @@
       <pre></pre>
     </div>
     <div class="tab-pane" id="response-body-raw">
-      <pre class="span12" style="margin-left:0px"></pre>
+      <pre style="margin-left:0px"></pre>
     </div>
     <div class="tab-pane" id="response-body-highlight">
-      <pre class="prettyprint linenums span12" style="margin-left:0px"></pre>
+      <pre class="prettyprint linenums" style="margin-left:0px"></pre>
     </div>
     <div class="tab-pane" id="response-body-preview">
-      <div class="pre span12" style="margin-left:0px"></div>
+      <div class="pre" style="margin-left:0px;padding: 0;"></div>
     </div>
   </div>
   <br />

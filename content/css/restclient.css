@@ -321,28 +321,9 @@ span.header-value {
 #response .overflow {
   overflow: auto;
 }
-@media (min-width: 1200px) {
-  #request-url {
-    width: 742px !important;
-  }
-}
-@media (min-width: 979px) and (max-width: 1199px) {
-  #request-url {
-    width: 512px !important;
-  }
-  #request-url-list {
-    width: 569px !important;
-  }
-}
-@media (min-width: 768px) and (max-width: 979px) {
-  #request-url {
-    width: 295px !important;
-  }
-}
+
 @media (max-width: 767px) {
-  #request-url {
-    width: 119px;
-  }
+
   #request-method{
     width: 44px;
   }

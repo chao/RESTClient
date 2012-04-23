@@ -57,6 +57,19 @@ if (typeof (restclient) === "undefined") {
         console.error(JSON.stringify(arg));
         console.error(e.message);
       }
-    }
+    },
+    convertStringToUTF8: function(aStr)
+      {
+        var utf8Converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].
+            getService(Components.interfaces.nsIUTF8ConverterService);
+
+        try {
+          return utf8Converter.convertStringToUTF8 (aStr, "UTF-8"); //utf8Converter.convertStringToUTF8(aStr, "utf-8", false); 
+        }
+        catch(e) {
+          console.error(e);
+          return aStr;
+        }
+      }
   }
 }

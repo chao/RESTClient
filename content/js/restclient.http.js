@@ -41,12 +41,19 @@ restclient.http = {
       xhr.onerror = restclient.http.onerror;
       xhr.onload = restclient.http.onload;
       xhr.onprogress = restclient.http.onprogress;
-
+      
       xhr.open(requestMethod, requestUrl, true);
       xhr.setRequestHeader("Accept-Language", null);
 
       for(var i=0, header; header = requestHeaders[i]; i++) {
         xhr.setRequestHeader(header[0], header[1]);
+        
+        //Override XMLHTTPRequest default charset
+        if(typeof mimeType != 'string' && 
+            header[0].toLowerCase() == 'content-type' && header[1].toLowerCase().indexOf('charset') > -1)
+        {
+          xhr.overrideMimeType(header[1]);
+        }
       }
 
       if(typeof mimeType == 'string')

@@ -811,10 +811,13 @@ restclient.main = {
     var responseData = this.xhr.responseText;
 
     if(responseData.length > 0) {
-      var iframe = $("<iframe></firame>")
-        .attr("type", "content")
-        .attr("src", "data:text/html," + encodeURIComponent(responseData));
-      $("#response-body-preview div.pre").append(iframe);
+      
+      var target = document.getElementById('response-body-preview'),
+          fragment = Components.classes["@mozilla.org/feed-unescapehtml;1"]  
+                               .getService(Components.interfaces.nsIScriptableUnescapeHTML)  
+                               .parseFragment(responseData, false, null, target);
+      //console.log(responseData);
+      $("#response-body-preview div.pre").append(fragment);
       $("#response-body-preview div.pre").removeClass('overflow');
       
       $('#response-body-highlight pre').text(responseData);

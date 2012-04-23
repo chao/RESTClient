@@ -26,7 +26,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-RESTClient.xpi
 RESTClient.tmproj
 .DS_Store
 # Thumbnails
@@ -36,3 +35,4 @@ RESTClient.tmproj
 .Trashes
 #ignore test scripts
 *.test.js
+*.xpi

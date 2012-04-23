@@ -86,7 +86,7 @@
     <div id="request-container" style="margin-bottom: 18px;">
     <div id="request-error"></div>
     <div id="request-form" class="well">
-      <form class="form-inline" onsubmit="return false;" style="margin-bottom:0px">
+      <form class="form-inline" style="margin-bottom:0px">
         <label style="margin-left: 5px;">Method</label>
         <input id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span class="request-method-dropdown dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="request-method-icon icon-chevron-down"></i></a>
@@ -94,7 +94,7 @@
           </ul>
         </span>
         <label style="margin-left: 15px;">URL</label>
-        <input id="request-url" type="text" autocomplete="on" style="margin: 0 auto;" placeholder="http://www.example.com"><span class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
+        <input id="request-url" name="request-url" type="text" autocomplete="on" style="margin: 0 auto;" placeholder="http://www.example.com"><span class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="favorite-list-icon icon-chevron-down"></i></a>
           <ul id="request-url-list" class="dropdown-menu">
           </ul>

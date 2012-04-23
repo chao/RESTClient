@@ -48,8 +48,8 @@ restclient.main = {
   init: function() {
     restclient.init();
     this.initSkin();
+    
     $(window).resize(restclient.main.resizeRequestForm).resize();
-
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
     $(window).on('scroll', restclient.main.processScroll).scroll();
 
@@ -95,6 +95,7 @@ restclient.main = {
     $('.favorite-icon').click(restclient.main.favoriteUrl);
     $('.toggle-request').click(restclient.main.toggleRequest);
     $('.toggle-response').click(restclient.main.toggleResponse);
+    $('.toggle-lyaout').click(restclient.main.toggleLayout);
   },
   changeSkin: function(cssFileName) {
     $("link").remove();
@@ -126,6 +127,12 @@ restclient.main = {
     setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
   },
   initSkin: function(){
+    var layout = restclient.getPref('pageLayout', 'fixed');
+    if(layout == 'percentage'){
+      $('.container').addClass('container-fluid').removeClass('container');
+      $('.toggle-lyaout').attr('data-layout', 'percentage');
+      $('.toggle-lyaout').text('Switch to fixed page layout');
+    }
     var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.simplex.css');
     restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function(){
@@ -197,17 +204,18 @@ restclient.main = {
         labelWidth = 0,
         buttonWidth = $('#request-button').outerWidth(true),
         spanWidth = $('.request-method-dropdown').outerWidth(true) + $('.request-url-icons').outerWidth(true),
-        urlIconsWidth = $('.request-url-icons').outerWidth(true);
+        urlIconsWidth = $('.request-url-icons').outerWidth(true),
+        requestMethodWidth = $('#request-method').outerWidth(true);
     $('#request form label').each(function(){
       labelWidth += $(this).outerWidth(true);
     });
-    if(formWidth < 684)
-      $('#request-url').width(formWidth - (labelWidth + buttonWidth + spanWidth) -80);
-
+    console.log(formWidth);
+    console.log(labelWidth);
+    console.log(buttonWidth);
+    console.log(spanWidth);
+    console.log(requestMethodWidth);
+    $('#request-url').width(formWidth - (labelWidth + buttonWidth + spanWidth + requestMethodWidth + 23));
     $('#request-url-list').width($('#request-url').outerWidth(true) + urlIconsWidth-7);
-
-    if(formWidth >= 684)
-      $('#request-url').css('width', '');
   },
   toggleRequest: function(e) {
     var toggle = $('.toggle-request');
@@ -246,6 +254,23 @@ restclient.main = {
     });
     if(e) e.preventDefault();
     return false;
+  },
+  toggleLayout: function(e){
+    if($(this).attr('data-layout') == 'fixed')
+    {
+      $('.container').addClass('container-fluid').removeClass('container');
+      $(this).attr('data-layout', 'percentage');
+      $(this).text('Switch to fixed page layout');
+      restclient.setPref('pageLayout', 'percentage');
+    }
+    else
+    {
+      $('.container-fluid').removeClass('container-fluid').addClass('container');
+      $(this).attr('data-layout', 'fixed');
+      $(this).text('Switch to percentage page layout');
+      restclient.setPref('pageLayout', 'fixed');
+    }
+    restclient.main.resizeRequestForm();
   },
   initRequestUrl: function() {
     var urls = restclient.main.getCachedUrls();

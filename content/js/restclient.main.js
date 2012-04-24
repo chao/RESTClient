@@ -124,6 +124,11 @@ restclient.main = {
        type: "text/css",
        href: "css/prettify.css"
     }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/KelpJSONView.css"
+    }).appendTo("head");
     setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
   },
   initSkin: function(){
@@ -209,11 +214,7 @@ restclient.main = {
     $('#request form label').each(function(){
       labelWidth += $(this).outerWidth(true);
     });
-    console.log(formWidth);
-    console.log(labelWidth);
-    console.log(buttonWidth);
-    console.log(spanWidth);
-    console.log(requestMethodWidth);
+
     $('#request-url').width(formWidth - (labelWidth + buttonWidth + spanWidth + requestMethodWidth + 23));
     $('#request-url-list').width($('#request-url').outerWidth(true) + urlIconsWidth-7);
   },
@@ -693,8 +694,14 @@ restclient.main = {
     if(str.length > len)
     {
       for (var j = 0, np = ''; j < str.length; j += len, np = '\n') {
-        np += str.substr(j, len);
-        result += np;
+        var line = str.substr(j, len);
+        if(line.indexOf('\n') > -1 || line.indexOf(' ') > -1)
+          result += line; 
+        else
+        {
+          np += line;
+          result += np;
+        }
       }
       return result;
     }
@@ -721,7 +728,7 @@ restclient.main = {
             valHtml = null;
 
         if(typeof val == 'string'){
-          val = restclient.main.wrapText(val, 80);
+          val = restclient.main.wrapText(val, 120);
           valHtml = $('<span class="header-value"></span>').text(val)
         }
         else
@@ -788,7 +795,7 @@ restclient.main = {
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader();
     $("#response-body-preview div.pre").addClass('overflow');
-    //$('[href="#response-headers"]').click();
+    $('#response-body-highlight pre').empty().removeClass('KelpJSONView').addClass('prettyprint linenums');
   },
   checkMimeType: function(){
     var contentType = this.xhr.getResponseHeader("Content-Type");
@@ -835,6 +842,7 @@ restclient.main = {
       xml = xml.replace(reg, '$1\r\n$2$3');
       var pad = 0;
       jQuery.each(xml.split('\r\n'), function(index, node) {
+        //console.log(node);
         var indent = 0;
         if (node.match( /.+<\/\w[^>]*>$/ )) {
           indent = 0;
@@ -860,12 +868,14 @@ restclient.main = {
     }
     catch(e)
     {
+      //console.error(e);
       return xml;
     }
   },
   display: function() {
     var responseData = this.xhr.responseText;
     $('#response-body-raw pre').text(responseData);
+    window.prettyPrint && prettyPrint();
   },
   displayHtml: function() {
     var responseData = this.xhr.responseText;
@@ -884,6 +894,7 @@ restclient.main = {
     }
 
     $('#response-body-raw pre').text(responseData);
+    window.prettyPrint && prettyPrint();
   },
   displayXml: function() {
     var responseData = this.xhr.responseText,
@@ -905,7 +916,9 @@ restclient.main = {
           var xsltProcessor = new XSLTProcessor();
           xsltProcessor.importStylesheet(xslDoc);
           var resultFragment = xsltProcessor.transformToFragment(responseXml, document);
-          $("#response-body-highlight pre").text($('<p></p>').append(resultFragment).html());
+          
+          //$("#response-body-highlight pre").append(resultFragment);
+          //$("#response-body-highlight pre").text($('<p></p>').append(resultFragment).html());
           //$('#response-body-preview .expander').click(restclient.main.toggleExpander);
           window.prettyPrint && prettyPrint();
       };
@@ -914,7 +927,10 @@ restclient.main = {
 
     //$("#response-body-preview div.pre").append(iframe);
     $('#response-body-raw pre').text(responseData);
-    $('#response-body-highlight pre').text(restclient.main.formatXml(responseData));
+    var indentXml = restclient.main.formatXml(responseData);
+    //console.log(indentXml);
+    $('#response-body-highlight pre').text(indentXml);
+    window.prettyPrint && prettyPrint();
   },
   displayJson: function() {
     var responseData = this.xhr.responseText;
@@ -924,7 +940,9 @@ restclient.main = {
     try{
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
-    $('#response-body-highlight pre').addClass('lang-js').text(reformatted);
+    $('#response-body-highlight pre').empty().removeClass('prettyprint linenums');
+    $.JSONView(reformatted, $('#response-body-highlight pre'));
+    //$('#response-body-highlight pre').text(reformatted);
     $("#response-body-preview div.pre").removeClass('overflow').append($('<textarea></textarea>').text(reformatted));
   },
   displayImage: function() {
@@ -1719,6 +1737,7 @@ restclient.main = {
       return false;
     }
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
+    //restclient.main.resizeRequestForm();
   },
   validateUrl: function (url) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/

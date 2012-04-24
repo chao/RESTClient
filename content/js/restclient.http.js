@@ -87,26 +87,19 @@ restclient.http = {
     var headers = {};
     headers["Status Code"] = xhr.status + " " + xhr.statusText;
 
-    var headersText = xhr.getAllResponseHeaders();
-    var responseHeaders = headersText.split("\n");
-    var key, headValue;
+    var headersText     = xhr.getAllResponseHeaders(),
+        responseHeaders = headersText.split("\n"),
+        key, value, headers = [];
     for (var i = 0, header; header = responseHeaders[i]; i++) {
       if(header.indexOf(":") > 0) {
-        key = header.substring(0, header.indexOf(":"));
-        headValue = header.substr(header.indexOf(":") + 2);
-        headValue = headValue.replace(/\s$/, "");
-        headers[key] = headValue;
+        key   = header.substring(0, header.indexOf(":"));
+        value = xhr.getResponseHeader(key);
+        if(value)
+          headers[key] = value;
       }
-      else
-        if(typeof key !== 'undefined') {
-          if(typeof headers[key] == 'string')
-          {
-            headers[key] = new Array(headers[key], header);
-          }
-          else
-            headers[key].push(header);
-        }
     }
+    //console.log(headers);
+    
     restclient.main.setResponseHeader(headers);
     var contentType = xhr.getResponseHeader("Content-Type");
 
@@ -133,7 +126,7 @@ restclient.http = {
     //console.log(contentType);
     restclient.main.checkMimeType.apply(restclient.http, []);
     restclient.main[displayHandler].apply(restclient.http, []);
-    window.prettyPrint && prettyPrint();
+    
     restclient.main.updateProgressBar(-1);
   },
   abortRequest: function(){

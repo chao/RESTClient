@@ -828,6 +828,41 @@ restclient.main = {
           exclude: true
         });
   },
+  formatXml: function(xml) {
+    var formatted = '';
+    try{
+      var reg = /(>)(<)(\/*)/g;
+      xml = xml.replace(reg, '$1\r\n$2$3');
+      var pad = 0;
+      jQuery.each(xml.split('\r\n'), function(index, node) {
+        var indent = 0;
+        if (node.match( /.+<\/\w[^>]*>$/ )) {
+          indent = 0;
+        } else if (node.match( /^<\/\w/ )) {
+          if (pad != 0) {
+            pad -= 1;
+          }
+        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+          indent = 1;
+        } else {
+          indent = 0;
+        }
+
+        var padding = '';
+        for (var i = 0; i < pad; i++) {
+          padding += '  ';
+        }
+
+        formatted += padding + node + '\r\n';
+        pad += indent;
+      });
+      return formatted;
+    }
+    catch(e)
+    {
+      return xml;
+    }
+  },
   display: function() {
     var responseData = this.xhr.responseText;
     $('#response-body-raw pre').text(responseData);
@@ -879,7 +914,7 @@ restclient.main = {
 
     //$("#response-body-preview div.pre").append(iframe);
     $('#response-body-raw pre').text(responseData);
-    $('#response-body-highlight pre').text(responseData);
+    $('#response-body-highlight pre').text(restclient.main.formatXml(responseData));
   },
   displayJson: function() {
     var responseData = this.xhr.responseText;
@@ -889,7 +924,7 @@ restclient.main = {
     try{
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
-    $('#response-body-highlight pre').text(reformatted);
+    $('#response-body-highlight pre').addClass('lang-js').text(reformatted);
     $("#response-body-preview div.pre").removeClass('overflow').append($('<textarea></textarea>').text(reformatted));
   },
   displayImage: function() {

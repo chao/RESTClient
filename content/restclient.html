@@ -266,12 +266,13 @@
         <a class="close btnClose">×</a>
         <h3>OAuth</h3>
       </div>
-      <ul class="nav nav-tabs">
-        <li class="hide"><a href="#get-access-token" data-toggle="tab">Get access token</a></li>
+      <div class="window-content">
+        <ul class="nav nav-tabs">
+        <!--<li class="hide"><a href="#get-access-token" data-toggle="tab">Get access token</a></li>//-->
         <li class="active"><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
         <li><a href="#oauth-setting" data-toggle="tab">OAuth setting</a></li>
       </ul>
-      <div class="tab-content">
+        <div class="tab-content">
         <div class="tab-pane hide" id="get-access-token">
           <form class="form-horizontal" onsubmit="return false;">
             <div class="control-group">
@@ -405,6 +406,7 @@
             <input class="btn btn-info btnClose" type="button" value="Close">
           </div>
         </div>
+      </div>
       </div>
     </div><!--end window-wrapper//-->
   </div>

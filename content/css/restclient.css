@@ -199,7 +199,7 @@ a, a:hover {
   overflow:hidden;
   width:100%;
   border-radius:3px;
-  padding: 10px 20px 0px 20px;
+  padding: 0;
 }
 .window{
   padding-top: 60px;
@@ -211,7 +211,13 @@ a, a:hover {
   z-index:1020;
 }
 .window-header {
-  padding: 9px 0;
+  padding: 9px 15px;
+}
+.window-content{
+  padding: 0;
+}
+.window-content ul.nav-tabs li:first-child {
+  margin-left: 15px;
 }
 .window-overlay a {
   text-decoration: none;

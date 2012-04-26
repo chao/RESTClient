@@ -49,7 +49,6 @@ restclient.main = {
     restclient.init();
     this.initSkin();
     
-    //$(window).resize(restclient.main.resizeRequestForm).resize();
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
     $(window).on('scroll', restclient.main.processScroll).scroll();
 
@@ -137,7 +136,6 @@ restclient.main = {
        type: "text/css",
        href: "css/KelpJSONView.css"
     }).appendTo("head");
-    //setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
   },
   initSkin: function(){
     var layout = restclient.getPref('pageLayout', 'fixed');
@@ -212,20 +210,6 @@ restclient.main = {
       return false;
     });
   },
-  resizeRequestForm: function() {
-    var formWidth = $('#request form').innerWidth(),
-        labelWidth = 0,
-        buttonWidth = $('#request-button').outerWidth(true),
-        spanWidth = $('.request-method-dropdown').outerWidth(true) + $('.request-url-icons').outerWidth(true),
-        urlIconsWidth = $('.request-url-icons').outerWidth(true),
-        requestMethodWidth = $('#request-method').outerWidth(true);
-    $('#request form label').each(function(){
-      labelWidth += $(this).outerWidth(true);
-    });
-
-    $('#request-url').width(formWidth - (labelWidth + buttonWidth + spanWidth + requestMethodWidth + 23));
-    $('#request-url-list').width($('#request-url').outerWidth(true) + urlIconsWidth-7);
-  },
   toggleRequest: function(e) {
     var toggle = $('.toggle-request');
     $('#request-container').slideToggle('slow', function() {
@@ -279,7 +263,6 @@ restclient.main = {
       $(this).text('Switch to percentage page layout');
       restclient.setPref('pageLayout', 'fixed');
     }
-    //restclient.main.resizeRequestForm();
   },
   initRequestUrl: function() {
     var urls = restclient.main.getCachedUrls();
@@ -1753,7 +1736,6 @@ restclient.main = {
       return false;
     }
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
-    //restclient.main.resizeRequestForm();
   },
   validateUrl: function (url) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/

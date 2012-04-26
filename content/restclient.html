@@ -89,19 +89,19 @@
     <div id="request-error"></div>
     <div id="request-form" class="well">
       <form class="form-inline" style="margin-bottom:0px">
-        <label style="margin-left: 5px;">Method</label>
-        <input id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span class="request-method-dropdown dropdown">
+        <label style="margin: 0 5px; width: 45px;">Method</label>
+        <input style="magin:0; width: 80px;" id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span style="width:20px; padding: 4px; margin: 0 0 0 -2px" class="request-method-dropdown dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="request-method-icon icon-chevron-down"></i></a>
           <ul id="request-method-list" class="dropdown-menu">
           </ul>
         </span>
-        <label style="margin-left: 15px;">URL</label>
-        <input id="request-url" name="request-url" type="text" autocomplete="on" style="margin: 0 auto;" placeholder="http://www.example.com"><span class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
+        <label style="margin: 0 5px 0 15px; width: 25px;">URL</label>
+        <input id="request-url" name="request-url" type="text" autocomplete="on" style="margin: 0 auto; width: -moz-calc(100% - 380px);" placeholder="http://www.example.com"><span style="width:45px; padding: 4px; margin: 0 0 0 -2px" class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="favorite-list-icon icon-chevron-down"></i></a>
           <ul id="request-url-list" class="dropdown-menu">
           </ul>
         </span></span>
-        <button id="request-button" type="button" class="btn btn-danger" style="margin-left: 20px; padding-left: 18px; padding-right: 18px;">SEND</button>
+        <button id="request-button" type="button" class="btn btn-danger" style="margin: 0 0 0 15px; padding: 4px 15px;">SEND</button>
       </form>
       <label class="checkbox overrideMimeType hide">
         <input type="checkbox" id="overrideMimeType" value="text/xml; charset=x-user-defined">
@@ -113,7 +113,7 @@
     </div>
     <div class="well" style="margin-bottom:0px;">
       <h4>Body</h4>
-      <textarea id="request-body" style="width: 99%;margin: 0;" rows="9" placeholder="Request Body"></textarea>
+      <textarea id="request-body" style="width: 99%;margin: 0;height: 60px;" placeholder="Request Body"></textarea>
     </div>
     
     </div>

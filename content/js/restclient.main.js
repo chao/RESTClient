@@ -49,7 +49,7 @@ restclient.main = {
     restclient.init();
     this.initSkin();
     
-    $(window).resize(restclient.main.resizeRequestForm).resize();
+    //$(window).resize(restclient.main.resizeRequestForm).resize();
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
     $(window).on('scroll', restclient.main.processScroll).scroll();
 
@@ -96,6 +96,14 @@ restclient.main = {
     $('.toggle-request').click(restclient.main.toggleRequest);
     $('.toggle-response').click(restclient.main.toggleResponse);
     $('.toggle-lyaout').click(restclient.main.toggleLayout);
+    
+    $('#request-body').focus(function(){
+      if($(this).innerHeight() < 200 )
+        $(this).css('height', '200px');
+    }).blur(function(){
+      if($(this).innerHeight() > 60 )
+        $(this).css('height', '60px');
+    });
   },
   changeSkin: function(cssFileName) {
     $("link").remove();
@@ -129,7 +137,7 @@ restclient.main = {
        type: "text/css",
        href: "css/KelpJSONView.css"
     }).appendTo("head");
-    setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
+    //setTimeout(function(){ restclient.main.resizeRequestForm(); }, 1000);
   },
   initSkin: function(){
     var layout = restclient.getPref('pageLayout', 'fixed');
@@ -271,7 +279,7 @@ restclient.main = {
       $(this).text('Switch to percentage page layout');
       restclient.setPref('pageLayout', 'fixed');
     }
-    restclient.main.resizeRequestForm();
+    //restclient.main.resizeRequestForm();
   },
   initRequestUrl: function() {
     var urls = restclient.main.getCachedUrls();
@@ -721,7 +729,15 @@ restclient.main = {
     else
     {
       var ol = $('<ol class="linenums"></ol>');
-      for(var name in headers) {
+      var keys = [];
+      
+      for(var key in headers)
+        if(headers.hasOwnProperty(key) && key != 'Status Code') 
+          keys.push(key);
+            
+      keys.sort(); //sort response header
+      keys.unshift('Status Code'); //put status code on the first line
+      for(var n=0, name; name = keys[n]; n++) {
         if(!headers.hasOwnProperty(name))
           continue;
         var val     = headers[name],

@@ -89,7 +89,8 @@ restclient.http = {
 
     var headersText     = xhr.getAllResponseHeaders(),
         responseHeaders = headersText.split("\n"),
-        key, value, headers = [];
+        key, value;
+        
     for (var i = 0, header; header = responseHeaders[i]; i++) {
       if(header.indexOf(":") > 0) {
         key   = header.substring(0, header.indexOf(":"));
@@ -98,6 +99,7 @@ restclient.http = {
           headers[key] = value;
       }
     }
+    headers["Status Code"] = xhr.status + " " + xhr.statusText;
     //console.log(headers);
     
     restclient.main.setResponseHeader(headers);

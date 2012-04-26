@@ -322,15 +322,6 @@ span.header-value {
   overflow: auto;
 }
 
-@media (max-width: 767px) {
-
-  #request-method{
-    width: 44px;
-  }
-  #request-button{
-    padding: 4px 6px !important;
-  }
-}
 @media (min-width: 980px) {
   body{
     padding-top: 60px;

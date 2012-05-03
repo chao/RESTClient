@@ -65,7 +65,7 @@
         "<xsl:element name="html:a">
           <xsl:attribute name="href">#</xsl:attribute>
           <xsl:attribute name="class">attribute-href</xsl:attribute>
-          <xsl:attribute name="onclick">setRequestUrl('<xsl:value-of select="."/>');</xsl:attribute>
+          <xsl:attribute name="onclick">restclient.main.setRequestUrl('<xsl:value-of select="."/>');</xsl:attribute>
           <xsl:value-of select="."/>
         </xsl:element>"
       </xsl:when>

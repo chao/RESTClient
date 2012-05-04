@@ -109,13 +109,14 @@ restclient.main = {
       $('#modal-oauth-view .btnAutoRefresh').toggleClass('active');
       restclient.main.setOAuthAutoRefresh(headerId, $('#modal-oauth-view .btnAutoRefresh').hasClass('active'));
     });
+    
     $('#modal-oauth-view .btnRefresh').bind('click', function() {
       var headerId = $('#modal-oauth-view').data('source-header-id');
       restclient.log(headerId);
       headerId = restclient.main.updateOAuthSign(headerId);
       restclient.log(headerId);
       $('#modal-oauth-view').data('source-header-id', headerId);
-      $('#modal-oauth-view textarea').text($('span[data-headerid="' + headerId + '"]').attr('header-value'));
+      $('#modal-oauth-view textarea').text($('span[data-header-id="' + headerId + '"]').attr('header-value'));
     });
   },
   changeSkin: function(cssFileName) {
@@ -617,8 +618,8 @@ restclient.main = {
       for(var n in param) {
         if(!param.hasOwnProperty(n))
           continue;
-        tag.attr(n, param[n]);
-        tr.attr(n, param[n]);
+        tag.attr(n, (typeof param[n] === 'string') ? param[n] : JSON.stringify(param[n]));
+        tr.attr(n, (typeof param[n] === 'string') ? param[n] : JSON.stringify(param[n]));
       }
       
     $('.table .headers').mouseover(function(){
@@ -653,8 +654,8 @@ restclient.main = {
       for(var n in param) {
         if(!param.hasOwnProperty(n))
           continue;
-        tag.attr(n, param[n]);
-        tr.attr(n, param[n]);
+        tag.attr(n, (typeof param[n] === 'string') ? param[n] : JSON.stringify(param[n]));
+        tr.attr(n, (typeof param[n] === 'string') ? param[n] : JSON.stringify(param[n]));
       }
     return newId;
   },
@@ -1732,11 +1733,11 @@ restclient.main = {
     $('[data-header-id="' + headerId + '"]').attr('auto-refresh', (auto) ? "yes" : "no");
   },
   updateOAuthSign: function(headerId){
-
+    //restclient.log('.tag span[data-header-id="' + headerId + '"]');
     var headerSpan  = $('.tag span[data-header-id="' + headerId + '"]'),
     secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
     parameters      = JSON.parse(headerSpan.attr('oauth-parameters'));
-
+    
     var requestMethod = $('#request-method').val(),
         requestUrl    = $('#request-url').val(),
         requestBody   = $('#request-body').val();
@@ -1759,7 +1760,7 @@ restclient.main = {
                               signatures: secrets,
                               parameters: param
                             });
-    $('[data-id="' + headerId + '"]').val(signature.headerString);
+    //$('[data-id="' + headerId + '"]').val(signature.headerString);
     
     return this.replaceHttpRequestHeader(headerId, 'Authorization', signature.headerString, {"oauth-secrets": secrets, "oauth-parameters": parameters});    
   },

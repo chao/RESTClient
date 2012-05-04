@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 restclient.message = {
   show: function(arg) {
-    //console.log(arg);
+    //restclient.log(arg);
     var container = $('<div class="alert alert-block fade in"></div>'),
         id = (arg.id) ? arg.id : (((1+Math.random())*0x10000)|0).toString(16).substring(1);
     container.attr('id', id);
@@ -80,7 +80,7 @@ restclient.message = {
       }
       container.append(p);
     }
-    //console.log(container);
+    //restclient.log(container);
     if(arg.parent)
     {
       if(arg.exclude)

@@ -38,7 +38,7 @@ restclient.oauth = {
     delete this._secret;
   },
   sign: function(arg) {
-    //console.log(arg);
+    //restclient.log(arg);
     if(arg.action)
       this.setAction(arg.action);
     if(arg.signatures)
@@ -49,7 +49,7 @@ restclient.oauth = {
       this.setPath(arg.path);
 
     var normParams = this.normalizeToString();
-    //console.log(normParams);
+    //restclient.log(normParams);
     var oauth_signature = this.generateSignature(normParams);
     //console.error(oauth_signature);
     this._parameters['oauth_signature'] = oauth_signature;
@@ -169,20 +169,20 @@ restclient.oauth = {
     }
     if (encrypt == 'HMAC-SHA1')
     {
-      //console.log(this._parameters);
-      //console.log(secretKey);
+      //restclient.log(this._parameters);
+      //restclient.log(secretKey);
       var toSign = restclient.oauth.oauthEscape(this._action)
                         + '&' + restclient.oauth.oauthEscape(this._path)
                         + '&' + restclient.oauth.oauthEscape(str);
-      //console.log(toSign);
-      //console.log(secretKey);
+      //restclient.log(toSign);
+      //restclient.log(secretKey);
       return this.b64_hmac_sha1(secretKey, toSign);
     }
     return null;
   },
   normalizeToString: function(parameters) {
     parameters = parameters || this._parameters;
-    //console.log(parameters);
+    //restclient.log(parameters);
     var names = [], result = [];
     for(var n in parameters) {
       if(!parameters.hasOwnProperty(n))
@@ -193,10 +193,10 @@ restclient.oauth = {
     names = names.sort();
 
     for(var i=0, n; n = names[i]; i++) {
-      //console.log(n);
+      //restclient.log(n);
       if(n.match(/\w+_secret/))
         continue;
-      //console.log(n);
+      //restclient.log(n);
       if(Object.prototype.toString.call(parameters[n]) == '[object Array]')
       {
         var sorted = parameters[n].sort();
@@ -243,26 +243,6 @@ restclient.oauth = {
         result += restclient.oauth._nonceRange.substring(rnum, rnum+1);
     }
     return result;
-  },
-  sha1: function(data, base64) {
-    var ch = Components.classes["@mozilla.org/security/hash;1"]
-                       .createInstance(Components.interfaces.nsICryptoHash);
-    ch.init(ch.SHA1);
-    ch.update(data, data.length);
-    if(base64)
-      return ch.finish(true);
-    var hash = ch.finish(false);
-
-    // return the two-digit hexadecimal code for a byte
-    function toHexString(charCode)
-    {
-      return ("0" + charCode.toString(16)).slice(-2);
-    }
-
-    // convert the binary hash data to a hex string.
-    var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
-
-    return s;
   },
   b64_hmac_sha1: function(k,d,_p,_z){
     // heavily optimized and compressed version of http://pajhome.org.uk/crypt/md5/sha1.js

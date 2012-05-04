@@ -47,7 +47,6 @@ if (typeof (restclient) === "undefined") {
     getPref : function (name, value) {
       return restclient.Preferences.get("extension.restclient." + name, value);
     },
-
     i18n : function (n, arg) {
         i18nStrings = new restclient.StringBundle("chrome://restclient/locale/restclient.properties");
       try {
@@ -59,17 +58,22 @@ if (typeof (restclient) === "undefined") {
       }
     },
     convertStringToUTF8: function(aStr)
-      {
-        var utf8Converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].
-            getService(Components.interfaces.nsIUTF8ConverterService);
-
-        try {
-          return utf8Converter.convertStringToUTF8 (aStr, "UTF-8"); //utf8Converter.convertStringToUTF8(aStr, "utf-8", false); 
-        }
-        catch(e) {
-          console.error(e);
-          return aStr;
-        }
+    {
+      var utf8Converter = Components.classes["@mozilla.org/intl/utf8converterservice;1"].
+          getService(Components.interfaces.nsIUTF8ConverterService);
+    
+      try {
+        return utf8Converter.convertStringToUTF8 (aStr, "UTF-8"); //utf8Converter.convertStringToUTF8(aStr, "utf-8", false); 
       }
+      catch(e) {
+        console.error(e);
+        return aStr;
+      }
+    },
+    log: function(str) {
+      try{
+        console.log(str);
+      }catch(e){}
+    }
   }
 }

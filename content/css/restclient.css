@@ -349,7 +349,15 @@ span.header-value {
 th.center, td.center {
   text-align: center;
 }
-
+tr.headers > td:first-child{
+  width: 140px;
+  text-align: center;
+  vertical-align:middle;
+}
+tr.headers td {
+  cursor: pointer;
+  height: 29px;
+}
 @media (min-width: 980px) {
   body{
     padding-top: 60px;

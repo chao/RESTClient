@@ -36,7 +36,7 @@ restclient.http = {
       restclient.main.updateProgressBar(100);
       restclient.main.showResponse();
       restclient.http.mimeType = mimeType;
-      //console.log(requestMethod);
+      //restclient.log(requestMethod);
       var xhr = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"].createInstance(Components.interfaces.nsIXMLHttpRequest);
       xhr.onerror = restclient.http.onerror;
       xhr.onload = restclient.http.onload;
@@ -70,7 +70,7 @@ restclient.http = {
     }
   },
   onprogress: function(evt) {
-    //console.log(evt.position * 100 / evt.totalSize + "," + evt.position + "," + evt.totalSize);
+    //restclient.log(evt.position * 100 / evt.totalSize + "," + evt.position + "," + evt.totalSize);
     var percentComplete = evt.position * 100 / evt.totalSize;
     restclient.main.updateProgressBar(percentComplete, 'Receving data...');
     if(evt.position == evt.totalSize)
@@ -100,7 +100,7 @@ restclient.http = {
       }
     }
     headers["Status Code"] = xhr.status + " " + xhr.statusText;
-    //console.log(headers);
+    //restclient.log(headers);
     
     restclient.main.setResponseHeader(headers);
     var contentType = xhr.getResponseHeader("Content-Type");
@@ -124,8 +124,8 @@ restclient.http = {
       }
     }
     
-    //console.log(displayHandler);
-    //console.log(contentType);
+    //restclient.log(displayHandler);
+    //restclient.log(contentType);
     restclient.main.checkMimeType.apply(restclient.http, []);
     restclient.main[displayHandler].apply(restclient.http, []);
     

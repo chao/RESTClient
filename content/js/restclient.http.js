@@ -90,7 +90,7 @@ restclient.http = {
     var headersText     = xhr.getAllResponseHeaders(),
         responseHeaders = headersText.split("\n"),
         key, value;
-        
+
     for (var i = 0, header; header = responseHeaders[i]; i++) {
       if(header.indexOf(":") > 0) {
         key   = header.substring(0, header.indexOf(":"));

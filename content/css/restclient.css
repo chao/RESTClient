@@ -327,6 +327,29 @@ span.header-value {
   overflow: auto;
 }
 
+.request-header-reset {
+  float:right; 
+  font-size: 11px; 
+  color: #333;
+  font-weight: normal;
+}
+.request-header-reset a{
+  color: #999;
+  cursor:pointer;
+  padding: 4px 8px; 
+}
+.request-header-reset a:hover{
+  color: #333;
+  cursor:pointer;
+  border-bottom:1px solid #666;
+  border-radius: 4px;
+  background-color:#EEE;
+}
+
+th.center, td.center {
+  text-align: center;
+}
+
 @media (min-width: 980px) {
   body{
     padding-top: 60px;

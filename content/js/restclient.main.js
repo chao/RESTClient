@@ -95,7 +95,7 @@ restclient.main = {
     $('.toggle-request').click(restclient.main.toggleRequest);
     $('.toggle-response').click(restclient.main.toggleResponse);
     $('.toggle-lyaout').click(restclient.main.toggleLayout);
-    
+    $('.toggle-header-lyaout').click(restclient.main.toggleRequestHeaderLayout);
     $('#request-body').focus(function(){
       if($(this).innerHeight() < 200 )
         $(this).css('height', '200px');
@@ -489,6 +489,7 @@ restclient.main = {
   },
   removeHttpRequestHeaders: function(){
     $('#request-headers span.label').remove();
+    $('#request-headers table tbody').empty();
     if( $('#request-headers span.label').length == 0 ) {
       $('#request-headers').hide();
     }
@@ -574,11 +575,26 @@ restclient.main = {
               .attr('header-value', value)
               .append($('<a />').addClass('close').text('×').bind('click', restclient.main.removeHttpRequestHeader));
     span.bind('click', restclient.main.editHttpRequestHeader);
-    $('#request-headers').append(span);
+    $('#request-headers .tag').append(span);
 
+    var tr = $('<tr class="headers"></tr>').append(
+      $('<td></td>').text(name)
+    ).append(
+      $('<td></td>').text(value)
+    ).append(
+      $('<td class="center"><input class="btn btn-mini" type="button" value="Remove"></td>')
+    );
+    $('#request-headers table tbody').append(tr);
+    
     if( $('#request-headers span.label').length > 0 ) {
       $('#request-headers').show();
     }
+    
+    $('.list .headers').mouseover(function(){
+      $(this).find('input.btn').addClass('btn-danger');
+    }).mouseout(function(){
+      $(this).find('input.btn').removeClass('btn-danger');
+    });
     return span;
   },
   addCustomHeader: function() {
@@ -1745,17 +1761,12 @@ restclient.main = {
     $('#paypal_donate').submit();
   },
   setRequestUrl: function(url) {
-  	var currentUrl = $("#request-url").val();
-  	
-  	if(url.match(/^http/)) {
-		$("#request-url").val(url);
-	}
-	else
-	{
-		var protocol = currentUrl.split("/")[0];
-		var host = currentUrl.split("/")[2];
-		$("#request-url").val(protocol + "//" + host + url);
-	}
+    var currentUrl = $("#request-url").val();
+    
+    if (restclient.helper.isAbsoluteUrl(url)) 
+      $("#request-url").val(url);
+    else
+      $("#request-url").val(restclient.helper.makeUrlAbsolute(url, currentUrl));
   }
 };
 

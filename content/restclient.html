@@ -64,16 +64,17 @@
             </ul>
           </li>
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Skins <b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Setting <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li class="nav-header">Layout</li>
               <li><a style="cursor:pointer" class="toggle-lyaout" data-layout="fixed">Switch to percentage page layout</a></li>
+              <li><a style="cursor:pointer" class="toggle-header-layout" data-layout="list">List request headers in tags</a></li>
               <li class="divider"></li>
+              <li class="nav-header">Skins (bootswatch.com)</li>
               <li><a href="#" css="bootstrap.cerulean.css">Cerulean</a></li>
               <li><a href="#" css="bootstrap.journal.css">Journal</a></li>
               <li><a href="#" css="bootstrap.simplex.css">Simplex</a></li>
               <li><a href="#" css="bootstrap.united.css">United</a></li>
-              <li class="divider"></li>
-              <li><a href="http://bootswatch.com/" target="_blank">Skin from bootswatch</a></li>
             </ul>
           </li>
         </ul>
@@ -108,14 +109,27 @@
         Allow image preview (overrideMimeType with "text/xml; charset=x-user-defined")
       </label>
     </div>
-    <div class="well hide" id="request-headers">
-      <h4>Headers</h4>
+    <div class="well" id="request-headers">
+      <h4 style="margin: 8px 5px 16px 6px;">Headers <span class="request-header-reset"><a onclick="restclient.main.removeHttpRequestHeaders();"><i class="icon-trash"></i> Remove All</a></span></h4>
+      <div class="tag"></div>
+      <div class="list">
+        <table class="table table-striped table-bordered table-condensed" style="margin:0;">
+          <thead>
+            <tr>
+              <th class="center"><b>Header Name</b></th>
+              <th class="center"><b>Header Value</b></th>
+              <th class="center" style="width: 60px;"><b>Remove</b></th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="well" style="margin-bottom:0px;">
       <h4>Body</h4>
       <textarea id="request-body" style="width: 99%;margin: 0;height: 60px;" placeholder="Request Body"></textarea>
     </div>
-    
     </div>
   </div>
 </div>
@@ -437,6 +451,6 @@
 <script type="text/javascript" src="js/restclient.headers.js"></script>
 <script type="text/javascript" src="js/restclient.http.js"></script>
 <script type="text/javascript" src="js/restclient.message.js"></script>
-
+<script type="text/javascript" src="js/restclient.helper.js"></script>
 </body>
 </html>

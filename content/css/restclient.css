@@ -181,9 +181,8 @@ a, a:hover {
 
 .window-overlay{
   background-color:rgba(0, 0, 0, 0.6);
-  z-index:1016;
   display: block;
-  z-index: 100000;
+  z-index:1016;
   position: fixed;
   top: 0;
   right: 0;

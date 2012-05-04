@@ -6,6 +6,10 @@
 
 
 ### Firefox Addon
+
+* Version 2.0.2
+  * Fixed links in the returned xml - they are now clickable again
+
 * Version 2.0.1
   * Fixed XML result indentation
   * Remember open response tab

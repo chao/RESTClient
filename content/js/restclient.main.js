@@ -1743,6 +1743,19 @@ restclient.main = {
   },
   donate: function() {
     $('#paypal_donate').submit();
+  },
+  setRequestUrl: function(url) {
+  	var currentUrl = $("#request-url").val();
+  	
+  	if(url.match(/^http/)) {
+		$("#request-url").val(url);
+	}
+	else
+	{
+		var protocol = currentUrl.split("/")[0];
+		var host = currentUrl.split("/")[2];
+		$("#request-url").val(protocol + "//" + host + url);
+	}
   }
 };
 

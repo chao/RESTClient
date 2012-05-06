@@ -36,6 +36,7 @@ restclient.oauth = {
     delete this._parameters;
     delete this._path;
     delete this._secret;
+    delete this._realm;
   },
   sign: function(arg) {
     //restclient.log(arg);
@@ -47,6 +48,8 @@ restclient.oauth = {
       this.setParameters(arg.parameters);
     if(arg.path)
       this.setPath(arg.path);
+    if(arg.realm)
+      this._realm = arg.realm;
 
     var normParams = this.normalizeToString();
     //restclient.log(normParams);
@@ -279,6 +282,9 @@ restclient.oauth = {
   },
   getHeaderString: function() {
     var j,pName,pLength,result = 'OAuth ';
+    if (this._realm)
+      result += 'realm="'+this.oauthEscape(this._realm)+'", ';
+    
     for (pName in this._parameters)
     {
       if (!pName.match(/^oauth/)) {
@@ -298,6 +304,7 @@ restclient.oauth = {
         result += pName + '="'+this.oauthEscape(this._parameters[pName])+'", ';
       }
     }
+
     return result.replace(/,\s+$/, '');
   }
 }

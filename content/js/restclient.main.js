@@ -1335,7 +1335,7 @@ restclient.main = {
         oauth_version               = $('#oauth_version'),
         oauth_nonce                 = $('#oauth_nonce'),
         oauth_timestamp             = $('#oauth_timestamp');
-
+        
     $('#get-access-token .btnOkay').bind('click', restclient.main.oauthAuthorize);
 
     var auto_oauth_timestamp   = $('#auto_oauth_timestamp'),
@@ -1353,10 +1353,13 @@ restclient.main = {
       param.oauth_nonce             = oauth_nonce.val();
       param.oauth_signature_method  = oauth_signature_method.val();
       param.oauth_version           = oauth_version.val();
+      param.disable_oauth_realm     = (disable_oauth_realm.attr('checked') == 'checked');
+      param.oauth_realm             = oauth_realm.val();
+      
       restclient.setPref('OAuth.setting', JSON.stringify(param));
     });
 
-    function autoTimeStamp(){
+    function autoTimeStamp() {
       if($('#auto_oauth_timestamp').attr('checked') == 'checked') {
         $('#oauth_timestamp').val('').addClass('disabled').attr('disabled',true);
         $('#oauth_timestamp').parent().next().hide();
@@ -1368,7 +1371,7 @@ restclient.main = {
       }
     }
 
-    function autoNonce(){
+    function autoNonce() {
       if($('#auto_oauth_nonce').attr('checked') == 'checked') {
         $('#oauth_nonce').val('').addClass('disabled').attr('disabled',true);
       }
@@ -1380,6 +1383,8 @@ restclient.main = {
 
     $('#auto_oauth_nonce').click(autoNonce);
 
+    
+    
     $('#window-oauth .btnClose').click(function() {
       $('#window-oauth').hide();
     });
@@ -1463,19 +1468,36 @@ restclient.main = {
         sign_access_token         = $('#signature-request [name="access_token"]'),
         sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
         sign_remember             = $('#signature-request [name="remember"]'),
+        sign_oauth_realm          = $('#signature-request [name="oauth_realm"]'),
+        sign_disable_oauth_realm  = $('#signature-request [name="disable_oauth_realm"]'),
+        
         sign = restclient.getPref('OAuth.sign', '');
     if(sign != '') {
       sign = JSON.parse(sign);
       if(sign.consumer_key)
-        sign_consumer_key.val(     sign.consumer_key);
+        sign_consumer_key.val (           sign.consumer_key);
       if(sign.consumer_secret)
-        sign_consumer_secret.val(  sign.consumer_secret);
+        sign_consumer_secret.val (        sign.consumer_secret);
       if(sign.access_token)
-        sign_access_token.val(     sign.access_token);
+        sign_access_token.val (           sign.access_token);
       if(sign.access_token_secret)
-        sign_access_token_secret.val(    sign.access_token_secret);
+        sign_access_token_secret.val (    sign.access_token_secret);
+      if(sign.oauth_realm)
+        sign_oauth_realm.val (            sign.oauth_realm);
+      
+      (sign.disable_oauth_realm === true) ? sign_disable_oauth_realm.attr('checked', true) : sign_disable_oauth_realm.removeAttr('checked');
       (sign.remember === true) ? sign_remember.attr('checked', true) : sign_remember.removeAttr('checked');
     }
+    
+    function toggleRealm() {
+      if(sign_disable_oauth_realm.attr('checked') === 'checked') {
+        sign_oauth_realm.addClass('disabled').attr('disabled',true);
+      } 
+      else
+        sign_oauth_realm.removeClass('disabled').removeAttr('disabled');
+    }
+    
+    sign_disable_oauth_realm.click(toggleRealm);
 
     $('#signature-request .btnInsertAsHeader').bind('click', restclient.main.oauthSign);
   },
@@ -1629,11 +1651,15 @@ restclient.main = {
         sign_access_token         = $('#signature-request [name="access_token"]'),
         sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
         sign_remember             = $('#signature-request [name="remember"]'),
+        sign_oauth_realm          = $('#signature-request [name="oauth_realm"]'),
+        sign_disable_oauth_realm  = $('#signature-request [name="disable_oauth_realm"]'),
+        
         oauth_signature_method    = $('#oauth_signature_method'),
         oauth_version             = $('#oauth_version'),
         oauth_nonce               = $('#oauth_nonce'),
         oauth_timestamp           = $('#oauth_timestamp'),
         sign_okay                 = $('#signature-request .btnOkay'),
+        
         errors = [];
 
     if(sign_consumer_key.val() == '') {
@@ -1646,13 +1672,27 @@ restclient.main = {
       errors.push(sign_consumer_secret);
     }
 
+    if (sign_disable_oauth_realm.attr('checked') !== 'checked' && sign_oauth_realm.val() != '') {
+      if(sign_oauth_realm.val().indexOf('?') > 0 || sign_oauth_realm.val().indexOf('#') > 0)
+      {
+        sign_oauth_realm.parents('.control-group').addClass('error');
+        sign_oauth_realm.nextAll('.help-block').show();
+        errors.push(sign_oauth_realm);
+      }
+    }
+    
     if(errors.length > 0) {
       var el = errors.shift();
       el.focus();
       //console.error(el);
       return false;
     }
-
+    else
+    {
+      $('#signature-request .control-group').removeClass('error');
+      $('#signature-request .error-info').hide();
+    }
+    
     sign_okay.button('loading');
     if(sign_remember.attr('checked') == 'checked') {
       var setting = {
@@ -1660,6 +1700,8 @@ restclient.main = {
         consumer_secret     : sign_consumer_secret.val(),
         access_token        : sign_access_token.val(),
         access_token_secret : sign_access_token_secret.val(),
+        oauth_realm         : sign_oauth_realm.val(),
+        disable_oauth_realm : (sign_disable_oauth_realm.attr('checked') === 'checked'),
         remember            : true
       };
       restclient.setPref('OAuth.sign', JSON.stringify(setting));
@@ -1694,14 +1736,23 @@ restclient.main = {
         param = $.extend(parameters, p);
       }
     }
-
     var signature = restclient.oauth.sign({
       action: $('#request-method').val(),
       path: url,
       signatures: secrets,
       parameters: param,
+      realm: sign_oauth_realm.val()
     });
-    var headerId = restclient.main.addHttpRequestHeader('Authorization', signature.headerString, {'oauth-parameters': JSON.stringify(parameters), 'oauth-secrets': JSON.stringify(secrets)});
+    
+    var headerValue = signature.headerString,
+        param       = {'oauth-parameters': JSON.stringify(parameters), 'oauth-secrets': JSON.stringify(secrets)};
+    if(sign_disable_oauth_realm.attr('checked') !== 'checked') {
+      //headerValue = 'realm="' + restclient.oauth.oauthEscape(sign_oauth_realm.val()) + '", ' + headerValue;
+      param.realm = sign_oauth_realm.val();
+    }
+    //headerValue = 'OAuth ' + headerValue;
+    
+    var headerId = restclient.main.addHttpRequestHeader('Authorization', headerValue, param);
     restclient.log('header id of oauth header: ' + headerId);
     $('#window-oauth').css('display', 'none');
 
@@ -1733,10 +1784,15 @@ restclient.main = {
     $('[data-header-id="' + headerId + '"]').attr('auto-refresh', (auto) ? "yes" : "no");
   },
   updateOAuthSign: function(headerId){
-    //restclient.log('.tag span[data-header-id="' + headerId + '"]');
-    var headerSpan  = $('.tag span[data-header-id="' + headerId + '"]'),
-    secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
-    parameters      = JSON.parse(headerSpan.attr('oauth-parameters'));
+    restclient.log('.tag span[data-header-id="' + headerId + '"]');
+    
+    var headerSpan      = $('.tag span[data-header-id="' + headerId + '"]'),
+        secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
+        parameters      = JSON.parse(headerSpan.attr('oauth-parameters')),
+        oauth_realm     = headerSpan.attr('realm');
+    
+    restclient.log('[updateOAuthSign] headerId: ' + headerId);
+    restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);
     
     var requestMethod = $('#request-method').val(),
         requestUrl    = $('#request-url').val(),
@@ -1744,6 +1800,7 @@ restclient.main = {
 
     restclient.oauth.reset();
     var param = parameters;
+    
     if(["put", "post"].indexOf(requestMethod) > -1) {
       var requestBody = $('#request-body').val();
       if(requestBody != '' && requestBody.indexOf('=') > -1){
@@ -1751,18 +1808,27 @@ restclient.main = {
         param = $.extend(parameters, p);
       }
     }
-    //restclient.log(secrets);
-    //restclient.log(param);
-
+    
     var signature = restclient.oauth.sign({
                               action: requestMethod,
                               path: requestUrl,
                               signatures: secrets,
-                              parameters: param
+                              parameters: param,
+                              realm: oauth_realm
                             });
-    //$('[data-id="' + headerId + '"]').val(signature.headerString);
     
-    return this.replaceHttpRequestHeader(headerId, 'Authorization', signature.headerString, {"oauth-secrets": secrets, "oauth-parameters": parameters});    
+    var headerValue = signature.headerString,
+        param       = {"oauth-secrets": secrets, "oauth-parameters": parameters};
+    
+    if (oauth_realm !== '') {
+      //headerValue = 'realm="' + restclient.oauth.oauthEscape(oauth_realm) + '", ' + headerValue;
+      param.realm = oauth_realm;
+    }
+    //headerValue = 'OAuth ' + headerValue;
+    restclient.log('[updateOAuthSign] header Id: ' + headerId);
+    restclient.log('[updateOAuthSign] headerValue: ' + headerValue);
+    
+    return this.replaceHttpRequestHeader(headerId, 'Authorization', headerValue, param);    
   },
   sendRequest: function(){
     $('.popover').removeClass('in').remove();

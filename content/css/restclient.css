@@ -182,7 +182,7 @@ a, a:hover {
 .window-overlay{
   background-color:rgba(0, 0, 0, 0.6);
   display: block;
-  z-index:1016;
+  z-index:10160;
   position: fixed;
   top: 0;
   right: 0;
@@ -193,6 +193,7 @@ a, a:hover {
 }
 .window-wrapper{
   background:#fafafa;
+  opacity: 1;
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
   overflow:hidden;
@@ -207,7 +208,7 @@ a, a:hover {
   width:720px;
   left: 50%;
   margin-left: -360px;
-  z-index:1020;
+  z-index:10200;
 }
 .window-header {
   padding: 9px 15px;

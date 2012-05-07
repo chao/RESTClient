@@ -48,7 +48,7 @@ restclient.main = {
   init: function() {
     restclient.init();
     this.initSkin();
-    
+
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
     $(window).on('scroll', restclient.main.processScroll).scroll();
 
@@ -103,13 +103,13 @@ restclient.main = {
       if($(this).innerHeight() > 60 )
         $(this).css('height', '60px');
     });
-    
+
     $('#modal-oauth-view .btnAutoRefresh').bind('click', function(){
       var headerId = $('#modal-oauth-view').data('source-header-id');
       $('#modal-oauth-view .btnAutoRefresh').toggleClass('active');
       restclient.main.setOAuthAutoRefresh(headerId, $('#modal-oauth-view .btnAutoRefresh').hasClass('active'));
     });
-    
+
     $('#modal-oauth-view .btnRefresh').bind('click', function() {
       var headerId = $('#modal-oauth-view').data('source-header-id');
       restclient.log(headerId);
@@ -160,7 +160,7 @@ restclient.main = {
       $('.toggle-page-layout').attr('data-layout', 'percentage');
       $('.toggle-page-layout').text('Switch to fixed page layout');
     }
-    
+
     if (requestHeaderLayout === 'table') {
       $('#request-headers .tag').hide();
       $('#request-headers .table').show();
@@ -272,7 +272,7 @@ restclient.main = {
     return false;
   },
   toggleLayout: function(e){
-    
+
     if($(this).attr('data-layout') == 'fixed')
     {
       $('.container').addClass('container-fluid').removeClass('container');
@@ -479,15 +479,15 @@ restclient.main = {
         $('#modal-save-request .btnOkay').val('Save').attr('overwrite', '0').removeAttr('request-name');
       }
     });
-    
+
     $('#modal-oauth-view').on('shown', function(){
       var headerId = $(this).data('source-header-id'),
           text     = $('#modal-oauth-view textarea'),
           tag      = $('span[data-header-id="' + headerId + '"]'),
           autoRefresh = $('#modal-oauth-view .btnAutoRefresh');
-          
+
       text.text(tag.attr('header-value'));
-      
+
       if(tag.attr('auto-refresh') === 'yes')
         autoRefresh.addClass('active');
       else
@@ -515,7 +515,7 @@ restclient.main = {
     }
     var strValue = username.val() + ":" + password.val(),
         strBase64 = btoa(strValue).replace(/.{76}(?=.)/g,'$&\n');
-    
+
     restclient.log(strBase64);
     restclient.main.addHttpRequestHeader('Authorization', "Basic " + strBase64);
     if( $("#modal-basic-authorization [name='remember']").attr('checked') === 'checked') {
@@ -609,11 +609,11 @@ restclient.main = {
     );
 
     $('#request-headers table tbody').append(tr);
-    
+
     if( $('#request-headers span.label').length > 0 ) {
       $('#request-headers').show();
     }
-    
+
     if (param)
       for(var n in param) {
         if(!param.hasOwnProperty(n))
@@ -621,7 +621,7 @@ restclient.main = {
         tag.attr(n, (typeof param[n] === 'string') ? param[n] : JSON.stringify(param[n]));
         tr.attr(n, (typeof param[n] === 'string') ? param[n] : JSON.stringify(param[n]));
       }
-      
+
     $('.table .headers').mouseover(function(){
       $(this).find('input.btn').show();
     }).mouseout(function(){
@@ -632,24 +632,24 @@ restclient.main = {
   replaceHttpRequestHeader: function(oldId, name, value, param) {
     var text    = name + ": " + value,
         newId   = restclient.helper.sha1(text);
-        
+
     if(text.length > restclient.main.headerLabelMaxLength)
        text = text.substr(0, restclient.main.headerLabelMaxLength-3) + "...";
-    
+
     var tag = $('span[data-header-id="' + oldId + '"]');
     tag.attr('header-name', name)
     .attr('header-value', value)
     .attr("title", name + ": " + value)
     .attr('data-header-id', newId)
     .text(text);
-    
+
     var tr = $('tr[data-header-id="' + oldId + '"]');
     tr.attr('data-header-id', newId)
     .attr('header-name', name)
     .attr('header-value', value);
     tr.find('td').first().text(name);
     tr.find('td').last().text(value);
-    
+
     if (param)
       for(var n in param) {
         if(!param.hasOwnProperty(n))
@@ -734,8 +734,8 @@ restclient.main = {
   },
   getRequest: function() {
     var request = {};
-        request.method = $('#request-method').val();
-        request.url = $('#request-url').val();
+        request.method = $.trim($('#request-method').val());
+        request.url = $.trim($('#request-url').val());
         request.body = $('#request-body').val();
         request.overrideMimeType = ($('#overrideMimeType').attr('checked') == 'checked') ? $('#overrideMimeType').val() : false;
     var headers = [];
@@ -759,7 +759,7 @@ restclient.main = {
       for (var j = 0, np = ''; j < str.length; j += len, np = '\n') {
         var line = str.substr(j, len);
         if(line.indexOf('\n') > -1 || line.indexOf(' ') > -1)
-          result += line; 
+          result += line;
         else
         {
           np += line;
@@ -785,11 +785,11 @@ restclient.main = {
     {
       var ol = $('<ol class="linenums"></ol>');
       var keys = [];
-      
+
       for(var key in headers)
-        if(headers.hasOwnProperty(key) && key != 'Status Code') 
+        if(headers.hasOwnProperty(key) && key != 'Status Code')
           keys.push(key);
-            
+
       keys.sort(); //sort response header
       keys.unshift('Status Code'); //put status code on the first line
       for(var n=0, name; name = keys[n]; n++) {
@@ -846,7 +846,7 @@ restclient.main = {
   },
   showRequest: function(e) {
     window.scrollTo(0,0);
-    if(e) 
+    if(e)
       e.preventDefault();
     return false;
   },
@@ -952,15 +952,15 @@ restclient.main = {
     var responseData = this.xhr.responseText;
 
     if(responseData.length > 0) {
-      
+
       var target = document.getElementById('response-body-preview'),
-          fragment = Components.classes["@mozilla.org/feed-unescapehtml;1"]  
-                               .getService(Components.interfaces.nsIScriptableUnescapeHTML)  
+          fragment = Components.classes["@mozilla.org/feed-unescapehtml;1"]
+                               .getService(Components.interfaces.nsIScriptableUnescapeHTML)
                                .parseFragment(responseData, false, null, target);
       //restclient.log(responseData);
       $("#response-body-preview div.pre").append(fragment);
       $("#response-body-preview div.pre").removeClass('overflow');
-      
+
       $('#response-body-highlight pre').text(responseData);
     }
 
@@ -987,7 +987,7 @@ restclient.main = {
           var xsltProcessor = new XSLTProcessor();
           xsltProcessor.importStylesheet(xslDoc);
           var resultFragment = xsltProcessor.transformToFragment(responseXml, document);
-          
+
           //$("#response-body-highlight pre").append(resultFragment);
           //$("#response-body-highlight pre").text($('<p></p>').append(resultFragment).html());
           //$('#response-body-preview .expander').click(restclient.main.toggleExpander);
@@ -1284,7 +1284,7 @@ restclient.main = {
     return false;
   },
   applyRequest: function(request){
-    
+
     $('#request-body').val('');
     $('#request-url').val('');
     $('#request-method').val('GET');
@@ -1335,7 +1335,7 @@ restclient.main = {
         oauth_version               = $('#oauth_version'),
         oauth_nonce                 = $('#oauth_nonce'),
         oauth_timestamp             = $('#oauth_timestamp');
-        
+
     $('#get-access-token .btnOkay').bind('click', restclient.main.oauthAuthorize);
 
     var auto_oauth_timestamp   = $('#auto_oauth_timestamp'),
@@ -1355,7 +1355,7 @@ restclient.main = {
       param.oauth_version           = oauth_version.val();
       param.disable_oauth_realm     = (disable_oauth_realm.attr('checked') == 'checked');
       param.oauth_realm             = oauth_realm.val();
-      
+
       restclient.setPref('OAuth.setting', JSON.stringify(param));
     });
 
@@ -1383,8 +1383,8 @@ restclient.main = {
 
     $('#auto_oauth_nonce').click(autoNonce);
 
-    
-    
+
+
     $('#window-oauth .btnClose').click(function() {
       $('#window-oauth').hide();
     });
@@ -1470,7 +1470,7 @@ restclient.main = {
         sign_remember             = $('#signature-request [name="remember"]'),
         sign_oauth_realm          = $('#signature-request [name="oauth_realm"]'),
         sign_disable_oauth_realm  = $('#signature-request [name="disable_oauth_realm"]'),
-        
+
         sign = restclient.getPref('OAuth.sign', '');
     if(sign != '') {
       sign = JSON.parse(sign);
@@ -1484,19 +1484,19 @@ restclient.main = {
         sign_access_token_secret.val (    sign.access_token_secret);
       if(sign.oauth_realm)
         sign_oauth_realm.val (            sign.oauth_realm);
-      
+
       (sign.disable_oauth_realm === true) ? sign_disable_oauth_realm.attr('checked', true) : sign_disable_oauth_realm.removeAttr('checked');
       (sign.remember === true) ? sign_remember.attr('checked', true) : sign_remember.removeAttr('checked');
     }
-    
+
     function toggleRealm() {
       if(sign_disable_oauth_realm.attr('checked') === 'checked') {
         sign_oauth_realm.addClass('disabled').attr('disabled',true);
-      } 
+      }
       else
         sign_oauth_realm.removeClass('disabled').removeAttr('disabled');
     }
-    
+
     sign_disable_oauth_realm.click(toggleRealm);
 
     $('#signature-request .btnInsertAsHeader').bind('click', restclient.main.oauthSign);
@@ -1653,13 +1653,13 @@ restclient.main = {
         sign_remember             = $('#signature-request [name="remember"]'),
         sign_oauth_realm          = $('#signature-request [name="oauth_realm"]'),
         sign_disable_oauth_realm  = $('#signature-request [name="disable_oauth_realm"]'),
-        
+
         oauth_signature_method    = $('#oauth_signature_method'),
         oauth_version             = $('#oauth_version'),
         oauth_nonce               = $('#oauth_nonce'),
         oauth_timestamp           = $('#oauth_timestamp'),
         sign_okay                 = $('#signature-request .btnOkay'),
-        
+
         errors = [];
 
     if(sign_consumer_key.val() == '') {
@@ -1680,7 +1680,7 @@ restclient.main = {
         errors.push(sign_oauth_realm);
       }
     }
-    
+
     if(errors.length > 0) {
       var el = errors.shift();
       el.focus();
@@ -1692,7 +1692,7 @@ restclient.main = {
       $('#signature-request .control-group').removeClass('error');
       $('#signature-request .error-info').hide();
     }
-    
+
     sign_okay.button('loading');
     if(sign_remember.attr('checked') == 'checked') {
       var setting = {
@@ -1726,24 +1726,35 @@ restclient.main = {
     //restclient.log(secrets);
     //restclient.log(parameters);
     restclient.oauth.reset();
-    var url = $('#request-url').val();
-    var method = $('#request-method').val().toLowerCase();
-    var param = parameters;
-    if(["put", "post"].indexOf(method) > -1) {
-      var requestBody = $('#request-body').val();
+    var requestUrl = $.trim($('#request-url').val()),
+        requestMethod = $.trim($('#request-method').val()),
+        requestBody = $('#request-body').val(),
+        param = parameters;
+
+    if(requestUrl !== '') {
+      var paths = restclient.helper.parseUrl(requestUrl);
+      if(typeof paths['search'] === 'string')
+      {
+        var queryString = paths['search'].substring(1);
+        $.extend(parameters, restclient.oauth.parseParameterString(queryString));
+      }
+      requestUrl = paths['hrefNoSearch'];
+    }
+    
+    if(["put", "post"].indexOf(requestMethod.toLowerCase()) > -1) {
       if(requestBody != '' && requestBody.indexOf('=') > -1){
-        var p = restclient.oauth.parseParameterString(requestBody);
-        param = $.extend(parameters, p);
+        param = $.extend(parameters, restclient.oauth.parseParameterString(requestBody));
       }
     }
+
     var signature = restclient.oauth.sign({
-      action: $('#request-method').val(),
-      path: url,
+      action: requestMethod,
+      path: requestUrl,
       signatures: secrets,
       parameters: param,
       realm: sign_oauth_realm.val()
     });
-    
+
     var headerValue = signature.headerString,
         param       = {'oauth-parameters': JSON.stringify(parameters), 'oauth-secrets': JSON.stringify(secrets)};
     if(sign_disable_oauth_realm.attr('checked') !== 'checked') {
@@ -1751,7 +1762,7 @@ restclient.main = {
       param.realm = sign_oauth_realm.val();
     }
     //headerValue = 'OAuth ' + headerValue;
-    
+
     var headerId = restclient.main.addHttpRequestHeader('Authorization', headerValue, param);
     restclient.log('header id of oauth header: ' + headerId);
     $('#window-oauth').css('display', 'none');
@@ -1785,30 +1796,40 @@ restclient.main = {
   },
   updateOAuthSign: function(headerId){
     restclient.log('.tag span[data-header-id="' + headerId + '"]');
-    
+
     var headerSpan      = $('.tag span[data-header-id="' + headerId + '"]'),
         secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
         parameters      = JSON.parse(headerSpan.attr('oauth-parameters')),
         oauth_realm     = headerSpan.attr('realm');
-    
+
     restclient.log('[updateOAuthSign] headerId: ' + headerId);
     restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);
-    
-    var requestMethod = $('#request-method').val(),
-        requestUrl    = $('#request-url').val(),
+
+    var requestMethod = $.trim($('#request-method').val()),
+        requestUrl    = $.trim($('#request-url').val()),
         requestBody   = $('#request-body').val();
 
     restclient.oauth.reset();
     var param = parameters;
+
+    if(requestUrl !== '') {
+      var paths = restclient.helper.parseUrl(requestUrl);
+      if(typeof paths['search'] === 'string')
+      {
+        var queryString = paths['search'].substring(1);
+        $.extend(parameters, restclient.oauth.parseParameterString(queryString));
+      }
+      requestUrl = paths['hrefNoSearch'];
+    }
     
-    if(["put", "post"].indexOf(requestMethod) > -1) {
+    if(["put", "post"].indexOf(requestMethod.toLowerCase()) > -1) {
       var requestBody = $('#request-body').val();
       if(requestBody != '' && requestBody.indexOf('=') > -1){
         var p = restclient.oauth.parseParameterString(requestBody);
         param = $.extend(parameters, p);
       }
     }
-    
+
     var signature = restclient.oauth.sign({
                               action: requestMethod,
                               path: requestUrl,
@@ -1816,10 +1837,10 @@ restclient.main = {
                               parameters: param,
                               realm: oauth_realm
                             });
-    
+
     var headerValue = signature.headerString,
         param       = {"oauth-secrets": secrets, "oauth-parameters": parameters};
-    
+
     if (oauth_realm !== '') {
       //headerValue = 'realm="' + restclient.oauth.oauthEscape(oauth_realm) + '", ' + headerValue;
       param.realm = oauth_realm;
@@ -1827,14 +1848,14 @@ restclient.main = {
     //headerValue = 'OAuth ' + headerValue;
     restclient.log('[updateOAuthSign] header Id: ' + headerId);
     restclient.log('[updateOAuthSign] headerValue: ' + headerValue);
-    
-    return this.replaceHttpRequestHeader(headerId, 'Authorization', headerValue, param);    
+
+    return this.replaceHttpRequestHeader(headerId, 'Authorization', headerValue, param);
   },
   sendRequest: function(){
     $('.popover').removeClass('in').remove();
     if( $('[auto-refresh="yes"]').length > 0)
     {
-      var id = $('[auto-refresh="yes"]').attr('id');
+      var id = $('span[auto-refresh="yes"]').attr('data-header-id');
       restclient.main.updateOAuthSign(id);
       //restclient.log('resigned');
     }
@@ -1861,8 +1882,8 @@ restclient.main = {
   },
   setRequestUrl: function(url) {
     var currentUrl = $("#request-url").val();
-    
-    if (restclient.helper.isAbsoluteUrl(url)) 
+
+    if (restclient.helper.isAbsoluteUrl(url))
       $("#request-url").val(url);
     else
       $("#request-url").val(restclient.helper.makeUrlAbsolute(url, currentUrl));

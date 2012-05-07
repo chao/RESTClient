@@ -173,11 +173,11 @@ restclient.oauth = {
     if (encrypt == 'HMAC-SHA1')
     {
       //restclient.log(this._parameters);
-      //restclient.log(secretKey);
+      restclient.log(str);
       var toSign = restclient.oauth.oauthEscape(this._action)
                         + '&' + restclient.oauth.oauthEscape(this._path)
                         + '&' + restclient.oauth.oauthEscape(str);
-      //restclient.log(toSign);
+      restclient.log(toSign);
       //restclient.log(secretKey);
       return this.b64_hmac_sha1(secretKey, toSign);
     }

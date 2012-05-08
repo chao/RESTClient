@@ -107,7 +107,7 @@ restclient.helper = {
 		}
 		return "/" + absStack.join( "/" );
 	},
-	
+
 	//Turn the specified realtive URL into an absolute one. This function
 	//can handle all relative variants (protocol, site, document, query, fragment).
 	makeUrlAbsolute: function( relUrl, absUrl ) {
@@ -144,7 +144,7 @@ restclient.helper = {
     ch.update(data, data.length);
     var hash = ch.finish(false);
 
-    
+
     // return the two-digit hexadecimal code for a byte
     function toHexString(charCode)
     {

@@ -74,6 +74,11 @@ if (typeof (restclient) === "undefined") {
       try{
         console.log(str);
       }catch(e){}
+    },
+    error: function(o) {
+      try{
+        console.error(o);
+      }catch(e){}
     }
   }
 }

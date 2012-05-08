@@ -29,17 +29,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 
 restclient.overlay = {
-  
+
   init : function() {
     restclient.init();
     restclient.overlay.firstRun();
   },
   getBrowser: function(){
-    var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)  
-                           .getInterface(Components.interfaces.nsIWebNavigation)  
-                           .QueryInterface(Components.interfaces.nsIDocShellTreeItem)  
-                           .rootTreeItem  
-                           .QueryInterface(Components.interfaces.nsIInterfaceRequestor)  
+    var mainWindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                           .getInterface(Components.interfaces.nsIWebNavigation)
+                           .QueryInterface(Components.interfaces.nsIDocShellTreeItem)
+                           .rootTreeItem
+                           .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
                            .getInterface(Components.interfaces.nsIDOMWindow);
     return mainWindow.gBrowser;
   },
@@ -48,7 +48,7 @@ restclient.overlay = {
         versionPref   = "version",
         versionNumber = "2.0.1",
         browser       = restclient.overlay.getBrowser();
-    
+
     if(!restclient.getPref(firstRunPref, false))
     {
       var navbar = document.getElementById("nav-bar");

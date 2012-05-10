@@ -126,11 +126,7 @@ restclient.main = {
        type: "text/css",
        href: "css/" + cssFileName
     }).appendTo("head");
-    $("<link/>", {
-       rel: "stylesheet",
-       type: "text/css",
-       href: "css/bootstrap-responsive.css"
-    }).appendTo("head");
+
     $("<link/>", {
        rel: "stylesheet",
        type: "text/css",
@@ -176,8 +172,7 @@ restclient.main = {
     restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function () {
       restclient.main.changeSkin($(this).attr('css'));
-      restclient.getPref('defaultSkin', $(this).attr('css'));
-      return false;
+      restclient.setPref('defaultSkin', $(this).attr('css'));
     });
     //wait for css load
     setTimeout(function () { $('.showForStartup').show(); }, 200);
@@ -761,8 +756,11 @@ restclient.main = {
         request.oauth.oauth_secrets = $(this).attr('oauth-secrets');
         request.oauth.oauth_parameters = $(this).attr('oauth-parameters');
         request.oauth.auto_refresh = $(this).attr('auto-refresh');
-        if($(this).attr('realm') !== 'undefined')
+        if(typeof $(this).attr('realm') !== 'undefined')
           request.oauth.realm = $(this).attr('realm');
+        restclient.log($(this));
+        if($(this).attr('auto-realm') === 'true')
+            request.oauth.auto_realm = true;
       }
     });
     request.headers = headers;
@@ -1336,6 +1334,8 @@ restclient.main = {
           };
           if (typeof request.oauth.realm === 'string')
             param.realm = request.oauth.realm;
+          if (typeof request.oauth.auto_realm !== 'undefined')
+            param['auto-realm'] = true;
           restclient.main.addHttpRequestHeader(header[0], header[1], param);
         }
         else
@@ -1795,7 +1795,7 @@ restclient.main = {
         
     if (disable_oauth_realm.attr('checked') !== 'checked') {
       if(auto_oauth_realm.attr('checked') === 'checked')
-        param.auto_realm = true;
+        param['auto-realm'] = true;
       else
         param.realm = oauth_realm.val();
     }
@@ -1839,7 +1839,7 @@ restclient.main = {
           secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
           parameters      = JSON.parse(headerSpan.attr('oauth-parameters')),
           oauth_realm     = headerSpan.attr('realm'),
-          auto_realm      = (typeof headerSpan.attr('auto_realm') === 'string') ? JSON.parse(headerSpan.attr('auto_realm')) : false;
+          auto_realm      = (typeof headerSpan.attr('auto-realm') === 'string') ? JSON.parse(headerSpan.attr('auto-realm')) : false;
           
       restclient.log('[updateOAuthSign] headerId: ' + headerId);
       restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);

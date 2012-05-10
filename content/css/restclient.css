@@ -27,6 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
  
 body {
+  padding-top: 60px;
   position: relative;
   background-position: 0 40px;
   font: 13px "Helvetica Neue", Helvetica, Arial, sans-serif;

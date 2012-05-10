@@ -558,11 +558,21 @@ restclient.main = {
     }
   },
   editHttpRequestHeader: function () {
-    var id      = $(this).attr('data-header-id') || $(this).parents('[data-header-id]').attr('data-header-id'),
-        header  = $('#request-headers .tag span[data-header-id="' + id + '"]');
-
-    if (header.attr('oauth-secrets') === 'undefined') {
-      if (header.attr('header-name') == 'Authorization')
+    var id        = $(this).attr('data-header-id') || $(this).parents('[data-header-id]').attr('data-header-id'),
+        header    = $('#request-headers .tag span[data-header-id="' + id + '"]'),
+        attrName  = header.attr('header-name'),
+        attrValue = header.attr('header-value');
+    
+    restclient.log(attrName);
+    if(attrName.toLowerCase() === 'authorization') {
+      //OAuth 1.0
+      if (typeof header.attr('oauth-secrets') !== 'undefined') {
+        $('#modal-oauth-view').data('source-header-id', id);
+        $('#modal-oauth-view').modal('show');
+        return;
+      }
+      attrValue = $.trim(attrValue);
+      if(attrValue.length > 5 && attrValue.substr(0, 5).toLowerCase() === 'basic')
       {
         var hashed = header.attr('header-value'),
             basic = atob(hashed.substring(6)),
@@ -570,18 +580,12 @@ restclient.main = {
         $('#modal-basic-authorization [name="username"]').val(user[0]);
         $('#modal-basic-authorization [name="password"]').val(user[1]);
         $('#modal-basic-authorization').modal('show');
-      }
-      else
-      {
-        $('#modal-custom-header').data('source-header-id', id);
-        $('#modal-custom-header').modal('show');
+        return;
       }
     }
-    else
-    {
-      $('#modal-oauth-view').data('source-header-id', id);
-      $('#modal-oauth-view').modal('show');
-    }
+    
+    $('#modal-custom-header').data('source-header-id', id);
+    $('#modal-custom-header').modal('show');
   },
   addHttpRequestHeader: function (name, value, param) {
     if (this.uniqueHeaders.indexOf(name.toLowerCase()) >= 0)

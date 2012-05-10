@@ -42,17 +42,17 @@ restclient.message = {
     container.append($('<a class="close" data-dismiss="alert" href="#"></a>').text('x'));
 
     if(arg.title)
-      container.append($('<h4 class="alert-heading" style="margin-bottom: 15px;"></h4>').text(arg.title));
+      container.append($('<h4 class="alert-heading" style="margin-bottom: 10px; font-size: 120%;"></h4>').text(arg.title));
 
     if(typeof arg.message == 'string')
-      container.append($('<p></p>').text(arg.message));
+      container.append($('<p style="font-size: 110%;"></p>').text(arg.message));
 
     if(typeof arg.message == 'object' && arg.message.length > 0)
       for(var i=0, m; m = arg.message[i]; i++)
-        container.append($('<p></p>').text(m));
+        container.append($('<p style="font-size: 110%;"></p>').text(m));
 
     if(arg.buttons){
-      var p = $('<div class="btn-toolbar" style="margin-top: 18px; margin-bottom:0px;"></div>');
+      var p = $('<div class="btn-toolbar" style="margin-top: 15px; margin-bottom:0px; text-align:right;"></div>');
       for(var i=0, button; button = arg.buttons[i]; i++) {
         if(button instanceof Array)
         {
@@ -75,12 +75,15 @@ restclient.message = {
             b.addClass(button.class);
           if(button.callback)
             b.bind('click', button.callback);
+          if(button.timeout)
+            b.timedExecute(button.timeout, function() { b.click(); });
           p.append(b);
         }
       }
       container.append(p);
     }
     //restclient.log(container);
+    
     if(arg.parent)
     {
       if(arg.exclude)
@@ -99,6 +102,7 @@ restclient.message = {
           arg.closed.apply(restclient.main, []);
       });
     }
+    container.addClass('animated shake');
     return container;
   },
 
@@ -126,3 +130,28 @@ restclient.message = {
     alert.find('p:last').after(p);
   }
 }
+
+$.fn.timedExecute = function(time, callback) {
+  time = time || 3000;
+  var seconds = Math.ceil(time / 1000);  // Calculate the number of seconds
+  return $(this).each(function() {
+    var disabledElem = $(this);
+    $(this).data('original-text', $(this).text());
+    $(this).text( $(this).text() + ' (' + seconds + ')'); 
+    $(this).data('countdown-seconds', seconds);
+    
+    var interval = setInterval(function() {
+      var seconds = disabledElem.data('countdown-seconds'),
+          originalText = disabledElem.data('original-text');
+      seconds--;
+      disabledElem.data('countdown-seconds', seconds);
+      disabledElem.text( originalText + ' (' + seconds + ')');  
+      if (seconds === 0) {  // once seconds is 0...
+        disabledElem.text(originalText);   //reset to original text
+        clearInterval(interval);  // clear interval
+        if (typeof callback === 'function')
+          callback.apply(restclient.main, []);
+      }
+    }, 1000);
+  });
+};

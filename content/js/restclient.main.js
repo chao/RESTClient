@@ -151,6 +151,11 @@ restclient.main = {
        type: "text/css",
        href: "css/KelpJSONView.css"
     }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/animate.css"
+    }).appendTo("head");
   },
   initSkin: function () {
     var pageLayout = restclient.getPref('pageLayout', 'fixed'),
@@ -1347,112 +1352,141 @@ restclient.main = {
     return false;
   },
   initOAuthWindow: function () {
-    var oauth_signature_method      = $('#oauth_signature_method'),
-        oauth_version               = $('#oauth_version'),
-        oauth_nonce                 = $('#oauth_nonce'),
-        oauth_timestamp             = $('#oauth_timestamp');
-
-    $('#get-access-token .btnOkay').bind('click', restclient.main.oauthAuthorize);
-
-    var auto_oauth_timestamp   = $('#auto_oauth_timestamp'),
-        oauth_timestamp        = $('#oauth_timestamp'),
-        auto_oauth_nonce       = $('#auto_oauth_nonce'),
-        oauth_nonce            = $('#oauth_nonce'),
-        oauth_signature_method = $('#oauth_signature_method'),
-        oauth_version          = $('#oauth_version');
-
-    $('#oauth-setting .btnOkay').click(function () {
-      var param = {};
-      param.auto_oauth_timestamp    = (auto_oauth_timestamp.attr('checked') == 'checked');
-      param.oauth_timestamp         = oauth_timestamp.val();
-      param.auto_oauth_nonce        = (auto_oauth_nonce.attr('checked') == 'checked');
-      param.oauth_nonce             = oauth_nonce.val();
-      param.oauth_signature_method  = oauth_signature_method.val();
-      param.oauth_version           = oauth_version.val();
-
-      restclient.setPref('OAuth.setting', JSON.stringify(param));
-    });
-
-    function autoTimeStamp() {
-      if ($('#auto_oauth_timestamp').attr('checked') == 'checked') {
-        $('#oauth_timestamp').val('').addClass('disabled').attr('disabled',true);
-        $('#oauth_timestamp').parent().next().hide();
+    var auto_oauth_timestamp    = $('#oauth-setting [name="auto_oauth_timestamp"]'),
+        oauth_timestamp         = $('#oauth-setting [name="oauth_timestamp"]'),
+        auto_oauth_nonce        = $('#oauth-setting [name="auto_oauth_nonce"]'),
+        oauth_nonce             = $('#oauth-setting [name="oauth_nonce"]'),
+        oauth_signature_method  = $('#oauth-setting [name="oauth_signature_method"]'),
+        oauth_version           = $('#oauth-setting [name="oauth_version"]'),
+        auto_oauth_realm        = $('#oauth-setting [name="auto_oauth_realm"]'),
+        oauth_realm             = $('#oauth-setting [name="oauth_realm"]'),
+        disable_oauth_realm     = $('#oauth-setting [name="disable_oauth_realm"]'),
+        setting                 = restclient.getPref('OAuth.setting', '');
+    
+    //$('#get-access-token .btnOkay').bind('click', restclient.main.oauthAuthorize);
+    $('#oauth-setting .help-block').hide();
+    
+    function autoRealm(checked) {
+      if(typeof checked === 'boolean')
+        if(checked)
+          auto_oauth_realm.attr('checked', true);
+        else
+          auto_oauth_realm.removeAttr('checked');
+      
+      if (disable_oauth_realm.attr('checked') !== 'checked' && auto_oauth_realm.attr('checked') !== 'checked') 
+        oauth_realm.removeClass('disabled').removeAttr('disabled');
+      else 
+        oauth_realm.addClass('disabled').attr('disabled', true);
+    }
+    function disableRealm(disabled) {
+      if(typeof disabled === 'boolean')
+        if(disabled)
+          disable_oauth_realm.attr('checked', true);
+        else
+          disable_oauth_realm.removeAttr('checked');
+          
+      if (disable_oauth_realm.attr('checked') === 'checked')
+        auto_oauth_realm.addClass('disabled').attr('disabled',true);
+      else
+        auto_oauth_realm.removeClass('disabled').removeAttr('disabled');
+      
+      autoRealm();
+    }
+    function autoTimeStamp(auto) {
+      if(typeof auto === 'boolean')
+        if(auto)
+          auto_oauth_timestamp.attr('checked', true);
+        else
+          auto_oauth_timestamp.removeAttr('checked');
+          
+      if (auto_oauth_timestamp.attr('checked') == 'checked') {
+        oauth_timestamp.val('').addClass('disabled').attr('disabled',true);
+        oauth_timestamp.parent().next().hide();
       }
       else {
         var ts = restclient.oauth.getTimeStamp();
-        $('#oauth_timestamp').val(ts).removeClass('disabled').removeAttr('disabled');
-        $('#oauth_timestamp').parent().next().text(new Date(ts*1000)).show();
+        oauth_timestamp.val(ts).removeClass('disabled').removeAttr('disabled');
+        oauth_timestamp.parent().next().text(new Date(ts*1000)).show();
       }
     }
-
-    function autoNonce() {
-      if ($('#auto_oauth_nonce').attr('checked') == 'checked') {
-        $('#oauth_nonce').val('').addClass('disabled').attr('disabled',true);
-      }
-      else
-        $('#oauth_nonce').val(restclient.oauth.getNonce()).removeClass('disabled').removeAttr('disabled');
-    }
-
-    $('#auto_oauth_timestamp').click(autoTimeStamp);
-
-    $('#auto_oauth_nonce').click(autoNonce);
-
-
-
-    $('#window-oauth .btnClose').click(function () {
-      $('#window-oauth').hide();
-    });
-
-    $('#auto_oauth_timestamp').attr('checked', true);
-    $('#oauth_timestamp').val('');
-    $('#oauth_timestamp').parent().next().hide();
-    $('#auto_oauth_nonce').attr('checked', true);
-    $('#oauth_nonce').val('');
-
-
-    //Load setting from preferences
-    var setting = restclient.getPref('OAuth.setting', '');
-    if (setting != '') {
-      setting = JSON.parse(setting);
-
-      if (setting.auto_oauth_timestamp) {
-        $('#auto_oauth_timestamp').attr('checked', true);
-        oauth_timestamp.val('').addClass('disabled').attr('disabled',true);
-      }
-      else
-      {
-        $('#auto_oauth_timestamp').removeAttr('checked');
-        //restclient.log(setting.oauth_timestamp);
-        oauth_timestamp.removeClass('disabled').removeAttr('disabled',true).val(setting.oauth_timestamp);
-        //restclient.log(oauth_timestamp.val());
-        $('#oauth_timestamp').parent().next().show().text(new Date(setting.oauth_timestamp*1000));
-      }
-
-      if (setting.auto_oauth_nonce) {
-        $('#auto_oauth_nonce').attr('checked', true);
+    function autoNonce(auto) {
+      if(typeof auto === 'boolean')
+        if(auto)
+          auto_oauth_nonce.attr('checked', true);
+        else
+          auto_oauth_nonce.removeAttr('checked');
+          
+      if (auto_oauth_nonce.attr('checked') == 'checked') {
         oauth_nonce.val('').addClass('disabled').attr('disabled',true);
       }
       else
-      {
-        $('#auto_oauth_nonce').removeAttr('checked');
-        //restclient.log(setting.oauth_nonce);
-        oauth_nonce.removeClass('disabled').removeAttr('disabled',true).val(setting.oauth_nonce);
-        //restclient.log(oauth_nonce.val());
-      }
-
-      $('#oauth_signature_method option[value="' + setting.oauth_signature_method + '"]').attr('selected', true);
-      $('#oauth_version option[value="' + setting.oauth_version + '"]').attr('selected', true);
+        oauth_nonce.val(restclient.oauth.getNonce()).removeClass('disabled').removeAttr('disabled');
+    }
+    
+    //Load setting from preferences
+    if (setting != '') {
+      setting = JSON.parse(setting);
+      
+      autoTimeStamp (setting.auto_oauth_timestamp === true);
+      autoNonce (setting.auto_oauth_nonce === true);
+      disableRealm (setting.disable_oauth_realm === true);
+      autoRealm (setting.auto_oauth_realm === true);
+      
+      oauth_realm.val((typeof (setting.oauth_realm) === 'string') ? setting.oauth_realm : '');
+      $('#oauth-setting [name="oauth_version"] option[value="' + setting.oauth_version + '"]').attr('selected', true);
+      $('#oauth-setting [name="oauth_signature_method"] option[value="' + setting.oauth_signature_method + '"]').attr('selected', true);
     }
     else
     {
-      $('#auto_oauth_timestamp').attr('checked', true);
-      $('#auto_oauth_nonce').attr('checked', true);
-      autoTimeStamp();
-      autoNonce();
+      autoTimeStamp(true);
+      autoNonce(true);
+      disableRealm(true);
+      autoRealm(true);
     }
+    
+    $('#oauth-setting .btnOkay').click(function () {
+      
+      if (!oauth_realm.hasClass('disabled') 
+            && (oauth_realm.val().indexOf('?') > -1 || oauth_realm.val().indexOf('#') > -1))
+      {
+        oauth_realm.parents('.control-group').addClass('error');
+        oauth_realm.nextAll('.help-block').show();
+        return false;
+      }
+      var param = {};
+      param.auto_oauth_timestamp    = (auto_oauth_timestamp.attr('checked') === 'checked');
+      param.oauth_timestamp         = oauth_timestamp.val();
+      param.auto_oauth_nonce        = (auto_oauth_nonce.attr('checked') === 'checked');
+      param.oauth_nonce             = oauth_nonce.val();
+      param.oauth_signature_method  = oauth_signature_method.val();
+      param.oauth_version           = oauth_version.val();
+      param.auto_oauth_realm        = (auto_oauth_realm.attr('checked') === 'checked');
+      param.disable_oauth_realm     = (disable_oauth_realm.attr('checked') === 'checked');
+      param.oauth_realm             = oauth_realm.val();
+      
+      restclient.setPref('OAuth.setting', JSON.stringify(param));
+      
+      var message = restclient.message.show({
+        id: 'alert-oauth-setting-saved',
+        parent: $('#oauth-setting .infobar'),
+        exclude: true,
+        type: 'message',
+        title: 'OAuth settings saved!',
+        message: 'Your OAuth settings have been successfully saved. Enjoy.',
+        buttons: [
+          {title: 'Close', class: 'btn-danger', 'timeout': 5000, callback: function () { $('#alert-oauth-setting-saved').alert('close'); }}
+        ]
+      });
+    });
+
+    disable_oauth_realm.click(disableRealm);
+    auto_oauth_realm.click(autoRealm);
+    auto_oauth_timestamp.click(autoTimeStamp);
+    auto_oauth_nonce.click(autoNonce);
+
 
     //Load authorize from preferences
-    var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
+    /*var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
         authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
         authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
         authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
@@ -1474,18 +1508,16 @@ restclient.main = {
     else
     {
 
-    }
+    }*/
 
-    //Load authorize from preferences
+    //Load oauth keys from preferences
     var sign_consumer_key         = $('#signature-request [name="consumer_key"]'),
         sign_consumer_secret      = $('#signature-request [name="consumer_secret"]'),
         sign_access_token         = $('#signature-request [name="access_token"]'),
         sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
         sign_remember             = $('#signature-request [name="remember"]'),
-        sign_oauth_realm          = $('#signature-request [name="oauth_realm"]'),
-        sign_disable_oauth_realm  = $('#signature-request [name="disable_oauth_realm"]'),
-
         sign = restclient.getPref('OAuth.sign', '');
+        
     if (sign != '') {
       sign = JSON.parse(sign);
       if (sign.consumer_key)
@@ -1496,36 +1528,13 @@ restclient.main = {
         sign_access_token.val (           sign.access_token);
       if (sign.access_token_secret)
         sign_access_token_secret.val (    sign.access_token_secret);
-      if (sign.oauth_realm)
-        sign_oauth_realm.val (            sign.oauth_realm);
-
-      if (sign.disable_oauth_realm === true) {
-        sign_disable_oauth_realm.attr('checked', true);
-        sign_oauth_realm.addClass('disabled').attr('disabled', true);
-      }
-      else {
-        sign_disable_oauth_realm.removeAttr('checked');
-        sign_oauth_realm.removeClass('disabled').removeAttr('disabled');
-      }
+      
       (sign.remember === true) ? sign_remember.attr('checked', true) : sign_remember.removeAttr('checked');
     }
 
-    function toggleRealm() {
-      if (sign_disable_oauth_realm.attr('checked') === 'checked') {
-        sign_oauth_realm.addClass('disabled').attr('disabled',true);
-      }
-      else
-        sign_oauth_realm.removeClass('disabled').removeAttr('disabled');
-    }
-
-    sign_disable_oauth_realm.click(toggleRealm);
-
     $('#signature-request .btnInsertAsHeader').bind('click', restclient.main.oauthSign);
   },
-  showOAuthWindow: function () {
-    $('#window-oauth').show();
-  },
-  oauthAuthorize: function () {
+  /*oauthAuthorize: function () {
     var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
         authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
         authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
@@ -1665,20 +1674,24 @@ restclient.main = {
     restclient.message.appendButton(message,{title: 'Open authorize page for authorize your key', href: signature.signed_url});
     //restclient.log(signature);
     authorize_okay.button('reset');
-  },
+  },*/
   oauthSign: function () {
     var sign_consumer_key         = $('#signature-request [name="consumer_key"]'),
         sign_consumer_secret      = $('#signature-request [name="consumer_secret"]'),
         sign_access_token         = $('#signature-request [name="access_token"]'),
         sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
         sign_remember             = $('#signature-request [name="remember"]'),
-        sign_oauth_realm          = $('#signature-request [name="oauth_realm"]'),
-        sign_disable_oauth_realm  = $('#signature-request [name="disable_oauth_realm"]'),
 
-        oauth_signature_method    = $('#oauth_signature_method'),
-        oauth_version             = $('#oauth_version'),
-        oauth_nonce               = $('#oauth_nonce'),
-        oauth_timestamp           = $('#oauth_timestamp'),
+        auto_oauth_timestamp      = $('#oauth-setting [name="auto_oauth_timestamp"]'),
+        oauth_timestamp           = $('#oauth-setting [name="oauth_timestamp"]'),
+        auto_oauth_nonce          = $('#oauth-setting [name="auto_oauth_nonce"]'),
+        oauth_nonce               = $('#oauth-setting [name="oauth_nonce"]'),
+        oauth_signature_method    = $('#oauth-setting [name="oauth_signature_method"]'),
+        oauth_version             = $('#oauth-setting [name="oauth_version"]'),
+        auto_oauth_realm          = $('#oauth-setting [name="auto_oauth_realm"]'),
+        oauth_realm               = $('#oauth-setting [name="oauth_realm"]'),
+        disable_oauth_realm       = $('#oauth-setting [name="disable_oauth_realm"]'),
+            
         sign_okay                 = $('#signature-request .btnOkay'),
 
         errors = [];
@@ -1691,15 +1704,6 @@ restclient.main = {
     if (sign_consumer_secret.val() == '') {
       sign_consumer_secret.parents('.control-group').addClass('error');
       errors.push(sign_consumer_secret);
-    }
-
-    if (sign_disable_oauth_realm.attr('checked') !== 'checked' && sign_oauth_realm.val() != '') {
-      if (sign_oauth_realm.val().indexOf('?') > 0 || sign_oauth_realm.val().indexOf('#') > 0)
-      {
-        sign_oauth_realm.parents('.control-group').addClass('error');
-        sign_oauth_realm.nextAll('.help-block').show();
-        errors.push(sign_oauth_realm);
-      }
     }
 
     if (errors.length > 0) {
@@ -1715,14 +1719,13 @@ restclient.main = {
     }
 
     sign_okay.button('loading');
+    
     if (sign_remember.attr('checked') == 'checked') {
       var setting = {
         consumer_key        : sign_consumer_key.val(),
         consumer_secret     : sign_consumer_secret.val(),
         access_token        : sign_access_token.val(),
         access_token_secret : sign_access_token_secret.val(),
-        oauth_realm         : sign_oauth_realm.val(),
-        disable_oauth_realm : (sign_disable_oauth_realm.attr('checked') === 'checked'),
         remember            : true
       };
       restclient.setPref('OAuth.sign', JSON.stringify(setting));
@@ -1741,8 +1744,9 @@ restclient.main = {
       oauth_version: oauth_version.val(),
       oauth_signature_method: oauth_signature_method.val()
     };
-    (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
-    (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
+    
+    (oauth_nonce.val() === '') ? null : parameters.oauth_nonce = oauth_nonce.val();
+    (oauth_timestamp.val() === '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
 
     //restclient.log(secrets);
     //restclient.log(parameters);
@@ -1774,18 +1778,23 @@ restclient.main = {
       signatures: secrets,
       parameters: param
     };
-    if (sign_disable_oauth_realm.attr('checked') !== 'checked') {
-      sign.realm = sign_oauth_realm.val();
+    if (disable_oauth_realm.attr('checked') !== 'checked') {
+      if(auto_oauth_realm.attr('checked') === 'checked')
+        sign.realm = requestUrl;
+      else
+        sign.realm = oauth_realm.val();
     }
-    var signature = restclient.oauth.sign(sign);
-
-    var headerValue = signature.headerString,
+    
+    var signature = restclient.oauth.sign(sign),
+        headerValue = signature.headerString,
         param       = {'oauth-parameters': JSON.stringify(parameters), 'oauth-secrets': JSON.stringify(secrets)};
-    if (sign_disable_oauth_realm.attr('checked') !== 'checked') {
-      //headerValue = 'realm="' + restclient.oauth.oauthEscape(sign_oauth_realm.val()) + '", ' + headerValue;
-      param.realm = sign_oauth_realm.val();
+        
+    if (disable_oauth_realm.attr('checked') !== 'checked') {
+      if(auto_oauth_realm.attr('checked') === 'checked')
+        param.auto_realm = true;
+      else
+        param.realm = oauth_realm.val();
     }
-    //headerValue = 'OAuth ' + headerValue;
 
     var headerId = restclient.main.addHttpRequestHeader('Authorization', headerValue, param);
     //restclient.log('header id of oauth header: ' + headerId);
@@ -1825,8 +1834,9 @@ restclient.main = {
       var headerSpan      = $('.tag span[data-header-id="' + headerId + '"]'),
           secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
           parameters      = JSON.parse(headerSpan.attr('oauth-parameters')),
-          oauth_realm     = headerSpan.attr('realm');
-      
+          oauth_realm     = headerSpan.attr('realm'),
+          auto_realm      = (typeof headerSpan.attr('auto_realm') === 'string') ? JSON.parse(headerSpan.attr('auto_realm')) : false;
+          
       restclient.log('[updateOAuthSign] headerId: ' + headerId);
       restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);
       
@@ -1856,13 +1866,16 @@ restclient.main = {
       }
       
       var sign = {
-                 action: requestMethod,
-                 path: requestUrl,
-                 signatures: secrets,
-                 parameters: param
+                  action: requestMethod,
+                  path: requestUrl,
+                  signatures: secrets,
+                  parameters: param
                  };
-      if (typeof oauth_realm === 'string')
-        sign.realm = oauth_realm;
+      if (auto_realm === true)
+        sign.realm = requestUrl;
+      else
+        if (typeof oauth_realm === 'string')
+          sign.realm = oauth_realm;
       
       restclient.log(sign);
       var signature = restclient.oauth.sign(sign);
@@ -1870,11 +1883,12 @@ restclient.main = {
       var headerValue = signature.headerString,
           param       = {"oauth-secrets": secrets, "oauth-parameters": parameters};
       
-      if (typeof oauth_realm === 'string') {
-        //headerValue = 'realm="' + restclient.oauth.oauthEscape(oauth_realm) + '", ' + headerValue;
-        param.realm = oauth_realm;
-      }
-      //headerValue = 'OAuth ' + headerValue;
+      if (auto_realm === true)
+        param.realm = true;
+      else
+        if (typeof oauth_realm === 'string')
+          param.realm = oauth_realm;
+
       restclient.log('[updateOAuthSign] header Id: ' + headerId);
       restclient.log('[updateOAuthSign] headerValue: ' + headerValue);
       restclient.log(param);

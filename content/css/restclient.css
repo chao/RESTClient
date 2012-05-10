@@ -188,7 +188,7 @@ a, a:hover {
   right: 0;
   bottom: 0;
   left: 0;
-  opacity: 0.9;
+  opacity: 1;
   overflow-y: scroll;
 }
 .window-wrapper{
@@ -364,3 +364,4 @@ tr.headers td {
     padding-top: 60px;
   }
 }
+a { cursor: pointer; }

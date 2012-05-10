@@ -30,8 +30,8 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="restclient.main.showModal('modal-basic-authorization');return false;">Basic Authorization</a></li>
-              <li><a href="#" onclick="restclient.main.showOAuthWindow();return false;">OAuth Signing</a></li>
+              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authorization</a></li>
+              <li><a onclick="$('#window-oauth').show();">OAuth Signing</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -372,21 +372,12 @@
                 <input type="text" name="access_token_secret" class="input-xxlarge" placeholder="LgrNoNX4JNT3v03b2j6hPqQf6gHntUX5uI0CTLZs">
               </div>
             </div>
-            <div class="control-group">
-              <label for="oauth_realm" class="control-label">Realm</label>
-              <div class="controls">
-                <div class="input-append">
-                <input type="text" name="oauth_realm" class="disabled" style="width: 448px;" placeholder="http://sp.example.com/" disabled><span class="add-on"><input name="disable_oauth_realm" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Disabled</span>
-                <p class="help-block error-info hide">Please remove query string or fragment from Realm.</p>
-                </div>
-              </div>
-            </div>
           </form>
           <div class="modal-footer">
             <div style="float:left;margin-top:8px; ">
             <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
             </div>
-            <input class="btn btn-info btnClose" type="button" value="Close" style="float:right;">
+            <input class="btn btn-info btnClose" type="button" value="Close" style="float:right;" onclick="$('#window-oauth').hide();">
             <div class="btn-group dropup" style="float:right; margin-right: 4px; text-align:left">
               <button class="btn btn-success btnInsertAsHeader" style="padding: 3px 10px;">Insert</button>
               <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 3px 6px;"><span class="caret"></span></button>
@@ -400,10 +391,11 @@
         </div>
         <div class="tab-pane" id="oauth-setting">
           <form class="form-horizontal" onsubmit="return false;">
+            <div class="infobar" style="width: 85%; margin: 0 auto;"></div>
             <div class="control-group">
               <label class="control-label" for="oauth_signature_method">Signature Methods</label>
               <div class="controls">
-                <select id="oauth_signature_method" class="input-xlarge">
+                <select name="oauth_signature_method" class="input-xxlarge">
                   <option value="HMAC-SHA1" selected>HMAC-SHA1</option>
                   <option value="PLAINTEXT">PLAINTEXT</option>
                 </select>
@@ -412,17 +404,26 @@
             <div class="control-group">
               <label for="oauth_version" class="control-label">oAuth Version</label>
               <div class="controls">
-                <select id="oauth_version" class="input-xlarge">
+                <select name="oauth_version" class="input-xxlarge">
                   <option value="1.0" selected>1.0</option>
                   <option value="2.0">2.0</option>
                 </select>
               </div>
             </div>
             <div class="control-group">
+              <label for="oauth_realm" class="control-label">Realm</label>
+              <div class="controls">
+                <div class="input-append">
+                <input type="text" name="oauth_realm" class="disabled" style="width: 383px;" placeholder="http://sp.example.com/" disabled><span class="add-on"><input name="auto_oauth_realm" type="checkbox" style="margin-top:0px;margin-right: 6px;" class="disabled" checked disabled>Auto</span><span class="add-on"><input name="disable_oauth_realm" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Disabled</span>
+                <p class="help-block error-info hide">Please remove query string or fragment from Realm.</p>
+                </div>
+              </div>
+            </div>
+            <div class="control-group">
               <label for="oauth_nonce" class="control-label">oAuth Nonce</label>
               <div class="controls">
                 <div class="input-append">
-                <input class="input-large disabled" id="oauth_nonce" size="16" type="text" disabled><span class="add-on"><input id="auto_oauth_nonce" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
+                <input class="input-large disabled" name="oauth_nonce" style="width: 463px;" type="text" disabled><span class="add-on"><input name="auto_oauth_nonce" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
                 </div>
               </div>
             </div>
@@ -430,7 +431,7 @@
               <label for="oauth_timestamp" class="control-label">oAuth Timestamp</label>
               <div class="controls">
                 <div class="input-append">
-                <input class="input-large disabled" id="oauth_timestamp" size="16" type="text" disabled><span class="add-on"><input id="auto_oauth_timestamp" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
+                <input class="input-large disabled" name="oauth_timestamp" style="width: 463px;" type="text" disabled><span class="add-on"><input name="auto_oauth_timestamp" type="checkbox" style="margin-top:0px;margin-right: 6px;" checked>Auto</span>
                 </div>
                 <p class="help-block hide">Tue Mar 20 21:51:29 CST 2012</p>
               </div>
@@ -438,7 +439,7 @@
           </form>
           <div class="modal-footer">
             <input class="btn btn-success btnOkay" type="button" value="Save">
-            <input class="btn btn-info btnClose" type="button" value="Close">
+            <input class="btn btn-info btnClose" type="button" value="Close" onclick="$('#window-oauth').hide();">
           </div>
         </div>
       </div>

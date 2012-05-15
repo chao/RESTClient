@@ -60,6 +60,11 @@ restclient.http = {
         xhr.overrideMimeType(mimeType);
 
       restclient.http.xhr = xhr;
+      if(restclient.getPref('requestTimer', false) === true)
+        restclient.http.startTime = new Date().getTime();
+      else
+        restclient.http.startTime = false;
+        
       xhr.send(requestBody);
     } catch (e) {
       restclient.main.setResponseHeader({"Error": [
@@ -82,6 +87,11 @@ restclient.http = {
     restclient.main.setResponseHeader({"Error": "Could not connect to server"}, false);
   },
   onload: function(xhr) {
+    if(restclient.http.startTime)
+    {
+      var requestTime = (new Date().getTime()) - restclient.http.startTime;
+      restclient.main.showStatus('Execute Time : ' + requestTime + 'ms')
+    }
     restclient.main.clearResult();
     xhr = xhr.target;
     var headers = {};

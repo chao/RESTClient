@@ -86,8 +86,8 @@ restclient.message = {
     
     if(arg.parent)
     {
-      if(arg.exclude)
-        arg.parent.find('.alert').alert('close');
+      if(arg.exclude === true)
+        arg.parent.find('.alert').alert('close').remove();
       container.appendTo(arg.parent);
     }
     else{
@@ -102,7 +102,12 @@ restclient.message = {
           arg.closed.apply(restclient.main, []);
       });
     }
-    container.addClass('animated shake');
+    
+    if(typeof arg.timeout === 'number') {
+      setTimeout(function(){ container.hide(); }, arg.timeout);
+    }
+    var animate = arg.animate || 'shake';
+    container.addClass('animated ' + animate);
     return container;
   },
 

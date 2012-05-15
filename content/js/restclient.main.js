@@ -96,6 +96,7 @@ restclient.main = {
     $('.toggle-response').click(restclient.main.toggleResponse);
     $('.toggle-page-layout').click(restclient.main.toggleLayout);
     $('.toggle-header-layout').click(restclient.main.toggleRequestHeaderLayout);
+    $('.toggle-request-timer').click(restclient.main.toggleRequestTimer);
     $('#request-body').focus(function () {
       if ($(this).innerHeight() < 200 )
         $(this).css('height', '200px');
@@ -155,7 +156,9 @@ restclient.main = {
   },
   initSkin: function () {
     var pageLayout = restclient.getPref('pageLayout', 'fixed'),
-        requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag');
+        requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag'),
+        requestTimer = restclient.getPref('requestTimer', false);
+        
     if (pageLayout === 'percentage') {
       $('.container').addClass('container-fluid').removeClass('container');
       $('.toggle-page-layout').attr('data-layout', 'percentage');
@@ -168,6 +171,12 @@ restclient.main = {
       $('.toggle-header-layout').attr('data-layout', 'table');
       $('.toggle-header-layout').text('List request headers in tag');
     }
+    
+    if (requestTimer === true) {
+      $('.toggle-request-timer').attr('data-timer', 'enable');
+      $('.toggle-request-timer').text('Disable request execution timer');
+    }
+    
     var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.simplex.css');
     restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function () {
@@ -305,6 +314,20 @@ restclient.main = {
       $(this).attr('data-layout', 'tag');
       $(this).text('List request headers in table');
       restclient.setPref('requestHeaderLayout', 'tag');
+    }
+  },
+  toggleRequestTimer: function() {
+    if ($(this).attr('data-timer') == 'disabled')
+    {
+      $(this).attr('data-timer', 'enable');
+      $(this).text('Disable request execution timer');
+      restclient.setPref('requestTimer', true);
+    }
+    else
+    {
+      $(this).attr('data-timer', 'disabled');
+      $(this).text('Enable request execution timer');
+      restclient.setPref('requestTimer', false);
     }
   },
   initRequestUrl: function () {
@@ -1938,6 +1961,19 @@ restclient.main = {
       $("#request-url").val(url);
     else
       $("#request-url").val(restclient.helper.makeUrlAbsolute(url, currentUrl));
+  },
+  showStatus: function(text, type) {
+    type = type || 'message';
+    $('#alert-status-text').remove();
+    var message = restclient.message.show({
+      id: 'alert-status-text',
+      parent: $('body'),
+      exclude: false,
+      type: type,
+      timeout: 5000,
+      animate: 'bounce',
+      title: text
+    });
   }
 };
 

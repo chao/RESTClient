@@ -366,3 +366,20 @@ tr.headers td {
   }
 }
 a { cursor: pointer; }
+#alert-status-text {
+  padding-top: 6px; 
+  padding-bottom: 2px; 
+  border-bottom-width: 0px; 
+  margin-bottom: 0px;
+  z-index:99999;
+  position: fixed;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 1;
+  border-radius: 0;
+}
+#alert-status-text h4{
+  margin-bottom: 5px;
+}

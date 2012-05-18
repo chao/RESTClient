@@ -2,7 +2,6 @@
 {
   width:100%;
   overflow:auto;
-  font-family:inherit;
   font-weight:normal;
   font-style:normal;
   font-size:16px;
@@ -14,7 +13,6 @@
 }
 .KelpJSONView ol li
 {
-    white-space:nowrap;
 }
 .jsonhighlight
 {

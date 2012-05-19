@@ -36,3 +36,5 @@ RESTClient.tmproj
 #ignore test scripts
 *.test.js
 *.xpi
+
+content/test.html

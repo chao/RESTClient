@@ -15,6 +15,6 @@
                    em:name="RESTClient"
                    em:type="2">
     <em:targetApplication RDF:resource="rdf:#$ll2uD1"/>
-    <em:version>2.0.2</em:version>
+    <em:version>2.0.3</em:version>
   </RDF:Description>
 </RDF:RDF>

@@ -31,7 +31,8 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authorization</a></li>
-              <li><a onclick="$('#window-oauth').show();">OAuth Signing</a></li>
+              <li><a onclick="$('#window-oauth').show();">OAuth</a></li>
+              <li class="hide"><a onclick="$('#window-oauth2').show();">OAuth2</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -93,7 +94,7 @@
     <div id="request-container" style="margin-bottom: 10px;">
     <div id="request-error"></div>
     <div id="request-form" class="well">
-      <form class="form-inline" style="margin-bottom:0px">
+      <form action="" class="form-inline" style="margin-bottom:0px" method="POST" onsubmit="return false;">
         <label style="margin: 0 5px; width: 45px;">Method</label>
         <input style="magin:0; width: 80px;" id="request-method" type="text" placeholder="GET" data-provide="typeahead" data-items="4" data-source="" value="GET"><span style="width:20px; padding: 4px; margin: 0 0 0 -2px" class="request-method-dropdown dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="request-method-icon icon-chevron-down"></i></a>
@@ -101,12 +102,12 @@
           </ul>
         </span>
         <label style="margin: 0 5px 0 15px; width: 25px;">URL</label>
-        <input id="request-url" name="request-url" type="text" autocomplete="on" style="margin: 0 auto; width: -moz-calc(100% - 380px);" placeholder="http://www.example.com"><span style="width:45px; padding: 4px; margin: 0 0 0 -2px" class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
+        <input id="request-url" name="request-url" type="url" autocomplete="on" style="margin: 0 auto; width: -moz-calc(100% - 380px);" placeholder="http://www.example.com"><span style="width:45px; padding: 4px; margin: 0 0 0 -2px" class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="favorite-list-icon icon-chevron-down"></i></a>
           <ul id="request-url-list" class="dropdown-menu">
           </ul>
         </span></span>
-        <button id="request-button" type="button" class="btn btn-danger" style="margin: 0 0 0 15px; padding: 4px 15px;">SEND</button>
+        <button id="request-button" type="submit" class="btn btn-danger" style="margin: 0 0 0 15px; padding: 4px 15px;">SEND</button>
       </form>
       <label class="checkbox overrideMimeType hide">
         <input type="checkbox" id="overrideMimeType" value="text/xml; charset=x-user-defined">
@@ -295,60 +296,12 @@
       </div>
       <div class="window-content">
         <ul class="nav nav-tabs">
-        <!--<li class="hide"><a href="#get-access-token" data-toggle="tab">Get access token</a></li>//-->
-        <li class="active"><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
-        <li><a href="#oauth-setting" data-toggle="tab">OAuth setting</a></li>
-      </ul>
+          <li class="active"><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
+          <li><a href="#oauth-setting" data-toggle="tab">OAuth setting</a></li>
+        </ul>
         <div class="tab-content">
-        <div class="tab-pane hide" id="get-access-token">
-          <form class="form-horizontal" onsubmit="return false;">
-            <div class="control-group">
-              <label for="consumer_key" class="control-label">Consumer key</label>
-              <div class="controls">
-                <input type="text" name="consumer_key" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="consumer_secret" class="control-label">Consumer secret</label>
-              <div class="controls">
-                <input type="text" name="consumer_secret" class="input-xxlarge"  placeholder="lPvnpgox1rS9xTy8p0DRtudPePWNqtSjfkSqgFg">
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="request_token_url" class="control-label">Request token URL</label>
-              <div class="controls">
-                <input type="text" name="request_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/request_token">
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="authorize_url" class="control-label">Authorize URL</label>
-              <div class="controls">
-                <input type="text" name="authorize_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/authorize">
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="access_token_url" class="control-label">Access token URL</label>
-              <div class="controls">
-                <input type="text" name="access_token_url" class="input-xxlarge" placeholder="https://api.twitter.com/oauth/access_token">
-              </div>
-            </div>
-            <div class="control-group">
-              <label for="callback_url" class="control-label">Callback URL</label>
-              <div class="controls">
-                <input type="text" name="callback_url" class="input-xxlarge" placeholder="https://api.example.com/oauth/callback">
-              </div>
-            </div>
-          </form>
-          <div class="modal-footer">
-            <div style="float:left;margin-top:8px; ">
-            <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
-            </div>
-            <input class="btn btn-success btnOkay" type="button" value="Authorize" data-loading-text="Processing">
-            <input class="btn btn-info btnClose" type="button" value="Close">
-          </div>
-        </div>
-        <div class="tab-pane active" id="signature-request">
-          <form class="form-horizontal" onsubmit="return false;">
+          <div class="tab-pane active" id="signature-request">
+            <form class="form-horizontal" onsubmit="return false;">
             <div class="control-group">
               <label for="consumer_key" class="control-label">Consumer key</label>
               <div class="controls">
@@ -374,7 +327,7 @@
               </div>
             </div>
           </form>
-          <div class="modal-footer">
+            <div class="modal-footer">
             <div style="float:left;margin-top:8px; ">
             <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
             </div>
@@ -389,9 +342,9 @@
             </div>
             
           </div>
-        </div>
-        <div class="tab-pane" id="oauth-setting">
-          <form class="form-horizontal" onsubmit="return false;">
+          </div>
+          <div class="tab-pane" id="oauth-setting">
+            <form class="form-horizontal" onsubmit="return false;">
             <div class="infobar" style="width: 85%; margin: 0 auto;"></div>
             <div class="control-group">
               <label class="control-label" for="oauth_signature_method">Signature Methods</label>
@@ -438,12 +391,148 @@
               </div>
             </div>
           </form>
-          <div class="modal-footer">
+            <div class="modal-footer">
             <input class="btn btn-success btnOkay" type="button" value="Save">
             <input class="btn btn-info btnClose" type="button" value="Close" onclick="$('#window-oauth').hide();">
           </div>
+          </div>
         </div>
       </div>
+    </div><!--end window-wrapper//-->
+  </div>
+</div> 
+<div id="window-oauth2" class="window-overlay" style="display:none">
+  <div class="window">
+    <div class="window-wrapper clearfix">
+      <div class="window-header">
+        <a class="close btnClose">×</a>
+        <h3>OAuth2</h3>
+      </div>
+      <div class="window-content">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#oauth2-authorize" data-toggle="tab">Authorize</a></li>
+          <li><a href="#oauth2-tokens" data-toggle="tab">Tokens</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="oauth2-authorize">
+            <form class="form-horizontal" onsubmit="return false;">
+              <div class="control-group">
+                <label class="control-label" for="templates">Templates</label>
+                <div class="controls">
+                  <select name="templates" class="input-xxlarge">
+                    <option value="" selected></option>
+                    <option value="Google">Google</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="Github">Github</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="response_type">Response type</label>
+                <div class="controls">
+                  <select name="response_type" class="input-xxlarge">
+                    <option value="code" selected>code</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="client_id" class="control-label">Client identifier</label>
+                <div class="controls">
+                  <input type="text" name="client_id" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="authorization_endpoint" class="control-label">Authorization endpoint</label>
+                <div class="controls">
+                  <input type="text" name="authorization_endpoint" class="input-xxlarge" placeholder="https://server.example.com/authorize">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="token_endpoint" class="control-label">Token endpoint</label>
+                <div class="controls">
+                  <input type="text" name="token_endpoint" class="input-xxlarge" placeholder="https://client.example.com/cb">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="token_method" class="control-label">Access token request method</label>
+                <div class="controls">
+                  <select name="token_method" class="input-xxlarge">
+                    <option value="GET" selected>GET</option>
+                    <option value="POST" selected>POST</option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="redirection_endpoint" class="control-label">Redirection endpoint</label>
+                <div class="controls">
+                  <input type="text" name="redirection_endpoint" class="input-xxlarge"  placeholder="https://client.example.com/">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="scope" class="control-label">Access token scope</label>
+                <div class="controls">
+                  <input type="text" name="scope" class="input-xxlarge" placeholder="Read Write">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="state" class="control-label">State</label>
+                <div class="controls">
+                  <input type="text" name="state" class="input-xxlarge" placeholder="xyz">
+                </div>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <div style="float:left;margin-top:8px; ">
+              <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
+              </div>
+              <input class="btn btn-success btnOkay" type="button" value="Authorize" data-loading-text="Processing">
+              <input class="btn btn-info btnClose" type="button" value="Close">
+            </div>
+          </div>
+          <div class="tab-pane" id="oauth2-tokens">
+            <form class="form-horizontal" onsubmit="return false;">
+              <div class="control-group">
+                <label class="control-label" for="response_type">Saved Tokens</label>
+                <div class="controls">
+                  <select name="response_type" class="input-xxlarge">
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="access_token" class="control-label">Access token</label>
+                <div class="controls">
+                  <input type="text" name="access_token" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="client_id" class="control-label">Expires time</label>
+                <div class="controls">
+                  <input type="text" name="client_id" class="input-xxlarge" placeholder="Thu May 17 2012 17:04:44 GMT+0800 (CST)" readonly>
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="client_id" class="control-label">Refresh token</label>
+                <div class="controls">
+                  <input type="text" name="client_id" class="input-xxlarge" placeholder="p9Iax8a29TnuYx">
+                </div>
+              </div>
+            </form>
+            <div class="modal-footer">
+              <input class="btn btn-info btnClose" type="button" value="Close" style="float:right; padding: 5px 10px;">
+              <div class="btn-group dropup" style="float:right; margin: 0 6px; text-align:left">
+                <button class="btn btn-success btnInsertAsHeader" style="padding: 3px 10px;">Insert</button>
+                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 3px 6px;"><span class="caret"></span></button>
+                <ul class="dropdown-menu pull-right">
+                  <li><a href="#" class="btnInsertAsHeader">Insert as header</a></li>
+                  <li><a href="#">Insert as query string</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Save</a></li>
+                </ul>
+              </div>
+              <input class="btn btn-success btnOkay" type="button" value="Refresh" data-loading-text="Processing" style="float:right; padding: 5px 10px;">
+            </div>
+          </div>
+        </div>
       </div>
     </div><!--end window-wrapper//-->
   </div>
@@ -475,5 +564,9 @@
 <script type="text/javascript" src="js/restclient.http.js"></script>
 <script type="text/javascript" src="js/restclient.message.js"></script>
 <script type="text/javascript" src="js/restclient.helper.js"></script>
+
+<script type="text/javascript" src="js/restclient.oauth2.js"></script>
+<script type="text/javascript" src="js/restclient.oauth2.ui.js"></script>
+<script type="text/javascript" src="js/restclient.oauth2.template.js"></script>
 </body>
 </html>

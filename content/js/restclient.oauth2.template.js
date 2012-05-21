@@ -29,31 +29,71 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 restclient.oauth2 = restclient.oauth2 || {};
 restclient.oauth2.templates = {
-  "Google": {
-    "authorization_endpoint": "https://accounts.google.com/o/oauth2/auth",
-    "redirection_endpoint": "http://www.google.com/robots.txt",
-    "token_endpoint": "https://accounts.google.com/o/oauth2/token",
-    "token_method": "POST",
-    "response_type": "code"
-  },
-  "Github": {
-    "authorization_endpoint": "https://github.com/login/oauth/authorize",
-    "redirection_endpoint": "https://github.com/robots.txt",
-    "token_endpoint": "https://github.com/login/oauth/access_token",
-    "token_method": "POST",
-    "response_type": "code"
-  },
-  "Facebook": {
-    "authorization_endpoint": "https://www.facebook.com/dialog/oauth",
-    "redirection_endpoint": "http://www.facebook.com/robots.txt",
-    "token_endpoint": "https://graph.facebook.com/oauth/access_token",
-    "token_method": "GET",
-    "response_type": "code"
+  predefined: {
+    "Google": {
+      "authorization_endpoint": "https://accounts.google.com/o/oauth2/auth",
+      "redirection_endpoint": "http://www.google.com/robots.txt",
+      "token_endpoint": "https://accounts.google.com/o/oauth2/token",
+      "token_method": "POST",
+      "response_type": "code"
+    },
+    "Github": {
+      "authorization_endpoint": "https://github.com/login/oauth/authorize",
+      "redirection_endpoint": "https://github.com/robots.txt",
+      "token_endpoint": "https://github.com/login/oauth/access_token",
+      "token_method": "POST",
+      "response_type": "code"
+    },
+    "Facebook": {
+      "authorization_endpoint": "https://www.facebook.com/dialog/oauth",
+      "redirection_endpoint": "http://www.facebook.com/robots.txt",
+      "token_endpoint": "https://graph.facebook.com/oauth/access_token",
+      "token_method": "GET",
+      "response_type": "code"
+    }
   },
   getTemplate: function(name) {
-    if (typeof restclient.oauth2.templates[name] === 'object')
-      return restclient.oauth2.templates[name];
+    var oauth_templates = restclient.getPref('oauth2.templates', '');
+    if (oauth_templates === '') {
+      oauth_templates = JSON.stringify(restclient.oauth2.templates.predefined);
+      restclient.setPref('oauth2.templates', oauth_templates);
+    }
+    
+    oauth_templates = JSON.parse(oauth_templates);
+    
+    if (typeof oauth_templates[name] === 'object')
+      return oauth_templates[name];
     else
       return false;
+  },
+  getTemplateNames: function() {
+    var oauth_templates = restclient.getPref('oauth2.templates', '');
+    if (oauth_templates === '') {
+      oauth_templates = JSON.stringify(restclient.oauth2.templates.predefined);
+      restclient.setPref('oauth2.templates', oauth_templates);
+    }
+    oauth_templates = JSON.parse(oauth_templates);
+    
+    var result = [];
+    for(var name in oauth_templates) {
+      result.push(name);
+    }
+    return result.sort();
+  },
+  save: function(name, setting) {
+    var oauth_templates = restclient.getPref('oauth2.templates', '');
+    oauth_templates = JSON.parse(oauth_templates);
+    oauth_templates[name] = setting;
+    restclient.setPref('oauth2.templates', JSON.stringify(oauth_templates));
+    return true;
+  },
+  remove: function(name) {
+    if(typeof name !== 'string' || name === '') return false;
+    var oauth_templates = restclient.getPref('oauth2.templates', '');
+    oauth_templates = JSON.parse(oauth_templates);
+    if(name in oauth_templates) {
+      delete oauth_templates[name];
+      restclient.setPref('oauth2.templates', JSON.stringify(oauth_templates));
+    }
   }
 }

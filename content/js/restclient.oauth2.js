@@ -29,10 +29,37 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 restclient.oauth2 = {
   init: function() {
+    restclient.oauth2.updateTemplateList();
+    restclient.oauth2.updateTokenList();
+    
     $('#oauth2-authorize [name="templates"]').change(restclient.oauth2.applyTemplate);
+    $('#oauth2-tokens [name="saved_tokens"]').change(restclient.oauth2.applyToken);
+    
     $('#window-oauth2 .btnClose').click(restclient.oauth2.closeDialog);
     $('#window-oauth2 .btnAuthorize').click(restclient.oauth2.authorize);
     $('#window-oauth2 .btnInsertAsHeader').click(restclient.oauth2.insertAsHeader);
+    
+    $('#window-oauth2 .btnSaveTemplate').click(restclient.oauth2.saveTemplate);
+    $('#window-oauth2 .btnRemoveTemplate').click(restclient.oauth2.removeTemplate);
+    
+    $('#window-oauth2 .btnSaveToken').click(restclient.oauth2.saveToken);
+    $('#window-oauth2 .btnRemoveToken').click(restclient.oauth2.removeToken);
+  },
+  updateTemplateList: function() {
+    $('#oauth2-authorize [name="templates"]').empty();
+    $('#oauth2-authorize [name="templates"]').append($('<option selected></option>'));
+    var names = restclient.oauth2.templates.getTemplateNames();
+    for(var i=0, n; n = names[i]; i++) {
+      $('#oauth2-authorize [name="templates"]').append($('<option></option>').text(n).attr('value', n));
+    }
+  },
+  updateTokenList: function() {
+    $('#oauth2-tokens [name="saved_tokens"]').empty();
+    $('#oauth2-tokens [name="saved_tokens"]').append($('<option selected></option>'));
+    var names = restclient.oauth2.token.getNames();
+    for(var i=0, name; name = names[i]; i++) {
+      $('#oauth2-tokens [name="saved_tokens"]').append($('<option></option>').text(name).attr('value', name));
+    }
   },
   closeDialog: function() {
     $('#window-oauth2').hide();
@@ -163,9 +190,140 @@ restclient.oauth2 = {
       access_token.val('');
     }
   },
+  saveToken: function() {
+    var names = restclient.oauth2.token.getNames(), 
+        oauth_param = restclient.oauth2.getAuthorize(),
+        oauth_token = restclient.oauth2.getTokens();
+        
+    $('#modal-save').find('.title').text('Save current token');
+    $('#modal-save').find('label').text('Token name');
+    $('#modal-save [name="saved-name"]').attr('placeholder', 'Token name, e.g. Facebook access token').attr('data-source', JSON.stringify(names)).bind('change', function() {
+      if($('#modal-save .btnOkay').data('overwrite') === true)
+      {
+        $('#modal-save .help-block').hide();
+        $('#modal-save .btnOkay').val('Save');
+        $('#modal-save .btnOkay').data('overwrite', false);
+      }
+    });
+    $('#modal-save .help-block').text('Name existed, you can either change a name or overwrite it.').hide();
+    $('#modal-save .error').removeClass('error');
+    $('#modal-save .btnOkay').text('Save').data('overwrite', false).unbind().bind('click', function() {
+      var name = $('#modal-save [name="saved-name"]').val();
+      $('#modal-save .error').removeClass('error');
+      if(name === '') {
+        $('#modal-save [name="saved-name"]').parents('.control-group').addClass('error');
+        return false;
+      }
+      if(names.indexOf(name) > -1 && $(this).data('overwrite') === false) {
+        $('#modal-save .help-block').show();
+        $('#modal-save .btnOkay').val('Overwrite');
+        $(this).data('overwrite', true);
+        return false;
+      }
+      restclient.oauth2.token.save(name, {'setting': oauth_param, 'tokens': oauth_token});
+      restclient.oauth2.updateTokenList();
+      $('#modal-save').modal('hide');
+    });
+    $('#window-oauth2').hide();
+    
+    $('#modal-save').modal('show').on('hidden', function(){ $('#window-oauth2').show(); });
+  },
+  removeToken: function() {
+    var template = $('#oauth2-tokens [name="saved_tokens"]');
+    if(template.val() === '') {
+      template.parents('.control-group').addClass('error');
+      template.next().show();
+      return false;
+    }
+    restclient.oauth2.token.remove(template.val());
+    restclient.oauth2.updateTokenList();
+  },
+  applyToken: function() {
+    var token = $('#oauth2-tokens [name="saved_tokens"]'),
+        tokenName = token.val(),
+        tokens = restclient.oauth2.token.get(tokenName);
+    
+    token.next().hide();
+    token.parents('.control-group').removeClass('error');
+    if (tokens === false)
+    {
+      var setting = {
+        "response_type": "code",
+        "token_method": "POST",
+        "client_id": "",
+        "client_secret": "",
+        "authorization_endpoint": "",
+        "token_endpoint": "",
+        "redirection_endpoint": "",
+        "scope": "",
+        "state": ""
+      };
+      var oauth_tokens = {
+        'access_token': '',
+        'expires_in': false,
+        'refresh_token': ''
+      };
+      tokens = {};
+      tokens.setting = setting;
+      tokens.tokens = oauth_tokens;
+    }
+    restclient.oauth2.setAuthorize(tokens.setting);
+    restclient.oauth2.setTokens(tokens.tokens);
+  },
+  saveTemplate: function() {
+    var names = restclient.oauth2.templates.getTemplateNames(), 
+        oauth_param = restclient.oauth2.getAuthorize();
+        
+    $('#modal-save').find('.title').text('Save as template');
+    $('#modal-save').find('label').text('Template name');
+    $('#modal-save [name="saved-name"]').attr('placeholder', 'Template name, e.g. Facebook').attr('data-source', JSON.stringify(names)).bind('change', function() {
+      if($('#modal-save .btnOkay').data('overwrite') === true)
+      {
+        $('#modal-save .help-block').hide();
+        $('#modal-save .btnOkay').val('Save');
+        $('#modal-save .btnOkay').data('overwrite', false);
+      }
+    });
+    $('#modal-save .help-block').text('Name existed, you can either change a name or overwrite it.').hide();
+    $('#modal-save .error').removeClass('error');
+    $('#modal-save .btnOkay').text('Save').data('overwrite', false).unbind().bind('click', function() {
+      var name = $('#modal-save [name="saved-name"]').val();
+      $('#modal-save .error').removeClass('error');
+      if(name === '') {
+        $('#modal-save [name="saved-name"]').parents('.control-group').addClass('error');
+        return false;
+      }
+      if(names.indexOf(name) > -1 && $(this).data('overwrite') === false) {
+        $('#modal-save .help-block').show();
+        $('#modal-save .btnOkay').val('Overwrite');
+        $(this).data('overwrite', true);
+        return false;
+      }
+      restclient.oauth2.templates.save(name, oauth_param);
+      restclient.oauth2.updateTemplateList();
+      $('#modal-save').modal('hide');
+    });
+    $('#window-oauth2').hide();
+    
+    $('#modal-save').modal('show').on('hidden', function(){ $('#window-oauth2').show(); });
+  },
+  removeTemplate: function() {
+    var template = $('#oauth2-authorize [name="templates"]');
+    if(template.val() === '') {
+      template.parents('.control-group').addClass('error');
+      template.next().show();
+      return false;
+    }
+    restclient.oauth2.templates.remove(template.val());
+    restclient.oauth2.updateTemplateList();
+  },
   applyTemplate: function() {
-    var templateName = $('#oauth2-authorize [name="templates"]').val(),
+    var template = $('#oauth2-authorize [name="templates"]'),
+        templateName = template.val(),
         temp = restclient.oauth2.templates.getTemplate(templateName);
+    
+    template.next().hide();
+    template.parents('.control-group').removeClass('error');
     if (temp === false)
     {
       temp = {
@@ -361,6 +519,49 @@ restclient.oauth2.listener = {
         aIID.equals(Components.interfaces.nsIObserver))  
       return this;  
     throw Components.results.NS_NOINTERFACE;  
+  }
+}
+
+restclient.oauth2.token = {
+  get: function(name) {
+    if(typeof name !== 'string' || name === '') return false;
+    var tokens = restclient.getPref('oauth2.tokens', '');
+    if(tokens === '')
+      return false;
+    tokens = JSON.parse(tokens);
+    return (name in tokens) ? tokens[name] : false;
+  },
+  save: function(name, setting) {
+    var tokens = restclient.getPref('oauth2.tokens', '');
+    if(tokens === '')
+      tokens = {};
+    else
+      tokens = JSON.parse(tokens);
+      
+    tokens[name] = setting;
+    restclient.setPref('oauth2.tokens', JSON.stringify(tokens));
+    return true;
+  },
+  remove: function(name) {
+    if(typeof name !== 'string' || name === '') return false;
+    var tokens = restclient.getPref('oauth2.tokens', '');
+    if(tokens === '') return true;
+    tokens = JSON.parse(tokens);
+    if(name in tokens) {
+      delete tokens[name];
+      restclient.setPref('oauth2.tokens', JSON.stringify(tokens));
+    }
+  },
+  getNames: function() {
+    var tokens = restclient.getPref('oauth2.tokens', '');
+    if(tokens === '')
+      tokens = {};
+    else
+      tokens = JSON.parse(tokens);
+    var result = [];
+    for(var name in tokens)
+      result.push(name);
+    return result;
   }
 }
 window.addEventListener("load", function () { restclient.oauth2.init();  }, false);

@@ -28,9 +28,13 @@
             </ul>
           </li>
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authorization <b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authentication <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authorization</a></li>
+              <li class="nav-header">HTTP authentication</li>
+              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authentication</a></li>
+              <li><a onclick="restclient.main.showModal('modal-digest-authorization');">Digest Authentication</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">OAuth Protocol</li>
               <li><a onclick="$('#window-oauth').show();">OAuth</a></li>
               <li><a onclick="$('#window-oauth2').show();">OAuth2</a></li>
             </ul>
@@ -253,6 +257,27 @@
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>
+<div class="modal fade hide" id="modal-save">
+  <div class="modal-header">
+    <a class="close btnClose">×</a>
+    <h3 class="title">Save</h3>
+  </div>
+  <div class="modal-body">
+    <form class="offset1" onsubmit="return false;">
+      <div class="control-group">
+       <label for="saved-name">Name</label>
+       <div class="controls">
+         <input type="text" size="200" name="saved-name" style="width: 200px;" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
+         <p class="help-block hide">Please give this request a name for future usage.</p>
+       </div>
+     </div>
+   </form>
+  </div>
+  <div class="modal-footer">
+    <input class="btn btnOkay btn-inverse" type="button" value="Save">
+    <input class="btn btnClose" type="button" value="Cancel">
+  </div>
+</div>
 <div class="modal fade hide" id="modal-oauth-view">
   <div class="modal-header">
     <a class="close btnClose">×</a>
@@ -425,6 +450,7 @@
                     <option value="Facebook">Facebook</option>
                     <option value="Github">Github</option>
                   </select>
+                  <p class="help-block hide">Please select a template to remove.</p>
                 </div>
               </div>
               <div class="control-group">
@@ -488,8 +514,15 @@
               </div>
             </form>
             <div class="modal-footer">
-              <input class="btn btn-success btnOkay btnAuthorize" type="button" value="Authorize" data-loading-text="Processing">
-              <input class="btn btn-info btnClose" type="button" value="Close">
+              <input class="btn btn-info btnClose" type="button" value="Close" style="float:right; padding: 5px 10px;">
+              <div class="btn-group dropup" style="float:right; margin: 0 6px; text-align:left">
+                <button class="btn btn-success btnAuthorize" style="padding: 4px 10px;">Authorize</button>
+                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 4px 6px;"><span class="caret"></span></button>
+                <ul class="dropdown-menu pull-right">
+                  <li><a href="#" class="btnSaveTemplate">Save as template</a></li>
+                  <li><a href="#" class="btnRemoveTemplate">Remove current template</a></li>
+                </ul>
+              </div>
             </div>
           </div>
           <div class="tab-pane" id="oauth2-tokens">
@@ -523,13 +556,14 @@
             <div class="modal-footer">
               <input class="btn btn-info btnClose" type="button" value="Close" style="float:right; padding: 5px 10px;">
               <div class="btn-group dropup" style="float:right; margin: 0 6px; text-align:left">
-                <button class="btn btn-success btnInsertAsHeader" style="padding: 3px 10px;">Insert</button>
-                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 3px 6px;"><span class="caret"></span></button>
+                <button class="btn btn-success btnInsertAsHeader" style="padding: 4px 10px;">Insert</button>
+                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 4px 6px;"><span class="caret"></span></button>
                 <ul class="dropdown-menu pull-right">
                   <li><a href="#" class="btnInsertAsHeader">Insert as header</a></li>
-                  <li><a href="#">Insert as query string</a></li>
+                  <li class="hide"><a href="#">Insert as query string</a></li>
                   <li class="divider"></li>
-                  <li><a href="#">Save</a></li>
+                  <li><a href="#" class="btnSaveToken">Save</a></li>
+                  <li><a href="#" class="btnRemoveToken">Remove</a></li>
                 </ul>
               </div>
               <input class="btn btn-success btnRefresh disabled" type="button" value="Refresh" data-loading-text="Processing" style="float:right; padding: 5px 10px;" disabled>

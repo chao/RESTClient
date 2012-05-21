@@ -413,7 +413,8 @@ restclient.oauth2 = {
   doAuthorize: function(param) {
     if(!param) return false;
     var req = JSON.parse(JSON.stringify(param));
-    
+    req.redirect_uri = req.redirection_endpoint;
+    delete req.redirection_endpoint;
     delete req.authorization_endpoint;
     delete req.token_endpoint;
     delete req.token_method;
@@ -456,7 +457,9 @@ restclient.oauth2 = {
           var accessToken = {}, response = xhr.responseText;
           accessToken.created_time = new Date().valueOf();
           try{
-            parsedResponse = JSON.parse(response);
+            var parsedResponse = JSON.parse(response);
+            console.log(parsedResponse);
+            console.log(typeof parsedResponse.expires_in);
             if(typeof parsedResponse.access_token === 'string')
               accessToken.access_token = parsedResponse.access_token;
             if(typeof parsedResponse.refresh_token === 'string')
@@ -464,6 +467,7 @@ restclient.oauth2 = {
             if(typeof parsedResponse.expires_in !== 'undefined')
               accessToken.expires_in = parsedResponse.expires_in;
           }catch(e){
+            console.error(e);
             accessToken.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
             accessToken.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
             accessToken.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
@@ -478,14 +482,23 @@ restclient.oauth2 = {
     });
 
     if (param.token_method == 'POST') {
-      var formData = new FormData();
+      /*var formData = new FormData();
       formData.append('code', code);
       formData.append('client_id', param.client_id);
       formData.append('client_secret', param.client_secret);
       formData.append('redirect_uri', param.redirection_endpoint);
-      formData.append('grant_type', 'authorization_code');
+      formData.append('grant_type', 'authorization_code');*/
+      var req = {
+        'code': code,
+        'client_id': param.client_id,
+        'client_secret': param.client_secret,
+        'redirect_uri': param.redirection_endpoint,
+        'grant_type': 'authorization_code'
+      };
+      
       xhr.open(param.token_method, param.token_endpoint, true);
-      xhr.send(formData);
+      xhr.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded;charset=UTF-8');
+      xhr.send($.param(req));
     } else if (param.token_method == 'GET') {
       var req = {
         'code': code,

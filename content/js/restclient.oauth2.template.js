@@ -49,5 +49,11 @@ restclient.oauth2.templates = {
     "token_endpoint": "https://graph.facebook.com/oauth/access_token",
     "token_method": "GET",
     "response_type": "code"
+  },
+  getTemplate: function(name) {
+    if (typeof restclient.oauth2.templates[name] === 'object')
+      return restclient.oauth2.templates[name];
+    else
+      return false;
   }
 }

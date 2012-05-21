@@ -88,7 +88,11 @@ restclient.message = {
     {
       if(arg.exclude === true)
         arg.parent.find('.alert').alert('close').remove();
-      container.appendTo(arg.parent);
+      
+      if(arg.prepend)
+        container.prependTo(arg.parent);
+      else
+        container.appendTo(arg.parent);
     }
     else{
       $('.messages-overlay').show();

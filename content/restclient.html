@@ -32,7 +32,7 @@
             <ul class="dropdown-menu">
               <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authorization</a></li>
               <li><a onclick="$('#window-oauth').show();">OAuth</a></li>
-              <li class="hide"><a onclick="$('#window-oauth2').show();">OAuth2</a></li>
+              <li><a onclick="$('#window-oauth2').show();">OAuth2</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -438,7 +438,13 @@
               <div class="control-group">
                 <label for="client_id" class="control-label">Client identifier</label>
                 <div class="controls">
-                  <input type="text" name="client_id" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
+                  <input type="text" name="client_id" class="input-xxlarge" placeholder="db6b9cfb5e71bfdb7dbb">
+                </div>
+              </div>
+              <div class="control-group">
+                <label for="client_secret" class="control-label">Client secret</label>
+                <div class="controls">
+                  <input type="text" name="client_secret" class="input-xxlarge" placeholder="6794ea094c22e12bd237749ce1f7ee6809787fbc">
                 </div>
               </div>
               <div class="control-group">
@@ -482,19 +488,16 @@
               </div>
             </form>
             <div class="modal-footer">
-              <div style="float:left;margin-top:8px; ">
-              <input type="checkbox" style="margin-right: 6px;" name="remember"><span style="margin-top: 10px;">Remember the setting</span>
-              </div>
-              <input class="btn btn-success btnOkay" type="button" value="Authorize" data-loading-text="Processing">
+              <input class="btn btn-success btnOkay btnAuthorize" type="button" value="Authorize" data-loading-text="Processing">
               <input class="btn btn-info btnClose" type="button" value="Close">
             </div>
           </div>
           <div class="tab-pane" id="oauth2-tokens">
             <form class="form-horizontal" onsubmit="return false;">
               <div class="control-group">
-                <label class="control-label" for="response_type">Saved Tokens</label>
+                <label class="control-label" for="saved_tokens">Saved Tokens</label>
                 <div class="controls">
-                  <select name="response_type" class="input-xxlarge">
+                  <select name="saved_tokens" class="input-xxlarge">
                   </select>
                 </div>
               </div>
@@ -505,15 +508,15 @@
                 </div>
               </div>
               <div class="control-group">
-                <label for="client_id" class="control-label">Expires time</label>
+                <label for="expires_in" class="control-label">Expires time</label>
                 <div class="controls">
-                  <input type="text" name="client_id" class="input-xxlarge" placeholder="Thu May 17 2012 17:04:44 GMT+0800 (CST)" readonly>
+                  <input type="text" name="expires_in" class="input-xxlarge" readonly>
                 </div>
               </div>
               <div class="control-group">
-                <label for="client_id" class="control-label">Refresh token</label>
+                <label for="refresh_token" class="control-label">Refresh token</label>
                 <div class="controls">
-                  <input type="text" name="client_id" class="input-xxlarge" placeholder="p9Iax8a29TnuYx">
+                  <input type="text" name="refresh_token" class="input-xxlarge">
                 </div>
               </div>
             </form>
@@ -529,7 +532,7 @@
                   <li><a href="#">Save</a></li>
                 </ul>
               </div>
-              <input class="btn btn-success btnOkay" type="button" value="Refresh" data-loading-text="Processing" style="float:right; padding: 5px 10px;">
+              <input class="btn btn-success btnRefresh disabled" type="button" value="Refresh" data-loading-text="Processing" style="float:right; padding: 5px 10px;" disabled>
             </div>
           </div>
         </div>
@@ -566,7 +569,6 @@
 <script type="text/javascript" src="js/restclient.helper.js"></script>
 
 <script type="text/javascript" src="js/restclient.oauth2.js"></script>
-<script type="text/javascript" src="js/restclient.oauth2.ui.js"></script>
 <script type="text/javascript" src="js/restclient.oauth2.template.js"></script>
 </body>
 </html>

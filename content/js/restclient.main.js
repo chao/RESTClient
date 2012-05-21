@@ -583,6 +583,18 @@ restclient.main = {
     
     restclient.log(attrName);
     if(attrName.toLowerCase() === 'authorization') {
+      //OAuth 2.0
+      if(attrValue.toLowerCase().indexOf('oauth2 ') === 0) {
+        var oauth2 = header.attr('oauth2');
+        try{
+          oauth2 = JSON.parse(oauth2);
+          restclient.oauth2.setAuthorize(oauth2.authorize);
+          restclient.oauth2.setTokens(oauth2.tokens);
+          $('#window-oauth2').show();
+          $('#window-oauth2 .nav-tabs li a').eq(1).click();
+        }catch(e) {}
+        return;
+      }
       //OAuth 1.0
       if (typeof header.attr('oauth-secrets') !== 'undefined') {
         $('#modal-oauth-view').data('source-header-id', id);

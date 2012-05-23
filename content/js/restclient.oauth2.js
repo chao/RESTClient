@@ -44,6 +44,7 @@ restclient.oauth2 = {
     
     $('#window-oauth2 .btnSaveToken').click(restclient.oauth2.saveToken);
     $('#window-oauth2 .btnRemoveToken').click(restclient.oauth2.removeToken);
+    $('#window-oauth2 .btnRefreshToken').click(restclient.oauth2.doRefreshToken);
   },
   updateTemplateList: function() {
     $('#oauth2-authorize [name="templates"]').empty();
@@ -145,7 +146,7 @@ restclient.oauth2 = {
     var access_token    = $('#oauth2-tokens [name="access_token"]'),
         expires_in      = $('#oauth2-tokens [name="expires_in"]'),
         refresh_token   = $('#oauth2-tokens [name="refresh_token"]'),
-        btnRefresh      = $('#oauth2-tokens .btnRefresh');
+        btnRefresh      = $('#oauth2-tokens .btnRefreshToken');
     return {
       'access_token': access_token.val(),
       'expires_in': expires_in.data('expires_in'),
@@ -157,7 +158,7 @@ restclient.oauth2 = {
     var access_token    = $('#oauth2-tokens [name="access_token"]'),
         expires_in      = $('#oauth2-tokens [name="expires_in"]'),
         refresh_token   = $('#oauth2-tokens [name="refresh_token"]'),
-        btnRefresh      = $('#oauth2-tokens .btnRefresh');
+        btnRefresh      = $('#oauth2-tokens .btnRefreshToken');
     if(typeof tokens.refresh_token === 'string' && tokens.refresh_token !== '') {
       btnRefresh.removeAttr('disabled').removeClass('disabled');
       refresh_token.val(tokens.refresh_token)
@@ -512,6 +513,59 @@ restclient.oauth2 = {
       xhr.send();
     } else {
       throw param.token_method + ' is an unknown method';
+    }
+  },
+  doRefreshToken: function() {
+    var tokens = restclient.oauth2.getTokens(),
+        authorize = restclient.oauth2.getAuthorize();
+    var xhr = new XMLHttpRequest();
+    xhr.addEventListener('readystatechange', function(event) {
+      if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+          var response = xhr.responseText;
+          tokens.created_time = new Date().valueOf();
+          try{
+            var parsedResponse = JSON.parse(response);
+            console.log(parsedResponse);
+            console.log(typeof parsedResponse.expires_in);
+            if(typeof parsedResponse.access_token === 'string')
+              tokens.access_token = parsedResponse.access_token;
+            if(typeof parsedResponse.refresh_token === 'string')
+              tokens.refresh_token = parsedResponse.refresh_token;
+            if(typeof parsedResponse.expires_in !== 'undefined')
+              tokens.expires_in = parsedResponse.expires_in;
+          }catch(e){
+            console.error(e);
+            tokens.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
+            tokens.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : tokens.refresh_token;
+            tokens.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
+          }
+          console.log(xhr.responseText);
+          console.error(tokens);
+          restclient.oauth2.setTokens(tokens);
+          $('#window-oauth2 .nav-tabs li a').eq(1).click();
+          return;
+        }
+      }
+    });
+
+    var req = {
+      'client_id': authorize.client_id,
+      'client_secret': authorize.client_secret,
+      'refresh_token': tokens.refresh_token,
+      'grant_type': 'refresh_token'
+    };
+    if (authorize.token_method == 'POST') {
+      xhr.open(authorize.token_method, authorize.token_endpoint, true);
+      xhr.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded;charset=UTF-8');
+      xhr.send($.param(req));
+    } else if (authorize.token_method == 'GET') {
+
+      var url = authorize.token_endpoint + '?' + $.param(req);
+      xhr.open(authorize.token_method, url, true);
+      xhr.send();
+    } else {
+      throw authorize.token_method + ' is an unknown method';
     }
   }
 }

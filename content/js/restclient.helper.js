@@ -136,7 +136,7 @@ restclient.helper = {
 		if (parts.search)
 		{
 		  search = parts.search.substr(1);
-		  console.log(search);
+		  restclient.log(search);
 		  var found = false;
 		  var elements = search.split('&');
 		  for (var i=0, element; element = elements[i]; i++) {

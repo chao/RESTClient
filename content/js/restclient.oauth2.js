@@ -449,13 +449,13 @@ restclient.oauth2 = {
     var observerService = Components.classes["@mozilla.org/observer-service;1"]  
                                     .getService(Components.interfaces.nsIObserverService);
     observerService.removeObserver(restclient.oauth2.listener, "http-on-examine-response");
-    console.log(redirection_url);
+    restclient.log(redirection_url);
     if(typeof restclient.oauth2.window !== 'undefined')
       try{
         restclient.oauth2.window.close();
       }catch(e){}
     var code = redirection_url.match(/[&\?]code=([^&]+)/)[1];
-    console.log(code);
+    restclient.log(code);
     if(typeof code !== 'string') {
       alert('cannot get code from url:' + redirection_url);
       return false;
@@ -471,8 +471,8 @@ restclient.oauth2 = {
           accessToken.created_time = new Date().valueOf();
           try{
             var parsedResponse = JSON.parse(response);
-            console.log(parsedResponse);
-            console.log(typeof parsedResponse.expires_in);
+            restclient.log(parsedResponse);
+            restclient.log(typeof parsedResponse.expires_in);
             if(typeof parsedResponse.access_token === 'string')
               accessToken.access_token = parsedResponse.access_token;
             if(typeof parsedResponse.refresh_token === 'string')
@@ -485,8 +485,8 @@ restclient.oauth2 = {
             accessToken.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
             accessToken.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
           }
-          console.log(xhr.responseText);
-          console.log(accessToken);
+          restclient.log(xhr.responseText);
+          restclient.log(accessToken);
           restclient.oauth2.setTokens(accessToken);
           $('#window-oauth2 .nav-tabs li a').eq(1).click();
           return;
@@ -542,8 +542,8 @@ restclient.oauth2 = {
           tokens.created_time = new Date().valueOf();
           try{
             var parsedResponse = JSON.parse(response);
-            console.log(parsedResponse);
-            console.log(typeof parsedResponse.expires_in);
+            restclient.log(parsedResponse);
+            restclient.log(typeof parsedResponse.expires_in);
             if(typeof parsedResponse.access_token === 'string')
               tokens.access_token = parsedResponse.access_token;
             if(typeof parsedResponse.refresh_token === 'string')
@@ -556,7 +556,7 @@ restclient.oauth2 = {
             tokens.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : tokens.refresh_token;
             tokens.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
           }
-          console.log(xhr.responseText);
+          restclient.log(xhr.responseText);
           console.error(tokens);
           restclient.oauth2.setTokens(tokens);
           $('#window-oauth2 .nav-tabs li a').eq(1).click();

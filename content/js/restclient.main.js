@@ -797,6 +797,14 @@ restclient.main = {
         if($(this).attr('auto-realm') === 'true')
             request.oauth.auto_realm = true;
       }
+      if ($(this).attr('oauth2'))
+      {
+        try{
+          request.oauth2 = JSON.parse($(this).attr('oauth2'));
+        }catch(e) {
+          request.log(e);
+        }
+      }
     });
     request.headers = headers;
     return request;
@@ -1374,7 +1382,10 @@ restclient.main = {
           restclient.main.addHttpRequestHeader(header[0], header[1], param);
         }
         else
-          restclient.main.addHttpRequestHeader(header[0], header[1]);
+          if (header[0].toLowerCase() == 'authorization' && request.oauth2)
+            restclient.main.addHttpRequestHeader(header[0], header[1], {'oauth2': request.oauth2});
+          else
+            restclient.main.addHttpRequestHeader(header[0], header[1]);
     }
     return true;
   },

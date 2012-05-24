@@ -7,6 +7,11 @@
 
 ### Firefox Addon
 
+* Version 2.0.3
+  * Supported OAuth2 authentication
+  * Fixed url history bug
+  * Show HTTP request execution time
+  
 * Version 2.0.2
   * Fixed links in the returned xml - they are now clickable again
   * Added OAuth Realm support

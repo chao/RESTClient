@@ -38,6 +38,7 @@ restclient.oauth2 = {
     $('#window-oauth2 .btnClose').click(restclient.oauth2.closeDialog);
     $('#window-oauth2 .btnAuthorize').click(restclient.oauth2.authorize);
     $('#window-oauth2 .btnInsertAsHeader').click(restclient.oauth2.insertAsHeader);
+    $('#window-oauth2 .btnInsertAsQueryString').click(restclient.oauth2.insertAsQueryString);
     
     $('#window-oauth2 .btnSaveTemplate').click(restclient.oauth2.saveTemplate);
     $('#window-oauth2 .btnRemoveTemplate').click(restclient.oauth2.removeTemplate);
@@ -61,6 +62,15 @@ restclient.oauth2 = {
     for(var i=0, name; name = names[i]; i++) {
       $('#oauth2-tokens [name="saved_tokens"]').append($('<option></option>').text(name).attr('value', name));
     }
+  },
+  showDialog: function() {
+    var tokens = restclient.oauth2.getTokens(),
+        btnRefresh      = $('#oauth2-tokens .btnRefreshToken');
+    if (typeof tokens.refresh_token === 'string' && tokens.refresh_token !== '')
+      btnRefresh.removeAttr('disabled').removeClass('disabled');
+    else
+      btnRefresh.attr('disabled', true).addClass('disabled');
+    $('#window-oauth2').show();
   },
   closeDialog: function() {
     $('#window-oauth2').hide();
@@ -92,9 +102,9 @@ restclient.oauth2 = {
       access_token.parents('.control-group').addClass('error');
       return false;
     }
-    //TODO parse paramter and replace/add access_token parameter
-    if($('#request-url').val().indexOf('?') > 0)
-      $('#request-url').val($('#request-url').val() + '&access_token=' + access_token.val());
+    var url = $('#request-url').val();
+    $('#request-url').val(restclient.helper.setParam(url, 'access_token', access_token.val()));
+    $('#window-oauth2').hide();
   },
   getAuthorize: function() {
     var response_type           = $('#oauth2-authorize [name="response_type"]'),
@@ -451,9 +461,11 @@ restclient.oauth2 = {
       return false;
     }
     
+    var btnAuthorize = $('#window-oauth2 .btnAuthorize');
     var xhr = new XMLHttpRequest();
     xhr.addEventListener('readystatechange', function(event) {
       if (xhr.readyState == 4) {
+        btnAuthorize.button('reset');
         if (xhr.status == 200) {
           var accessToken = {}, response = xhr.responseText;
           accessToken.created_time = new Date().valueOf();
@@ -481,7 +493,8 @@ restclient.oauth2 = {
         }
       }
     });
-
+    
+    btnAuthorize.button('loading');
     if (param.token_method == 'POST') {
       /*var formData = new FormData();
       formData.append('code', code);
@@ -517,10 +530,13 @@ restclient.oauth2 = {
   },
   doRefreshToken: function() {
     var tokens = restclient.oauth2.getTokens(),
-        authorize = restclient.oauth2.getAuthorize();
+        authorize = restclient.oauth2.getAuthorize(),
+        btnRefresh      = $('#oauth2-tokens .btnRefreshToken');
+    
     var xhr = new XMLHttpRequest();
     xhr.addEventListener('readystatechange', function(event) {
       if (xhr.readyState == 4) {
+        btnRefresh.button('reset');
         if (xhr.status == 200) {
           var response = xhr.responseText;
           tokens.created_time = new Date().valueOf();
@@ -555,6 +571,7 @@ restclient.oauth2 = {
       'refresh_token': tokens.refresh_token,
       'grant_type': 'refresh_token'
     };
+    btnRefresh.button('loading');
     if (authorize.token_method == 'POST') {
       xhr.open(authorize.token_method, authorize.token_endpoint, true);
       xhr.setRequestHeader("Content-Type", 'application/x-www-form-urlencoded;charset=UTF-8');

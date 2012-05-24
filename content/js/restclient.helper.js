@@ -127,6 +127,34 @@ restclient.helper = {
 
 		return protocol + doubleSlash + authority + pathname + search + hash;
 	},
+	setParam: function(url, name, value) {
+	  if ( !this.isAbsoluteUrl( url ) ) {
+			return url;
+		}
+		var parts = this.parseUrl(url);
+		var search = "?" + name + "=" + value;
+		if (parts.search)
+		{
+		  search = parts.search.substr(1);
+		  console.log(search);
+		  var found = false;
+		  var elements = search.split('&');
+		  for (var i=0, element; element = elements[i]; i++) {
+		    var keyToken = element.split('=');
+		    if(keyToken[0] === name) {
+		      elements[i] = name + "=" + value;
+		      found = true;
+		      break;
+		    }
+		  }
+		  if (!found)
+		    elements.push(name + "=" + value);
+		  
+		  search = "?" + elements.join('&');
+		}
+		
+		return parts.protocol + parts.doubleSlash + parts.authority + parts.pathname + search;
+	},
 	validateUrl: function (url) {
     return this.isAbsoluteUrl(url);
   },

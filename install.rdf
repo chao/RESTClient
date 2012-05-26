@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="rdf:#$ll2uD1"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
-                   em:maxVersion="12.*" />
+                   em:maxVersion="14.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:creator="Chao Zhou; chao@zhou.fr"
                    em:contributor="Aurelien Benel; Christophe Lejeune"
@@ -15,6 +15,6 @@
                    em:name="RESTClient"
                    em:type="2">
     <em:targetApplication RDF:resource="rdf:#$ll2uD1"/>
-    <em:version>2.0.3</em:version>
+    <em:version>2.0.4</em:version>
   </RDF:Description>
 </RDF:RDF>

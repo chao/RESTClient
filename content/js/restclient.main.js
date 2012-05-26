@@ -1014,7 +1014,8 @@ restclient.main = {
           fragment = Components.classes["@mozilla.org/feed-unescapehtml;1"]
                                .getService(Components.interfaces.nsIScriptableUnescapeHTML)
                                .parseFragment(responseData, false, null, target);
-      //restclient.log(responseData);
+      //TODO: https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIParserUtils
+      
       $("#response-body-preview div.pre").append(fragment);
       $("#response-body-preview div.pre").removeClass('overflow');
 
@@ -1535,31 +1536,6 @@ restclient.main = {
     auto_oauth_nonce.click(autoNonce);
 
 
-    //Load authorize from preferences
-    /*var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
-        authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
-        authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
-        authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
-        authorize_access_token_url  = $('#get-access-token [name="access_token_url"]'),
-        authorize_callback_url      = $('#get-access-token [name="callback_url"]'),
-        authorize_remember          = $('#get-access-token [name="remember"]');
-
-    var authorize = restclient.getPref('OAuth.authorize', '');
-    if (authorize != '') {
-      authorize = JSON.parse(authorize);
-      authorize_consumer_key.val(authorize.consumer_key);
-      authorize_consumer_secret.val(authorize.consumer_secret);
-      authorize_request_token_url.val(authorize.request_token_url);
-      authorize_authorize_url.val(authorize.authorize_url);
-      authorize_access_token_url.val(authorize.access_token_url);
-      authorize_callback_url.val(authorize.callback_url);
-      (authorize.remember === true) ? authorize_remember.attr('checked', true) : authorize_remember.removeAttr('checked');
-    }
-    else
-    {
-
-    }*/
-
     //Load oauth keys from preferences
     var sign_consumer_key         = $('#signature-request [name="consumer_key"]'),
         sign_consumer_secret      = $('#signature-request [name="consumer_secret"]'),
@@ -1584,147 +1560,6 @@ restclient.main = {
 
     $('#signature-request .btnInsertAsHeader').bind('click', restclient.main.oauthSign);
   },
-  /*oauthAuthorize: function () {
-    var authorize_consumer_key      = $('#get-access-token [name="consumer_key"]'),
-        authorize_consumer_secret   = $('#get-access-token [name="consumer_secret"]'),
-        authorize_request_token_url = $('#get-access-token [name="request_token_url"]'),
-        authorize_authorize_url     = $('#get-access-token [name="authorize_url"]'),
-        authorize_access_token_url  = $('#get-access-token [name="access_token_url"]'),
-        authorize_callback_url      = $('#get-access-token [name="callback_url"]'),
-        authorize_remember          = $('#get-access-token [name="remember"]'),
-        oauth_signature_method      = $('#oauth_signature_method'),
-        oauth_version               = $('#oauth_version'),
-        oauth_nonce                 = $('#oauth_nonce'),
-        oauth_timestamp             = $('#oauth_timestamp'),
-        authorize_okay              = $('#get-access-token .btnOkay'),
-        errors = [];
-
-    if (authorize_consumer_key.val() == '') {
-      authorize_consumer_key.parents('.control-group').addClass('error');
-      errors.push(authorize_consumer_key);
-    }
-
-    if (authorize_consumer_secret.val() == '') {
-      authorize_consumer_secret.parents('.control-group').addClass('error');
-      errors.push(authorize_consumer_secret);
-    }
-
-    if (authorize_request_token_url.val() == '') {
-      authorize_request_token_url.parents('.control-group').addClass('error');
-      errors.push(authorize_request_token_url);
-    }
-
-    if (authorize_authorize_url.val() == '') {
-      authorize_authorize_url.parents('.control-group').addClass('error');
-      errors.push(authorize_authorize_url);
-    }
-
-    if (authorize_access_token_url.val() == '') {
-      authorize_access_token_url.parents('.control-group').addClass('error');
-      errors.push(authorize_access_token_url);
-    }
-
-    if (errors.length > 0) {
-      var el = errors.shift();
-      el.focus();
-      //console.error(el);
-      return false;
-    }
-
-    authorize_okay.button('loading');
-    if (authorize_remember.attr('checked') == 'checked') {
-      var setting = {
-        consumer_key      : authorize_consumer_key.val(),
-        consumer_secret   : authorize_consumer_secret.val(),
-        request_token_url : authorize_request_token_url.val(),
-        authorize_url     : authorize_authorize_url.val(),
-        access_token_url  : authorize_access_token_url.val(),
-        callback_url      : authorize_callback_url.val(),
-        remember          : true
-      };
-      //restclient.log(setting);
-      restclient.setPref('OAuth.authorize', JSON.stringify(setting));
-    }
-    else
-      restclient.setPref('OAuth.authorize', '');
-
-    var secrets = {
-      consumer_key: authorize_consumer_key.val(),
-      consumer_secret: authorize_consumer_secret.val()
-    };
-
-    var parameters = {
-      oauth_version: oauth_version.val(),
-      oauth_signature_method: oauth_signature_method.val()
-    };
-    (oauth_nonce.val() == '') ? null : parameters.oauth_nonce = oauth_nonce.val();
-    (oauth_timestamp.val() == '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
-
-    //restclient.log(secrets);
-    //restclient.log(parameters);
-
-    var signature = restclient.oauth.sign({
-      action: 'GET',
-      path: authorize_request_token_url.val(),
-      signatures: secrets,
-      parameters: parameters
-    });
-
-    $('#window-oauth').hide();
-    var message = restclient.message.show({
-      id: 'alert-oauth-authorize',
-      type: 'message',
-      title: 'Start to do OAuth authorize',
-      message: 'Try to getting a request Token from: ',
-      buttons: [
-        {title: 'Close', class: 'btn-danger', callback: function () { $('#alert-oauth-authorize').alert('close'); }}
-      ],
-      closed: function () { $('#window-oauth').show(); }
-    });
-
-    restclient.message.appendCode(message,signature.signed_url);
-
-    var oauth_token, oauth_token_secret;
-    $.ajax({
-      url: signature.signed_url,
-      action: 'GET',
-      async: false,
-      success: function (data, textStatus, jqXHR) {
-        //restclient.log(data);
-        var params = restclient.oauth.parseParameterString(data);
-        if (typeof params['oauth_token'] != 'undefined')
-          oauth_token = params['oauth_token'];
-        if (typeof params['oauth_token_secret'] != 'undefined')
-          oauth_token_secret = params['oauth_token_secret'];
-        restclient.message.appendMessage(message,'Get result:');
-        restclient.message.appendCode(message,data);
-      },
-      error: function () {
-
-      }
-    });
-    if (!oauth_token || !oauth_token_secret)
-    {
-      restclient.message.appendMessage(message,'Unable to parse oauth_token or oauth_token_secret from request token url response.');
-      authorize_okay.button('reset');
-      return false;
-    }
-
-    secrets.oauth_token = oauth_token;
-    secrets.oauth_token_secret = oauth_token_secret;
-    parameters['oauth_callback'] = authorize_callback_url.val();
-    restclient.oauth.reset();
-    signature = restclient.oauth.sign({
-      action: 'GET',
-      path: authorize_authorize_url.val(),
-      signatures: secrets,
-      parameters: parameters
-    });
-
-    restclient.message.appendButton(message,{title: 'Open authorize page for authorize your key', href: signature.signed_url});
-    //restclient.log(signature);
-    authorize_okay.button('reset');
-  },*/
   oauthSign: function () {
     var sign_consumer_key         = $('#signature-request [name="consumer_key"]'),
         sign_consumer_secret      = $('#signature-request [name="consumer_secret"]'),
@@ -1804,24 +1639,25 @@ restclient.main = {
     var requestUrl = $.trim($('#request-url').val()),
         requestMethod = $.trim($('#request-method').val()),
         requestBody = $('#request-body').val(),
-        param = parameters;
+        param = JSON.parse(JSON.stringify(parameters));
 
     if (requestUrl !== '') {
       var paths = restclient.helper.parseUrl(requestUrl);
       if (typeof paths['search'] === 'string')
       {
         var queryString = paths['search'].substring(1);
-        $.extend(parameters, restclient.oauth.parseParameterString(queryString));
+        $.extend(param, restclient.oauth.parseParameterString(queryString));
       }
       requestUrl = paths['hrefNoSearch'];
     }
 
     if (["put", "post"].indexOf(requestMethod.toLowerCase()) > -1) {
       if (requestBody != '' && requestBody.indexOf('=') > -1) {
-        param = $.extend(parameters, restclient.oauth.parseParameterString(requestBody));
+        $.extend(param, restclient.oauth.parseParameterString(requestBody));
       }
     }
-
+    //console.warn(param);
+    
     var sign = {
       action: requestMethod,
       path: requestUrl,
@@ -1845,7 +1681,7 @@ restclient.main = {
       else
         param.realm = oauth_realm.val();
     }
-
+    //console.warn(param);
     var headerId = restclient.main.addHttpRequestHeader('Authorization', headerValue, param);
     //restclient.log('header id of oauth header: ' + headerId);
     $('#window-oauth').css('display', 'none');
@@ -1887,22 +1723,22 @@ restclient.main = {
           oauth_realm     = headerSpan.attr('realm'),
           auto_realm      = (typeof headerSpan.attr('auto-realm') === 'string') ? JSON.parse(headerSpan.attr('auto-realm')) : false;
           
-      restclient.log('[updateOAuthSign] headerId: ' + headerId);
-      restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);
+      //restclient.log('[updateOAuthSign] headerId: ' + headerId);
+      //restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);
       
       var requestMethod = $.trim($('#request-method').val()),
           requestUrl    = $.trim($('#request-url').val()),
           requestBody   = $('#request-body').val();
       
       restclient.oauth.reset();
-      var param = parameters;
+      var param = JSON.parse(JSON.stringify(parameters));
       
       if (requestUrl !== '') {
         var paths = restclient.helper.parseUrl(requestUrl);
         if (typeof paths['search'] === 'string')
         {
           var queryString = paths['search'].substring(1);
-          $.extend(parameters, restclient.oauth.parseParameterString(queryString));
+          $.extend(param, restclient.oauth.parseParameterString(queryString));
         }
         requestUrl = paths['hrefNoSearch'];
       }
@@ -1910,10 +1746,10 @@ restclient.main = {
       if (["put", "post"].indexOf(requestMethod.toLowerCase()) > -1) {
         var requestBody = $('#request-body').val();
         if (requestBody != '' && requestBody.indexOf('=') > -1) {
-          var p = restclient.oauth.parseParameterString(requestBody);
-          param = $.extend(parameters, p);
+          param = $.extend(param, restclient.oauth.parseParameterString(requestBody));
         }
       }
+      
       
       var sign = {
                   action: requestMethod,
@@ -1927,9 +1763,9 @@ restclient.main = {
         if (typeof oauth_realm === 'string')
           sign.realm = oauth_realm;
       
-      restclient.log(sign);
+      //restclient.log(sign);
       var signature = restclient.oauth.sign(sign);
-      restclient.log(signature);
+      //restclient.log(signature);
       var headerValue = signature.headerString,
           param       = {"oauth-secrets": secrets, "oauth-parameters": parameters};
       
@@ -1938,10 +1774,11 @@ restclient.main = {
       else
         if (typeof oauth_realm === 'string')
           param.realm = oauth_realm;
-
-      restclient.log('[updateOAuthSign] header Id: ' + headerId);
-      restclient.log('[updateOAuthSign] headerValue: ' + headerValue);
-      restclient.log(param);
+      
+      //console.warn(param);
+      //restclient.log('[updateOAuthSign] header Id: ' + headerId);
+      //restclient.log('[updateOAuthSign] headerValue: ' + headerValue);
+      //restclient.log(param);
       return this.replaceHttpRequestHeader(headerId, 'Authorization', headerValue, param);
     } catch(e) {
       restclient.error(e);

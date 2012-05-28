@@ -43,12 +43,27 @@ restclient.overlay = {
                            .getInterface(Components.interfaces.nsIDOMWindow);
     return mainWindow.gBrowser;
   },
+  /*transferToLocalStorage: function() {
+    var names = [ 'OAuth.setting', 'OAuth.sign', 'OAuth2.authorize.ignoreWarning', 'basicAuth', 'cachedUrls', 'defaultSkin', 
+                  'favoriteHeaders', 'firstRunDone', 'imageWarning', 'oauth2.templates', 'oauth2.tokens', 'pageLayout', 'requestHeaderLayout', 
+                  'requestTimer', 'savedRequest', 'sign-warning', 'version'];
+    for(var i = 0, name; name = names[i]; i++) {
+      var value = restclient.Preferences.get("extension.restclient." + name, '');
+      localStorage.setItem(name, value);
+    }
+  },*/
   firstRun : function() {
     var firstRunPref  = "firstRunDone",
         versionPref   = "version",
-        versionNumber = "2.0.1",
+        versionNumber = "2.0.4",
         browser       = restclient.overlay.getBrowser();
 
+    /*try{ 
+      localStorage.getItem('version');
+    }catch(e) {
+      restclient.transferToLocalStorage();
+    }*/
+    
     if(!restclient.getPref(firstRunPref, false))
     {
       var navbar = document.getElementById("nav-bar");

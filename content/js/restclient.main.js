@@ -43,10 +43,15 @@ restclient.main = {
     rep3:     '3',
     rep4:     '4',
     toggleRequest: 'alt+q',
-    toggleResponse: 'alt+s'
+    toggleResponse: 'alt+s',
+    back: 'left',
+    forward: 'right'
   },
   init: function () {
     restclient.init();
+    restclient.sqlite.open();
+    restclient.sqlite.initTables();
+    
     this.initSkin();
 
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
@@ -97,6 +102,7 @@ restclient.main = {
     $('.toggle-page-layout').click(restclient.main.toggleLayout);
     $('.toggle-header-layout').click(restclient.main.toggleRequestHeaderLayout);
     $('.toggle-request-timer').click(restclient.main.toggleRequestTimer);
+    $('.clear-cached-requests').click(restclient.main.clearCachedRequests);
     $('#request-body').focus(function () {
       if ($(this).innerHeight() < 200 )
         $(this).css('height', '200px');
@@ -118,6 +124,62 @@ restclient.main = {
       restclient.error('#modal-oauth-view .btnRefresh refreshed:' + headerId);
       $('#modal-oauth-view').data('source-header-id', headerId);
       $('#modal-oauth-view textarea').val($('span[data-header-id="' + headerId + '"]').attr('header-value'));
+    });
+    
+    window.onhashchange = restclient.main.hashChange;
+    restclient.main.hashChange();
+  },
+  unload: function() {
+    restclient.sqlite.close();
+  },
+  hashChange: function() {
+    if (restclient.main.ignoreHashChange === true)
+    {
+      restclient.main.ignoreHashChange = false;
+      return false;
+    }
+    if (location.hash.indexOf('#request-') === 0)
+    {
+      var request = restclient.sqlite.getRequest(location.hash.substr(1));
+      if(typeof request === 'string')
+        try{
+          console.log(request);
+          request = JSON.parse(request);
+          restclient.main.applyRequest(request);
+        }
+        catch(e)
+        {
+          console.warn(e);
+        }
+      else
+      {
+        request = {
+          url: '',
+          method: 'GET',
+          body: '',
+          header: []
+        }
+        restclient.main.applyRequest(request);
+      }
+      restclient.main.clearResult();
+      window.scrollTo(0,0);
+    }
+  },
+  clearCachedRequests: function() {
+    var num = restclient.sqlite.getRequestCount();
+    
+    if(num > 0)
+      restclient.sqlite.initTables(true);
+    restclient.message.show({
+      id: 'alertCachedRequestCleared',
+      type: 'message',
+      title: 'Cached requests are cleared!',
+      message: num + ' records have been removed.',
+      buttons: [
+        {title: 'Okay', class: 'btn-danger', callback: function () {  $('#alertCachedRequestCleared').alert('close');  }}
+      ],
+      parent: $('#request-error'),
+      exclude: true
     });
   },
   changeSkin: function (cssFileName) {
@@ -239,6 +301,15 @@ restclient.main = {
     });
     $(document).bind('keydown', restclient.main.hotkey.toggleResponse, function () {
       restclient.main.toggleResponse();
+      return false;
+    });
+    
+    $(document).bind('keydown', restclient.main.hotkey.back, function () {
+      window.history.back();
+      return false;
+    });
+    $(document).bind('keydown', restclient.main.hotkey.forward, function () {
+      window.history.forward();
       return false;
     });
   },
@@ -1809,6 +1880,15 @@ restclient.main = {
       });
       return false;
     }
+    restclient.sqlite.saveRequest(request, function() {
+      if(arguments.length > 0)
+      {
+        if(location.hash.substr(1) === arguments[0])
+          return false;
+        restclient.main.ignoreHashChange = true;
+        location.hash = arguments[0];
+      }
+    });
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   },
   donate: function () {
@@ -1838,4 +1918,4 @@ restclient.main = {
 };
 
 window.addEventListener("load", function () { restclient.main.init();  }, false);
-window.addEventListener("unload", function () { }, false);
+window.addEventListener("unload", function () { restclient.main.unload(); }, false);

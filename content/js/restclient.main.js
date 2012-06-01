@@ -594,19 +594,37 @@ restclient.main = {
     });
     return false;
   },
-  addBasicAuthorization: function () {
+  addBasicAuthorization: function (ignore, remember) {
     var username = $("#modal-basic-authorization [name='username']"),
-        password = $("#modal-basic-authorization [name='password']");
-    if (username.val() == '') {
+        password = $("#modal-basic-authorization [name='password']"),
+        btnOkay  = $("#modal-basic-authorization .btnOkay"),
+        btnGroup = $("#modal-basic-authorization .btn-group");
+    
+    if(remember === true)
+      restclient.setPref('ignoreBasicAuthCheck', 'yes');
+      
+    if(restclient.getPref('ignoreBasicAuthCheck', 'no') === 'yes')
+      ignore = true;
+    if(typeof ignore === 'undefined')
+      ignore = false;
+    
+    if (username.val() == '' && !ignore) {
       username.next().text('Please input the username for authorization').show();
       username.focus();
+      btnOkay.hide();
+      btnGroup.show();
       return false;
     }
-    if (password.val() == '') {
+    if (password.val() == '' && !ignore) {
       password.next().text('Please input the password for authorization').show();
       password.focus();
+      btnOkay.hide();
+      btnGroup.show();
       return false;
     }
+    
+    btnOkay.show();
+    btnGroup.hide();
     var strValue = username.val() + ":" + password.val(),
         strBase64 = btoa(strValue).replace(/.{76}(?=.)/g,'$&\n');
 

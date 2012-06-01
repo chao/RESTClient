@@ -204,8 +204,17 @@
     <div style="float:left;margin-top:8px; ">
     <input type="checkbox" name="remember" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember me</span>
     </div>
-    <input class="btn btn-inverse" type="button" value="Okay" onclick="restclient.main.addBasicAuthorization();">
-    <input class="btn btnClose" type="button" value="Cancel">
+    <input class="btn btnClose" type="button" value="Cancel" style="float:right; padding: 5px 10px;">
+    <input class="btn btnOkay btn-inverse" type="button" value="Okay" onclick="restclient.main.addBasicAuthorization();" style="float:right;  padding: 5px 10px; margin: 0 6px;">
+    <div class="btn-group dropup hide" style="float:right; margin: 0 6px; text-align:left">
+      <button class="btn btn-inverse btnAuthorize" style="padding: 4px 10px;" onclick="restclient.main.addBasicAuthorization(true);">Ignore the warning</button>
+      <button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" style="padding: 4px 6px;"><span class="caret"></span></button>
+      <ul class="dropdown-menu pull-right">
+        <li><a onclick="restclient.main.addBasicAuthorization(true, true);">Ignore the warning and remember my decision</a></li>
+      </ul>
+    </div>
+    
+    
   </div>
 </div>
 <div class="modal fade hide" id="modal-custom-header">

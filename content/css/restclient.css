@@ -48,6 +48,45 @@ a, a:hover {
 .navbar-fixed-top .brand:hover {
   text-decoration: none;
 }
+#request-history-dropdown {
+	/*display:none;*/
+  min-height: 300px;
+  min-width: 200px;
+	z-index:2;
+	background-color:#fff;
+	margin:0px 15px 0px 20px;
+	border:solid 1px #999;
+	border-top:0;
+	-webkit-box-shadow:0 2px 2px 0 rgba(0,0,0,.2);
+	-moz-box-shadow:0 2px 2px 0 rgba(0,0,0,.2);
+	box-shadow:0 2px 2px 0 rgba(0,0,0,.2);
+	-moz-border-radius-topleft:0;
+	-moz-border-radius-topright:0;
+	-moz-border-radius-bottomright:4px;
+	-moz-border-radius-bottomleft:4px;
+	-webkit-border-radius:0 0 4px 4px;
+	border-radius:0 0 4px 4px;
+}
+#request-history-dropdown-close {
+  background-color: #FFFFFF;
+  border-color: #999999;
+  border-image: none;
+  border-radius: 0 0 3px 3px;
+  border-style: solid;
+  border-width: 0 1px 1px;
+  bottom: -30px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  height: 30px;
+  left: 50%;
+  margin-left: -18.5px;
+  position: absolute;
+  width: 35px;
+}
+
+#request-history-dropdown-close i{
+  margin-left: 12px; margin-top: 8px;
+}
 .well {
   background-color: #FAFAFA;
   border: medium none;

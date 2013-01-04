@@ -74,7 +74,7 @@ restclient.main = {
     $('#request-button').bind('click', restclient.main.sendRequest);
     $('#request-url').bind('keyup', restclient.main.requestUrlInputed).focus().select();
     $('#request-url').bind('change', restclient.main.updateFavoriteUrlIcon);
-
+    $('#request-history-dropdown-close').bind('click', restclient.main.toggleRequestHistoryPanel);
     if ($('#overrideMimeType').attr('checked') == 'checked')
       $('.overrideMimeType').show();
 
@@ -400,6 +400,12 @@ restclient.main = {
       $(this).text('Enable request execution timer');
       restclient.setPref('requestTimer', false);
     }
+  },
+  toggleRequestHistoryPanel: function() {
+    if( $('#request-history-dropdown').is(':hidden') )
+      $('#request-history-dropdown').slideDown('slow');
+      else
+      $('#request-history-dropdown').slideUp('slow');
   },
   initRequestUrl: function () {
     var urls = restclient.main.getCachedUrls();

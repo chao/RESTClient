@@ -58,6 +58,7 @@
           </li>
         </ul>
         <ul class="nav pull-right">
+          <li><a href="#" onclick="restclient.main.toggleRequestHistoryPanel(); return false;">Toggle requests</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Favorite Requests <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -91,9 +92,14 @@
           </li>
         </ul>
       </div>
-    </div>
+    </div><!-- container //-->
+  </div><!-- end of navbar-inner //-->
+  <div id="request-history-dropdown" class="hide">
+    <div id="request-history-dropdown-close"><i class=" icon-chevron-up">&nbsp;</i></div>
   </div>
-</div>
+</div><!-- end of navbar //-->
+
+
 
 <div id="request" class="container hide showForStartup" style="display:none;">
   <div class="row-fluid">

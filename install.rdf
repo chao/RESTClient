@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="rdf:#$ll2uD1"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
-                   em:maxVersion="14.*" />
+                   em:maxVersion="20.a1" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:creator="Chao Zhou; chao@zhou.fr"
                    em:contributor="Aurelien Benel; Christophe Lejeune"

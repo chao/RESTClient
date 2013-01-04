@@ -31,10 +31,10 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authentication <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">HTTP authentication</li>
-              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authentication</a></li>
-              <li class="hide"><a onclick="restclient.main.showModal('modal-digest-authorization');">Digest Authentication</a></li>
+              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic authentication</a></li>
+              <li class="hide"><a onclick="restclient.main.showModal('modal-digest-authorization');">Digest authentication</a></li>
               <li class="divider"></li>
-              <li class="nav-header">OAuth Protocol</li>
+              <li class="nav-header">OAuth protocol</li>
               <li><a onclick="$('#window-oauth').show();">OAuth</a></li>
               <li><a onclick="restclient.oauth2.showDialog();">OAuth2</a></li>
             </ul>
@@ -42,11 +42,11 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Headers <b class="caret"></b></a>
             <ul class="dropdown-menu headers">
-              <li class="custom-header"><a href="#" onclick="restclient.main.showModal('modal-custom-header');return false;">Custom Header</a></li>
+              <li class="custom-header"><a href="#" onclick="restclient.main.showModal('modal-custom-header');return false;">Custom header</a></li>
               <li class="divider favorite"></li>
               <li><a class="favorite" href="#">Accept</a></li>
               <li class="divider"></li>
-              <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Clear Favorites</a></li>
+              <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Clear favorite headers</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -60,12 +60,14 @@
         <ul class="nav pull-right">
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Favorite Requests <b class="caret"></b></a>
-            <ul class="dropdown-menu savedRequest">
-              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import Favorite Requests</a></li>
-              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export Favorite Requests</a></li>
+            <ul class="dropdown-menu">
+              <li class="nav-header">Favorite requests</li>
+              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage favorite requests</a></li>
+              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Favorite this request</a></li>
               <li class="divider"></li>
-              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage Favorite Requests</a></li>
-              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Save Current Request</a></li>
+              <li class="nav-header">Import/export</li>
+              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import favorite requests</a></li>
+              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export favorite requests</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -213,8 +215,6 @@
         <li><a onclick="restclient.main.addBasicAuthorization(true, true);">Ignore the warning and remember my decision</a></li>
       </ul>
     </div>
-    
-    
   </div>
 </div>
 <div class="modal fade hide" id="modal-custom-header">

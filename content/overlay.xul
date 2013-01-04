@@ -5,6 +5,8 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="chrome://restclient/content/js/restclient.js" />
+  <script type="application/x-javascript" src="chrome://restclient/content/js/restclient.helper.js" />
+  <script type="application/x-javascript" src="chrome://restclient/content/js/restclient.sqlite.js" />
   <script type="application/x-javascript" src="chrome://restclient/content/js/restclient.overlay.js" />
   
   <commandset id="mainCommandSet">

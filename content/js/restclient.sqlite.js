@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 restclient.sqlite = {
   db: null,
   tables: {
-    requests: "id TEXT PRIMARY KEY, request_method TEXT, request_url TEXT, request_body TEXT, request TEXT,created_datetime TEXT,last_executed TEXT"
+    requests: "id TEXT PRIMARY KEY, name TEXT, favorite INT default 0, request_method TEXT, request_url TEXT, request_body TEXT, request TEXT,created_datetime TEXT,last_executed TEXT"
   },
   open: function() {
     try{
@@ -58,24 +58,30 @@ restclient.sqlite = {
     {
       if (force)
       {
-        restclient.sqlite.db.executeSimpleSQL('DELETE FROM requests');
+        restclient.sqlite.db.executeSimpleSQL('DELETE FROM requests WHERE favorite = 0');
       }
     }
     else
       restclient.sqlite.db.createTable('requests', restclient.sqlite.tables['requests']);
   },
-  saveRequest: function(request, callback) {
+  saveRequest: function(request, name, favorite, labels, callback) {
     var id = "request-" + restclient.helper.sha1(JSON.stringify(request));
     var savedRequest = restclient.sqlite.getRequest(id);
     var last_executed = new Date().valueOf();
+    name = name || '';
+    favorite = favorite || 0;
+    labels = labels || [];
+    
     if(savedRequest === false) {
       var created_datetime = new Date().valueOf();
-      var stmt = restclient.sqlite.db.createStatement("INSERT INTO requests (id,request_method, request_url, request_body, request, created_datetime, last_executed) VALUES "
-                                                     + "(:id, :request_method, :request_url, :request_body, :request, :created_datetime, :last_executed)");
+      var stmt = restclient.sqlite.db.createStatement("INSERT INTO requests (id, name, favorite, request_method, request_url, request_body, request, created_datetime, last_executed) VALUES "
+                                                     + "(:id, :name, :favorite, :request_method, :request_url, :request_body, :request, :created_datetime, :last_executed)");
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
 
       binding.bindByName("id", id);
+      binding.bindByName("name", name);
+      binding.bindByName("favorite", favorite);
       binding.bindByName("request_method", request.method);
       binding.bindByName("request_url", request.url);
       binding.bindByName("request_body", request.body);
@@ -98,11 +104,13 @@ restclient.sqlite = {
     }
     else
     {
-      var stmt = restclient.sqlite.db.createStatement("UPDATE requests SET last_executed=:last_executed WHERE id=:id");
+      var stmt = restclient.sqlite.db.createStatement("UPDATE requests SET last_executed=:last_executed, name=:name, favorite=:favorite WHERE id=:id");
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
 
       binding.bindByName("id", id);
+      binding.bindByName("name", name);
+      binding.bindByName("favorite", favorite);
       binding.bindByName("last_executed", last_executed);
 
       params.addParams(binding);
@@ -140,5 +148,27 @@ restclient.sqlite = {
       return stmt.row.num;
     }
     return false;
+  },
+  importRequestFromJSON: function(setting) {
+    // version <= 2.0.3
+    if( typeof setting.labels === 'undefined' ) {
+      for(var name in setting) {
+        var request = setting[name],
+            id = restclient.helper.sha1( JSON.stringify(request) );
+        restclient.sqlite.saveRequest(request, name, 1);
+      }
+    }
+    
+  },
+  migrateFavoriteRequest: function() {
+    var requests = restclient.getPref('savedRequest', '');
+    dump('savedRequest:' + requests);
+    if( requests === '')
+      return false;
+    
+    restclient.sqlite.open();
+    restclient.sqlite.initTables();
+    restclient.sqlite.importRequestFromJSON(JSON.parse(requests));
+    restclient.sqlite.close();
   }
 }

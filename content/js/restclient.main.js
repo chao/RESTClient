@@ -1217,6 +1217,7 @@ restclient.main = {
     $('.request-menu').click();
   },
   updateFavoriteRequestMenu: function () {
+    return false;
     $('ul.savedRequest .favorite').remove();
     var savedRequest = restclient.getPref('savedRequest', '');
     if (savedRequest == '')
@@ -1321,7 +1322,7 @@ restclient.main = {
             alert('This is an empty file.');
             return;
           }
-          restclient.setPref('savedRequest', setting);
+          restclient.sqlite.importRequestFromJSON(setting);
         }catch(e) { alert('Cannot import the json file.'); }
       });
       restclient.main.updateFavoriteRequestMenu();
@@ -1898,7 +1899,7 @@ restclient.main = {
       });
       return false;
     }
-    restclient.sqlite.saveRequest(request, function() {
+    restclient.sqlite.saveRequest(request, null, null, null, function() {
       if(arguments.length > 0)
       {
         if(location.hash.substr(1) === arguments[0])

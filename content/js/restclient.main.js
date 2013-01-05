@@ -853,10 +853,11 @@ restclient.main = {
       favoriteHeaders = JSON.parse(favoriteHeaders);
     for(var i=0, header; header = favoriteHeaders[i]; i++) {
       var text = header[0] + ": " + header[1];
+      var croppedText = text;
 
       if (text.length > restclient.main.headerMenuMaxLength)
-        text = text.substr(0, restclient.main.headerMenuMaxLength -3) + "...";
-      var a =   $('<a class="favorite" href="#"></a>').text(text)
+        croppedText = text.substr(0, restclient.main.headerMenuMaxLength -3) + "...";
+      var a =   $('<a class="favorite" href="#" title='+text+'></a>').text(croppedText)
         .attr('header-name', header[0])
         .attr('header-value', header[1]);
       $('.custom-header').after($('<li></li>').append(a));

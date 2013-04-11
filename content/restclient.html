@@ -76,6 +76,7 @@
               <li><a style="cursor:pointer" class="toggle-header-layout" data-layout="tag">List request headers in table</a></li>
               <li class="divider"></li>
               <li class="nav-header">Develop</li>
+              <li><a style="cursor:pointer" class="enable-curl" >Enable Curl</a></li>
               <li><a style="cursor:pointer" class="toggle-request-timer" data-timer="disabled">Enable request execution timer</a></li>
               <li><a style="cursor:pointer" class="clear-cached-requests">Clear cached requests</a></li>
               <li class="divider"></li>
@@ -168,6 +169,18 @@
       <div class="pre" style="margin-left:0px;padding: 0;"></div>
     </div>
   </div>
+  <br />
+  <br />
+  <br />
+  </div>
+</section>
+<section id="curl" class="container hide" style="margin-top: 5px;">
+  <h3 style="color: #999;">[<a href="#" class="toggle-curl" title="hotkey: alt+c" style="color: #999;">-</a>] cUrl</h3>
+  <div id="curl-container">
+    <div style="margin-bottom:0px;" class="well">
+      <h4 style="margin-left: 6px;">Body</h4>
+      <textarea placeholder="Curl" style="width: 99%;margin: 0;height: 60px;" id="curl-command" rel="tooltip" title="hotkey: c"></textarea>
+    </div>
   <br />
   <br />
   <br />
@@ -609,6 +622,7 @@
 <script type="text/javascript" src="js/restclient.oauth.js"></script>
 <script type="text/javascript" src="js/restclient.headers.js"></script>
 <script type="text/javascript" src="js/restclient.http.js"></script>
+<script type="text/javascript" src="js/restclient.curl.js"></script>
 <script type="text/javascript" src="js/restclient.message.js"></script>
 <script type="text/javascript" src="js/restclient.helper.js"></script>
 

@@ -99,6 +99,8 @@ restclient.main = {
     $('.favorite-icon').click(restclient.main.favoriteUrl);
     $('.toggle-request').click(restclient.main.toggleRequest);
     $('.toggle-response').click(restclient.main.toggleResponse);
+    $('.toggle-curl').click(restclient.main.toggleCurl);
+    $('.enable-curl').click(restclient.main.enableCurl);
     $('.toggle-page-layout').click(restclient.main.toggleLayout);
     $('.toggle-header-layout').click(restclient.main.toggleRequestHeaderLayout);
     $('.toggle-request-timer').click(restclient.main.toggleRequestTimer);
@@ -324,6 +326,19 @@ restclient.main = {
   toggleResponse: function (e) {
     var toggle = $('.toggle-response');
     $('#response-container').slideToggle('slow', function () {
+        toggle.text(toggle.text() == '-' ? '+' : '-');
+    });
+    if (e) e.preventDefault();
+    return false;
+  },
+  enableCurl: function (e) {
+    $('#curl').slideToggle('slow')
+    if (e) e.preventDefault();
+    return false;
+  },
+  toggleCurl: function (e) {
+    var toggle = $('.toggle-curl');
+    $('#curl-container').slideToggle('slow', function () {
         toggle.text(toggle.text() == '-' ? '+' : '-');
     });
     if (e) e.preventDefault();
@@ -1875,6 +1890,10 @@ restclient.main = {
       restclient.error('updateOAuthSign');
     }
   },
+  updateCurlCommand: function() {
+    var request = restclient.main.getRequest();
+    $("#curl-command").val(restclient.curl.constructCommand(request));
+  },
   sendRequest: function () {
     $('.popover').removeClass('in').remove();
     if ( $('[auto-refresh="yes"]').length > 0)
@@ -1884,6 +1903,9 @@ restclient.main = {
       //restclient.log('resigned');
     }
     var request = restclient.main.getRequest();
+    // TODO: if curl enabled
+    restclient.main.updateCurlCommand()
+
     if (!restclient.helper.validateUrl(request.url))
     {
       restclient.message.show({

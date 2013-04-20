@@ -49,7 +49,7 @@ a, a:hover {
   text-decoration: none;
 }
 #request-history-dropdown {
-	/*display:none;*/
+	color: #333;
   min-height: 300px;
   min-width: 200px;
 	z-index:2;
@@ -66,6 +66,22 @@ a, a:hover {
 	-moz-border-radius-bottomleft:4px;
 	-webkit-border-radius:0 0 4px 4px;
 	border-radius:0 0 4px 4px;
+  padding-top: 20px;
+}
+#request-history-dropdown h1 {
+  color: #333;
+  border-bottom: 1px solid #CCCCCC;
+  font-size: 18px;
+  font-weight: normal;
+  height: 21px;
+  line-height: 21px;
+  margin: 0 0 7px;
+  padding: 0 0 7px;
+}
+#request-history-dropdown ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 #request-history-dropdown-close {
   background-color: #FFFFFF;
@@ -421,4 +437,11 @@ a { cursor: pointer; }
 }
 #alert-status-text h4{
   margin-bottom: 5px;
+}
+
+.request-brief, .last-used-time{
+  color: #888888;
+  font-size: 10px;
+  line-height: 15px;
+  margin: 0;
 }

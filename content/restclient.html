@@ -58,19 +58,6 @@
           </li>
         </ul>
         <ul class="nav pull-right">
-          <li><a href="#" onclick="restclient.main.toggleRequestHistoryPanel(); return false;">Toggle requests</a></li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Favorite Requests <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li class="nav-header">Favorite requests</li>
-              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage favorite requests</a></li>
-              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Favorite this request</a></li>
-              <li class="divider"></li>
-              <li class="nav-header">Import/export</li>
-              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import favorite requests</a></li>
-              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export favorite requests</a></li>
-            </ul>
-          </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Setting <b class="caret"></b></a>
             <ul class="dropdown-menu">
@@ -90,13 +77,61 @@
               <li><a css="bootstrap.united.css">United</a></li>
             </ul>
           </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Favorite Requests <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="nav-header">Favorite requests</li>
+              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage favorite requests</a></li>
+              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Favorite this request</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Import/export</li>
+              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import favorite requests</a></li>
+              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export favorite requests</a></li>
+            </ul>
+          </li>
+          <li><a href="#" onclick="restclient.main.toggleRequestHistoryPanel(); return false;">
+            <i class="toggle-request-panel icon-white icon-chevron-down">&nbsp;</i>
+          </a></li>
         </ul>
       </div>
     </div><!-- container //-->
   </div><!-- end of navbar-inner //-->
-  <div id="request-history-dropdown" class="hide">
+  
+  <div id="request-history-dropdown" style="display: none;">
+    <div class="span3">
+      <h1>Recent Requests</h1>
+      <ol class="request-history-recent">
+        <li>
+          <a href="#">Glacier Request</a>
+          <p class="request-brief">GET aws.amazon.com</p>
+          <p class="last-used-time">2013-04-20 11:44:00</p>
+        </li>
+        <li>
+          <a href="#">Amazon S3 authentication</a>
+          <p class="request-brief">GET aws.amazon.com</p>
+          <p class="last-used-time">2013-04-20 11:44:00</p>
+        </li>
+        <li>
+          <a href="#">Facebook Login test</a>
+          <p class="request-brief">GET aws.amazon.com</p>
+          <p class="last-used-time">2013-04-20 11:44:00</p>
+        </li>
+        <li>
+          <a href="#">Twitter Auth 2</a>
+          <p class="request-brief">GET aws.amazon.com</p>
+          <p class="last-used-time">2013-04-20 11:44:00</p>
+        </li>
+        <li>
+          <a href="#">Google Map</a>
+          <p class="request-brief">GET aws.amazon.com</p>
+          <p class="last-used-time">2013-04-20 11:44:00</p>
+        </li>
+      </ol>
+    </div>
+    <div class="span3">dddddd</div>
     <div id="request-history-dropdown-close"><i class=" icon-chevron-up">&nbsp;</i></div>
   </div>
+  
 </div><!-- end of navbar //-->
 
 

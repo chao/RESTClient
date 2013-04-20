@@ -403,9 +403,15 @@ restclient.main = {
   },
   toggleRequestHistoryPanel: function() {
     if( $('#request-history-dropdown').is(':hidden') )
-      $('#request-history-dropdown').slideDown('slow');
-      else
-      $('#request-history-dropdown').slideUp('slow');
+    {
+      $('#request-history-dropdown').slideDown();
+      $('.toggle-request-panel').removeClass('icon-chevron-down').addClass('icon-chevron-up');
+    }  
+    else
+    {
+      $('#request-history-dropdown').slideUp();
+      $('.toggle-request-panel').removeClass('icon-chevron-up').addClass('icon-chevron-down');
+    }
   },
   initRequestUrl: function () {
     var urls = restclient.main.getCachedUrls();

@@ -189,7 +189,11 @@ restclient.main = {
        type: "text/css",
        href: "css/" + cssFileName
     }).appendTo("head");
-
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/font-awesome.css"
+    }).appendTo("head");
     $("<link/>", {
        rel: "stylesheet",
        type: "text/css",

@@ -66,12 +66,22 @@ a, a:hover {
 	-moz-border-radius-bottomleft:4px;
 	-webkit-border-radius:0 0 4px 4px;
 	border-radius:0 0 4px 4px;
-  padding-top: 20px;
+  padding: 20px 0 10px;
 }
 #request-history-dropdown h1 {
   color: #333;
   border-bottom: 1px solid #CCCCCC;
   font-size: 18px;
+  font-weight: normal;
+  height: 21px;
+  line-height: 21px;
+  margin: 0 0 7px;
+  padding: 0 0 7px;
+}
+#request-history-dropdown h3 {
+  color: #333;
+  border-bottom: 1px solid #CCCCCC;
+  font-size: 14px;
   font-weight: normal;
   height: 21px;
   line-height: 21px;
@@ -439,9 +449,17 @@ a { cursor: pointer; }
   margin-bottom: 5px;
 }
 
-.request-brief, .last-used-time{
+.favorited-request{
   color: #888888;
   font-size: 10px;
   line-height: 15px;
   margin: 0;
+}
+
+.favorite-requests li {
+  margin: 1px 0px;
+}
+.favorite-tag {
+  font-size: 16px;
+  margin: 11px 0px;
 }

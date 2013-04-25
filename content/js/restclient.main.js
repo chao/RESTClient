@@ -182,12 +182,18 @@ restclient.main = {
       exclude: true
     });
   },
-  changeSkin: function (cssFileName) {
+  changeSkin: function (theme) {
+    restclient.log("css/themes/" + theme + "/bootstrap.css");
     $("link").remove();
     $("<link/>", {
        rel: "stylesheet",
        type: "text/css",
-       href: "css/" + cssFileName
+       href: "css/themes/" + theme + "/bootstrap.css"
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/themes/" + theme + "/bootstrap-responsive.css"
     }).appendTo("head");
     $("<link/>", {
        rel: "stylesheet",
@@ -243,11 +249,11 @@ restclient.main = {
       $('.toggle-request-timer').text('Disable request execution timer');
     }
     
-    var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.simplex.css');
-    restclient.main.changeSkin(defaultCSS);
-    $('a[css]').click(function () {
-      restclient.main.changeSkin($(this).attr('css'));
-      restclient.setPref('defaultSkin', $(this).attr('css'));
+    var defaultTheme = restclient.getPref('defaultSkin', 'simplex');
+    restclient.main.changeSkin(defaultTheme);
+    $('a[data-theme]').click(function () {
+      restclient.main.changeSkin($(this).attr('data-theme'));
+      restclient.setPref('defaultSkin', $(this).attr('data-theme'));
     });
     //wait for css load
     setTimeout(function () { $('.showForStartup').show(); }, 200);

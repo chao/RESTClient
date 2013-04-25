@@ -76,7 +76,7 @@ restclient.overlay = {
     if(restclient.getPref(versionPref, '') != versionNumber) {
       browser.selectedTab = browser.addTab("http://www.restclient.net/?browser=firefox&version=" + versionNumber);
       //restclient.setPref(versionPref, versionNumber);
-      
+      restclient.setPref('defaultSkin', 'simplex');
       restclient.sqlite.migrateFavoriteRequest();
     }
   },

@@ -43,6 +43,7 @@ a, a:hover {
 .navbar-fixed-top .brand:hover {
   text-decoration: none;
 }
+
 #request-history-dropdown {
 	color: #333;
   min-height: 300px;

@@ -619,7 +619,7 @@ restclient.main = {
   addBasicAuthorization: function (ignore, remember) {
     var username = $("#modal-basic-authorization [name='username']"),
         password = $("#modal-basic-authorization [name='password']"),
-        btnOkay  = $("#modal-basic-authorization .btnOkay"),
+        btnOkay  = $("#modal-basic-authorization .btn-okay"),
         btnGroup = $("#modal-basic-authorization .btn-group");
     
     if(remember === true)
@@ -641,7 +641,7 @@ restclient.main = {
       password.next().text('Please input the password for authorization').show();
       password.focus();
       btnOkay.hide();
-      btnGroup.show();
+      btnGroup.css('display', 'inline-block');
       return false;
     }
     

@@ -470,3 +470,12 @@ a { cursor: pointer; }
 .favorite-request-panel {
   padding-top: 20px;
 }
+
+.modal-footer label {
+  display: inline;
+  float: left;
+}
+
+#modal-oauth form {
+  margin: 0;
+}

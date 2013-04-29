@@ -6161,7 +6161,7 @@ a.badge:focus {
   font-family: 'Telex';
   font-style: normal;
   font-weight: normal;
-  src: url('../font/telex.woff') format('woff');
+  src: url('../../../font/telex.woff') format('woff');
 }
 
 .navbar .brand {

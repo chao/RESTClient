@@ -6161,14 +6161,14 @@ a.badge:focus {
   font-family: 'News Cycle';
   font-style: normal;
   font-weight: 400;
-  src: local('News Cycle Regular'), local('NewsCycle-Regular'), url('../font/NewsCycle-Regular.woff') format('woff');
+  src: local('News Cycle Regular'), local('NewsCycle-Regular'), url('../../../font/NewsCycle-Regular.woff') format('woff');
 }
 
 @font-face {
   font-family: 'News Cycle';
   font-style: normal;
   font-weight: 700;
-  src: local('News Cycle Bold'), local('NewsCycle-Bold'), url('../font/NewsCycle-Bold.woff') format('woff');
+  src: local('News Cycle Bold'), local('NewsCycle-Bold'), url('../../../font/NewsCycle-Bold.woff') format('woff');
 }
 
 h1,

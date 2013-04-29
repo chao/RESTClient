@@ -6161,7 +6161,7 @@ a.badge:focus {
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: 400;
-  src: local('Ubuntu'), url('../font/Ubuntu.woff') format('woff');
+  src: local('Ubuntu'), url('../../../font/Ubuntu.woff') format('woff');
 }
 
 .navbar .nav > li > a {

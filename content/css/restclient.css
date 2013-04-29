@@ -272,7 +272,7 @@ a, a:hover {
   padding: 9px 15px;
 }
 .window-content{
-  padding: 0;
+  padding: 10px 0px 0px 0px;
 }
 .window-content ul.nav-tabs li:first-child {
   margin-left: 15px;

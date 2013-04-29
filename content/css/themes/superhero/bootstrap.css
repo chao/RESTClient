@@ -6161,14 +6161,14 @@ a.badge:focus {
   font-family: 'Noticia Text';
   font-style: normal;
   font-weight: 400;
-  src: local('Noticia Text'), local('NoticiaText-Regular'), url(../font/NoticiaText-Regular.woff) format('woff');
+  src: local('Noticia Text'), local('NoticiaText-Regular'), url('../../../font/NoticiaText-Regular.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Oswald';
   font-style: normal;
   font-weight: 400;
-  src: local('Oswald Regular'), local('Oswald-Regular'), url(../font/Oswald-Regular.woff) format('woff');
+  src: local('Oswald Regular'), local('Oswald-Regular'), url('../../../font/Oswald-Regular.woff') format('woff');
 }
 
 h1 small,
@@ -6221,15 +6221,14 @@ blockquote.pull-right {
 .navbar .brand {
   padding: 9px 20px 11px;
   font-family: 'Oswald', sans-serif;
-  font-size: 30px;
+  font-size: 18px;
   text-shadow: -2px 2px 0 #612c0c;
 }
 
 .navbar .nav > li > a {
   padding: 10px 20px 10px;
   font-family: 'Oswald', sans-serif;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 12px;
   text-shadow: -2px 2px 0 #612c0c;
 }
 
@@ -6256,8 +6255,7 @@ blockquote.pull-right {
 .navbar .navbar-text {
   padding: 10px 20px 10px;
   font-family: 'Oswald', sans-serif;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 12px;
   text-shadow: -2px 2px 0 #555555;
 }
 
@@ -6284,7 +6282,6 @@ blockquote.pull-right {
 
 .navbar .nav .dropdown-toggle .caret,
 .navbar .nav .open.dropdown .caret {
-  margin-top: 14px;
   border-top-color: #ece9d7;
 }
 
@@ -6835,7 +6832,6 @@ label {
 }
 
 .dropdown .caret {
-  margin-top: 14px;
   border-top: 6px solid #5a6a7d;
   border-right: 6px solid transparent;
   border-left: 6px solid transparent;

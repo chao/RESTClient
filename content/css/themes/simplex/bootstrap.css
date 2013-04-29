@@ -6161,21 +6161,21 @@ a.badge:focus {
   font-family: 'Josefin Sans';
   font-style: normal;
   font-weight: 300;
-  src: local('Josefin Sans Light'), local('JosefinSans-Light'), url('../font/JosefinSans-Light.woff') format('woff');
+  src: local('Josefin Sans Light'), local('JosefinSans-Light'), url('../../../font/JosefinSans-Light.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Josefin Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Josefin Sans'), local('JosefinSans'), url('../font/JosefinSans.woff') format('woff');
+  src: local('Josefin Sans'), local('JosefinSans'), url('../../../font/JosefinSans.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Josefin Sans';
   font-style: normal;
   font-weight: 700;
-  src: local('Josefin Sans Bold'), local('JosefinSans-Bold'), url('../font/JosefinSans-Bold.woff') format('woff');
+  src: local('Josefin Sans Bold'), local('JosefinSans-Bold'), url('../../../font/JosefinSans-Bold.woff') format('woff');
 }
 
 hr {

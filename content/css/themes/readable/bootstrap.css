@@ -6161,28 +6161,28 @@ a.badge:focus {
   font-family: 'Lora';
   font-style: normal;
   font-weight: 400;
-  src: local('Lora'), url('../font/Lora.400.woff') format('woff');
+  src: local('Lora'), url('../../../font/Lora.400.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Lora';
   font-style: normal;
   font-weight: 700;
-  src: local('Lora Bold'), local('Lora-Bold'), url('../font/Lora.700.woff') format('woff');
+  src: local('Lora Bold'), local('Lora-Bold'), url('../../../font/Lora.700.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Lora';
   font-style: italic;
   font-weight: 400;
-  src: local('Lora Italic'), local('Lora-Italic'), url('../font/Lora.Italic.woff') format('woff');
+  src: local('Lora Italic'), local('Lora-Italic'), url('../../../font/Lora.Italic.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Lora';
   font-style: italic;
   font-weight: 700;
-  src: local('Lora Bold Italic'), local('Lora-BoldItalic'), url('../font/Lora.BoldItalic.woff') format('woff');
+  src: local('Lora Bold Italic'), local('Lora-BoldItalic'), url('../../../font/Lora.BoldItalic.woff') format('woff');
 }
 
 div.subnav .nav > li > a,

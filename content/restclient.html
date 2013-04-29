@@ -72,9 +72,14 @@
               <li class="nav-header">Skins (bootswatch.com)</li>
               <li><a href="#" onclick="return false;" data-theme="amelia">Amelia</a></li>
               <li><a href="#" onclick="return false;" data-theme="cerulean">Cerulean</a></li>
+              <li><a href="#" onclick="return false;" data-theme="cosmo">Cosmo</a></li>
+              <li><a href="#" onclick="return false;" data-theme="cyborg">Cyborg</a></li>
               <li><a href="#" onclick="return false;" data-theme="journal">Journal</a></li>
               <li><a href="#" onclick="return false;" data-theme="readable">Readable</a></li>
               <li><a href="#" onclick="return false;" data-theme="simplex">Simplex</a></li>
+              <li><a href="#" onclick="return false;" data-theme="slate">Slate</a></li>
+              <li><a href="#" onclick="return false;" data-theme="spacelab">Spacelab</a></li>
+              <li><a href="#" onclick="return false;" data-theme="spruce">Spruce</a></li>
               <li><a href="#" onclick="return false;" data-theme="superhero">Superhero</a></li>
               <li><a href="#" onclick="return false;" data-theme="united">United</a></li>
             </ul>
@@ -99,7 +104,7 @@
     </div><!-- container //-->
   </div><!-- end of navbar-inner //-->
   
-  <div id="request-history-dropdown" style="display: none;">
+  <div id="request-history-dropdown" class="container-fluid" style="display: none;">
     <div class="span3">
       <h1><i class="icon-time"></i> Recent Requests</h1>
       <ol class="request-history-recent">
@@ -145,40 +150,6 @@
         </li>
         <li>
           <a href="#">Amazon EC2 Shutdown</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ul>
-    </div>
-    <div class="span3">
-      <ul class="favorite-requests">
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
           <p class="favorited-request">GET aws.amazon.com</p>
           <p class="favorited-request">2013-04-20 11:44:00</p>
         </li>
@@ -280,7 +251,7 @@
           </ul>
         </span>
         <label style="margin: 0 5px 0 15px; width: 25px;">URL</label>
-        <input id="request-url" name="request-url" type="url" autocomplete="on" style="margin: 0 auto; width: -moz-calc(100% - 380px);" placeholder="http://www.example.com"><span style="width:45px; padding: 4px; margin: 0 0 0 -2px" class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
+        <input id="request-url" name="request-url" type="url" autocomplete="on" style="margin: 0 auto; width: -moz-calc(100% - 385px);" placeholder="http://www.example.com"><span style="width:45px; padding: 4px; margin: 0 0 0 -2px" class="request-url-icons"><i class="favorite-icon icon-star-empty"></i><span class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="favorite-list-icon icon-chevron-down"></i></a>
           <ul id="request-url-list" class="dropdown-menu">
           </ul>
@@ -496,11 +467,11 @@
 <div id="window-oauth" class="window-overlay" style="display:none">
   <div class="window">
     <div class="window-wrapper clearfix">
-      <div class="window-header">
+      <div class="window-header modal-header">
         <a class="close btnClose">×</a>
         <h3>OAuth</h3>
       </div>
-      <div class="window-content">
+      <div class="window-content modal-body">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#signature-request" data-toggle="tab">Signature for this request</a></li>
           <li><a href="#oauth-setting" data-toggle="tab">OAuth setting</a></li>
@@ -610,11 +581,11 @@
 <div id="window-oauth2" class="window-overlay" style="display:none">
   <div class="window">
     <div class="window-wrapper clearfix">
-      <div class="window-header">
+      <div class="window-header modal-header">
         <a class="close btnClose">×</a>
         <h3>OAuth2</h3>
       </div>
-      <div class="window-content">
+      <div class="window-content modal-body">
         <ul class="nav nav-tabs">
           <li class="active"><a href="#oauth2-authorize" data-toggle="tab">Authorize</a></li>
           <li><a href="#oauth2-tokens" data-toggle="tab">Tokens</a></li>

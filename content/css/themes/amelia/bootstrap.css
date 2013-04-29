@@ -6161,21 +6161,21 @@ a.badge:focus {
   font-family: 'Cabin';
   font-style: normal;
   font-weight: 400;
-  src: local('Cabin Regular'), local('Cabin-Regular'), url('../font/cabin.400.woff') format('woff');
+  src: local('Cabin Regular'), local('Cabin-Regular'), url('../../../font/Cabin-Regular.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Cabin';
   font-style: normal;
   font-weight: 700;
-  src: local('Cabin Bold'), local('Cabin-Bold'), url('../font/cabin.700.woff') format('woff');
+  src: local('Cabin Bold'), local('Cabin-Bold'), url('../../../font/Cabin-Bold.woff') format('woff');
 }
 
 @font-face {
   font-family: 'Lobster';
   font-style: normal;
   font-weight: 400;
-  src: local('Lobster'), url('../font/lobster.woff') format('woff');
+  src: local('Lobster'), url('../../../font/Lobster.woff') format('woff');
 }
 
 h6 {

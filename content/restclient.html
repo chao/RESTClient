@@ -330,22 +330,23 @@
     <h3>Basic Authorization</h3>
   </div>
   <div class="modal-body">
-    <div class="control-group">
-      <label for="username">Username</label> 
-      <div class="controls">
-        <input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="username" autocomplete="on" placeholder="Username"> 
-        <span class="help-block hide"></span>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="username">Username</label>
+        <div class="controls">
+          <input type="text" name="username" autocomplete="on" placeholder="Username" data-next-focus="#modal-basic-authorization [name='password']">
+          <span class="help-block hide"></span>
+        </div>
       </div>
-    </div>
-    <div class="control-group">
-      <label for="password">Password</label>
-      <div class="controls">
-        <input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="password" name="password" autocomplete="on" placeholder="Password">
-        <span class="help-block hide"></span>
+      <div class="control-group">
+        <label class="control-label" for="password">Password</label>
+        <div class="controls">
+          <input type="password" name="password" placeholder="Password" data-next-focus="#modal-basic-authorization .modal-footer .btn:visible:first">
+          <span class="help-block hide"></span>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
-  
   <div class="modal-footer">
     <label class="checkbox">
       <input type="checkbox" name="remember"> Remember me
@@ -365,35 +366,42 @@
 </div>
 <!-- end of modal for basic authorization //-->
 
-<div class="modal fade hide" id="modal-custom-header">
+<!-- modal for custom request header //-->
+<div id="modal-custom-header" class="modal hide fade">
   <div class="modal-header">
-    <a class="close btnClose">×</a>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3>Request Header</h3>
   </div>
   <div class="modal-body">
-    <div class="control-group">
-      <label for="name">Name</label> 
-      <div class="controls">
-        <input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="name" autocomplete="on" placeholder="example: Content-Type" data-provide="typeahead" data-items="4" data-source=""> 
-        <span class="help-block hide"></span>
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="name">Name</label>
+        <div class="controls">
+          <input type="text" name="name" autocomplete="on" placeholder="example: Content-Type" data-provide="typeahead" data-items="4" data-source=""
+           data-next-focus="#modal-custom-header [name='value']">
+          <span class="help-block hide"></span>
+        </div>
       </div>
-    </div>
-    <div class="control-group">
-      <label for="value">Value</label>
-      <div class="controls">
-        <input class="span5" style="width:-moz-calc(100% - 1em) !important;" type="text" name="value" autocomplete="on" placeholder="example: application/json" data-provide="typeahead" data-items="4" data-source="">
-        <span class="help-block hide"></span>
+      <div class="control-group">
+        <label class="control-label" for="value">Value</label>
+        <div class="controls">
+          <input type="text" name="value" autocomplete="on" placeholder="example: application/json" data-provide="typeahead" data-items="4" 
+            data-source="" data-next-focus="#modal-custom-header [name='value']">
+          <span class="help-block hide"></span>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
   <div class="modal-footer">
-    <div style="float:left;margin-top:8px; ">
-    <input type="checkbox" name="remember" style="margin-right: 6px;"><span style="margin-top: 10px;">Save to favorite</span>
-    </div>
-    <input class="btn btn-inverse" type="button" value="Okay" onclick="restclient.main.addCustomHeader();">
-    <input class="btn btnClose" type="button" value="Cancel">
+    <label class="checkbox">
+      <input type="checkbox" name="remember"> Save to favorite
+    </label>
+    <input class="btn btn-success" type="button" value="Okay" onclick="restclient.main.addCustomHeader();">
+    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
   </div>
 </div>
+<!-- end of modal for custom request header //-->
+
 <div class="modal fade hide" id="modal-save-request">
   <div class="modal-header">
     <a class="close btnClose">×</a>
@@ -580,153 +588,154 @@
     <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
   </div>
 </div>
+<!-- end of modal for oauth 1.0 //-->
 
-<div id="window-oauth2" class="window-overlay" style="display:none">
-  <div class="window">
-    <div class="window-wrapper clearfix">
-      <div class="window-header modal-header">
-        <a class="close btnClose">×</a>
-        <h3>OAuth2</h3>
-      </div>
-      <div class="window-content modal-body">
-        <ul class="nav nav-tabs">
-          <li class="active"><a href="#oauth2-authorize" data-toggle="tab">Authorize</a></li>
-          <li><a href="#oauth2-tokens" data-toggle="tab">Tokens</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane active" id="oauth2-authorize">
-            <form class="form-horizontal" onsubmit="return false;">
-              <div class="control-group">
-                <label class="control-label" for="templates">Templates</label>
-                <div class="controls">
-                  <select name="templates" class="input-xxlarge">
-                    <option value="" selected></option>
-                    <option value="Google">Google</option>
-                    <option value="Facebook">Facebook</option>
-                    <option value="Github">Github</option>
-                  </select>
-                  <p class="help-block hide">Please select a template to remove.</p>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" for="response_type">Response type</label>
-                <div class="controls">
-                  <select name="response_type" class="input-xxlarge">
-                    <option value="code" selected>code</option>
-                  </select>
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="client_id" class="control-label">Client identifier</label>
-                <div class="controls">
-                  <input type="text" name="client_id" class="input-xxlarge" placeholder="db6b9cfb5e71bfdb7dbb">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="client_secret" class="control-label">Client secret</label>
-                <div class="controls">
-                  <input type="text" name="client_secret" class="input-xxlarge" placeholder="6794ea094c22e12bd237749ce1f7ee6809787fbc">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="authorization_endpoint" class="control-label">Authorization endpoint</label>
-                <div class="controls">
-                  <input type="text" name="authorization_endpoint" class="input-xxlarge" placeholder="https://server.example.com/authorize">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="token_endpoint" class="control-label">Token endpoint</label>
-                <div class="controls">
-                  <input type="text" name="token_endpoint" class="input-xxlarge" placeholder="https://client.example.com/cb">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="token_method" class="control-label">Access token request method</label>
-                <div class="controls">
-                  <select name="token_method" class="input-xxlarge">
-                    <option value="GET" selected>GET</option>
-                    <option value="POST" selected>POST</option>
-                  </select>
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="redirection_endpoint" class="control-label">Redirection endpoint</label>
-                <div class="controls">
-                  <input type="text" name="redirection_endpoint" class="input-xxlarge"  placeholder="https://client.example.com/">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="scope" class="control-label">Access token scope</label>
-                <div class="controls">
-                  <input type="text" name="scope" class="input-xxlarge" placeholder="Read Write">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="state" class="control-label">State</label>
-                <div class="controls">
-                  <input type="text" name="state" class="input-xxlarge" placeholder="xyz">
-                </div>
-              </div>
-            </form>
-            <div class="modal-footer">
-              <input class="btn btn-info btnClose" type="button" value="Close" style="float:right; padding: 5px 10px;">
-              <div class="btn-group dropup" style="float:right; margin: 0 6px; text-align:left">
-                <button class="btn btn-success btnAuthorize" style="padding: 4px 10px;" data-loading-text='Fetching accees token'>Authorize</button>
-                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 4px 6px;"><span class="caret"></span></button>
-                <ul class="dropdown-menu pull-right">
-                  <li><a href="#" class="btnSaveTemplate">Save as template</a></li>
-                  <li><a href="#" class="btnRemoveTemplate">Remove current template</a></li>
-                </ul>
-              </div>
+<!-- modal for oauth 2.0 //-->
+<div id="modal-oauth2" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>OAuth2</h3>
+  </div>
+  <div class="modal-body">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#oauth2-authorize" data-toggle="tab">Authorize</a></li>
+      <li><a href="#oauth2-tokens" data-toggle="tab">Tokens</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="oauth2-authorize">
+        <form class="form-horizontal" onsubmit="return false;">
+          <div class="control-group">
+            <label class="control-label" for="templates">Templates</label>
+            <div class="controls">
+              <select name="templates" class="input-xlarge">
+                <option value="" selected></option>
+                <option value="Google">Google</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Github">Github</option>
+              </select>
+              <p class="help-block hide">Please select a template to remove.</p>
             </div>
           </div>
-          <div class="tab-pane" id="oauth2-tokens">
-            <form class="form-horizontal" onsubmit="return false;">
-              <div class="control-group">
-                <label class="control-label" for="saved_tokens">Saved Tokens</label>
-                <div class="controls">
-                  <select name="saved_tokens" class="input-xxlarge">
-                  </select>
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="access_token" class="control-label">Access token</label>
-                <div class="controls">
-                  <input type="text" name="access_token" class="input-xxlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="expires_in" class="control-label">Expires time</label>
-                <div class="controls">
-                  <input type="text" name="expires_in" class="input-xxlarge" readonly>
-                </div>
-              </div>
-              <div class="control-group">
-                <label for="refresh_token" class="control-label">Refresh token</label>
-                <div class="controls">
-                  <input type="text" name="refresh_token" class="input-xxlarge">
-                </div>
-              </div>
-            </form>
-            <div class="modal-footer">
-              <input class="btn btn-info btnClose" type="button" value="Close" style="float:right; padding: 5px 10px;">
-              <div class="btn-group dropup" style="float:right; margin: 0 6px; text-align:left">
-                <button class="btn btn-success btnInsertAsHeader" style="padding: 4px 10px;">Insert</button>
-                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" style="padding: 4px 6px;"><span class="caret"></span></button>
-                <ul class="dropdown-menu pull-right">
-                  <li><a href="#" class="btnInsertAsHeader">Insert as header</a></li>
-                  <li><a href="#" class="btnInsertAsQueryString">Insert as query string</a></li>
-                  <li class="divider"></li>
-                  <li><a href="#" class="btnSaveToken">Save</a></li>
-                  <li><a href="#" class="btnRemoveToken">Remove</a></li>
-                </ul>
-              </div>
-              <input class="btn btn-success btnRefreshToken disabled" type="button" value="Refresh" data-loading-text="Refreshing" style="float:right; padding: 5px 10px;" disabled>
+          <div class="control-group">
+            <label class="control-label" for="response_type">Response type</label>
+            <div class="controls">
+              <select name="response_type" class="input-xlarge">
+                <option value="code" selected>code</option>
+              </select>
             </div>
           </div>
-        </div>
+          <div class="control-group">
+            <label for="client_id" class="control-label">Client identifier</label>
+            <div class="controls">
+              <input type="text" name="client_id" class="input-xlarge" placeholder="db6b9cfb5e71bfdb7dbb">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="client_secret" class="control-label">Client secret</label>
+            <div class="controls">
+              <input type="text" name="client_secret" class="input-xlarge" placeholder="6794ea094c22e12bd237749ce1f7ee6809787fbc">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="authorization_endpoint" class="control-label">Authorization endpoint</label>
+            <div class="controls">
+              <input type="text" name="authorization_endpoint" class="input-xlarge" placeholder="https://server.example.com/authorize">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="token_endpoint" class="control-label">Token endpoint</label>
+            <div class="controls">
+              <input type="text" name="token_endpoint" class="input-xlarge" placeholder="https://client.example.com/cb">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="token_method" class="control-label">Access token request method</label>
+            <div class="controls">
+              <select name="token_method" class="input-xlarge">
+                <option value="GET" selected>GET</option>
+                <option value="POST" selected>POST</option>
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="redirection_endpoint" class="control-label">Redirection endpoint</label>
+            <div class="controls">
+              <input type="text" name="redirection_endpoint" class="input-xlarge"  placeholder="https://client.example.com/">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="scope" class="control-label">Access token scope</label>
+            <div class="controls">
+              <input type="text" name="scope" class="input-xlarge" placeholder="Read Write">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="state" class="control-label">State</label>
+            <div class="controls">
+              <input type="text" name="state" class="input-xlarge" placeholder="xyz">
+            </div>
+          </div>
+        </form>
       </div>
-    </div><!--end window-wrapper//-->
+      <div class="tab-pane" id="oauth2-tokens">
+        <form class="form-horizontal" onsubmit="return false;">
+          <div class="control-group">
+            <label class="control-label" for="saved_tokens">Saved Tokens</label>
+            <div class="controls">
+              <select name="saved_tokens" class="input-xlarge">
+              </select>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="access_token" class="control-label">Access token</label>
+            <div class="controls">
+              <input type="text" name="access_token" class="input-xlarge" placeholder="lPvnpgox1rS9xTy8p0DRtudP">
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="expires_in" class="control-label">Expires time</label>
+            <div class="controls">
+              <input type="text" name="expires_in" class="input-xlarge" readonly>
+            </div>
+          </div>
+          <div class="control-group">
+            <label for="refresh_token" class="control-label">Refresh token</label>
+            <div class="controls">
+              <input type="text" name="refresh_token" class="input-xlarge">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="btn-group dropup">
+      <button class="btn btn-success btnAuthorize" data-loading-text='Fetching accees token'>Authorize</button>
+      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu pull-right">
+        <li><a href="#" class="btnSaveTemplate">Save as template</a></li>
+        <li><a href="#" class="btnRemoveTemplate">Remove current template</a></li>
+      </ul>
+    </div>
+    
+    <a href="#" class="btn btn-success btnRefreshToken disabled" data-loading-text="Refreshing">Refresh</a>
+    <div class="btn-group dropup">
+      <button class="btn btn-success btnInsertAsHeader">Insert</button>
+      <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu pull-right">
+        <li><a href="#" class="btnInsertAsHeader">Insert as header</a></li>
+        <li><a href="#" class="btnInsertAsQueryString">Insert as query string</a></li>
+        <li class="divider"></li>
+        <li><a href="#" class="btnSaveToken">Save</a></li>
+        <li><a href="#" class="btnRemoveToken">Remove</a></li>
+      </ul>
+    </div>
+    
+    <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
   </div>
 </div> 
 

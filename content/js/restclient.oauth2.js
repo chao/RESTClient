@@ -70,7 +70,7 @@ restclient.oauth2 = {
       btnRefresh.removeAttr('disabled').removeClass('disabled');
     else
       btnRefresh.attr('disabled', true).addClass('disabled');
-    $('#window-oauth2').show();
+    $('#modal-oauth2').modal('show');
   },
   closeDialog: function() {
     $('#window-oauth2').hide();

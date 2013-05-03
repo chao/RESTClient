@@ -322,6 +322,22 @@ restclient.main = {
       window.history.forward();
       return false;
     });
+    
+    $('input[data-next-focus]').bind('keydown', 'return', function () {
+      var nextElement = $(this).attr('data-next-focus');
+      if($(nextElement).length > 0)
+      {
+        if($(this).next().hasClass('typeahead') && $(this).next().is(":visible"))
+          return false;
+        
+        if( $(nextElement).hasClass('btn') )
+          $(nextElement).click(); // if it is a button then click it.
+        else {
+          $(nextElement).focus();
+        }
+      }
+      return false;
+    });
   },
   toggleRequest: function (e) {
     var toggle = $('.toggle-request');
@@ -544,6 +560,12 @@ restclient.main = {
       else {
         $("#modal-basic-authorization [name='remember']").removeAttr('checked');
       }
+      
+      $('#modal-basic-authorization .error').removeClass('error');
+      $('#modal-basic-authorization .help-info').hide();
+      
+      $('#modal-basic-authorization .modal-footer .btn-group').hide();
+      $('#modal-basic-authorization .modal-footer .btn-okay').show();
     });
 
     $('#modal-custom-header').on('show',  function () {
@@ -622,6 +644,9 @@ restclient.main = {
         btnOkay  = $("#modal-basic-authorization .btn-okay"),
         btnGroup = $("#modal-basic-authorization .btn-group");
     
+    $('#modal-basic-authorization .error').removeClass('error');
+    $('#modal-basic-authorization .help-info').hide();
+        
     if(remember === true)
       restclient.setPref('ignoreBasicAuthCheck', 'yes');
       
@@ -631,14 +656,14 @@ restclient.main = {
       ignore = false;
     
     if (username.val() == '' && !ignore) {
-      username.next().text('Please input the username for authorization').show();
+      username.next().text('Please input the username for authorization').css('display', 'block').parents('.control-group').addClass('error');
       username.focus();
       btnOkay.hide();
-      btnGroup.show();
+      btnGroup.css('display', 'inline-block');
       return false;
     }
     if (password.val() == '' && !ignore) {
-      password.next().text('Please input the password for authorization').show();
+      password.next().text('Please input the password for authorization').css('display', 'block').parents('.control-group').addClass('error');
       password.focus();
       btnOkay.hide();
       btnGroup.css('display', 'inline-block');
@@ -650,11 +675,9 @@ restclient.main = {
     var strValue = username.val() + ":" + password.val(),
         strBase64 = btoa(strValue).replace(/.{76}(?=.)/g,'$&\n');
 
-    //restclient.log(strBase64);
     restclient.main.addHttpRequestHeader('Authorization', "Basic " + strBase64);
     if ( $("#modal-basic-authorization [name='remember']").attr('checked') === 'checked') {
       var basicAuth = JSON.stringify({'user': username.val(), 'pass': password.val()});
-      //restclient.log(basicAuth);
       restclient.setPref("basicAuth", basicAuth);
     }
     else {

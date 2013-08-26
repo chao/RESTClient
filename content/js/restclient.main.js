@@ -592,6 +592,9 @@ restclient.main = {
         if (name != '' && typeof(restclient.headers[name]) == 'object')
           inputValue.attr("data-source", JSON.stringify(restclient.headers[name]));
       }).keypress();
+      
+      $('#modal-custom-header .error').removeClass('error');
+      $('#modal-custom-header .help-info').hide();
     }).on('shown', function () {
       $('#modal-custom-header [name="name"]').focus();
       $('#modal-custom-header [name="value"]').bind('focus', function () {
@@ -841,13 +844,17 @@ restclient.main = {
     var remember = $('#modal-custom-header [name="remember"]'),
         inputName = $('#modal-custom-header [name="name"]'),
         inputValue = $('#modal-custom-header [name="value"]');
+    
+    $('#modal-custom-header .error').removeClass('error');
+    $('#modal-custom-header .help-info').hide();
+    
     if (inputName.val() == '') {
-      inputName.next().text('Please input the http request header name').show();
+      inputName.next().text('Please input the http request header name').css('display', 'block').parents('.control-group').addClass('error');
       inputName.focus();
       return false;
     }
     if (inputValue.val() == '') {
-      inputValue.next().text('Please input the http request header value').show();
+      inputValue.next().text('Please input the http request header value').css('display', 'block').parents('.control-group').addClass('error');
       inputValue.focus();
       return false;
     }

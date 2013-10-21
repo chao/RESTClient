@@ -7,7 +7,7 @@ echo "Creating working directory ..."
 rm -rf build
 mkdir build
 cp -r \
-  install.rdf content locale LICENSE\
+  install.rdf content LICENSE\
       modules icon.png chrome.manifest \
   build/
 cd build

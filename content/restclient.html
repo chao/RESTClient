@@ -22,19 +22,27 @@
       <div class="nav-collapse">
         <ul class="nav">
           <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">File <b class="caret"></b></a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bookmarks <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a style="cursor:pointer" onclick="restclient.main.loadRequest();return false;">Load request</a></li>
+              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Bookmark This Request</a></li>
+              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Show All Bookmarks</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Import/Export</li>
+              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import Bookmarks</a></li>
+              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export Bookmarks</a></li>
+              <li class="divider"></li>
+              <li class="nav-header">Load (Version 1.3.x)</li>
+              <li><a style="cursor:pointer" onclick="restclient.main.loadRequest();return false;">Load Request</a></li>
             </ul>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Authentication <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li class="nav-header">HTTP authentication</li>
-              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic authentication</a></li>
-              <li class="hide"><a onclick="restclient.main.showModal('modal-digest-authorization');">Digest authentication</a></li>
+              <li class="nav-header">HTTP Authentication</li>
+              <li><a onclick="restclient.main.showModal('modal-basic-authorization');">Basic Authentication</a></li>
+              <li class="hide"><a onclick="restclient.main.showModal('modal-digest-authorization');">Digest Authentication</a></li>
               <li class="divider"></li>
-              <li class="nav-header">OAuth protocol</li>
+              <li class="nav-header">OAuth Protocol</li>
               <li><a onclick="$('#modal-oauth').modal('show');">OAuth</a></li>
               <li><a onclick="restclient.oauth2.showDialog();">OAuth2</a></li>
             </ul>
@@ -42,11 +50,11 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Headers <b class="caret"></b></a>
             <ul class="dropdown-menu headers">
-              <li class="custom-header"><a href="#" onclick="restclient.main.showModal('modal-custom-header');return false;">Custom header</a></li>
+              <li class="custom-header"><a href="#" onclick="restclient.main.showModal('modal-custom-header');return false;">Custom Header</a></li>
               <li class="divider favorite"></li>
               <li><a class="favorite" href="#">Accept</a></li>
               <li class="divider"></li>
-              <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Clear favorite headers</a></li>
+              <li><a href="#" onclick="restclient.main.clearFavoriteHeaders();return false;">Clear Favorite Headers</a></li>
             </ul>
           </li>
           <li class="dropdown">
@@ -62,12 +70,13 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Setting <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">Layout</li>
-              <li><a style="cursor:pointer" class="toggle-page-layout" data-layout="fixed">Switch to percentage page layout</a></li>
-              <li><a style="cursor:pointer" class="toggle-header-layout" data-layout="tag">List request headers in table</a></li>
+              <li><a style="cursor:pointer" class="toggle-page-layout" data-layout="fixed">Switch to Percentage Page Layout</a></li>
+              <li><a style="cursor:pointer" class="toggle-header-layout" data-layout="tag">List Request Headers in Table</a></li>
               <li class="divider"></li>
               <li class="nav-header">Develop</li>
-              <li><a style="cursor:pointer" class="toggle-request-timer" data-timer="disabled">Enable request execution timer</a></li>
-              <li><a style="cursor:pointer" class="clear-cached-requests">Clear cached requests</a></li>
+              <li><a style="cursor:pointer" class="enable-curl" >Enable Curl</a></li>
+              <li><a style="cursor:pointer" class="toggle-request-timer" data-timer="disabled">Enable Request Execution Timer</a></li>
+              <li><a style="cursor:pointer" class="clear-cached-requests">Clear Cached Requests</a></li>
               <li class="divider"></li>
               <li class="nav-header">Skins (bootswatch.com)</li>
               <li><a href="#" onclick="return false;" data-theme="amelia">Amelia</a></li>
@@ -84,21 +93,6 @@
               <li><a href="#" onclick="return false;" data-theme="united">United</a></li>
             </ul>
           </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Favorite Requests <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li class="nav-header">Favorite requests</li>
-              <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Manage favorite requests</a></li>
-              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Favorite this request</a></li>
-              <li class="divider"></li>
-              <li class="nav-header">Import/export</li>
-              <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import favorite requests</a></li>
-              <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export favorite requests</a></li>
-            </ul>
-          </li>
-          <li><a href="#" onclick="restclient.main.toggleRequestHistoryPanel(); return false;">
-            <i class="toggle-request-panel icon-white icon-chevron-down">&nbsp;</i>
-          </a></li>
         </ul>
       </div>
     </div><!-- container //-->
@@ -312,6 +306,18 @@
       <div class="pre" style="margin-left:0px;padding: 0;"></div>
     </div>
   </div>
+  <br />
+  <br />
+  <br />
+  </div>
+</section>
+<section id="curl" class="container hide" style="margin-top: 5px;">
+  <h3 style="color: #999;">[<a href="#" class="toggle-curl" title="hotkey: alt+c" style="color: #999;">-</a>] cUrl</h3>
+  <div id="curl-container">
+    <div style="margin-bottom:0px;" class="well">
+      <h4 style="margin-left: 6px;">Body</h4>
+      <textarea placeholder="Curl" style="width: 99%;margin: 0;height: 60px;" id="curl-command" rel="tooltip" title="hotkey: c"></textarea>
+    </div>
   <br />
   <br />
   <br />
@@ -763,6 +769,7 @@
 <script type="text/javascript" src="js/restclient.oauth.js"></script>
 <script type="text/javascript" src="js/restclient.headers.js"></script>
 <script type="text/javascript" src="js/restclient.http.js"></script>
+<script type="text/javascript" src="js/restclient.curl.js"></script>
 <script type="text/javascript" src="js/restclient.message.js"></script>
 <script type="text/javascript" src="js/restclient.helper.js"></script>
 

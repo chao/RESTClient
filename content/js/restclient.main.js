@@ -99,6 +99,8 @@ restclient.main = {
     $('.favorite-icon').click(restclient.main.favoriteUrl);
     $('.toggle-request').click(restclient.main.toggleRequest);
     $('.toggle-response').click(restclient.main.toggleResponse);
+    $('.toggle-curl').click(restclient.main.toggleCurl);
+    $('.enable-curl').click(restclient.main.enableCurl);
     $('.toggle-page-layout').click(restclient.main.toggleLayout);
     $('.toggle-header-layout').click(restclient.main.toggleRequestHeaderLayout);
     $('.toggle-request-timer').click(restclient.main.toggleRequestTimer);
@@ -234,7 +236,7 @@ restclient.main = {
     if (pageLayout === 'percentage') {
       $('.container').addClass('container-fluid').removeClass('container');
       $('.toggle-page-layout').attr('data-layout', 'percentage');
-      $('.toggle-page-layout').text('Switch to fixed page layout');
+      $('.toggle-page-layout').text('Switch to Fixed Page Layout');
     }
 
     if (requestHeaderLayout === 'table') {
@@ -355,6 +357,19 @@ restclient.main = {
     if (e) e.preventDefault();
     return false;
   },
+  enableCurl: function (e) {
+    $('#curl').slideToggle('slow')
+    if (e) e.preventDefault();
+    return false;
+  },
+  toggleCurl: function (e) {
+    var toggle = $('.toggle-curl');
+    $('#curl-container').slideToggle('slow', function () {
+        toggle.text(toggle.text() == '-' ? '+' : '-');
+    });
+    if (e) e.preventDefault();
+    return false;
+  },
   toggleExpander: function (e) {
     var toggle = $(this),
         content = toggle.next().find('.expander-content').first();
@@ -383,14 +398,14 @@ restclient.main = {
     {
       $('.container').addClass('container-fluid').removeClass('container');
       $(this).attr('data-layout', 'percentage');
-      $(this).text('Switch to fixed page layout');
+      $(this).text('Switch to Fixed Page Layout');
       restclient.setPref('pageLayout', 'percentage');
     }
     else
     {
       $('.container-fluid').removeClass('container-fluid').addClass('container');
       $(this).attr('data-layout', 'fixed');
-      $(this).text('Switch to percentage page layout');
+      $(this).text('Switch to Percentage Page Layout');
       restclient.setPref('pageLayout', 'fixed');
     }
   },
@@ -1928,6 +1943,10 @@ restclient.main = {
       restclient.error('updateOAuthSign');
     }
   },
+  updateCurlCommand: function() {
+    var request = restclient.main.getRequest();
+    $("#curl-command").val(restclient.curl.constructCommand(request));
+  },
   sendRequest: function () {
     $('.popover').removeClass('in').remove();
     if ( $('[auto-refresh="yes"]').length > 0)
@@ -1937,6 +1956,9 @@ restclient.main = {
       //restclient.log('resigned');
     }
     var request = restclient.main.getRequest();
+    // TODO: if curl enabled
+    restclient.main.updateCurlCommand()
+
     if (!restclient.helper.validateUrl(request.url))
     {
       restclient.message.show({

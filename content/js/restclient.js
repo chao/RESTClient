@@ -60,7 +60,7 @@ if (typeof (restclient) === "undefined") {
     },
     log: function(str) {
       try{
-        console.log(str);
+        console.log("[restclient]" + str);
       }catch(e){}
     },
     error: function(o) {

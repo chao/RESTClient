@@ -12,7 +12,7 @@
 
 <div class="navbar navbar-fixed-top hide showForStartup" style="display:none;">
   <div class="navbar-inner">
-    <div class="container">
+    <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -24,7 +24,7 @@
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bookmarks <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#" onclick="restclient.main.showModal('modal-save-request');return false;">Bookmark This Request</a></li>
+              <li><a href="#" onclick="restclient.main.bookmarkRequest(); return false;">Bookmark This Request</a></li>
               <li class="manage-request"><a href="#" onclick="restclient.main.manageFavoriteRequests(); return false;">Show All Bookmarks</a></li>
               <li class="divider"></li>
               <li class="nav-header">Import/Export</li>
@@ -70,11 +70,10 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Setting <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li class="nav-header">Layout</li>
-              <li><a style="cursor:pointer" class="toggle-page-layout" data-layout="fixed">Switch to Percentage Page Layout</a></li>
               <li><a style="cursor:pointer" class="toggle-header-layout" data-layout="tag">List Request Headers in Table</a></li>
               <li class="divider"></li>
               <li class="nav-header">Develop</li>
-              <li><a style="cursor:pointer" class="enable-curl" >Enable Curl</a></li>
+              <li><a style="cursor:pointer" class="enable-curl" data-curl="disabled">Enable Curl</a></li>
               <li><a style="cursor:pointer" class="toggle-request-timer" data-timer="disabled">Enable Request Execution Timer</a></li>
               <li><a style="cursor:pointer" class="clear-cached-requests">Clear Cached Requests</a></li>
               <li class="divider"></li>
@@ -229,9 +228,7 @@
   
 </div><!-- end of navbar //-->
 
-
-
-<div id="request" class="container hide showForStartup" style="display:none;">
+<div id="request" class="container-fluid hide showForStartup" style="display:none;">
   <div class="row-fluid">
     <h3 style="color: #999;">[<a href="#" class="toggle-request" title="hotkey: alt+q" style="color: #999;">-</a>] Request</h3>
     <div id="request-container" style="margin-bottom: 10px;">
@@ -281,7 +278,7 @@
   </div>
 </div>
 
-<section id="response" class="container hide" style="margin-top: 5px;">
+<section id="response" class="container-fluid hide" style="margin-top: 5px;">
   <h3 style="color: #999;">[<a href="#" class="toggle-response" title="hotkey: alt+s" style="color: #999;">-</a>] Response</h3>
   <div id="response-container">
   <div class="overrideMimeTypeMessage"></div>
@@ -306,25 +303,19 @@
       <div class="pre" style="margin-left:0px;padding: 0;"></div>
     </div>
   </div>
-  <br />
-  <br />
-  <br />
   </div>
 </section>
-<section id="curl" class="container hide" style="margin-top: 5px;">
+<section id="curl" class="container-fluid hide" style="margin-top: 5px;">
   <h3 style="color: #999;">[<a href="#" class="toggle-curl" title="hotkey: alt+c" style="color: #999;">-</a>] cUrl</h3>
   <div id="curl-container">
     <div style="margin-bottom:0px;" class="well">
       <h4 style="margin-left: 6px;">Body</h4>
       <textarea placeholder="Curl" style="width: 99%;margin: 0;height: 60px;" id="curl-command" rel="tooltip" title="hotkey: c"></textarea>
     </div>
-  <br />
-  <br />
-  <br />
   </div>
 </section>
 
-<footer class="footer container hide showForStartup" style="display:none;">
+<footer class="footer container-fluid hide showForStartup" style="display:none;">
   <p style="float:left"><a href="http://www.restclient.net" target="_blank">Home</a> | <a href="https://github.com/chao/RESTClient" target="_blank">Github</a> | <a href="https://github.com/chao/RESTClient/issues" target="_blank">Issues</a> | <a href="#" onclick="restclient.main.donate();return false;">Donate</a></p>
   <p class="pull-right"><a href="#">Back to top</a></p>
 </footer>
@@ -408,10 +399,10 @@
 </div>
 <!-- end of modal for custom request header //-->
 
-<div class="modal fade hide" id="modal-save-request">
+<div class="modal fade hide" id="modal-bookmark-request">
   <div class="modal-header">
     <a class="close btnClose">×</a>
-    <h3 class="title">Save Current Request</h3>
+    <h3 class="title">Bookmark This Request</h3>
   </div>
   <div class="modal-body">
     <form class="offset1" onsubmit="return false;">
@@ -746,7 +737,7 @@
 </div> 
 
 <div class="messages-overlay" style="display: none">
-  <div class="container">
+  <div class="container-fluid">
   </div>
 </div>
 

@@ -33,6 +33,7 @@ restclient.main = {
   headerMenuMaxLength: 25,
   uniqueHeaders: ['authorization'],
   navTop: null,
+  ignoreHashChange: false,
   hotkey: {
     send:     's',
     url:      'u',
@@ -77,14 +78,15 @@ restclient.main = {
     $('#request-history-dropdown-close').bind('click', restclient.main.toggleRequestHistoryPanel);
     if ($('#overrideMimeType').attr('checked') == 'checked')
       $('.overrideMimeType').show();
-
+    
+    //TODO 
     $('[name="saved-request-name"]').bind('keyup', function () {
-      if ($(this).val() == $('#modal-save-request .btnOkay').attr('request-name') ) {
-        $('#modal-save-request .btnOkay').attr('overwrite', '1').val('Overwrite');
+      if ($(this).val() == $('#modal-bookmark-request .btnOkay').attr('request-name') ) {
+        $('#modal-bookmark-request .btnOkay').attr('overwrite', '1').val('Overwrite');
       }
       else
       {
-        $('#modal-save-request .btnOkay').attr('overwrite', '0').val('Save');
+        $('#modal-bookmark-request .btnOkay').attr('overwrite', '0').val('Save');
       }
     });
 
@@ -101,7 +103,6 @@ restclient.main = {
     $('.toggle-response').click(restclient.main.toggleResponse);
     $('.toggle-curl').click(restclient.main.toggleCurl);
     $('.enable-curl').click(restclient.main.enableCurl);
-    $('.toggle-page-layout').click(restclient.main.toggleLayout);
     $('.toggle-header-layout').click(restclient.main.toggleRequestHeaderLayout);
     $('.toggle-request-timer').click(restclient.main.toggleRequestTimer);
     $('.clear-cached-requests').click(restclient.main.clearCachedRequests);
@@ -145,7 +146,7 @@ restclient.main = {
       var request = restclient.sqlite.getRequest(location.hash.substr(1));
       if(typeof request === 'string')
         try{
-          console.log(request);
+          restclient.log(request);
           request = JSON.parse(request);
           restclient.main.applyRequest(request);
         }
@@ -229,16 +230,10 @@ restclient.main = {
     }).appendTo("head");
   },
   initSkin: function () {
-    var pageLayout = restclient.getPref('pageLayout', 'fixed'),
-        requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag'),
-        requestTimer = restclient.getPref('requestTimer', false);
+    var requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag'),
+        requestTimer = restclient.getPref('requestTimer', false),
+        enableCurl = restclient.getPref('enableCurl', false);
         
-    if (pageLayout === 'percentage') {
-      $('.container').addClass('container-fluid').removeClass('container');
-      $('.toggle-page-layout').attr('data-layout', 'percentage');
-      $('.toggle-page-layout').text('Switch to Fixed Page Layout');
-    }
-
     if (requestHeaderLayout === 'table') {
       $('#request-headers .tag').hide();
       $('#request-headers .table').show();
@@ -249,6 +244,12 @@ restclient.main = {
     if (requestTimer === true) {
       $('.toggle-request-timer').attr('data-timer', 'enable');
       $('.toggle-request-timer').text('Disable request execution timer');
+    }
+    
+    if (enableCurl === true) {
+      $('#curl').addClass('showForStartup');
+      $('.enable-curl').attr('data-curl', 'enable');
+      $('.enable-curl').text('Disable Curl');
     }
     
     var defaultTheme = restclient.getPref('defaultSkin', 'simplex');
@@ -358,9 +359,20 @@ restclient.main = {
     return false;
   },
   enableCurl: function (e) {
-    $('#curl').slideToggle('slow')
-    if (e) e.preventDefault();
-    return false;
+    $('#curl').slideToggle('slow', function() {
+      if($('#curl').is(':visible')) {
+        $('.enable-curl').attr('data-curl', 'enable');
+        $('.enable-curl').text('Disable Curl');
+        restclient.main.updateCurlCommand();
+        restclient.setPref('enableCurl', true);
+      }
+      else
+      {
+        $('.enable-curl').attr('data-curl', 'disabled');
+        $('.enable-curl').text('Enable Curl');
+        restclient.setPref('enableCurl', false);
+      }
+    });
   },
   toggleCurl: function (e) {
     var toggle = $('.toggle-curl');
@@ -373,41 +385,12 @@ restclient.main = {
   toggleExpander: function (e) {
     var toggle = $(this),
         content = toggle.next().find('.expander-content').first();
-    //restclient.log(toggle.text());
-    //restclient.log(content);
 
     content.slideToggle('slow', function () {
       toggle.text(toggle.text() == '+' ? '-' : '+');
-      /*  content.after($())
-        if (!content.data('origin-data')) {
-          content.data('origin-data', content.html());
-          content.text('...').show();
-        }
-        else
-        {
-          content.html(content.data('origin-data'));
-          content.data('origin-data', null);
-        }*/
     });
     if (e) e.preventDefault();
     return false;
-  },
-  toggleLayout: function (e) {
-
-    if ($(this).attr('data-layout') == 'fixed')
-    {
-      $('.container').addClass('container-fluid').removeClass('container');
-      $(this).attr('data-layout', 'percentage');
-      $(this).text('Switch to Fixed Page Layout');
-      restclient.setPref('pageLayout', 'percentage');
-    }
-    else
-    {
-      $('.container-fluid').removeClass('container-fluid').addClass('container');
-      $(this).attr('data-layout', 'fixed');
-      $(this).text('Switch to Percentage Page Layout');
-      restclient.setPref('pageLayout', 'fixed');
-    }
   },
   toggleRequestHeaderLayout: function (e) {
     $('#request-headers').show();
@@ -620,7 +603,7 @@ restclient.main = {
       $(this).data('source', null);
     });
 
-    $('#modal-save-request').on('show', function () {
+    $('#modal-bookmark-request').on('show', function () {
       var savedRequest = restclient.getPref('savedRequest', '');
       $('[name="saved-request-name"]').val('');
       if (savedRequest != '') {
@@ -632,7 +615,7 @@ restclient.main = {
           names.push(name);
         }
         $('[name="saved-request-name"]').attr('data-source', JSON.stringify(names));
-        $('#modal-save-request .btnOkay').val('Save').attr('overwrite', '0').removeAttr('request-name');
+        $('#modal-bookmark-request .btnOkay').val('Save').attr('overwrite', '0').removeAttr('request-name');
       }
     });
 
@@ -733,7 +716,6 @@ restclient.main = {
         attrName  = header.attr('header-name'),
         attrValue = header.attr('header-value');
     
-    restclient.log(attrName);
     if(attrName.toLowerCase() === 'authorization') {
       //OAuth 2.0
       if(attrValue.toLowerCase().indexOf('oauth2 ') === 0) {
@@ -1266,10 +1248,10 @@ restclient.main = {
       //restclient.log(savedRequest);
       savedRequest = JSON.parse(savedRequest);
       //restclient.log(typeof savedRequest[name.val()]);
-      if (typeof $('#modal-save-request .btnOkay').attr('request-name') == 'undefined' &&
+      if (typeof $('#modal-bookmark-request .btnOkay').attr('request-name') == 'undefined' &&
               typeof savedRequest[name.val()] != 'undefined') {
         name.next().text('Name existed, you can either change a name or overwrite it.').show();
-        $('#modal-save-request .btnOkay').val('Overwrite').attr('overwrite', '1').attr('request-name', name.val());
+        $('#modal-bookmark-request .btnOkay').val('Overwrite').attr('overwrite', '1').attr('request-name', name.val());
         name.focus();
         return false;
       }
@@ -1280,7 +1262,7 @@ restclient.main = {
     var request = restclient.main.getRequest();
     savedRequest[name.val()] = request;
     restclient.setPref('savedRequest', JSON.stringify(savedRequest));
-    $('#modal-save-request').modal('hide');
+    $('#modal-bookmark-request').modal('hide');
     this.updateFavoriteRequestMenu();
     $('.request-menu').click();
   },
@@ -1956,8 +1938,9 @@ restclient.main = {
       //restclient.log('resigned');
     }
     var request = restclient.main.getRequest();
-    // TODO: if curl enabled
-    restclient.main.updateCurlCommand()
+    
+    if($('#curl').is(':visible'))
+      restclient.main.updateCurlCommand();
 
     if (!restclient.helper.validateUrl(request.url))
     {
@@ -2008,6 +1991,24 @@ restclient.main = {
       animate: 'bounce',
       title: text
     });
+  },
+  bookmarkRequest: function() {
+    var request = restclient.main.getRequest();
+    if (!restclient.helper.validateUrl(request.url))
+    {
+      restclient.message.show({
+        id: 'alertInvalidRequestUrl',
+        type: 'error',
+        title: 'The request URL is invalidate',
+        message: 'To bookmark a request you must input a validate request URL!',
+        buttons: [
+          {title: 'Okay', class: 'btn-danger', callback: function () { $('#request-url').focus().select(); $('#alertInvalidRequestUrl').alert('close');  }}
+        ],
+        parent: $('#request-error'),
+        exclude: true
+      });
+      return false;
+    }
   }
 };
 

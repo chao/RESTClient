@@ -54,6 +54,7 @@
             <ul class="dropdown-menu">
               <li><a style="cursor:pointer" onclick="restclient.main.showRequest();return false;" class="request-menu" >Request</a></li>
               <li><a style="cursor:pointer" onclick="restclient.main.showResponse();return false;">Response</a></li>
+              <li><a style="cursor:pointer" onclick="restclient.main.showModal('modal-response-tabs');return false;">Response Tabs</a></li>
             </ul>
           </li>
         </ul>
@@ -150,10 +151,11 @@
   <div class="overrideMimeTypeMessage"></div>
 
   <ul id="response-tabs" class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
-    <li               ><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
-    <li               ><a data-toggle="tab" href="#response-body-highlight">Response Body (Highlight)</a></li>
-    <li               ><a data-toggle="tab" href="#response-body-preview">Response Body (Preview)</a></li>
+    <li class="active" id="response-tab-headers"><a data-toggle="tab" href="#response-headers">Response Headers</a></li>
+    <li id="response-tab-body-raw"><a data-toggle="tab" href="#response-body-raw">Response Body (Raw)</a></li>
+    <li id="response-tab-body-highlight"><a data-toggle="tab" href="#response-body-highlight">Response Body (Highlight)</a></li>
+    <li id="response-tab-body-preview"><a data-toggle="tab" href="#response-body-preview">Response Body (Preview)</a></li>
+    <li id="response-tab-body-xpath"><a data-toggle="tab" href="#response-body-xpath">Response Body (XPath)</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="response-headers">
@@ -167,6 +169,9 @@
     </div>
     <div class="tab-pane" id="response-body-preview">
       <div class="pre" style="margin-left:0px;padding: 0;"></div>
+    </div>
+    <div class="tab-pane" id="response-body-xpath">
+      <pre style="margin-left:0px"></pre>
     </div>
   </div>
   <br />
@@ -315,6 +320,44 @@
     <input class="btn btnClose" type="button" value="Close">
   </div>
 </div>
+<div class="modal fade hide" id="modal-response-tabs">
+  <div class="modal-header">
+    <a class="close btnClose">×</a>
+    <h3>Response Tabs</h3>
+  </div>
+  <div class="modal-body">
+    <div class="control-group">
+      <div class="controls">
+        <input type="checkbox" name="response_tab_headers" style="margin-right: 6px;"><span style="margin-top: 10px;">Response Headers</span>
+        <span class="help-block hide"></span>
+      </div>
+      <div class="controls">
+        <input type="checkbox" name="response_tab_body_raw" style="margin-right: 6px;"><span style="margin-top: 10px;">Response Body (Raw)</span>
+        <span class="help-block hide"></span>
+      </div>
+      <div class="controls">
+        <input type="checkbox" name="response_tab_body_highlight" style="margin-right: 6px;"><span style="margin-top: 10px;">Response Body (Highlight)</span>
+        <span class="help-block hide"></span>
+      </div>
+      <div class="controls">
+        <input type="checkbox" name="response_tab_body_preview" style="margin-right: 6px;"><span style="margin-top: 10px;">Response Body (Preview)</span>
+        <span class="help-block hide"></span>
+      </div>
+      <div class="controls">
+        <input type="checkbox" name="response_tab_body_xpath" style="margin-right: 6px;"><span style="margin-top: 10px;">Response Body (XPath)</span>
+        <span class="help-block hide"></span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <!-- <div style="float:left;margin-top:8px; ">
+    <input type="checkbox" name="remember" style="margin-right: 6px;"><span style="margin-top: 10px;">Remember setting</span>
+    </div> -->
+    <input class="btn btn-inverse" type="button" value="Okay" onclick="restclient.main.saveResponseTabs();">
+    <input class="btn btnClose" type="button" value="Cancel">
+  </div>
+</div>
+
 <div class="mainOverlay hide">
   <div class="progressBar">
   <h3>Processing</h3>

@@ -67,6 +67,7 @@ restclient.main = {
     this.initOAuthWindow();
     this.initRequestMethod();
     this.initRequestUrl();
+    this.initResponseTabs();
     this.updateFavoriteHeadersMenu();
     this.updateFavoriteRequestMenu();
 
@@ -145,7 +146,7 @@ restclient.main = {
       var request = restclient.sqlite.getRequest(location.hash.substr(1));
       if(typeof request === 'string')
         try{
-          console.log(request);
+          // console.log(request);
           request = JSON.parse(request);
           restclient.main.applyRequest(request);
         }
@@ -602,10 +603,28 @@ restclient.main = {
       else
         autoRefresh.removeClass('active');
     });
+
+    $('#modal-response-tabs').on('show', function () {
+      var responseTabs = restclient.getPref('responseTabs', '');
+      if (responseTabs != '') {
+        responseTabs = JSON.parse(responseTabs);
+        $('#modal-response-tabs [name="response_tab_headers"]').attr('checked', responseTabs[0][1]);
+        $('#modal-response-tabs [name="response_tab_body_raw"]').attr('checked', responseTabs[1][1]);
+        $('#modal-response-tabs [name="response_tab_body_highlight"]').attr('checked', responseTabs[2][1]);
+        $('#modal-response-tabs [name="response_tab_body_preview"]').attr('checked', responseTabs[3][1]);
+        $('#modal-response-tabs [name="response_tab_body_xpath"]').attr('checked', responseTabs[4][1]);
+      } else {
+        // default behavior
+        $('#modal-response-tabs [name="response_tab_headers"]').attr('checked', 'checked');
+        $('#modal-response-tabs [name="response_tab_body_raw"]').attr('checked', 'checked');
+        $('#modal-response-tabs [name="response_tab_body_highlight"]').attr('checked', 'checked');
+        $('#modal-response-tabs [name="response_tab_body_preview"]').attr('checked', 'checked');
+      }
+    });
   },
   showModal: function (modalId) {
     $('#' + modalId).modal('show').on('shown', function () {
-      $(this).find('input').first().focus();
+      $(this).find("input[type='text'],textarea").first().focus();
     });
     return false;
   },
@@ -853,6 +872,80 @@ restclient.main = {
 
     $('#modal-custom-header').modal('hide');
   },
+  saveResponseTabs: function () {
+    try {
+      var showResponseHeaders = $('#modal-response-tabs [name="response_tab_headers"]').attr('checked'),
+        showBodyRaw = $('#modal-response-tabs [name="response_tab_body_raw"]').attr('checked'),
+        showBodyHighlight = $('#modal-response-tabs [name="response_tab_body_highlight"]').attr('checked'),
+        showBodyPreview = $('#modal-response-tabs [name="response_tab_body_preview"]').attr('checked'),
+        showBodyXPath = $('#modal-response-tabs [name="response_tab_body_xpath"]').attr('checked');
+
+      var responseTabs = [];
+
+      responseTabs.push(['showResponseHeaders', showResponseHeaders]);
+      responseTabs.push(['showBodyRaw', showBodyRaw]);
+      responseTabs.push(['showBodyHighlight', showBodyHighlight]);
+      responseTabs.push(['showBodyPreview', showBodyPreview]);
+      responseTabs.push(['showBodyXPath', showBodyXPath]);
+      
+      restclient.setPref('responseTabs', JSON.stringify(responseTabs));
+      this.initResponseTabs();
+  } catch (e) {
+    //console.error(e);
+  }
+    $('#modal-response-tabs').modal('hide');
+  },
+  initResponseTabs: function() {
+    try {
+    var responseTabs = restclient.getPref('responseTabs', '');
+    if (responseTabs != '') {
+      responseTabs = JSON.parse(responseTabs);
+
+      if (responseTabs[0][1] != 'checked') {
+        restclient.main.toggleResponseTabAndContent('headers', 'hide');
+      } else {
+        restclient.main.toggleResponseTabAndContent('headers', 'show');
+      }
+      if (responseTabs[1][1] != 'checked') {
+        restclient.main.toggleResponseTabAndContent('body-raw', 'hide');
+      } else {
+        restclient.main.toggleResponseTabAndContent('body-raw', 'show');
+      }
+      if (responseTabs[2][1] != 'checked') {
+        restclient.main.toggleResponseTabAndContent('body-highlight', 'hide');
+      } else {
+        restclient.main.toggleResponseTabAndContent('body-highlight', 'show');
+      }
+      if (responseTabs[3][1] != 'checked') {
+        restclient.main.toggleResponseTabAndContent('body-preview', 'hide');
+      } else {
+        restclient.main.toggleResponseTabAndContent('body-preview', 'show');
+      }
+      if (responseTabs[4][1] != 'checked') {
+        restclient.main.toggleResponseTabAndContent('body-xpath', 'hide');
+      } else {
+        restclient.main.toggleResponseTabAndContent('body-xpath', 'show');
+      }
+    } else {
+      // the default view
+      restclient.main.toggleResponseTabAndContent('xpath', 'hide');
+    }
+    $("#response-tabs li").removeClass("active");
+    $('#response-tabs li').not('[style*="display: none"]').first().addClass("active");
+    $(".tab-content div.active:gt(0)").removeClass("active");
+  } catch (e) {
+    // console.error(e);
+  }
+  },
+  toggleResponseTabAndContent: function (area, showOrHide) {
+    if (showOrHide == 'show') {
+      $("#response-"+area).addClass("active");
+      $("#response-tab-"+area).show();
+    } else {
+      $("#response-"+area).removeClass("active");
+      $("#response-tab-"+area).hide();
+    }
+  },
   updateFavoriteHeadersMenu: function () {
     $('ul.headers .favorite').remove();
     var favoriteHeaders = restclient.getPref('favoriteHeaders', '');
@@ -1025,6 +1118,7 @@ restclient.main = {
   clearResult: function () {
     $("#response-body-preview div.pre").html('');
     $('#response-body-raw pre').text('');
+    $('#response-body-xpath pre').text('');
     $('#response-body-highlight pre').text('');
     restclient.main.setResponseHeader();
     $("#response-body-preview div.pre").addClass('overflow');
@@ -1105,6 +1199,49 @@ restclient.main = {
       return xml;
     }
   },
+  formatXPath: function(xml) {
+    var xPathString = '';
+    try {
+      var xmlDoc = jQuery.parseXML(xml);
+      xPathString = restclient.main.processChildNodes(xmlDoc.childNodes);
+    } catch (e) {
+      console.error(e);
+    }
+    return xPathString;
+  },
+  processChildNodes: function (xmlNodes) {
+    var xPathString = '';
+    var currentChildCount;
+    for (var i = 0; i < xmlNodes.length; i++) {
+      if (xmlNodes[i].nodeName != "#text") {
+        xPathString += restclient.main.getXpath(xmlNodes[i]);
+        var childCount = xmlNodes[i].childNodes.length;
+        // no child nodes, so it must be an empty data element
+        if (childCount == 0) {
+          xPathString += "[text()='']";
+        }
+        // only 1 child, and it's a #text
+        if (childCount == 1 && xmlNodes[i].childNodes[0].nodeName == "#text") {
+          xPathString += "[text()='"+jQuery.trim(xmlNodes[i].childNodes[0].nodeValue)+"']";
+        }
+        xPathString += "\n";
+        // check for actual child elements, and not #text
+        if (childCount >= 1 && !(childCount == 1 && xmlNodes[i].childNodes[0].nodeName == "#text")) {
+          xPathString += restclient.main.processChildNodes(xmlNodes[i].childNodes);
+        }
+      }
+    }
+    return xPathString;
+  },
+  getXpath: function(element) {
+    var xpath = '';
+      for ( ; element && element.nodeType == 1; element = element.parentNode) {
+          var id = $(element.parentNode).children(element.tagName).index(element) + 1;
+          id > 1 ? (id = '[' + id + ']') : (id = '');
+          xpath = '/' + element.tagName.toLowerCase() + id + xpath;
+      }
+      return xpath;
+  },
   display: function () {
     var responseData = this.xhr.responseText;
     $('#response-body-raw pre').text(responseData);
@@ -1128,6 +1265,7 @@ restclient.main = {
     }
 
     $('#response-body-raw pre').text(responseData);
+    $('#response-body-xpath pre').text(restclient.main.formatXPath(responseData));
     window.prettyPrint && prettyPrint();
   },
   displayXml: function () {
@@ -1161,6 +1299,7 @@ restclient.main = {
 
     //$("#response-body-preview div.pre").append(iframe);
     $('#response-body-raw pre').text(responseData);
+    $('#response-body-xpath pre').text(restclient.main.formatXPath(responseData));
     var indentXml = restclient.main.formatXml(responseData);
     //restclient.log(indentXml);
     $('#response-body-highlight pre').text(indentXml);

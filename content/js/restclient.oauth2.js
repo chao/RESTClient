@@ -206,38 +206,38 @@ restclient.oauth2 = {
         oauth_param = restclient.oauth2.getAuthorize(),
         oauth_token = restclient.oauth2.getTokens();
         
-    $('#modal-save').find('.title').text('Save current token');
-    $('#modal-save').find('label').text('Token name');
-    $('#modal-save [name="saved-name"]').attr('placeholder', 'Token name, e.g. Facebook access token').attr('data-source', JSON.stringify(names)).bind('change', function() {
-      if($('#modal-save .btnOkay').data('overwrite') === true)
+    $('#modal-oauth2-save').find('.title').text('Save current token');
+    $('#modal-oauth2-save').find('label').text('Token name');
+    $('#modal-oauth2-save [name="saved-name"]').attr('placeholder', 'Token name, e.g. Facebook access token').attr('data-source', JSON.stringify(names)).bind('change', function() {
+      if($('#modal-oauth2-save .btnOkay').data('overwrite') === true)
       {
-        $('#modal-save .help-block').hide();
-        $('#modal-save .btnOkay').val('Save');
-        $('#modal-save .btnOkay').data('overwrite', false);
+        $('#modal-oauth2-save .help-block').hide();
+        $('#modal-oauth2-save .btnOkay').val('Save');
+        $('#modal-oauth2-save .btnOkay').data('overwrite', false);
       }
     });
-    $('#modal-save .help-block').text('Name existed, you can either change a name or overwrite it.').hide();
-    $('#modal-save .error').removeClass('error');
-    $('#modal-save .btnOkay').text('Save').data('overwrite', false).unbind().bind('click', function() {
-      var name = $('#modal-save [name="saved-name"]').val();
-      $('#modal-save .error').removeClass('error');
+    $('#modal-oauth2-save .help-block').text('Name existed, you can either change a name or overwrite it.').hide();
+    $('#modal-oauth2-save .error').removeClass('error');
+    $('#modal-oauth2-save .btnOkay').text('Save').data('overwrite', false).unbind().bind('click', function() {
+      var name = $('#modal-oauth2-save [name="saved-name"]').val();
+      $('#modal-oauth2-save .error').removeClass('error');
       if(name === '') {
-        $('#modal-save [name="saved-name"]').parents('.control-group').addClass('error');
+        $('#modal-oauth2-save [name="saved-name"]').parents('.control-group').addClass('error');
         return false;
       }
       if(names.indexOf(name) > -1 && $(this).data('overwrite') === false) {
-        $('#modal-save .help-block').show();
-        $('#modal-save .btnOkay').val('Overwrite');
+        $('#modal-oauth2-save .help-block').show();
+        $('#modal-oauth2-save .btnOkay').val('Overwrite');
         $(this).data('overwrite', true);
         return false;
       }
       restclient.oauth2.token.save(name, {'setting': oauth_param, 'tokens': oauth_token});
       restclient.oauth2.updateTokenList();
-      $('#modal-save').modal('hide');
+      $('#modal-oauth2-save').modal('hide');
     });
     $('#window-oauth2').hide();
     
-    $('#modal-save').modal('show').on('hidden', function(){ $('#window-oauth2').show(); });
+    $('#modal-oauth2-save').modal('show').on('hidden', function(){ $('#window-oauth2').show(); });
   },
   removeToken: function() {
     var template = $('#oauth2-tokens [name="saved_tokens"]');
@@ -285,38 +285,38 @@ restclient.oauth2 = {
     var names = restclient.oauth2.templates.getTemplateNames(), 
         oauth_param = restclient.oauth2.getAuthorize();
         
-    $('#modal-save').find('.title').text('Save as template');
-    $('#modal-save').find('label').text('Template name');
-    $('#modal-save [name="saved-name"]').attr('placeholder', 'Template name, e.g. Facebook').attr('data-source', JSON.stringify(names)).bind('change', function() {
-      if($('#modal-save .btnOkay').data('overwrite') === true)
+    $('#modal-oauth2-save').find('.title').text('Save as template');
+    $('#modal-oauth2-save').find('label').text('Template name');
+    $('#modal-oauth2-save [name="saved-name"]').attr('placeholder', 'Template name, e.g. Facebook').attr('data-source', JSON.stringify(names)).bind('change', function() {
+      if($('#modal-oauth2-save .btnOkay').data('overwrite') === true)
       {
-        $('#modal-save .help-block').hide();
-        $('#modal-save .btnOkay').val('Save');
-        $('#modal-save .btnOkay').data('overwrite', false);
+        $('#modal-oauth2-save .help-block').hide();
+        $('#modal-oauth2-save .btnOkay').val('Save');
+        $('#modal-oauth2-save .btnOkay').data('overwrite', false);
       }
     });
-    $('#modal-save .help-block').text('Name existed, you can either change a name or overwrite it.').hide();
-    $('#modal-save .error').removeClass('error');
-    $('#modal-save .btnOkay').text('Save').data('overwrite', false).unbind().bind('click', function() {
-      var name = $('#modal-save [name="saved-name"]').val();
-      $('#modal-save .error').removeClass('error');
+    $('#modal-oauth2-save .help-block').text('Name existed, you can either change a name or overwrite it.').hide();
+    $('#modal-oauth2-save .error').removeClass('error');
+    $('#modal-oauth2-save .btnOkay').text('Save').data('overwrite', false).unbind().bind('click', function() {
+      var name = $('#modal-oauth2-save [name="saved-name"]').val();
+      $('#modal-oauth2-save .error').removeClass('error');
       if(name === '') {
-        $('#modal-save [name="saved-name"]').parents('.control-group').addClass('error');
+        $('#modal-oauth2-save [name="saved-name"]').parents('.control-group').addClass('error');
         return false;
       }
       if(names.indexOf(name) > -1 && $(this).data('overwrite') === false) {
-        $('#modal-save .help-block').show();
-        $('#modal-save .btnOkay').val('Overwrite');
+        $('#modal-oauth2-save .help-block').show();
+        $('#modal-oauth2-save .btnOkay').val('Overwrite');
         $(this).data('overwrite', true);
         return false;
       }
       restclient.oauth2.templates.save(name, oauth_param);
       restclient.oauth2.updateTemplateList();
-      $('#modal-save').modal('hide');
+      $('#modal-oauth2-save').modal('hide');
     });
     $('#window-oauth2').hide();
     
-    $('#modal-save').modal('show').on('hidden', function(){ $('#window-oauth2').show(); });
+    $('#modal-oauth2-save').modal('show').on('hidden', function(){ $('#window-oauth2').show(); });
   },
   removeTemplate: function() {
     var template = $('#oauth2-authorize [name="templates"]');

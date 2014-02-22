@@ -226,6 +226,11 @@ restclient.main = {
     $("<link/>", {
        rel: "stylesheet",
        type: "text/css",
+       href: "css/bootstrap-tagsinput.css"
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
        href: "css/animate.css"
     }).appendTo("head");
   },
@@ -602,7 +607,7 @@ restclient.main = {
     }).on('hidden', function () {
       $(this).data('source', null);
     });
-
+    //TODO update bookmark modal to add label
     $('#modal-bookmark-request').on('show', function () {
       var savedRequest = restclient.getPref('savedRequest', '');
       $('[name="saved-request-name"]').val('');
@@ -1236,6 +1241,7 @@ restclient.main = {
     $('#response-body-raw pre').text(responseData);
   },
   saveCurrentRequest: function () {
+    //TODO update save CurrentRequest function
     var name = $('[name="saved-request-name"]');
     if (name.val() == '') {
       name.next().text('Please give this request a name for future usage.').show();
@@ -1410,22 +1416,7 @@ restclient.main = {
     return false;
   },
   manageFavoriteRequests: function () {
-    $('#favorite-request-list .accordion-group').remove();
-    var favoriteRequest = restclient.getPref('savedRequest', '');
-    if (favoriteRequest != '') {
-      favoriteRequest = JSON.parse(favoriteRequest);
-      var i = 0;
-      for(var name in favoriteRequest) {
-        if (!favoriteRequest.hasOwnProperty(name))
-          continue;
-
-        var html = this.getFavoriteRequestHtml("favorite-request-" + (++i), name, favoriteRequest[name]);
-        $('#favorite-request-list').append(html);
-      }
-    }
-
-    $('#window-manage-request').show();
-
+    //TODO show favorites management page
   },
   getFavoriteRequestHtml: function (id, name, request) {
     var group = $('<div class="accordion-group"></div>'),
@@ -2009,6 +2000,8 @@ restclient.main = {
       });
       return false;
     }
+    $('#modal-bookmark-request').modal('show');
+    return false;
   }
 };
 

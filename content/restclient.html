@@ -10,7 +10,7 @@
   </head>
 <body>
 
-<div class="navbar navbar-fixed-top hide showForStartup" style="display:none;">
+<header class="navbar navbar-fixed-top hide showForStartup" style="display:none;">
   <div class="navbar-inner">
     <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -19,7 +19,7 @@
         <span class="icon-bar"></span>
       </a>
       <a class="brand" href="http://www.restclient.net/">RESTClient</a>
-      <div class="nav-collapse">
+      <nav class="nav-collapse">
         <ul class="nav">
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bookmarks <b class="caret"></b></a>
@@ -30,7 +30,6 @@
               <li class="nav-header">Import/Export</li>
               <li><a href="#" onclick="restclient.main.importFavoriteRequests(); return false;">Import Bookmarks</a></li>
               <li><a href="#" onclick="restclient.main.exportFavoriteRequests(); return false;">Export Bookmarks</a></li>
-              <li class="divider"></li>
               <li class="nav-header">Load (Version 1.3.x)</li>
               <li><a style="cursor:pointer" onclick="restclient.main.loadRequest();return false;">Load Request</a></li>
             </ul>
@@ -93,146 +92,17 @@
             </ul>
           </li>
         </ul>
-      </div>
+      </nav>
     </div><!-- container //-->
-  </div><!-- end of navbar-inner //-->
-  
-  <div id="request-history-dropdown" class="container-fluid" style="display: none;">
-    <div class="span3">
-      <h1><i class="icon-time"></i> Recent Requests</h1>
-      <ol class="request-history-recent">
-        <li>
-          <a href="#">Glacier Request</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3 authentication</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Facebook Login test</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Twitter Auth 2</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Google Map</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ol>
-    </div>
-    <div class="span3">
-      <p class="favorite-tag"><i class="icon-google-plus"></i> Google Plus</p>
-      <ul class="favorite-requests">
-        <li>
-          <a href="#">Glacier Request</a>
-          <p class="favorited-request">GET plus.google.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon SES</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon EC2 Shutdown</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ul>
-    </div>
-    <div class="span3">
-      <ul class="favorite-requests">
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ul>
-      <p class="favorite-tag"><i class="icon-facebook"></i> Facebook REST Web Services</p>
-      <ul>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ul>
-    </div>
-    <div class="span3">
-      <ul class="favorite-requests">
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-        <li>
-          <a href="#">Amazon S3</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ul>
-      <p class="favorite-tag"><i class="icon-github"></i> Github Web Services</p>
-      <ul>
-        <li>
-          <a href="#">DynamicDB create</a>
-          <p class="favorited-request">GET aws.amazon.com</p>
-          <p class="favorited-request">2013-04-20 11:44:00</p>
-        </li>
-      </ul>
-    </div>
-    
-    <div id="request-history-dropdown-close"><i class=" icon-chevron-up">&nbsp;</i></div>
-  </div>
-  
-</div><!-- end of navbar //-->
+  </div><!-- end of navbar-inner //-->  
+</header><!-- end of navbar //-->
 
-<div id="request" class="container-fluid hide showForStartup" style="display:none;">
-  <div class="row-fluid">
-    <h3 style="color: #999;">[<a href="#" class="toggle-request" title="hotkey: alt+q" style="color: #999;">-</a>] Request</h3>
-    <div id="request-container" style="margin-bottom: 10px;">
+<!-- resquest panel //-->
+<section id="request" class="container-fluid hide showForStartup" style="display:none;">
+  <h3 style="color: #999;">[<a href="#" class="toggle-request" title="hotkey: alt+q" style="color: #999;">-</a>] Request</h3>
+  <div id="request-container" style="margin-bottom: 10px;">
     <div id="request-error"></div>
+    
     <div id="request-form" class="well">
       <form action="" class="form-inline" style="margin-bottom:0px" method="POST" onsubmit="return false;">
         <label style="margin: 0 5px; width: 45px;">Method</label>
@@ -254,7 +124,8 @@
         Allow image preview (overrideMimeType with "text/xml; charset=x-user-defined")
       </label>
     </div>
-    <div class="well hide" id="request-headers">
+    
+    <section class="well hide" id="request-headers">
       <h4 style="margin: 8px 5px 16px 6px;">Headers <span class="request-header-reset"><a onclick="restclient.main.removeHttpRequestHeaders();"><i class="icon-trash"></i> Remove All</a></span></h4>
       <div class="tag"></div>
       <div class="table" style="display:none;">
@@ -269,15 +140,16 @@
           </tbody>
         </table>
       </div>
-    </div>
-    <div class="well" style="margin-bottom:0px;">
+    </section>
+    
+    <section class="well" style="margin-bottom:0px;">
       <h4 style="margin-left: 6px;">Body</h4>
       <textarea id="request-body" style="width: 99%;margin: 0;height: 60px;" placeholder="Request Body"></textarea>
-    </div>
-    </div>
+    </section>
   </div>
-</div>
+</section>
 
+<!-- response panel //-->
 <section id="response" class="container-fluid hide" style="margin-top: 5px;">
   <h3 style="color: #999;">[<a href="#" class="toggle-response" title="hotkey: alt+s" style="color: #999;">-</a>] Response</h3>
   <div id="response-container">
@@ -305,11 +177,13 @@
   </div>
   </div>
 </section>
+
+<!-- curl panel //-->
 <section id="curl" class="container-fluid hide" style="margin-top: 5px;">
   <h3 style="color: #999;">[<a href="#" class="toggle-curl" title="hotkey: alt+c" style="color: #999;">-</a>] cUrl</h3>
   <div id="curl-container">
     <div style="margin-bottom:0px;" class="well">
-      <h4 style="margin-left: 6px;">Body</h4>
+      <h4 style="margin-left: 6px;">Command</h4>
       <textarea placeholder="Curl" style="width: 99%;margin: 0;height: 60px;" id="curl-command" rel="tooltip" title="hotkey: c"></textarea>
     </div>
   </div>
@@ -399,20 +273,28 @@
 </div>
 <!-- end of modal for custom request header //-->
 
+<!-- modal for bookmarking //-->
 <div class="modal fade hide" id="modal-bookmark-request">
   <div class="modal-header">
     <a class="close btnClose">×</a>
     <h3 class="title">Bookmark This Request</h3>
   </div>
   <div class="modal-body">
-    <form class="offset1" onsubmit="return false;">
+    <form class="form-horizontal" onsubmit="return false;">
       <div class="control-group">
-       <label for="saved-request-name">Request Name</label>
+       <label class="control-label" for="saved-request-name">Request Name</label>
        <div class="controls">
-         <input type="text" size="200" name="saved-request-name" style="width: 200px;" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
+         <input type="text" style="width:270px" name="saved-request-name" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
          <p class="help-block hide">Please give this request a name for future usage.</p>
        </div>
      </div>
+     <div class="control-group">
+      <label class="control-label" for="saved-request-label">Label</label>
+      <div class="controls">
+        <input type="text" class="span3" name="saved-request-label" placeholder="Add labels" data-role="tagsinput" required />
+        <p class="help-block hide">Please label this request.</p>
+      </div>
+    </div>
    </form>
   </div>
   <div class="modal-footer">
@@ -420,61 +302,7 @@
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>
-<div class="modal fade hide" id="modal-save">
-  <div class="modal-header">
-    <a class="close btnClose">×</a>
-    <h3 class="title">Save</h3>
-  </div>
-  <div class="modal-body">
-    <form class="offset1" onsubmit="return false;">
-      <div class="control-group">
-       <label for="saved-name">Name</label>
-       <div class="controls">
-         <input type="text" size="200" name="saved-name" style="width: 200px;" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
-         <p class="help-block hide">Please give this request a name for future usage.</p>
-       </div>
-     </div>
-   </form>
-  </div>
-  <div class="modal-footer">
-    <input class="btn btnOkay btn-success" type="button" value="Save">
-    <input class="btn btnClose" type="button" value="Cancel">
-  </div>
-</div>
-<div class="modal fade hide" id="modal-oauth-view">
-  <div class="modal-header">
-    <a class="close btnClose">×</a>
-    <h3 class="title">OAuth</h3>
-  </div>
-  <div class="modal-body">
-    <textarea style="width: 99%; min-height: 100px;"></textarea>
-  </div>
-  <div class="modal-footer">
-    <input class="btn btnOkay btn-success btnAutoRefresh" type="button" value="Auto refresh">
-    <input class="btn btnOkay btn-success btnRefresh" type="button" value="Refresh">
-    <input class="btn btnClose" type="button" value="Close">
-  </div>
-</div>
-<div class="mainOverlay hide">
-  <div class="progressBar">
-  <h3>Processing</h3>
-  <p class="status">Sending data...</p>
-  <div class="progress progress-danger progress-striped active">
-    <div class="bar" style="width: 20%"></div>
-  </div>
-  <p><a class="btn btn-danger" onclick="restclient.http.abortRequest();">Abort</a></p>
-</div></div>
-<div id="window-manage-request" class="window-overlay" style="display:none">
-  <div class="window">
-    <div class="window-wrapper clearfix">
-      <a class="close btnClose">&times;</a>
-      <h4>Favorite Requests</h4>
-      <div class="accordion" id="favorite-request-list">
-        
-      </div>
-    </div><!--end window-wrapper//-->
-  </div>
-</div>
+<!-- end of modal for bookmarking //-->
 
 <!-- modal for oauth 1.0 //-->
 <div id="modal-oauth" class="modal hide fade">
@@ -586,6 +414,23 @@
   </div>
 </div>
 <!-- end of modal for oauth 1.0 //-->
+
+<!-- modal for refreshing oauth request header //-->
+<div class="modal fade hide" id="modal-oauth-view">
+  <div class="modal-header">
+    <a class="close btnClose">×</a>
+    <h3 class="title">OAuth</h3>
+  </div>
+  <div class="modal-body">
+    <textarea style="width: 99%; min-height: 100px;"></textarea>
+  </div>
+  <div class="modal-footer">
+    <input class="btn btnOkay btn-success btnAutoRefresh" type="button" value="Auto refresh">
+    <input class="btn btnOkay btn-success btnRefresh" type="button" value="Refresh">
+    <input class="btn btnClose" type="button" value="Close">
+  </div>
+</div>
+<!-- end of modal for refreshing oauth request header //-->
 
 <!-- modal for oauth 2.0 //-->
 <div id="modal-oauth2" class="modal hide fade">
@@ -736,6 +581,50 @@
   </div>
 </div> 
 
+<div class="modal fade hide" id="modal-oauth2-save">
+  <div class="modal-header">
+    <a class="close btnClose">×</a>
+    <h3 class="title">Save</h3>
+  </div>
+  <div class="modal-body">
+    <form class="offset1" onsubmit="return false;">
+      <div class="control-group">
+       <label for="saved-name">Name</label>
+       <div class="controls">
+         <input type="text" size="200" name="saved-name" style="width: 200px;" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
+         <p class="help-block hide">Please give this request a name for future usage.</p>
+       </div>
+     </div>
+   </form>
+  </div>
+  <div class="modal-footer">
+    <input class="btn btnOkay btn-success" type="button" value="Save">
+    <input class="btn btnClose" type="button" value="Cancel">
+  </div>
+</div>
+
+<div class="mainOverlay hide">
+  <div class="progressBar">
+  <h3>Processing</h3>
+  <p class="status">Sending data...</p>
+  <div class="progress progress-danger progress-striped active">
+    <div class="bar" style="width: 20%"></div>
+  </div>
+  <p><a class="btn btn-danger" onclick="restclient.http.abortRequest();">Abort</a></p>
+</div></div>
+
+<div id="window-manage-request" class="window-overlay" style="display:none">
+  <div class="window">
+    <div class="window-wrapper clearfix">
+      <a class="close btnClose">&times;</a>
+      <h4>Favorite Requests</h4>
+      <div class="accordion" id="favorite-request-list">
+        
+      </div>
+    </div><!--end window-wrapper//-->
+  </div>
+</div>
+
 <div class="messages-overlay" style="display: none">
   <div class="container-fluid">
   </div>
@@ -751,6 +640,7 @@
 <script type="text/javascript" src="js/jquery.hotkeys.js"></script>
 
 <script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/bootstrap-tagsinput.js"></script>
 
 <script type="text/javascript" src="js/prettify.js"></script>
 <script type="text/javascript" src="js/KelpJSONView.js"></script>

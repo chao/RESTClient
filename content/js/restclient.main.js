@@ -213,6 +213,11 @@ restclient.main = {
     $("<link/>", {
        rel: "stylesheet",
        type: "text/css",
+       href: "css/bootstrap-switch.css"
+    }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
        href: "css/animate.css"
     }).appendTo("head");
   },
@@ -247,6 +252,11 @@ restclient.main = {
     });
     //wait for css load
     setTimeout(function () { $('.showForStartup').show(); }, 200);
+    
+    //For bookmark modal
+    $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch();
+    $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch('setOnLabel', 'Yes');
+    $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch('setOffLabel', 'No');
   },
   initHotKeys: function () {
     $('#request-button').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.send);

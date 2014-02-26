@@ -64,7 +64,6 @@ restclient.sqlite = {
       var file = restclient.FileUtils.getFile("ProfD", ["restclient.sqlite"]);
       restclient.log(file.path);
       restclient.sqlite.db = restclient.Services.storage.openDatabase(file);
-      restclient.sqlite.initStatements();
       return true;
     }
     catch(e) {
@@ -172,12 +171,11 @@ restclient.sqlite = {
       stmt.reset();
     }
   },
-  saveRequest: function(request, name, labels, success, handleError) {
+  saveRequest: function(request, requestName, labels, success, handleError) {
     return false;
-    var id = "r-" + restclient.helper.sha1(JSON.stringify(request));
-    var savedRequest = restclient.sqlite.getRequest(id);
-    var last_executed = new Date().valueOf();
-    name = name || '';
+    var uuid = restclient.generateUUID();
+    var lastAccess = creationTime = new Date().valueOf();
+    requestName = requestName || '';
     favorite = favorite || 0;
     labels = labels || [];
     

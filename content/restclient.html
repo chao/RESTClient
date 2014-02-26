@@ -283,20 +283,28 @@
   <div class="modal-body">
     <form class="form-horizontal" onsubmit="return false;">
       <div class="control-group">
-       <label class="control-label" for="saved-request-name">Request Name</label>
-       <div class="controls">
-         <input type="text" style="width:270px" name="saved-request-name" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
-         <p class="help-block hide">Please give this request a name for future usage.</p>
-       </div>
-     </div>
-     <div class="control-group">
-      <label class="control-label" for="saved-request-label">Label</label>
-      <div class="controls">
-        <input type="text" class="span3" name="saved-request-label" placeholder="Add labels" data-role="tagsinput" required />
-        <p class="help-block hide">Please label this request.</p>
+        <label class="control-label" for="saved-request-name">Request Name</label>
+        <div class="controls">
+          <input type="text" style="width:270px" name="saved-request-name" placeholder="GET request to example.com" required data-provide="typeahead" data-items="4" data-source=""/>
+          <p class="help-block hide">Please give this request a name for future usage.</p>
+        </div>
       </div>
-    </div>
-   </form>
+     
+      <div class="control-group">
+        <label class="control-label" for="saved-request-label">Label</label>
+        <div class="controls">
+          <input type="text" class="span3" name="saved-request-label" placeholder="Add labels" data-role="tagsinput" required />
+          <p class="help-block hide">Please label this request.</p>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="saved-as-favorite-checkbox">Save as favorite</label>
+        <div class="controls">
+          <input type="checkbox" name="saved-as-favorite-checkbox" data-size="small" data-on-text="Yes" data-off-text="No">
+        </div>
+      </div>
+    </form>
   </div>
   <div class="modal-footer">
     <input class="btn btnOkay btn-inverse" type="button" value="Save" onclick="restclient.main.saveCurrentRequest();">
@@ -642,6 +650,7 @@
 
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/bootstrap-tagsinput.js"></script>
+<script type="text/javascript" src="js/bootstrap-switch.js"></script>
 
 <script type="text/javascript" src="js/prettify.js"></script>
 <script type="text/javascript" src="js/KelpJSONView.js"></script>

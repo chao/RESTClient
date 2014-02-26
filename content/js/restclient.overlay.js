@@ -55,7 +55,7 @@ restclient.overlay = {
   firstRun : function() {
     var firstRunPref  = "firstRunDone",
         versionPref   = "version",
-        versionNumber = "2.0.4",
+        versionNumber = "2.1.0",
         browser       = restclient.overlay.getBrowser();
 
     /*try{ 
@@ -75,8 +75,9 @@ restclient.overlay = {
     }
     if(restclient.getPref(versionPref, '') != versionNumber) {
       browser.selectedTab = browser.addTab("http://www.restclient.net/?browser=firefox&version=" + versionNumber);
-      //restclient.setPref(versionPref, versionNumber);
+      restclient.setPref(versionPref, versionNumber);
       restclient.setPref('defaultSkin', 'simplex');
+      //Migrate favorite requests from preference to sqlite.
       restclient.sqlite.migrateFavoriteRequest();
     }
   },

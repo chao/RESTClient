@@ -67,6 +67,17 @@ if (typeof (restclient) === "undefined") {
       try{
         console.error(o);
       }catch(e){}
+    },
+    generateUUID: function (){
+      try{
+        var uuidGenerator = Components.classes["@mozilla.org/uuid-generator;1"]
+                            .getService(Components.interfaces.nsIUUIDGenerator);
+        var uuid = uuidGenerator.generateUUID();
+        uuid = uuid.toString();
+        return uuid.substring(1,uuid.length-1);
+      }catch(e){
+        restclient.error(e.message);
+      }
     }
   }
 }

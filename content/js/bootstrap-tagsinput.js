@@ -1,3 +1,4 @@
+//http://timschlechter.github.io/bootstrap-tagsinput/examples/#accordion_example_markup
 (function ($) {
   "use strict";
 

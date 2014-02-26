@@ -51,7 +51,6 @@ restclient.main = {
   init: function () {
     restclient.init();
     restclient.sqlite.open();
-    restclient.sqlite.initTables();
     
     this.initSkin();
 
@@ -167,23 +166,6 @@ restclient.main = {
       restclient.main.clearResult();
       window.scrollTo(0,0);
     }
-  },
-  clearCachedRequests: function() {
-    var num = restclient.sqlite.getRequestCount();
-    
-    if(num > 0)
-      restclient.sqlite.initTables(true);
-    restclient.message.show({
-      id: 'alertCachedRequestCleared',
-      type: 'message',
-      title: 'Cached requests are cleared!',
-      message: num + ' records have been removed.',
-      buttons: [
-        {title: 'Okay', class: 'btn-danger', callback: function () {  $('#alertCachedRequestCleared').alert('close');  }}
-      ],
-      parent: $('#request-error'),
-      exclude: true
-    });
   },
   changeSkin: function (theme) {
     restclient.log("css/themes/" + theme + "/bootstrap.css");
@@ -368,6 +350,7 @@ restclient.main = {
       if($('#curl').is(':visible')) {
         $('.enable-curl').attr('data-curl', 'enable');
         $('.enable-curl').text('Disable Curl');
+        $('.curl-menu').show();
         restclient.main.updateCurlCommand();
         restclient.setPref('enableCurl', true);
       }
@@ -375,6 +358,7 @@ restclient.main = {
       {
         $('.enable-curl').attr('data-curl', 'disabled');
         $('.enable-curl').text('Enable Curl');
+        $('.curl-menu').hide();
         restclient.setPref('enableCurl', false);
       }
     });
@@ -607,6 +591,7 @@ restclient.main = {
     }).on('hidden', function () {
       $(this).data('source', null);
     });
+    
     //TODO update bookmark modal to add label
     $('#modal-bookmark-request').on('show', function () {
       var savedRequest = restclient.getPref('savedRequest', '');
@@ -1052,13 +1037,12 @@ restclient.main = {
     return false;
   },
   showResponse: function () {
-
     $("#response").show();
-
-    //document.getElementById('response').scrollIntoView(true);
-    //alert(top);
     document.getElementById('response').scrollIntoView(true);
-    //$('html, body').animate({scrollTop: top}, 1000);
+    return false;
+  },
+  showCurl: function() {
+    document.getElementById('curl').scrollIntoView(true);
     return false;
   },
   clearResult: function () {
@@ -1948,7 +1932,7 @@ restclient.main = {
       });
       return false;
     }
-    restclient.sqlite.saveRequest(request, null, null, null, function() {
+    restclient.sqlite.saveHistory(request, function() {
       if(arguments.length > 0)
       {
         if(location.hash.substr(1) === arguments[0])
@@ -1956,6 +1940,8 @@ restclient.main = {
         restclient.main.ignoreHashChange = true;
         location.hash = arguments[0];
       }
+    }, function() {
+      //TODO alert unable to save history to sqlite
     });
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   },

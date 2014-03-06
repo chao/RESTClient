@@ -51,7 +51,7 @@ restclient.sqlite = {
     newHistory: 'INSERT INTO history (requestId, request, lastAccess) VALUES (:requestId, :request, :lastAccess)',
     removeHistory: 'DELETE FROM history WHERE lastAccess < :lastAccess',
     
-    queryLabels: 'SELECT count(labelName),labelName FROM labels GROUP BY labelName',
+    queryLabels: 'SELECT count(labelName) as sum,labelName FROM labels GROUP BY labelName ORDER BY labelName',
     newLabels: 'INSERT INTO labels (labelName, uuid) VALUES (:labelName, :uuid)',
     removeLabels: 'DELETE FROM labels WHERE uuid = :uuid',
     
@@ -122,6 +122,7 @@ restclient.sqlite = {
       stmt.bindParameters(params);
     
       while (stmt.executeStep()) {
+        stmt.reset();
         return stmt.row.request;
       }
     }
@@ -217,7 +218,7 @@ restclient.sqlite = {
     requestName = requestName || '';
     favorite = favorite || 0;
     labels = labels || [];
-
+    labels = _.uniq(labels);
     try{
       var stmt = restclient.sqlite.getStatement('newRequests');
       var params = stmt.newBindingParamsArray(),
@@ -275,11 +276,19 @@ restclient.sqlite = {
     return false;
   },
   getLabels: function(){
-    var stmt = restclient.sqlite.db.createStatement("SELECT sum(label) as num FROM requests");
-    while (stmt.executeStep()) {
-      return stmt.row.num;
+    var stmt = restclient.sqlite.getStatement('queryLabels');
+    var labels = {};
+    try{
+      while (stmt.executeStep()) {
+        labels[stmt.row.labelName] = stmt.row.sum;
+      }
+    }catch(aError){
+      return false;
     }
-    return false;
+    finally {
+      stmt.reset();
+    }
+    return labels;
   },
   importRequestFromJSON: function(setting) {
     // version <= 2.0.3

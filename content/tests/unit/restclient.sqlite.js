@@ -29,7 +29,7 @@ $(function () {
       url : 'https://developer.mozilla.org/en/Example',
       body : 'a=b&c=d'
     };
-    var labels = ["example", "unittest","requestfavorited"];
+    var labels = ["example", "unittest","requestfavorited","unittest", "apple"];
     restclient.sqlite.saveRequest(request, "example#1", 1, labels, function(requestName){
       ok(true, "the return requestId is: " + requestName);
     },function(request) {
@@ -52,6 +52,11 @@ $(function () {
   
   test("Test get request by name function", function(){
     var result = restclient.sqlite.getRequestByName("example#1");
-    ok(typeof result === 'object', 'request existed');
+    ok(typeof result === 'object', 'request not existed');
+  });
+  
+  test("Test get labels", function(){
+    var labels = restclient.sqlite.getLabels();
+    ok(labels['unittest'] === 1, 'labels:' + JSON.stringify(labels));
   });
 });

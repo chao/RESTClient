@@ -33,6 +33,7 @@ restclient.sqlite = {
   tables: {
     requests: " uuid TEXT NOT NULL PRIMARY KEY, \
                 requestName TEXT NOT NULL, \
+                favorite INTEGER NOT NULL, \
                 requestUrl TEXT NOT NULL, \
                 requestMethod TEXT NOT NULL, \
                 request TEXT NOT NULL, \
@@ -54,15 +55,16 @@ restclient.sqlite = {
     newLabels: 'INSERT INTO labels (labelName, uuid) VALUES (:labelName, :uuid)',
     removeLabels: 'DELETE FROM labels WHERE uuid = :uuid',
     
+    queryRequestsByName: 'SELECT * FROM requests WHERE requestName = :requestName',
     queryRequests: 'SELECT * FROM requests WHERE uuid = :uuid',
     queryRequestsByLabel: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName = :labelName)',
-    newRequests: 'INSERT INTO requests (uuid, requestName, requestUrl, requestMethod, request, creationTime, LastAccess) VALUES (:uuid, :requestName, :requestUrl, :requestMethod, :request, :creationTime, :LastAccess)',
+    newRequests: 'INSERT INTO requests (uuid, requestName, favorite, requestUrl, requestMethod, request, creationTime, LastAccess) VALUES (:uuid, :requestName, :favorite, :requestUrl, :requestMethod, :request, :creationTime, :LastAccess)',
     removeRequests: 'DELETE FROM requests WHERE uuid = :uuid'
   },
   open: function() {
     try{
       var file = restclient.FileUtils.getFile("ProfD", ["restclient.sqlite"]);
-      restclient.log(file.path);
+      //restclient.log(file.path);
       restclient.sqlite.db = restclient.Services.storage.openDatabase(file);
       return true;
     }
@@ -87,25 +89,46 @@ restclient.sqlite = {
     }
     catch(e) {
       restclient.error(e);
+      return false;
     }
+    return true;
+  },
+  destroyTables: function() {
+    try{
+      restclient.sqlite.db.executeSimpleSQL("DROP TABLE requests");
+      restclient.sqlite.db.executeSimpleSQL("DROP TABLE labels");
+      restclient.sqlite.db.executeSimpleSQL("DROP TABLE history");
+    }
+    catch(e) {
+      restclient.error(e);
+      return false;
+    }
+    return true;
   },
   getStatement: function(sqlName) {
-    return restclient.sqlite.db.createStatement(restclient.sqlite.sql[sqlName]);
+    var sql = restclient.sqlite.sql[sqlName];
+    return restclient.sqlite.db.createStatement(sql);
   },
   getHistory: function(requestId){
     if(typeof requestId !== 'string' || requestId === '')
       return false;
     var stmt = restclient.sqlite.getStatement('queryHistory');
-    var params = stmt.newBindingParamsArray(),
-        binding = params.newBindingParams();
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
 
-    binding.bindByName("requestId", requestId);
-    params.addParams(binding);
-    stmt.bindParameters(params);
+      binding.bindByName("requestId", requestId);
+      params.addParams(binding);
+      stmt.bindParameters(params);
     
-    while (stmt.executeStep()) {
-      return stmt.row.request;
+      while (stmt.executeStep()) {
+        return stmt.row.request;
+      }
     }
+    finally {
+      stmt.reset();
+    }
+    
     return false;
   },
   saveHistory: function(request, success, handleError) {
@@ -126,21 +149,16 @@ restclient.sqlite = {
       binding.bindByName("lastAccess", lastAccess);
       params.addParams(binding);
       stmt.bindParameters(params);
-      stmt.executeAsync({
-        handleError: function(aError) {
-          restclient.error(aError);
-          if(typeof handleError === 'function')
-            handleError.apply(restclient.main, [request]);
-        },
-        handleCompletion: function(aReason) {
-          if (aReason == Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED
-              && typeof success === 'function')
-            success.apply(restclient.main, [requestId]);
-        }
-      });
+      stmt.execute();
+    }catch(aError){
+      restclient.error(aError);
+      if(typeof handleError === 'function')
+        handleError.apply(restclient, [request]);
     }finally{
       stmt.reset();
     }
+    if(typeof success === 'function')
+      success.apply(restclient, [requestId]);
   },
   removeHistory: function(days, success, handleError) {
     var lastAccess = new Date();
@@ -171,68 +189,74 @@ restclient.sqlite = {
       stmt.reset();
     }
   },
-  saveRequest: function(request, requestName, labels, success, handleError) {
+  getRequestByName: function(requestName) {
+    if(typeof requestName !== 'string' || requestName === '')
+      return false;
+    var stmt = restclient.sqlite.getStatement('queryRequestsByName');
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+    
+      binding.bindByName("requestName", requestName);
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      
+      while (stmt.executeStep()) {
+        return stmt.row;
+      }
+    }catch(aError){
+      restclient.error(aError);
+    }finally{
+      stmt.reset();
+    }
     return false;
+  },
+  saveRequest: function(request, requestName, favorite, labels, success, handleError) {
     var uuid = restclient.generateUUID();
-    var lastAccess = creationTime = new Date().valueOf();
+    var creationTime = new Date().valueOf();
     requestName = requestName || '';
     favorite = favorite || 0;
     labels = labels || [];
+
+    try{
+      var stmt = restclient.sqlite.getStatement('newRequests');
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
     
-    if(savedRequest === false) {
-      var created_datetime = new Date().valueOf();
-      var stmt = restclient.sqlite.db.createStatement("INSERT INTO requests (id, name, favorite, request_method, request_url, request_body, request, created_datetime, last_executed) VALUES "
-                                                     + "(:id, :name, :favorite, :request_method, :request_url, :request_body, :request, :created_datetime, :last_executed)");
-      var params = stmt.newBindingParamsArray(),
-          binding = params.newBindingParams();
-
-      binding.bindByName("id", id);
-      binding.bindByName("name", name);
+      binding.bindByName("uuid", uuid);
+      binding.bindByName("requestName", requestName);
       binding.bindByName("favorite", favorite);
-      binding.bindByName("request_method", request.method);
-      binding.bindByName("request_url", request.url);
-      binding.bindByName("request_body", request.body);
+      binding.bindByName("requestUrl", request.url);
+      binding.bindByName("requestMethod", request.method);
       binding.bindByName("request", JSON.stringify(request));
-      binding.bindByName("created_datetime", created_datetime);
-      binding.bindByName("last_executed", last_executed);
-
+      binding.bindByName("creationTime", creationTime);
+      binding.bindByName("LastAccess", creationTime);
+    
       params.addParams(binding);
       stmt.bindParameters(params);
-      stmt.executeAsync({
-        handleError: function(aError) {
-          console.error("Error: " + aError.message);
-        },
-        handleCompletion: function(aReason) {
-          if (aReason == Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED
-              && typeof callback === 'function')
-            callback.apply(restclient.main, [id]);
-        }
-      });
-    }
-    else
-    {
-      var stmt = restclient.sqlite.db.createStatement("UPDATE requests SET last_executed=:last_executed, name=:name, favorite=:favorite WHERE id=:id");
-      var params = stmt.newBindingParamsArray(),
-          binding = params.newBindingParams();
+      stmt.execute();
+      
+      var stmt = restclient.sqlite.getStatement('newLabels');
+      for (var i = 0; i < labels.length; i++) {
+        var params = stmt.newBindingParamsArray();
+        var binding = params.newBindingParams();
+        binding.bindByName("labelName", labels[i]);
+        binding.bindByName("uuid", uuid);
+        params.addParams(binding);
+        stmt.bindParameters(params);
+        stmt.execute();
+      }
+      
 
-      binding.bindByName("id", id);
-      binding.bindByName("name", name);
-      binding.bindByName("favorite", favorite);
-      binding.bindByName("last_executed", last_executed);
-
-      params.addParams(binding);
-      stmt.bindParameters(params);
-      stmt.executeAsync({
-        handleError: function(aError) {
-          console.error("Error: " + aError.message);
-        },
-        handleCompletion: function(aReason) {
-          if (aReason == Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED
-              && typeof callback === 'function')
-            callback.apply(restclient.main, [id]);
-        }
-      });
+    }catch(aError){
+      restclient.error(aError);
+      if(typeof handleError === 'function')
+        handleError.apply(restclient, [request]);
+    }finally{
+      stmt.reset();
     }
+    if(typeof success === 'function')
+      success.apply(restclient, [uuid]);
   },
   
   getRequest: function(id){

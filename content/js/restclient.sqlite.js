@@ -57,8 +57,9 @@ restclient.sqlite = {
     
     queryRequestsByName: 'SELECT * FROM requests WHERE requestName = :requestName',
     queryRequests: 'SELECT * FROM requests WHERE uuid = :uuid',
-    queryRequestsByLabel: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName = :labelName)',
-    newRequests: 'INSERT INTO requests (uuid, requestName, favorite, requestUrl, requestMethod, request, creationTime, LastAccess) VALUES (:uuid, :requestName, :favorite, :requestUrl, :requestMethod, :request, :creationTime, :LastAccess)',
+    queryRequestsByLabels: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder)) ORDER BY creationTime DESC, lastAccess DESC',
+    newRequests: 'INSERT INTO requests (uuid, requestName, favorite, requestUrl, requestMethod, request, creationTime, lastAccess) VALUES (:uuid, :requestName, :favorite, :requestUrl, :requestMethod, :request, :creationTime, :lastAccess)',
+    findRequestsByKeyword: 'SELECT * FROM requests WHERE requestName LIKE :word OR requestUrl LIKE :word ORDER BY creationTime DESC, lastAccess DESC',
     removeRequests: 'DELETE FROM requests WHERE uuid = :uuid'
   },
   open: function() {
@@ -75,7 +76,7 @@ restclient.sqlite = {
   },
   close: function() {
     try{
-      restclient.db.asyncClose();
+      restclient.sqlite.db.asyncClose();
     }
     catch(e) {
       restclient.error(e);
@@ -231,7 +232,7 @@ restclient.sqlite = {
       binding.bindByName("requestMethod", request.method);
       binding.bindByName("request", JSON.stringify(request));
       binding.bindByName("creationTime", creationTime);
-      binding.bindByName("LastAccess", creationTime);
+      binding.bindByName("lastAccess", creationTime);
     
       params.addParams(binding);
       stmt.bindParameters(params);
@@ -259,19 +260,82 @@ restclient.sqlite = {
     if(typeof success === 'function')
       success.apply(restclient, [uuid]);
   },
-  
-  getRequest: function(id){
-    if(typeof id !== 'string' || id === '')
+  getRequestsByLabels: function(labels){
+    if(typeof labels === 'string' && labels !== '')
+      labels = [labels];
+    if(typeof labels !== 'object' || labels.length == 0)
       return false;
-    var stmt = restclient.sqlite.db.createStatement("SELECT request FROM requests WHERE id=:id");
-    var params = stmt.newBindingParamsArray(),
-        binding = params.newBindingParams();
+    var inClause = '';
+    for(var i=0; i < labels.length; i++) {
+      inClause += "?,";
+    }
+    inClause = inClause.substring(0, inClause.length - 1);
+    var sql = restclient.sqlite.sql.queryRequestsByLabels;
+    sql = sql.replace(/placeholder/, inClause);
 
-    binding.bindByName("id", id);
-    params.addParams(binding);
-    stmt.bindParameters(params);
-    while (stmt.executeStep()) {
-      return stmt.row.request;
+    var stmt = restclient.sqlite.db.createStatement(sql);
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      for(var i=0; i < labels.length; i++) {
+        binding.bindByIndex(i, labels[i]);
+      }
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      var requests = [];
+      while (stmt.executeStep()) {
+        var request = {};
+        request.uuid = stmt.row.uuid;
+        request.requestName = stmt.row.requestName;
+        request.favorite = stmt.row.favorite;
+        request.requestUrl = stmt.row.requestUrl;
+        request.requestMethod = stmt.row.requestMethod;
+        request.request = stmt.row.request;
+        request.creationTime = stmt.row.creationTime;
+        request.lastAccess = stmt.row.lastAccess;
+        
+        requests.push(request);
+      }
+      return requests;
+    }catch(aError){
+      restclient.error(aError);
+    }finally{
+      stmt.reset();
+    }
+    return false;
+  },
+  findRequestsByKeyword: function(word){
+    if(typeof word !== 'string')
+      return false;
+
+    var stmt = restclient.sqlite.getStatement('findRequestsByKeyword');
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+    
+      binding.bindByName("word", '%' + word + '%');
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      
+      var requests = [];
+      while (stmt.executeStep()) {
+        var request = {};
+        request.uuid = stmt.row.uuid;
+        request.requestName = stmt.row.requestName;
+        request.favorite = stmt.row.favorite;
+        request.requestUrl = stmt.row.requestUrl;
+        request.requestMethod = stmt.row.requestMethod;
+        request.request = stmt.row.request;
+        request.creationTime = stmt.row.creationTime;
+        request.lastAccess = stmt.row.lastAccess;
+        
+        requests.push(request);
+      }
+      return requests;
+    }catch(aError){
+      restclient.error(aError);
+    }finally{
+      stmt.reset();
     }
     return false;
   },

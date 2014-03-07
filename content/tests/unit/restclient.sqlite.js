@@ -31,7 +31,18 @@ $(function () {
     };
     var labels = ["example", "unittest","requestfavorited","unittest", "apple"];
     restclient.sqlite.saveRequest(request, "example#1", 1, labels, function(requestName){
-      ok(true, "the return requestId is: " + requestName);
+      ok(true, "the return requestName is: " + requestName);
+    },function(request) {
+      ok(false, request.url);
+    });
+    var request = {
+      method : 'GET',
+      url : 'http://developer.apple.com/iOS',
+      body : 'username=chao'
+    };
+    var labels = ["apple", "developer","tutorial","iOS", "mac"];
+    restclient.sqlite.saveRequest(request, "example#2", 0, labels, function(requestName){
+      ok(true, "the return requestName is: " + requestName);
     },function(request) {
       ok(false, request.url);
     });
@@ -59,4 +70,22 @@ $(function () {
     var labels = restclient.sqlite.getLabels();
     ok(labels['unittest'] === 1, 'labels:' + JSON.stringify(labels));
   });
+  
+  test("Test get requests by labels", function(){
+    var requests = restclient.sqlite.getRequestsByLabels('apple');
+    ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
+    
+    var requests = restclient.sqlite.getRequestsByLabels(['apple']);
+    ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
+    
+    var requests = restclient.sqlite.getRequestsByLabels(['iOS']);
+    ok(requests.length == 1, 'requests:' + requests.length + JSON.stringify(requests));
+  });
+  
+  test("Test find requests by keyword", function(){
+    var requests = restclient.sqlite.findRequestsByKeyword('developer');
+    ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
+    
+  });
+  /*restclient.sqlite.close();*/
 });

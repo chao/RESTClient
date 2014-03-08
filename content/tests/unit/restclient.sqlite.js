@@ -2,6 +2,7 @@ $(function () {
   module("restclient.sqlite.js");
   restclient.init();
   restclient.sqlite.open();
+  var requestUUID1, requestUUID2;
   
   test("Test init function", function () {
     ok(typeof restclient.sqlite.db === 'object', 'inited');
@@ -30,22 +31,18 @@ $(function () {
       body : 'a=b&c=d'
     };
     var labels = ["example", "unittest","requestfavorited","unittest", "apple"];
-    restclient.sqlite.saveRequest(request, "example#1", 1, labels, function(requestName){
-      ok(true, "the return requestName is: " + requestName);
-    },function(request) {
-      ok(false, request.url);
-    });
+    var ret = restclient.sqlite.saveRequest(request, "example#1", 1, labels);
+    ok(ret !== false, 'return uuid:' + ret.uuid);
+    requestUUID1 = ret.uuid;
     var request = {
       method : 'GET',
       url : 'http://developer.apple.com/iOS',
       body : 'username=chao'
     };
     var labels = ["apple", "developer","tutorial","iOS", "mac"];
-    restclient.sqlite.saveRequest(request, "example#2", 0, labels, function(requestName){
-      ok(true, "the return requestName is: " + requestName);
-    },function(request) {
-      ok(false, request.url);
-    });
+    var ret = restclient.sqlite.saveRequest(request, "example#2", 0, labels);
+    ok(ret !== false, 'return uuid:' + ret.uuid);
+    requestUUID2 = ret.uuid;
   });
   
   test("Test save history function", function () {
@@ -54,16 +51,16 @@ $(function () {
       url : 'https://developer.mozilla.org/en/Storage',
       body : 'a=b&c=d'
     };
-    restclient.sqlite.saveHistory(request, function(requestId){
-      ok(true, "the return requestId is: " + requestId);
-    },function(request) {
-      ok(false, request.url);
-    });
+    var ret = restclient.sqlite.saveHistory(request);
+    ok(ret !== false, 'History saved, return: ' + JSON.stringify(ret));
   });
   
-  test("Test get request by name function", function(){
+  test("Test get request by name function and get request by id", function(){
     var result = restclient.sqlite.getRequestByName("example#1");
     ok(typeof result === 'object', 'request not existed');
+    
+    var request = restclient.sqlite.getRequestByUUID(result.uuid);
+    ok(result.requestName === request.requestName, 'Get request:' + JSON.stringify(request));
   });
   
   test("Test get labels", function(){
@@ -80,12 +77,41 @@ $(function () {
     
     var requests = restclient.sqlite.getRequestsByLabels(['iOS']);
     ok(requests.length == 1, 'requests:' + requests.length + JSON.stringify(requests));
+    
+    var requests = restclient.sqlite.getRequestsByLabels(['apple','unittest']);
+    ok(requests.length == 1, 'requests:' + requests.length + JSON.stringify(requests));
   });
   
   test("Test find requests by keyword", function(){
     var requests = restclient.sqlite.findRequestsByKeyword('developer');
     ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
     
+    var requests = restclient.sqlite.findRequestsByKeyword('developer', 'apple');
+    ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
+    
+    var requests = restclient.sqlite.findRequestsByKeyword('developer', ['unittest','apple']);
+    ok(requests.length == 1, 'requests:' + requests.length + JSON.stringify(requests));
   });
-  /*restclient.sqlite.close();*/
+  
+  test("Test update request favorite", function(){
+    var ret = restclient.sqlite.updateRequestFavorite(requestUUID2, 1);
+    var result = restclient.sqlite.getRequestByName("example#1");
+    ok(result.favorite === 1, 'updated favorite okay' + JSON.stringify(result));
+  });
+  
+  test("Test update request name", function(){
+    var ret = restclient.sqlite.updateRequestName(requestUUID2, "example#2updated");
+    var result = restclient.sqlite.getRequestByName("example#2updated");
+    ok(result !== false, 'updated name okay' + JSON.stringify(result));
+  });
+  
+  asyncTest("Test close sqlite", function(){
+    restclient.sqlite.close();
+    expect(1);
+    setTimeout(function() {
+        ok( true, "Passed and ready to resume!" );
+        start();
+      }, 1000);
+  });
+  
 });

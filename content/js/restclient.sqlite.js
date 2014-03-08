@@ -46,21 +46,25 @@ restclient.sqlite = {
               lastAccess INTEGER NOT NULL"
   },
   sql: {
-    queryHistory: 'SELECT request FROM history WHERE requestId = :requestId',
+    getHistory: 'SELECT request FROM history WHERE requestId = :requestId',
     updateHistory: 'UPDATE history SET lastAccess = :lastAccess WHERE requestId = :requestId',
     newHistory: 'INSERT INTO history (requestId, request, lastAccess) VALUES (:requestId, :request, :lastAccess)',
     removeHistory: 'DELETE FROM history WHERE lastAccess < :lastAccess',
     
-    queryLabels: 'SELECT count(labelName) as sum,labelName FROM labels GROUP BY labelName ORDER BY labelName',
+    getLabels: 'SELECT count(labelName) as sum,labelName FROM labels GROUP BY labelName ORDER BY labelName',
     newLabels: 'INSERT INTO labels (labelName, uuid) VALUES (:labelName, :uuid)',
     removeLabels: 'DELETE FROM labels WHERE uuid = :uuid',
+    removeLabel: 'DELETE FROM labels WHERE uuid = :uuid AND labelName = :labelName',
     
-    queryRequestsByName: 'SELECT * FROM requests WHERE requestName = :requestName',
-    queryRequests: 'SELECT * FROM requests WHERE uuid = :uuid',
-    queryRequestsByLabels: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder)) ORDER BY creationTime DESC, lastAccess DESC',
+    getRequestsByName: 'SELECT * FROM requests WHERE requestName = :requestName',
+    getRequestsByLabels: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY creationTime DESC, lastAccess DESC',
+    getRequestByUUID: 'SELECT * FROM requests WHERE uuid = :uuid',
     newRequests: 'INSERT INTO requests (uuid, requestName, favorite, requestUrl, requestMethod, request, creationTime, lastAccess) VALUES (:uuid, :requestName, :favorite, :requestUrl, :requestMethod, :request, :creationTime, :lastAccess)',
     findRequestsByKeyword: 'SELECT * FROM requests WHERE requestName LIKE :word OR requestUrl LIKE :word ORDER BY creationTime DESC, lastAccess DESC',
-    removeRequests: 'DELETE FROM requests WHERE uuid = :uuid'
+    findRequestsByKeywordAndLabels: 'SELECT * FROM requests WHERE (requestName LIKE :word OR requestUrl LIKE :word) AND uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY creationTime DESC, lastAccess DESC',
+    removeRequests: 'DELETE FROM requests WHERE uuid = :uuid',
+    updateRequestName: 'UPDATE requests SET requestName = :requestName WHERE uuid = :uuid',
+    updateRequestFavorite: 'UPDATE requests SET favorite = :favorite WHERE uuid = :uuid'
   },
   open: function() {
     try{
@@ -110,10 +114,11 @@ restclient.sqlite = {
     var sql = restclient.sqlite.sql[sqlName];
     return restclient.sqlite.db.createStatement(sql);
   },
+  
   getHistory: function(requestId){
     if(typeof requestId !== 'string' || requestId === '')
       return false;
-    var stmt = restclient.sqlite.getStatement('queryHistory');
+    var stmt = restclient.sqlite.getStatement('getHistory');
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
@@ -133,7 +138,7 @@ restclient.sqlite = {
     
     return false;
   },
-  saveHistory: function(request, success, handleError) {
+  saveHistory: function(request) {
     var requestStr = JSON.stringify(request);
     var requestId = "r-" + restclient.helper.sha1(requestStr);
     var lastAccess = new Date().valueOf();
@@ -154,15 +159,15 @@ restclient.sqlite = {
       stmt.execute();
     }catch(aError){
       restclient.error(aError);
-      if(typeof handleError === 'function')
-        handleError.apply(restclient, [request]);
+      return false;
     }finally{
       stmt.reset();
     }
-    if(typeof success === 'function')
-      success.apply(restclient, [requestId]);
+    return requestId;
   },
-  removeHistory: function(days, success, handleError) {
+  removeHistory: function(days) {
+    if(typeof days !== 'number')
+      days = 30;
     var lastAccess = new Date();
     lastAccess.setDate(date.getDate() - days);
     lastAccess = lastAccess.valueOf();
@@ -175,26 +180,20 @@ restclient.sqlite = {
 
       params.addParams(binding);
       stmt.bindParameters(params);
-      stmt.executeAsync({
-        handleError: function(aError) {
-          restclient.error(aError);
-          if(typeof handleError === 'function')
-            handleError.apply(restclient.main, [request]);
-        },
-        handleCompletion: function(aReason) {
-          if (aReason == Components.interfaces.mozIStorageStatementCallback.REASON_FINISHED
-              && typeof success === 'function')
-            success.apply(restclient.main, [requestId]);
-        }
-      });
+      stmt.execute();
+    }catch(aError){
+      restclient.error(aError);
+      return false;
     }finally{
       stmt.reset();
     }
+    return true;
   },
+  
   getRequestByName: function(requestName) {
     if(typeof requestName !== 'string' || requestName === '')
       return false;
-    var stmt = restclient.sqlite.getStatement('queryRequestsByName');
+    var stmt = restclient.sqlite.getStatement('getRequestsByName');
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
@@ -204,7 +203,16 @@ restclient.sqlite = {
       stmt.bindParameters(params);
       
       while (stmt.executeStep()) {
-        return stmt.row;
+        var request = {};
+        request.uuid = stmt.row.uuid;
+        request.requestName = stmt.row.requestName;
+        request.favorite = stmt.row.favorite;
+        request.requestUrl = stmt.row.requestUrl;
+        request.requestMethod = stmt.row.requestMethod;
+        request.request = stmt.row.request;
+        request.creationTime = stmt.row.creationTime;
+        request.lastAccess = stmt.row.lastAccess;
+        return request;
       }
     }catch(aError){
       restclient.error(aError);
@@ -213,7 +221,7 @@ restclient.sqlite = {
     }
     return false;
   },
-  saveRequest: function(request, requestName, favorite, labels, success, handleError) {
+  saveRequest: function(request, requestName, favorite, labels) {
     var uuid = restclient.generateUUID();
     var creationTime = new Date().valueOf();
     requestName = requestName || '';
@@ -248,17 +256,56 @@ restclient.sqlite = {
         stmt.bindParameters(params);
         stmt.execute();
       }
-      
-
     }catch(aError){
       restclient.error(aError);
-      if(typeof handleError === 'function')
-        handleError.apply(restclient, [request]);
+      return false;
     }finally{
       stmt.reset();
     }
-    if(typeof success === 'function')
-      success.apply(restclient, [uuid]);
+    request.uuid = uuid;
+    request.favorite = favorite;
+    return request;
+  },
+  updateRequestName: function(uuid, requestName) {
+    if(typeof requestName !== 'string' || requestName === '')
+      return false;
+    
+    var stmt = restclient.sqlite.getStatement('updateRequestName');
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
+      binding.bindByName("uuid", uuid);
+      binding.bindByName("requestName", requestName);
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      stmt.execute();
+    }catch(aError){
+      restclient.error(aError);
+      return false;
+    }finally{
+      stmt.reset();
+    }
+    return true;
+  },
+  updateRequestFavorite: function(uuid, favorite){
+    var stmt = restclient.sqlite.getStatement('updateRequestFavorite');
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
+      binding.bindByName("uuid", uuid);
+      binding.bindByName("favorite", favorite);
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      stmt.execute();
+    }catch(aError){
+      restclient.error(aError);
+      return false;
+    }finally{
+      stmt.reset();
+    }
+    return true;
   },
   getRequestsByLabels: function(labels){
     if(typeof labels === 'string' && labels !== '')
@@ -267,19 +314,20 @@ restclient.sqlite = {
       return false;
     var inClause = '';
     for(var i=0; i < labels.length; i++) {
-      inClause += "?,";
+      inClause += " :labelName" + i + ",";
     }
     inClause = inClause.substring(0, inClause.length - 1);
-    var sql = restclient.sqlite.sql.queryRequestsByLabels;
+    var sql = restclient.sqlite.sql.getRequestsByLabels;
     sql = sql.replace(/placeholder/, inClause);
-
+    
     var stmt = restclient.sqlite.db.createStatement(sql);
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
       for(var i=0; i < labels.length; i++) {
-        binding.bindByIndex(i, labels[i]);
+        binding.bindByName("labelName" + i, labels[i]);
       }
+      binding.bindByName("num", labels.length);
       params.addParams(binding);
       stmt.bindParameters(params);
       var requests = [];
@@ -304,16 +352,70 @@ restclient.sqlite = {
     }
     return false;
   },
-  findRequestsByKeyword: function(word){
-    if(typeof word !== 'string')
+  getRequestByUUID: function(uuid){
+    if(typeof uuid !== 'string' || uuid === '')
       return false;
-
-    var stmt = restclient.sqlite.getStatement('findRequestsByKeyword');
+    var stmt = restclient.sqlite.getStatement('getRequestByUUID');
+    //console.log(stmt);
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
     
+      binding.bindByName("uuid", uuid);
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      
+      while (stmt.executeStep()) {
+        var request = {};
+        request.uuid = stmt.row.uuid;
+        request.requestName = stmt.row.requestName;
+        request.favorite = stmt.row.favorite;
+        request.requestUrl = stmt.row.requestUrl;
+        request.requestMethod = stmt.row.requestMethod;
+        request.request = stmt.row.request;
+        request.creationTime = stmt.row.creationTime;
+        request.lastAccess = stmt.row.lastAccess;
+        return request;
+      }
+    }catch(aError){
+      restclient.error(aError);
+    }finally{
+      stmt.reset();
+    }
+    return false;
+  },
+  findRequestsByKeyword: function(word, labels){
+    //TODO suppoert with label
+    if(typeof word !== 'string')
+      return false;
+    if(typeof labels === 'string' && labels != '')
+      labels = [labels];
+    
+    var sql = restclient.sqlite.sql.findRequestsByKeyword;
+    if(typeof labels === 'object' && labels.length > 0)
+    {
+      sql = restclient.sqlite.sql.findRequestsByKeywordAndLabels;
+      var inClause = '';
+      for(var i=0; i < labels.length; i++) {
+        inClause += ":labelName" + i + ",";
+      }
+      inClause = inClause.substring(0, inClause.length - 1);
+      sql = sql.replace(/placeholder/, inClause);
+    }
+    
+    var stmt = restclient.sqlite.db.createStatement(sql);
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
       binding.bindByName("word", '%' + word + '%');
+      if(typeof labels === 'object' && labels.length > 0){
+        for(var i=0; i < labels.length; i++) {
+          binding.bindByName("labelName" + i, labels[i]);
+        }
+        binding.bindByName("num", labels.length);
+      }
+        
       params.addParams(binding);
       stmt.bindParameters(params);
       
@@ -339,8 +441,9 @@ restclient.sqlite = {
     }
     return false;
   },
+  
   getLabels: function(){
-    var stmt = restclient.sqlite.getStatement('queryLabels');
+    var stmt = restclient.sqlite.getStatement('getLabels');
     var labels = {};
     try{
       while (stmt.executeStep()) {
@@ -353,6 +456,27 @@ restclient.sqlite = {
       stmt.reset();
     }
     return labels;
+  },
+  removeLabel: function(labelName){
+    if(typeof labelName !== 'string' || labelName === '')
+      return false;
+    var stmt = restclient.sqlite.getStatement('removeLabel');
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
+      binding.bindByName("uuid", uuid);
+      binding.bindByName("labelName", labelName);
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      stmt.execute();
+    }catch(aError){
+      restclient.error(aError);
+      return false;
+    }finally{
+      stmt.reset();
+    }
+    return true;
   },
   importRequestFromJSON: function(setting) {
     // version <= 2.0.3

@@ -140,28 +140,19 @@ restclient.main = {
       restclient.main.ignoreHashChange = false;
       return false;
     }
-    if (location.hash.indexOf('#request-') === 0)
+    if (location.hash.indexOf('#r-') === 0)
     {
-      var request = restclient.sqlite.getRequest(location.hash.substr(1));
-      if(typeof request === 'string')
-        try{
-          restclient.log(request);
-          request = JSON.parse(request);
-          restclient.main.applyRequest(request);
-        }
-        catch(e)
-        {
-          console.warn(e);
-        }
-      else
-      {
-        request = {
-          url: '',
-          method: 'GET',
-          body: '',
-          header: []
-        }
+      var requestId = location.hash.substr(1);
+      var request = restclient.sqlite.getHistoryById(requestId);
+      if(request === false)
+        return false;
+
+      try{
         restclient.main.applyRequest(request);
+      }
+      catch(e)
+      {
+        restclient.error(e);
       }
       restclient.main.clearResult();
       window.scrollTo(0,0);
@@ -1942,17 +1933,15 @@ restclient.main = {
       });
       return false;
     }
-    restclient.sqlite.saveHistory(request, function() {
-      if(arguments.length > 0)
-      {
-        if(location.hash.substr(1) === arguments[0])
-          return false;
-        restclient.main.ignoreHashChange = true;
-        location.hash = arguments[0];
-      }
-    }, function() {
-      //TODO alert unable to save history to sqlite
-    });
+    var requestId = restclient.sqlite.saveHistory(request);
+    if(requestId !== false) {
+      if(location.hash.substr(1) === arguments[0])
+        return false;
+      restclient.main.ignoreHashChange = true;
+      location.hash = requestId;
+    }
+    
+    //TODO alert unable to save history to sqlite
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   },
   donate: function () {

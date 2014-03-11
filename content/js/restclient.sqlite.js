@@ -46,7 +46,7 @@ restclient.sqlite = {
               lastAccess INTEGER NOT NULL"
   },
   sql: {
-    getHistory: 'SELECT request FROM history WHERE requestId = :requestId',
+    getHistoryById: 'SELECT request FROM history WHERE requestId = :requestId',
     updateHistory: 'UPDATE history SET lastAccess = :lastAccess WHERE requestId = :requestId',
     newHistory: 'INSERT INTO history (requestId, request, lastAccess) VALUES (:requestId, :request, :lastAccess)',
     removeHistory: 'DELETE FROM history WHERE lastAccess < :lastAccess',
@@ -115,34 +115,34 @@ restclient.sqlite = {
     return restclient.sqlite.db.createStatement(sql);
   },
   
-  getHistory: function(requestId){
+  getHistoryById: function(requestId){
     if(typeof requestId !== 'string' || requestId === '')
       return false;
-    var stmt = restclient.sqlite.getStatement('getHistory');
+    var stmt = restclient.sqlite.getStatement('getHistoryById');
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
-
+    
       binding.bindByName("requestId", requestId);
       params.addParams(binding);
       stmt.bindParameters(params);
-    
+      
       while (stmt.executeStep()) {
-        stmt.reset();
-        return stmt.row.request;
+        var request = stmt.row.request;
+        return JSON.parse(request);
       }
-    }
-    finally {
+    }catch(aError){
+      restclient.error(aError);
+    }finally{
       stmt.reset();
     }
-    
     return false;
   },
   saveHistory: function(request) {
     var requestStr = JSON.stringify(request);
     var requestId = "r-" + restclient.helper.sha1(requestStr);
     var lastAccess = new Date().valueOf();
-    var exists = restclient.sqlite.getHistory(requestId);
+    var exists = restclient.sqlite.getHistoryById(requestId);
     
     var sqlName = (exists === false) ? "newHistory" : "updateHistory";
     var stmt = restclient.sqlite.getStatement(sqlName);

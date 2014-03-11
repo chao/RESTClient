@@ -2,7 +2,7 @@ $(function () {
   module("restclient.sqlite.js");
   restclient.init();
   restclient.sqlite.open();
-  var requestUUID1, requestUUID2;
+  var requestUUID1, requestUUID2, historyId;
   
   test("Test init function", function () {
     ok(typeof restclient.sqlite.db === 'object', 'inited');
@@ -45,14 +45,17 @@ $(function () {
     requestUUID2 = ret.uuid;
   });
   
-  test("Test save history function", function () {
+  test("Test save and get history function", function () {
     var request = {
       method : 'GET',
       url : 'https://developer.mozilla.org/en/Storage',
       body : 'a=b&c=d'
     };
-    var ret = restclient.sqlite.saveHistory(request);
-    ok(ret !== false, 'History saved, return: ' + JSON.stringify(ret));
+    var historyId = restclient.sqlite.saveHistory(request);
+    ok(historyId !== false, 'History saved, return: ' + JSON.stringify(historyId));
+
+    var ret = restclient.sqlite.getHistoryById(historyId);
+    ok(ret !== false, 'History retrieved [' + historyId + '], return: ' + JSON.stringify(ret));
   });
   
   test("Test get request by name function and get request by id", function(){

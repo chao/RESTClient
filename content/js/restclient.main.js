@@ -246,8 +246,6 @@ restclient.main = {
     
     //For bookmark modal
     $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch();
-    $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch('setOnLabel', 'Yes');
-    $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch('setOffLabel', 'No');
   },
   initHotKeys: function () {
     $('#request-button').attr('rel','tooltip').attr('title', 'hotkey: ' + restclient.main.hotkey.send);
@@ -555,7 +553,6 @@ restclient.main = {
       $('#modal-basic-authorization .modal-footer .btn-group').hide();
       $('#modal-basic-authorization .modal-footer .btn-okay').show();
     });
-
     $('#modal-custom-header').on('show',  function () {
       var inputName = $('#modal-custom-header [name="name"]'),
           inputValue = $('#modal-custom-header [name="value"]'),
@@ -592,24 +589,29 @@ restclient.main = {
     }).on('hidden', function () {
       $(this).data('source', null);
     });
-    
-    //TODO update bookmark modal to add label
     $('#modal-bookmark-request').on('show', function () {
-      var savedRequest = restclient.getPref('savedRequest', '');
-      $('[name="saved-request-name"]').val('');
-      if (savedRequest != '') {
-        savedRequest = JSON.parse(savedRequest);
-        var names = [];
-        for(var name in savedRequest) {
-          if (!savedRequest.hasOwnProperty(name))
-            continue;
-          names.push(name);
-        }
-        $('[name="saved-request-name"]').attr('data-source', JSON.stringify(names));
-        $('#modal-bookmark-request .btnOkay').val('Save').attr('overwrite', '0').removeAttr('request-name');
-      }
+      var labels = restclient.sqlite.getLabels();
+      
+      if(labels !== false)
+      {
+        labels = _.keys(labels);
+        $('#modal-bookmark-request [name="saved-request-label"]').tagsinput({
+          typeahead: {
+            source: function(query) {
+              //TODO filter array string contains string
+              return labels;
+            }
+          }
+        });
+      }  
+    }).on('hide', function() {
+      $('#modal-bookmark-request [name="saved-request-name"]').val('');
+      $('#modal-bookmark-request [name="saved-request-label"]').tagsinput('removeAll');
+      $('#modal-bookmark-request [name="saved-request-label"]').tagsinput('destroy');
+      $('#modal-bookmark-request [name="saved-as-favorite-checkbox"]').bootstrapSwitch('state', false);
+    }).on('shown', function(){
+      $('#modal-bookmark-request [name="saved-request-name"]').focus();
     });
-
     $('#modal-oauth-view').on('shown', function () {
       var headerId = $(this).data('source-header-id'),
           text     = $('#modal-oauth-view textarea'),
@@ -1227,13 +1229,29 @@ restclient.main = {
   },
   saveCurrentRequest: function () {
     //TODO update save CurrentRequest function
-    var name = $('[name="saved-request-name"]');
-    if (name.val() == '') {
-      name.next().text('Please give this request a name for future usage.').show();
-      name.focus();
+    var requestNameEl = $('#modal-bookmark-request [name="saved-request-name"]'),
+        requestName = requestNameEl.val();
+    if (requestName == '') {
+      requestNameEl.next().text('Please give this request a name for future usage.').show();
+      requestNameEl.focus();
       return false;
     }
-    var savedRequest = restclient.getPref('savedRequest', '');
+    var labels = $('#modal-bookmark-request [name="saved-request-label"]').tagsinput('items');
+    var favorite = $('[name="saved-as-favorite-checkbox"]').bootstrapSwitch('state') ? 1 : 0;
+    var request = restclient.main.getRequest();
+    
+    var requestId = restclient.sqlite.saveRequest(request, requestName, favorite, labels);
+    if(requestId !== false)
+    {
+      $('#modal-bookmark-request').modal('hide');
+      $('.request-menu').click();
+    }
+    else
+    {
+      
+    }
+    
+    /*var savedRequest = restclient.getPref('savedRequest', '');
     if (savedRequest != '')
     {
       //restclient.log(savedRequest);
@@ -1255,7 +1273,7 @@ restclient.main = {
     restclient.setPref('savedRequest', JSON.stringify(savedRequest));
     $('#modal-bookmark-request').modal('hide');
     this.updateFavoriteRequestMenu();
-    $('.request-menu').click();
+    $('.request-menu').click();*/
   },
   updateFavoriteRequestMenu: function () {
     return false;
@@ -1940,8 +1958,11 @@ restclient.main = {
       restclient.main.ignoreHashChange = true;
       location.hash = requestId;
     }
+    else{
+      //TODO alert unable to save history to sqlite
+      restclient.error('unable to save history to cache.');
+    }
     
-    //TODO alert unable to save history to sqlite
     restclient.http.sendRequest(request.method, request.url, request.headers, request.overrideMimeType, request.body);
   },
   donate: function () {

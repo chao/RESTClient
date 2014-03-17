@@ -78,6 +78,11 @@ if (typeof (restclient) === "undefined") {
       }catch(e){
         restclient.error(e.message);
       }
+    },
+    getRecentWindow : function () {
+      var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"]
+                     .getService(Components.interfaces.nsIWindowMediator);
+      return wm.getMostRecentWindow("navigator:browser");
     }
   }
 }

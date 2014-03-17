@@ -1,0 +1,22 @@
+#labels .label {
+  font-size: 14px;
+  cursor: pointer;
+}
+span.edit {
+  font-size: 14px;
+  color: #999;
+  cursor: pointer;
+}
+.hide {
+  display: none;
+}
+.label-div{
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+.label-div .remove {
+  margin-left: 5px;
+  margin-right: 3px;
+  cursor: pointer;
+}

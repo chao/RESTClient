@@ -34,6 +34,7 @@ restclient.main = {
   uniqueHeaders: ['authorization'],
   navTop: null,
   ignoreHashChange: false,
+  currentTheme: null,
   hotkey: {
     send:     's',
     url:      'u',
@@ -159,7 +160,7 @@ restclient.main = {
     }
   },
   changeSkin: function (theme) {
-    restclient.log("css/themes/" + theme + "/bootstrap.css");
+    this.currentTheme = theme;
     $("link").remove();
     $("<link/>", {
        rel: "stylesheet",
@@ -1248,32 +1249,19 @@ restclient.main = {
     }
     else
     {
-      
+      var message = restclient.message.show({
+        id: 'alert-save-bookmark-failed',
+        type: 'error',
+        title: 'Cannot bookmark this request',
+        message: 'Cannot bookmark this request to localcache, something goes wrong...',
+        buttons: [
+          {title: 'Close', class: 'btn-danger', callback: function () { $('#alert-save-bookmark-failed').alert('close').remove(); }}
+        ],
+        exclude: true,
+        prepend: true,
+        parent: $('#modal-bookmark-request form')
+      });
     }
-    
-    /*var savedRequest = restclient.getPref('savedRequest', '');
-    if (savedRequest != '')
-    {
-      //restclient.log(savedRequest);
-      savedRequest = JSON.parse(savedRequest);
-      //restclient.log(typeof savedRequest[name.val()]);
-      if (typeof $('#modal-bookmark-request .btnOkay').attr('request-name') == 'undefined' &&
-              typeof savedRequest[name.val()] != 'undefined') {
-        name.next().text('Name existed, you can either change a name or overwrite it.').show();
-        $('#modal-bookmark-request .btnOkay').val('Overwrite').attr('overwrite', '1').attr('request-name', name.val());
-        name.focus();
-        return false;
-      }
-    }
-    else
-      savedRequest = {};
-
-    var request = restclient.main.getRequest();
-    savedRequest[name.val()] = request;
-    restclient.setPref('savedRequest', JSON.stringify(savedRequest));
-    $('#modal-bookmark-request').modal('hide');
-    this.updateFavoriteRequestMenu();
-    $('.request-menu').click();*/
   },
   updateFavoriteRequestMenu: function () {
     return false;
@@ -1419,7 +1407,13 @@ restclient.main = {
     return false;
   },
   manageFavoriteRequests: function () {
-    //TODO show favorites management page
+    setTimeout(function () {
+      var win = restclient.getRecentWindow();
+      var arg = {theme: restclient.main.currentTheme};
+      win.openDialog("chrome://restclient/content/bookmarks.html", "_blank", 
+      "",//"width=600,height=415,resizable,chrome,centerscreen,modal,scrollbars=no,status=no",
+       arg);
+    }, 200);
   },
   getFavoriteRequestHtml: function (id, name, request) {
     var group = $('<div class="accordion-group"></div>'),

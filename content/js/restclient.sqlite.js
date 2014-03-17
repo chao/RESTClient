@@ -189,7 +189,6 @@ restclient.sqlite = {
     }
     return true;
   },
-  
   getRequestByName: function(requestName) {
     if(typeof requestName !== 'string' || requestName === '')
       return false;
@@ -385,7 +384,6 @@ restclient.sqlite = {
     return false;
   },
   findRequestsByKeyword: function(word, labels){
-    //TODO suppoert with label
     if(typeof word !== 'string')
       return false;
     if(typeof labels === 'string' && labels != '')

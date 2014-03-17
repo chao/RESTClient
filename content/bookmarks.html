@@ -1,128 +1,75 @@
-<div id="request-history-dropdown" class="container-fluid">
-  <div class="span3">
-    <h1><i class="icon-time"></i> Recent Requests</h1>
-    <ol class="request-history-recent">
-      <li>
-        <a href="#">Glacier Request</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon S3 authentication</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Facebook Login test</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Twitter Auth 2</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Google Map</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-    </ol>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RESTClient bookmarks</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="RESTClient, a debugger for RESTful web services." />
+    <meta name="author" content="Chao ZHOU (chao@zhou.fr)" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+  </head>
+<body>
+<section id="labels" class="container-fluid" style="margin-top: 5px;">
+  <h3><i class="fa fa-tags"></i> Labels <span class="edit" onClick="restclient.bookmark.clickLabelEdit();" data-state="normal">edit</span></h3>
+  <div class="labels-panel"></div>
+</section>
+<section id="requests" class="container-fluid">
+  <h3><i class="fa fa-bookmark"></i> Bookmarks <span class="edit">edit</span></h3>
+  <ul class="favorite-requests">
+    <li>
+      <a href="#"><i class="fa fa-star"></i> Glacier Request</a>
+      <p class="favorited-request">GET plus.google.com</p>
+      <p class="favorited-request">2013-04-20 11:44:00</p>
+    </li>
+    <li>
+      <a href="#"><i class="fa fa-star-o"></i> Amazon SES</a>
+      <p class="favorited-request">GET aws.amazon.com</p>
+      <p class="favorited-request">2013-04-20 11:44:00</p>
+    </li>
+    <li>
+      <a href="#">Amazon EC2 Shutdown</a>
+      <p class="favorited-request">GET aws.amazon.com</p>
+      <p class="favorited-request">2013-04-20 11:44:00</p>
+    </li>
+    <li>
+      <a href="#">DynamicDB create</a>
+      <p class="favorited-request">GET aws.amazon.com</p>
+      <p class="favorited-request">2013-04-20 11:44:00</p>
+    </li>
+    <li>
+      <a href="#">Amazon S3</a>
+      <p class="favorited-request">GET aws.amazon.com</p>
+      <p class="favorited-request">2013-04-20 11:44:00</p>
+    </li>
+  </ul>
+</section>
+
+<div class="modal fade hide" id="modal-label-remove">
+  <div class="modal-header">
+    <a class="close btnClose">×</a>
+    <h3 class="title">Remove label</h3>
   </div>
-  <div class="span3">
-    <p class="favorite-tag"><i class="icon-google-plus"></i> Google Plus</p>
-    <ul class="favorite-requests">
-      <li>
-        <a href="#">Glacier Request</a>
-        <p class="favorited-request">GET plus.google.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon SES</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon EC2 Shutdown</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon S3</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-    </ul>
+  <div class="modal-body">
+    You are going to remove label [<span class="label label-warn"></span>], are you sure?
   </div>
-  <div class="span3">
-    <ul class="favorite-requests">
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon S3</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-    </ul>
-    <p class="favorite-tag"><i class="icon-facebook"></i> Facebook REST Web Services</p>
-    <ul>
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon S3</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-    </ul>
+  <div class="modal-footer">
+    <input class="btn btnOkay btn-success" type="button" value="Yes">
+    <input class="btn btnOkay btn-success" type="button" value="Yes, and remove all related bookmarks">
+    <input class="btn btnClose" type="button" value="Cancel">
   </div>
-  <div class="span3">
-    <ul class="favorite-requests">
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon S3</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-      <li>
-        <a href="#">Amazon S3</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-    </ul>
-    <p class="favorite-tag"><i class="icon-github"></i> Github Web Services</p>
-    <ul>
-      <li>
-        <a href="#">DynamicDB create</a>
-        <p class="favorited-request">GET aws.amazon.com</p>
-        <p class="favorited-request">2013-04-20 11:44:00</p>
-      </li>
-    </ul>
-  </div>
-  
-  <div id="request-history-dropdown-close"><i class=" icon-chevron-up">&nbsp;</i></div>
 </div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.hotkeys.js"></script>
+
+<script type="text/javascript" src="js/underscore.js"></script>
+
+<script type="text/javascript" src="js/bootstrap.js"></script>
+
+<script type="text/javascript" src="js/restclient.js"></script>
+<script type="text/javascript" src="js/restclient.bookmark.js"></script>
+<script type="text/javascript" src="js/restclient.message.js"></script>
+
+<script type="text/javascript" src="js/restclient.sqlite.js"></script>
+</body>
+</html>

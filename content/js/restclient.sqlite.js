@@ -53,8 +53,8 @@ restclient.sqlite = {
     
     getLabels: 'SELECT count(labelName) as sum,labelName FROM labels GROUP BY labelName ORDER BY labelName',
     newLabels: 'INSERT INTO labels (labelName, uuid) VALUES (:labelName, :uuid)',
-    removeLabels: 'DELETE FROM labels WHERE uuid = :uuid',
-    removeLabel: 'DELETE FROM labels WHERE uuid = :uuid AND labelName = :labelName',
+    removeLabelByUUID: 'DELETE FROM labels WHERE uuid = :uuid',
+    removeLabel: 'DELETE FROM labels WHERE labelName = :labelName',
     
     getRequestsByName: 'SELECT * FROM requests WHERE requestName = :requestName',
     getRequestsByLabels: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY creationTime DESC, lastAccess DESC',
@@ -63,6 +63,7 @@ restclient.sqlite = {
     findRequestsByKeyword: 'SELECT * FROM requests WHERE requestName LIKE :word OR requestUrl LIKE :word ORDER BY creationTime DESC, lastAccess DESC',
     findRequestsByKeywordAndLabels: 'SELECT * FROM requests WHERE (requestName LIKE :word OR requestUrl LIKE :word) AND uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY creationTime DESC, lastAccess DESC',
     removeRequests: 'DELETE FROM requests WHERE uuid = :uuid',
+    removeRequestByLabel: 'DELETE FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName=:labelName)',
     updateRequestName: 'UPDATE requests SET requestName = :requestName WHERE uuid = :uuid',
     updateRequestFavorite: 'UPDATE requests SET favorite = :favorite WHERE uuid = :uuid'
   },
@@ -114,7 +115,6 @@ restclient.sqlite = {
     var sql = restclient.sqlite.sql[sqlName];
     return restclient.sqlite.db.createStatement(sql);
   },
-  
   getHistoryById: function(requestId){
     if(typeof requestId !== 'string' || requestId === '')
       return false;
@@ -455,15 +455,36 @@ restclient.sqlite = {
     }
     return labels;
   },
-  removeLabel: function(labelName){
+  
+  removeLabel: function(labelName, cascade){
     if(typeof labelName !== 'string' || labelName === '')
       return false;
+    if(typeof cascade === 'undefined')
+      cascade = false;
+    
+    if(cascade) {
+      var stmt = restclient.sqlite.getStatement('removeRequestByLabel');
+      try{
+        var params = stmt.newBindingParamsArray(),
+            binding = params.newBindingParams();
+      
+        binding.bindByName("labelName", labelName);
+        params.addParams(binding);
+        stmt.bindParameters(params);
+        stmt.execute();
+      }catch(aError){
+        restclient.error(aError);
+        return false;
+      }finally{
+        stmt.reset();
+      }
+    }
+    
     var stmt = restclient.sqlite.getStatement('removeLabel');
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
       
-      binding.bindByName("uuid", uuid);
       binding.bindByName("labelName", labelName);
       params.addParams(binding);
       stmt.bindParameters(params);
@@ -476,6 +497,7 @@ restclient.sqlite = {
     }
     return true;
   },
+  
   importRequestFromJSON: function(setting) {
     // version <= 2.0.3
     if( typeof setting.labels === 'undefined' ) {

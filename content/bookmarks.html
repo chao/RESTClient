@@ -53,8 +53,8 @@
     You are going to remove label [<span class="label label-warn"></span>], are you sure?
   </div>
   <div class="modal-footer">
-    <input class="btn btnOkay btn-success" type="button" value="Yes">
-    <input class="btn btnOkay btn-success" type="button" value="Yes, and remove all related bookmarks">
+    <input class="btn btnOkay btn-success" type="button" value="Yes" onClick="restclient.bookmark.removeLabel(false);">
+    <input class="btn btnOkay btn-success" type="button" value="Yes, and remove all related bookmarks" onClick="restclient.bookmark.removeLabel(true);">
     <input class="btn btnClose" type="button" value="Cancel">
   </div>
 </div>

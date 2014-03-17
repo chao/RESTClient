@@ -113,17 +113,46 @@ restclient.bookmark = {
   },
   clickTrashLabel: function() {
     var label = $(this).next().attr('data-label');
+    $('#modal-label-remove').data('source', $(this));
     $('#modal-label-remove').data('label', label).modal('show');
-    
+  },
+  removeLabel: function(cascade) {
+    var ret,label = $('#modal-label-remove').data('label');
+    ret = restclient.sqlite.removeLabel(label, cascade);
+    if(ret === true) {
+      $('#modal-label-remove .btnClose').last().click();
+      var source = $('#modal-label-remove').data('source');
+      var div = source.parent();
+      setTimeout(function(){
+        div.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){ $(this).hide(); });
+        div.addClass('animated bounceOutUp');
+      }, 500);
+    }
+    else
+    {
+      var message = restclient.message.show({
+        id: 'alert-remove-label-failed',
+        type: 'error',
+        title: 'Cannot remove the label',
+        message: 'Cannot remove the label, something is wrong.',
+        buttons: [
+          {title: 'Close', class: 'btn-danger', callback: function () { $('#alert-remove-label-failed').alert('close').remove(); }}
+        ],
+        exclude: true,
+        prepend: true,
+        parent: $('#modal-label-remove .modal-body')
+      });
+    }
+    return false;
   },
   updateRequests: function() {
     var labelSelected = $('.label-important');
     var labels = [];
-    
+
     for(var i=0, lab; lab = labelSelected[i]; i++){
       labels.push(lab.text());
     }
-    
+
     var keyword = '';
     var requests = restclient.sqlite.findRequestsByKeyword(keyword, labels);
     console.log(requests);

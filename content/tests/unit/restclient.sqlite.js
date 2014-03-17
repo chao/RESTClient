@@ -108,6 +108,30 @@ $(function () {
     ok(result !== false, 'updated name okay' + JSON.stringify(result));
   });
   
+  test("Test remove label cascade", function(){
+    var request = {
+      method : 'GET',
+      url : 'http://developer.zaker.com/iOS',
+      body : 'username=beijing'
+    };
+    var labels = ["zaker", "cascade"];
+    var ret = restclient.sqlite.saveRequest(request, "cascade#1", 0, labels);
+    var uuid = ret.uuid;
+    ok(ret !== false, 'return uuid:' + ret.uuid);
+    
+    var ret = restclient.sqlite.removeLabel("zaker", false);
+    ok(ret !== false, 'removed');
+    
+    var result = restclient.sqlite.getRequestByName("cascade#1");
+    ok(result.uuid == uuid, "not cascade okay");
+    
+    var ret = restclient.sqlite.removeLabel("cascade", true);
+    ok(ret !== false, 'removed');
+    
+    var result = restclient.sqlite.getRequestByName("cascade#1");
+    ok(result === false, "cascade okay" + JSON.stringify(result));
+  });
+  
   asyncTest("Test close sqlite", function(){
     restclient.sqlite.close();
     expect(1);

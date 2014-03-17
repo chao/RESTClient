@@ -1253,7 +1253,7 @@ restclient.main = {
         id: 'alert-save-bookmark-failed',
         type: 'error',
         title: 'Cannot bookmark this request',
-        message: 'Cannot bookmark this request to localcache, something goes wrong...',
+        message: 'Cannot bookmark this request to local cache, something goes wrong...',
         buttons: [
           {title: 'Close', class: 'btn-danger', callback: function () { $('#alert-save-bookmark-failed').alert('close').remove(); }}
         ],

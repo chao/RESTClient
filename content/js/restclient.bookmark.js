@@ -40,6 +40,7 @@ restclient.bookmark = {
     restclient.bookmark.initLabels();
     restclient.bookmark.initModals();
     restclient.bookmark.updateRequests();
+    restclient.bookmark.initEvents();
   },
   unload: function(){},
   initSkin: function(theme) {
@@ -165,8 +166,15 @@ restclient.bookmark = {
     var template = _.template(templateHtml, {items: requests});
     $('.bookmark-requests').append(template);
   },
-  toggleFavorite: function(e){
-    console.log($(this)[0].tagName);
+  toggleFavorite: function(e) {
+    var uuid = $(this).parents('li').attr('data-uuid');
+    var favorite = $(this).attr('data-favorite');
+    favorite = (favorite === '0') ? 1 : 0;
+    var ret = restclient.sqlite.updateRequestFavorite(uuid, favorite);
+    if(ret === true) {
+      $(this).attr('data-favorite', favorite);
+      $(this).find('i').toggleClass('fa-star fa-star-o');
+    }
     return false;
   }
   

@@ -42,7 +42,7 @@
 <script type="text/template" id="bookmarkRequest">
 <% for(var i = 0, item; item = items[i]; i++) { %>
 <li data-uuid="<%= item.uuid %>">
-  <p><a href="#" class="favorite"><i class="fa fa-star<% if(item.favorite == 0) { %>-o <% } %>"></i></a> <a href="#"><%= item.requestName %></a></p>
+  <p><a href="#" class="favorite" data-favorite="<%= item.favorite %>"><i class="fa fa-star<% if(item.favorite == 0) { %>-o <% } %>"></i></a> <a href="#"><%= item.requestName %></a></p>
   <p class="favorited-request"><strong><%= item.requestMethod %></strong> <%= item.requestUrl %></p>
   <p class="favorited-request"><strong>Last Updated:</strong> <%= moment.unix(item.lastAccess / 1000).fromNow() %></p>
 </li>

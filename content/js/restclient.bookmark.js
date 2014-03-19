@@ -39,6 +39,7 @@ restclient.bookmark = {
     
     restclient.bookmark.initLabels();
     restclient.bookmark.initModals();
+    restclient.bookmark.updateRequests();
   },
   unload: function(){},
   initSkin: function(theme) {
@@ -80,6 +81,9 @@ restclient.bookmark = {
       return false;
     });
   },
+  initEvents: function(){
+    $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
+  },
   initLabels: function(){
     var labels = restclient.sqlite.getLabels();
     
@@ -93,11 +97,13 @@ restclient.bookmark = {
       $('.labels-panel').append(div);
     });
   },
+  
   clickLabel: function(){
     $(this).toggleClass('label-important');
-    
+    return false;
   },
   clickLabelEdit: function(el){
+    console.log($(this)[0].tagName);
     var labelEdit = $('#labels .edit');
     if(labelEdit.attr('data-state') === 'normal')
     {
@@ -155,8 +161,15 @@ restclient.bookmark = {
 
     var keyword = '';
     var requests = restclient.sqlite.findRequestsByKeyword(keyword, labels);
-    console.log(requests);
+    var templateHtml = $('#bookmarkRequest').html();
+    var template = _.template(templateHtml, {items: requests});
+    $('.bookmark-requests').append(template);
+  },
+  toggleFavorite: function(e){
+    console.log($(this)[0].tagName);
+    return false;
   }
+  
 };
 
 window.addEventListener("load", function () { restclient.bookmark.init();  }, false);

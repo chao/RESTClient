@@ -20,3 +20,7 @@ span.edit {
   margin-right: 3px;
   cursor: pointer;
 }
+#requests ul li
+{
+  list-style-type: none;
+}

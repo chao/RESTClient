@@ -30,15 +30,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 restclient.curl = {
   constructCommand: function(request){
-    //console.log(request);
-    var headersStrings = "";
-    for(var i=0, header; header = request.headers[i]; i++) {
-      headersStrings += " -H '"+ header[0] + ':' + header[1] + "'";
+    var curl = 'curl';
+    if(typeof request.headers !== 'undefined') {
+      var headersStrings = "";
+      for(var i=0, header; header = request.headers[i]; i++) {
+        headersStrings += " -H '"+ header[0] + ':' + header[1] + "'";
+      }
+      curl += ' -i ' + headersStrings;
     }
-    var body = '';
-    if(request.body != ''){
-      body = " -d '" + request.body + "' ";
+    if(typeof request.method !== 'undefined')
+      curl += ' -X ' + request.method;
+      
+    if(typeof request.body !== 'undefined' && request.body !== '') {
+      curl += " -d '" + request.body + "' ";
+      //TODO escape special chars
     }
-    return 'curl -i ' + headersStrings +  ' -X ' + request.method + body +" '" +  request.url + "'" ;
+    
+    if(typeof request.url !== 'undefined') {
+      curl += " '" + request.url + "'";
+    }
+    return curl;
   }
 }

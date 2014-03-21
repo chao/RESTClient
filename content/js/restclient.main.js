@@ -604,7 +604,11 @@ restclient.main = {
             }
           }
         });
-      }  
+      }
+      
+      var request = restclient.main.getRequest();
+      var curl = restclient.curl.constructCommand(request);
+      $('#modal-bookmark-request [name="saved-curl"]').val(curl);
     }).on('hide', function() {
       $('#modal-bookmark-request [name="saved-request-name"]').val('');
       $('#modal-bookmark-request [name="saved-request-label"]').tagsinput('removeAll');

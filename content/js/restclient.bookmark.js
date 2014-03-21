@@ -86,7 +86,7 @@ restclient.bookmark = {
     $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
     $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
     $('#requests span.edit').on('click', restclient.bookmark.clickBookmarkEdit);
-    
+    $('.removeBookmark').on('click', restclient.bookmark.clickRemoveBookmark)
   },
   initLabels: function(){
     var labels = restclient.sqlite.getLabels();
@@ -136,7 +136,14 @@ restclient.bookmark = {
     $('#modal-label-remove').data('source', $(this));
     $('#modal-label-remove').data('label', label).modal('show');
   },
-  
+  clickRemoveBookmark: function() {
+    var uuid = $(this).parents('li').attr('data-uuid');
+    var ret = restclient.sqlite.removeRequest(uuid);
+    if(ret === true) {
+      $(this).parents('li').hide();
+      restclient.sqlite.initLabels();
+    }
+  },
   removeLabel: function(cascade) {
     var ret,label = $('#modal-label-remove').data('label');
     ret = restclient.sqlite.removeLabel(label, cascade);

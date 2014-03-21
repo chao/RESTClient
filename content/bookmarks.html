@@ -37,16 +37,26 @@
 <script type="text/template" id="bookmarkRequest">
 <% for(var i = 0, item; item = items[i]; i++) { %>
 <li data-uuid="<%= item.uuid %>">
-  <p class="bookmark-title">
+  <div class="bookmark-title bookmark-details">
     <span class="editToolbar hide">
-    <a href="#"><i class="fa fa-trash-o"></i></a>
-    <a href="#"><i class="fa fa-edit"></i></a>
+    <a href="#" class="removeBookmark"><i class="fa fa-trash-o"></i></a>
+    <a href="#" class="editBookmark"><i class="fa fa-edit"></i></a>
     </span>
     <a href="#" class="favorite" data-favorite="<%= item.favorite %>"><i class="fa fa-star<% if(item.favorite == 0) { %>-o <% } %>"></i></a> 
-    <a href="#" class="requestName"><%= item.requestName %></a>
-  </p>
-  <p class="favorited-request"><strong><%= item.requestMethod %></strong> <%= item.requestUrl %></p>
-  <p class="favorited-request"><strong>Last Updated:</strong> <%= moment.unix(item.lastAccess / 1000).fromNow() %></p>
+    <a href="#" class="requestName"><%= item.requestName %></a> <span class="lastAccess"><%= moment.unix(item.lastAccess / 1000).fromNow() %></span>
+  </div>
+  <div class="bookmark-details"><span class="bookmark-label"><%= item.requestMethod %></span> <span class="bookmark-value"><%= item.requestUrl %></span></div>
+  <div class="bookmark-details"><span class="bookmark-label">Curl Command:</span></div>
+  <div class="bookmark-details curl"><span class="bookmark-value"> <%= item.curl %> </span></div>
+  <div class="bookmark-details"><span class="bookmark-label">Labels:</span> 
+  <% if(item.labels.length == 0) { %>
+    <span class="label">uncategorized</span>
+  <%
+  }
+  for(var j=0, label; label = item.labels[j]; j++) { %>
+    <span class="label"><%= label %></span>
+  <% } %>
+  </div>
 </li>
 <% } %>
 </script>

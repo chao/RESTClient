@@ -53,6 +53,7 @@ restclient.sqlite = {
     removeHistory: 'DELETE FROM history WHERE lastAccess < :lastAccess',
     
     getLabels: 'SELECT count(labelName) as sum,labelName FROM labels GROUP BY labelName ORDER BY labelName',
+    getLabelsByUUID: 'SELECT labelName FROM labels WHERE uuid = :uuid',
     newLabels: 'INSERT INTO labels (labelName, uuid) VALUES (:labelName, :uuid)',
     removeLabelByUUID: 'DELETE FROM labels WHERE uuid = :uuid',
     removeLabel: 'DELETE FROM labels WHERE labelName = :labelName',
@@ -210,6 +211,7 @@ restclient.sqlite = {
         request.requestUrl = stmt.row.requestUrl;
         request.requestMethod = stmt.row.requestMethod;
         request.request = stmt.row.request;
+        request.curl = stmt.row.curl;
         request.creationTime = stmt.row.creationTime;
         request.lastAccess = stmt.row.lastAccess;
         return request;
@@ -341,6 +343,7 @@ restclient.sqlite = {
         request.requestUrl = stmt.row.requestUrl;
         request.requestMethod = stmt.row.requestMethod;
         request.request = stmt.row.request;
+        request.curl = stmt.row.curl;
         request.creationTime = stmt.row.creationTime;
         request.lastAccess = stmt.row.lastAccess;
         
@@ -375,6 +378,7 @@ restclient.sqlite = {
         request.requestUrl = stmt.row.requestUrl;
         request.requestMethod = stmt.row.requestMethod;
         request.request = stmt.row.request;
+        request.curl = stmt.row.curl;
         request.creationTime = stmt.row.creationTime;
         request.lastAccess = stmt.row.lastAccess;
         return request;
@@ -429,11 +433,17 @@ restclient.sqlite = {
         request.requestUrl = stmt.row.requestUrl;
         request.requestMethod = stmt.row.requestMethod;
         request.request = stmt.row.request;
+        request.curl = stmt.row.curl;
         request.creationTime = stmt.row.creationTime;
         request.lastAccess = stmt.row.lastAccess;
+        var labels = restclient.sqlite.getLabelsByUUID(request.uuid);
+        request.labels = (labels === false) ? [] : labels;
         
         requests.push(request);
       }
+      
+      stmt.reset();
+      
       return requests;
     }catch(aError){
       restclient.error(aError);
@@ -442,7 +452,9 @@ restclient.sqlite = {
     }
     return false;
   },
-  
+  removeRequest: function(uuid){
+    return true;
+  },
   getLabels: function(){
     var stmt = restclient.sqlite.getStatement('getLabels');
     var labels = {};
@@ -458,7 +470,29 @@ restclient.sqlite = {
     }
     return labels;
   },
-  
+  getLabelsByUUID: function(uuid){
+    var stmt = restclient.sqlite.getStatement('getLabelsByUUID');
+    var labels = [];
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
+      binding.bindByName("uuid", uuid);
+        
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      
+      while (stmt.executeStep()) {
+        labels.push(stmt.row.labelName);
+      }
+    }catch(aError){
+      return false;
+    }
+    finally {
+      stmt.reset();
+    }
+    return labels;
+  },
   removeLabel: function(labelName, cascade){
     if(typeof labelName !== 'string' || labelName === '')
       return false;

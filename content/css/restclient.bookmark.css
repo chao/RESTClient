@@ -20,7 +20,22 @@ span.edit {
   margin-right: 3px;
   cursor: pointer;
 }
+#requests {
+  font-size: 14px;
+  line-height: 12px;
+}
+#requests ul{
+  margin-left: 35px;
+}
 #requests ul li
 {
   list-style-type: none;
+  margin-bottom: 25px;
+  border-bottom: 1px dotted #ddd;
+}
+#requests ul p.bookmark-title {
+  font-size: 16px;
+}
+#requests ul .editToolbar {
+  margin-left: -38px;
 }

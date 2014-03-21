@@ -84,6 +84,9 @@ restclient.bookmark = {
   },
   initEvents: function(){
     $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
+    $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
+    $('#requests span.edit').on('click', restclient.bookmark.clickBookmarkEdit);
+    
   },
   initLabels: function(){
     var labels = restclient.sqlite.getLabels();
@@ -98,23 +101,33 @@ restclient.bookmark = {
       $('.labels-panel').append(div);
     });
   },
-  
   clickLabel: function(){
     $(this).toggleClass('label-important');
     return false;
   },
-  clickLabelEdit: function(el){
-    console.log($(this)[0].tagName);
-    var labelEdit = $('#labels .edit');
-    if(labelEdit.attr('data-state') === 'normal')
+  clickLabelEdit: function(){
+    if($(this).attr('data-state') === 'normal')
     {
-      labelEdit.text('cancel').attr('data-state', 'edit');
+      $(this).text('cancel').attr('data-state', 'edit');
       $('#labels .remove').show();
     }
     else
     {
-      labelEdit.text('edit').attr('data-state', 'normal');
+      $(this).text('edit').attr('data-state', 'normal');
       $('#labels .remove').hide();
+    }
+    return false;
+  },
+  clickBookmarkEdit: function(el){
+    if($(this).attr('data-state') === 'normal')
+    {
+      $(this).text('cancel').attr('data-state', 'edit');
+      $('#requests .editToolbar').show();
+    }
+    else
+    {
+      $(this).text('edit').attr('data-state', 'normal');
+      $('#requests .editToolbar').hide();
     }
     return false;
   },
@@ -123,6 +136,7 @@ restclient.bookmark = {
     $('#modal-label-remove').data('source', $(this));
     $('#modal-label-remove').data('label', label).modal('show');
   },
+  
   removeLabel: function(cascade) {
     var ret,label = $('#modal-label-remove').data('label');
     ret = restclient.sqlite.removeLabel(label, cascade);
@@ -175,6 +189,7 @@ restclient.bookmark = {
       $(this).attr('data-favorite', favorite);
       $(this).find('i').toggleClass('fa-star fa-star-o');
     }
+    //TODO if fails...
     return false;
   }
   

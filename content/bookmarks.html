@@ -10,17 +10,12 @@
   </head>
 <body>
 <section id="labels" class="container-fluid" style="margin-top: 5px;">
-  <h3><i class="fa fa-tags"></i> Labels <span class="edit" onClick="restclient.bookmark.clickLabelEdit();" data-state="normal">edit</span></h3>
+  <h3><i class="fa fa-tags"></i> Labels <span class="edit" data-state="normal">edit</span></h3>
   <div class="labels-panel"></div>
 </section>
 <section id="requests" class="container-fluid">
-  <h3><i class="fa fa-bookmark"></i> Bookmarks <span class="edit">edit</span></h3>
+  <h3><i class="fa fa-bookmark"></i> Bookmarks <span class="edit" data-state="normal">edit</span></h3>
   <ul class="bookmark-requests">
-    <li>
-      <p><i class="fa fa-star"></i> <a href="#">Glacier Request</a></p>
-      <p class="favorited-request">GET plus.google.com</p>
-      <p class="favorited-request">2013-04-20 11:44:00</p>
-    </li>
   </ul>
 </section>
 
@@ -42,7 +37,14 @@
 <script type="text/template" id="bookmarkRequest">
 <% for(var i = 0, item; item = items[i]; i++) { %>
 <li data-uuid="<%= item.uuid %>">
-  <p><a href="#" class="favorite" data-favorite="<%= item.favorite %>"><i class="fa fa-star<% if(item.favorite == 0) { %>-o <% } %>"></i></a> <a href="#"><%= item.requestName %></a></p>
+  <p class="bookmark-title">
+    <span class="editToolbar hide">
+    <a href="#"><i class="fa fa-trash-o"></i></a>
+    <a href="#"><i class="fa fa-edit"></i></a>
+    </span>
+    <a href="#" class="favorite" data-favorite="<%= item.favorite %>"><i class="fa fa-star<% if(item.favorite == 0) { %>-o <% } %>"></i></a> 
+    <a href="#" class="requestName"><%= item.requestName %></a>
+  </p>
   <p class="favorited-request"><strong><%= item.requestMethod %></strong> <%= item.requestUrl %></p>
   <p class="favorited-request"><strong>Last Updated:</strong> <%= moment.unix(item.lastAccess / 1000).fromNow() %></p>
 </li>

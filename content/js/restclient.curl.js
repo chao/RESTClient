@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 restclient.curl = {
   constructCommand: function(request){
-    console.log(request);
+    //console.log(request);
     var headersStrings = "";
     for(var i=0, header; header = request.headers[i]; i++) {
       headersStrings += " -H '"+ header[0] + ':' + header[1] + "'";

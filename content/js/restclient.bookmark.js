@@ -85,7 +85,6 @@ restclient.bookmark = {
   initEvents: function(){
     $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
     $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
-    $('#requests span.edit').on('click', restclient.bookmark.clickBookmarkEdit);
     $('.removeBookmark').on('click', restclient.bookmark.clickRemoveBookmark)
   },
   initLabels: function(){
@@ -95,7 +94,7 @@ restclient.bookmark = {
       var div = $('<div class="label-div" />');
       
       var icon = $('<i class="fa fa-trash-o remove fa-lg hide"></i>').bind('click', restclient.bookmark.clickTrashLabel);
-      var span = $('<span />').addClass('label').attr('data-label', key)
+      var span = $('<span />').addClass('label').attr('data-label', key).attr('data-num', value)
                   .text(" " + key + " (" + value + ")").bind('click', restclient.bookmark.clickLabel);
       div.append(icon).append(span);
       $('.labels-panel').append(div);
@@ -118,19 +117,6 @@ restclient.bookmark = {
     }
     return false;
   },
-  clickBookmarkEdit: function(el){
-    if($(this).attr('data-state') === 'normal')
-    {
-      $(this).text('cancel').attr('data-state', 'edit');
-      $('#requests .editToolbar').show();
-    }
-    else
-    {
-      $(this).text('edit').attr('data-state', 'normal');
-      $('#requests .editToolbar').hide();
-    }
-    return false;
-  },
   clickTrashLabel: function() {
     var label = $(this).next().attr('data-label');
     $('#modal-label-remove').data('source', $(this));
@@ -141,7 +127,7 @@ restclient.bookmark = {
     var ret = restclient.sqlite.removeRequest(uuid);
     if(ret === true) {
       $(this).parents('li').hide();
-      restclient.sqlite.initLabels();
+      console.log($(this).parents('li').find('.used-label').text());
     }
   },
   removeLabel: function(cascade) {

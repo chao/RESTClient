@@ -25,16 +25,16 @@ span.edit {
   line-height: 12px;
 }
 #requests ul{
-  margin-left: 40px;
+  margin-left: 0px;
 }
 #requests ul li
 {
   list-style-type: none;
-  margin-bottom: 25px;
-  border-bottom: 1px dotted #ddd;
+  margin-bottom: 15px;
+  padding: 10px 19px;
 }
-#requests ul .editToolbar {
-  margin-left: -38px;
+.bookmark-button {
+  float: right;
 }
 div.bookmark-title {
   font-size: 16px;
@@ -60,4 +60,7 @@ span.bookmark-label {
   background-color: #ddd;
   color: #333;
   text-shadow: 0px -1px 0px rgba(1, 1, 1, 0.05);
+}
+.labels {
+  margin-top: 12px !important
 }

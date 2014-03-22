@@ -69,3 +69,13 @@ span.bookmark-label {
 .labels {
   margin-top: 12px !important
 }
+
+.loading {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.backtotop {
+  width: 100%;
+  text-align: right;
+}

@@ -29,6 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 
 restclient.bookmark = {
+  scrollProcessing: false,
   init: function(){
     var retVals = (window.hasOwnProperty('arguments') && window.arguments.length > 0) ? window.arguments[0] : {};
     var theme = (typeof retVals.theme !== 'undefined') ? retVals.theme : 'simplex';
@@ -85,7 +86,8 @@ restclient.bookmark = {
   initEvents: function(){
     $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
     $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
-    $('.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark)
+    $('.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
+    $( window ).bind('scroll', restclient.bookmark.scrollWindow);
   },
   initLabels: function(){
     var labels = restclient.sqlite.getLabels();
@@ -104,6 +106,24 @@ restclient.bookmark = {
       div.append(icon).append(span);
       $('.labels-panel').append(div);
     });
+  },
+  scrollWindow: function(event){
+    if( restclient.bookmark.scrollProcessing )
+      return false;
+    restclient.bookmark.scrollProcessing = true;
+    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 700){
+      console.log('scrolling');
+      var num = $('#requests li[data-uuid]').length;
+      console.log(num);
+      var requestNum = parseInt($('.requestNum').text());
+      if(num < requestNum)
+      {
+        $('.loading').show();
+        restclient.bookmark.updateRequests(num);
+        $('.loading').hide();
+      }
+    }
+    restclient.bookmark.scrollProcessing = false;
   },
   clickLabel: function(){
     $(this).toggleClass('label-important');

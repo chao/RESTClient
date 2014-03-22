@@ -1415,8 +1415,8 @@ restclient.main = {
       var win = restclient.getRecentWindow();
       var arg = {theme: restclient.main.currentTheme};
       win.openDialog("chrome://restclient/content/bookmarks.html", "_blank", 
-      "",//"width=600,height=415,resizable,chrome,centerscreen,modal,scrollbars=no,status=no",
-       arg);
+      "width=600,height=415,resizable,chrome=no,centerscreen,modal=yes,close=yes,scrollbars=yes,status=no",
+       arg, restclient.main.applyRequest);
     }, 200);
   },
   getFavoriteRequestHtml: function (id, name, request) {
@@ -1474,7 +1474,8 @@ restclient.main = {
     return false;
   },
   applyRequest: function (request) {
-
+    if(typeof request === 'string')
+      request = JSON.parse(request);
     $('#request-body').val('');
     $('#request-url').val('');
     $('#request-method').val('GET');

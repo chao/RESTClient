@@ -30,9 +30,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 restclient.bookmark = {
   scrollProcessing: false,
+  cachedRequests: new Array(),
+  callback: null,
   init: function(){
     var retVals = (window.hasOwnProperty('arguments') && window.arguments.length > 0) ? window.arguments[0] : {};
     var theme = (typeof retVals.theme !== 'undefined') ? retVals.theme : 'simplex';
+    
+    restclient.bookmark.callback = (window.hasOwnProperty('arguments') && typeof window.arguments[1] === 'function') ? window.arguments[1] : false;
     restclient.bookmark.initSkin(theme);
     
     restclient.init();
@@ -84,9 +88,10 @@ restclient.bookmark = {
     });
   },
   initEvents: function(){
-    $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
+    $('a.favorite').live('click', restclient.bookmark.toggleFavorite);
     $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
     $('.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
+    $('.requestName').live('click', restclient.bookmark.applyRequest);
     $( window ).bind('scroll', restclient.bookmark.scrollWindow);
   },
   initLabels: function(){
@@ -224,6 +229,11 @@ restclient.bookmark = {
     if(typeof offset === 'undefined') {
       offset = 0;
     }
+    if(offset === 0) {
+      $('.bookmark-requests').html('');
+      restclient.bookmark.cachedRequests = new Array();
+    }
+
     var labelSelected = $('.labels-panel .label-important');
     var labels = [];
 
@@ -235,11 +245,14 @@ restclient.bookmark = {
     var requestNum = restclient.sqlite.countRequestsByKeywordAndLabels(keyword, labels);
     $('.requestNum').text(requestNum);
     var requests = restclient.sqlite.findRequestsByKeywordAndLabels(keyword, labels, offset);
+    if(requests === false)
+      return false;
+
+    restclient.bookmark.cachedRequests = restclient.bookmark.cachedRequests.concat(requests);
     
     var templateHtml = $('#bookmarkRequest').html();
     var template = _.template(templateHtml, {items: requests});
-    if(offset === 0)
-      $('.bookmark-requests').html('');
+    
     $('.bookmark-requests').append(template);
   },
   toggleFavorite: function(e) {
@@ -253,8 +266,15 @@ restclient.bookmark = {
     }
     //TODO if fails...
     return false;
+  },
+  applyRequest: function(){
+    var uuid = $(this).parents('li').attr('data-uuid');
+    var request = _.where(restclient.bookmark.cachedRequests, {uuid: uuid});
+    if(request.length > 0) {
+      restclient.bookmark.callback(request[0].request);
+      window.close();
+    }
   }
-  
 };
 
 window.addEventListener("load", function () { restclient.bookmark.init();  }, false);

@@ -86,13 +86,13 @@ $(function () {
   });
   
   test("Test find requests by keyword", function(){
-    var requests = restclient.sqlite.findRequestsByKeyword('developer');
+    var requests = restclient.sqlite.findRequestsByKeywordAndLabels('developer');
     ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
     
-    var requests = restclient.sqlite.findRequestsByKeyword('developer', 'apple');
+    var requests = restclient.sqlite.findRequestsByKeywordAndLabels('developer', 'apple');
     ok(requests.length == 2, 'requests:' + requests.length + JSON.stringify(requests));
     
-    var requests = restclient.sqlite.findRequestsByKeyword('developer', ['unittest','apple']);
+    var requests = restclient.sqlite.findRequestsByKeywordAndLabels('developer', ['unittest','apple']);
     ok(requests.length == 1, 'requests:' + requests.length + JSON.stringify(requests));
   });
   
@@ -130,6 +130,21 @@ $(function () {
     
     var result = restclient.sqlite.getRequestByName("cascade#1");
     ok(result === false, "cascade okay" + JSON.stringify(result));
+  });
+  
+  test("insert 100 requests to sqlite", function () {
+    var labels = ["arguments", "javascript", "php", "twitter","qunit", "overlay", "oracle", "mysql", "message", "jquery",
+    "google", "amazon", "facebook", "oauth", "js", "json", "beijing", "shanghai", "paris"];
+    for(var i = 0; i < 100; i++) {
+      var request = {
+        method : 'POST',
+        url : 'https://developer.mozilla.org/en/Example',
+        body : 'a=b&c=d'
+      };
+      var l = _.sample(labels, _.random(1,8) ) 
+      
+      var ret = restclient.sqlite.saveRequest(request, "example#000" + i, 0, l);
+    }
   });
   
   asyncTest("Test close sqlite", function(){

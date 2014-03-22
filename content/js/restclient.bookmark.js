@@ -39,7 +39,7 @@ restclient.bookmark = {
     
     restclient.bookmark.initLabels();
     restclient.bookmark.initModals();
-    restclient.bookmark.updateRequests();
+    restclient.bookmark.updateRequests(0);
     restclient.bookmark.initEvents();
   },
   unload: function(){},
@@ -85,23 +85,36 @@ restclient.bookmark = {
   initEvents: function(){
     $('a.favorite').on('click', restclient.bookmark.toggleFavorite);
     $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
-    $('.removeBookmark').on('click', restclient.bookmark.clickRemoveBookmark)
+    $('.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark)
   },
   initLabels: function(){
     var labels = restclient.sqlite.getLabels();
-    
-    _.each(labels, function(value, key){
+    var selectedLabels = restclient.getPref('bookmark.selectedLabels', '[]');
+    selectedLabels = JSON.parse(selectedLabels);
+
+    _.each(labels, function(value, label){
       var div = $('<div class="label-div" />');
       
       var icon = $('<i class="fa fa-trash-o remove fa-lg hide"></i>').bind('click', restclient.bookmark.clickTrashLabel);
-      var span = $('<span />').addClass('label').attr('data-label', key).attr('data-num', value)
-                  .text(" " + key + " (" + value + ")").bind('click', restclient.bookmark.clickLabel);
+      var span = $('<span />').addClass('label').attr('data-label', label).attr('data-num', value)
+                  .text(" " + label + " (" + value + ")").bind('click', restclient.bookmark.clickLabel);
+      
+      if(_.indexOf(selectedLabels, label) >= 0)
+        span.addClass('label-important');          
       div.append(icon).append(span);
       $('.labels-panel').append(div);
     });
   },
   clickLabel: function(){
     $(this).toggleClass('label-important');
+    var spans = $('.labels-panel .label-important');
+    var labels = [];
+    for(var i=0, span; span = spans[i]; i++) {
+      labels.push($(span).attr('data-label'));
+    }
+    restclient.setPref('bookmark.selectedLabels', JSON.stringify(labels));
+    
+    restclient.bookmark.updateRequests(0);
     return false;
   },
   clickLabelEdit: function(){
@@ -127,8 +140,32 @@ restclient.bookmark = {
     var ret = restclient.sqlite.removeRequest(uuid);
     if(ret === true) {
       $(this).parents('li').hide();
-      console.log($(this).parents('li').find('.used-label').text());
+      var spans = $(this).parents('li').find('.used-label');
+      var reload = false;
+      for(var i = 0, span; span = spans[i]; i++)
+      {
+        var label = $(span).text();
+        var num = $('[data-label="' + label + '"]').attr('data-num');
+        num = parseInt(num);
+        num--;
+        $('[data-label="' + label + '"]').attr('data-num', num).text(label + '(' + num + ')');
+        if(num === 0) {
+          if(reload === false && $('[data-label="' + label + '"]').hasClass('label-important'))
+            reload = true;
+            
+          $('[data-label="' + label + '"]')
+            .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){ $(this).hide().remove(); })
+            .addClass('animated fadeOut');
+        }
+      }
+      if(reload)
+        setTimeout(function() { restclient.bookmark.updateRequests(0); }, 500);
+      
+      var requestNum = parseInt($('.requestNum').text());
+      requestNum--;
+      $('.requestNum').text(requestNum);
     }
+    return false;
   },
   removeLabel: function(cascade) {
     var ret,label = $('#modal-label-remove').data('label');
@@ -137,8 +174,12 @@ restclient.bookmark = {
       $('#modal-label-remove .btnClose').last().click();
       var source = $('#modal-label-remove').data('source');
       var div = source.parent();
+
       setTimeout(function(){
-        div.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){ $(this).hide(); });
+        div.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){ 
+          $(this).hide().remove(); 
+          restclient.bookmark.updateRequests(0);
+        });
         div.addClass('animated bounceOutUp');
       }, 500);
     }
@@ -159,18 +200,26 @@ restclient.bookmark = {
     }
     return false;
   },
-  updateRequests: function() {
-    var labelSelected = $('.label-important');
+  updateRequests: function(offset) {
+    if(typeof offset === 'undefined') {
+      offset = 0;
+    }
+    var labelSelected = $('.labels-panel .label-important');
     var labels = [];
 
     for(var i=0, lab; lab = labelSelected[i]; i++){
-      labels.push(lab.text());
+      labels.push($(lab).attr('data-label'));
     }
-
+    
     var keyword = '';
-    var requests = restclient.sqlite.findRequestsByKeyword(keyword, labels);
+    var requestNum = restclient.sqlite.countRequestsByKeywordAndLabels(keyword, labels);
+    $('.requestNum').text(requestNum);
+    var requests = restclient.sqlite.findRequestsByKeywordAndLabels(keyword, labels, offset);
+    
     var templateHtml = $('#bookmarkRequest').html();
     var template = _.template(templateHtml, {items: requests});
+    if(offset === 0)
+      $('.bookmark-requests').html('');
     $('.bookmark-requests').append(template);
   },
   toggleFavorite: function(e) {

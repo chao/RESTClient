@@ -24,6 +24,11 @@ span.edit {
   font-size: 14px;
   line-height: 12px;
 }
+#requests .requestNum {
+  vertical-align: top;
+  font-size: 12px;
+  margin-left: -5px;
+}
 #requests ul{
   margin-left: 0px;
 }

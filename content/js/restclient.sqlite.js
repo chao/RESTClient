@@ -53,7 +53,7 @@ restclient.sqlite = {
     removeHistory: 'DELETE FROM history WHERE lastAccess < :lastAccess',
     
     getLabels: 'SELECT count(labelName) as sum,labelName FROM labels GROUP BY labelName ORDER BY labelName',
-    getLabelsByUUID: 'SELECT labelName FROM labels WHERE uuid = :uuid',
+    getLabelsByUUID: 'SELECT labelName FROM labels WHERE uuid = :uuid ORDER BY labelName',
     newLabels: 'INSERT INTO labels (labelName, uuid) VALUES (:labelName, :uuid)',
     removeLabelByUUID: 'DELETE FROM labels WHERE uuid = :uuid',
     removeLabel: 'DELETE FROM labels WHERE labelName = :labelName',
@@ -62,12 +62,20 @@ restclient.sqlite = {
     getRequestsByLabels: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY creationTime DESC, lastAccess DESC',
     getRequestByUUID: 'SELECT * FROM requests WHERE uuid = :uuid',
     newRequests: 'INSERT INTO requests (uuid, requestName, favorite, requestUrl, requestMethod, request, curl, creationTime, lastAccess) VALUES (:uuid, :requestName, :favorite, :requestUrl, :requestMethod, :request, :curl, :creationTime, :lastAccess)',
-    findRequestsByKeyword: 'SELECT * FROM requests WHERE requestName LIKE :word OR requestUrl LIKE :word ORDER BY creationTime DESC, lastAccess DESC',
-    findRequestsByKeywordAndLabels: 'SELECT * FROM requests WHERE (requestName LIKE :word OR requestUrl LIKE :word) AND uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY creationTime DESC, lastAccess DESC',
+    findRequestsByKeyword: 'SELECT * FROM requests WHERE requestName LIKE :word OR requestUrl LIKE :word ORDER BY favorite DESC, lastAccess DESC',
+    findRequestsByLabels: 'SELECT * FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY favorite DESC, lastAccess DESC',
+    findRequests: 'SELECT * FROM requests ORDER BY favorite DESC, lastAccess DESC',
+    findRequestsByKeywordAndLabels: 'SELECT * FROM requests WHERE (requestName LIKE :word OR requestUrl LIKE :word) AND uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY favorite DESC, lastAccess DESC',
+    
+    countRequestsByKeyword: 'SELECT count(requestName) as sum FROM requests WHERE requestName LIKE :word OR requestUrl LIKE :word ORDER BY favorite DESC, lastAccess DESC',
+    countRequestsByLabels: 'SELECT count(requestName) as sum FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY favorite DESC, lastAccess DESC',
+    countRequests: 'SELECT count(requestName) as sum FROM requests ORDER BY favorite DESC, lastAccess DESC',
+    countRequestsByKeywordAndLabels: 'SELECT count(requestName) as sum FROM requests WHERE (requestName LIKE :word OR requestUrl LIKE :word) AND uuid IN (SELECT uuid FROM labels WHERE labelName IN (placeholder) group by uuid having count(uuid) = :num) ORDER BY favorite DESC, lastAccess DESC',
+    
     removeRequests: 'DELETE FROM requests WHERE uuid = :uuid',
     removeRequestByLabel: 'DELETE FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName=:labelName)',
     updateRequestName: 'UPDATE requests SET requestName = :requestName WHERE uuid = :uuid',
-    updateRequestFavorite: 'UPDATE requests SET favorite = :favorite WHERE uuid = :uuid'
+    updateRequestFavorite: 'UPDATE requests SET favorite = :favorite, lastAccess = :lastAccess WHERE uuid = :uuid'
   },
   open: function() {
     try{
@@ -293,6 +301,7 @@ restclient.sqlite = {
     return true;
   },
   updateRequestFavorite: function(uuid, favorite){
+    var lastAccess = new Date().valueOf();
     var stmt = restclient.sqlite.getStatement('updateRequestFavorite');
     try{
       var params = stmt.newBindingParamsArray(),
@@ -300,6 +309,7 @@ restclient.sqlite = {
       
       binding.bindByName("uuid", uuid);
       binding.bindByName("favorite", favorite);
+      binding.bindByName("lastAccess", lastAccess);
       params.addParams(binding);
       stmt.bindParameters(params);
       stmt.execute();
@@ -361,7 +371,6 @@ restclient.sqlite = {
     if(typeof uuid !== 'string' || uuid === '')
       return false;
     var stmt = restclient.sqlite.getStatement('getRequestByUUID');
-    //console.log(stmt);
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
@@ -390,16 +399,24 @@ restclient.sqlite = {
     }
     return false;
   },
-  findRequestsByKeyword: function(word, labels){
-    if(typeof word !== 'string')
-      return false;
+  countRequestsByKeywordAndLabels: function(word, labels){
+    word = (typeof word !== 'string') ? '' : $.trim(word);
     if(typeof labels === 'string' && labels != '')
       labels = [labels];
-    
-    var sql = restclient.sqlite.sql.findRequestsByKeyword;
+      
+    var sql;
+    if(word === '')
+      if(typeof labels === 'undefined' || labels.length === 0)
+        sql = restclient.sqlite.sql.countRequests;
+      else
+        sql = restclient.sqlite.sql.countRequestsByLabels;
+    else
+      if(typeof labels === 'undefined' || labels.length === 0)
+        sql = restclient.sqlite.sql.countRequestsByKeyword;
+      else
+        sql = restclient.sqlite.sql.countRequestsByKeywordAndLabels;
     if(typeof labels === 'object' && labels.length > 0)
     {
-      sql = restclient.sqlite.sql.findRequestsByKeywordAndLabels;
       var inClause = '';
       for(var i=0; i < labels.length; i++) {
         inClause += ":labelName" + i + ",";
@@ -409,18 +426,84 @@ restclient.sqlite = {
     }
     
     var stmt = restclient.sqlite.db.createStatement(sql);
+    var sum = 0;
     try{
       var params = stmt.newBindingParamsArray(),
           binding = params.newBindingParams();
+      if(word !== '')
+        binding.bindByName("word", '%' + word + '%');
       
-      binding.bindByName("word", '%' + word + '%');
       if(typeof labels === 'object' && labels.length > 0){
         for(var i=0; i < labels.length; i++) {
           binding.bindByName("labelName" + i, labels[i]);
         }
         binding.bindByName("num", labels.length);
       }
-        
+      
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      
+      while (stmt.executeStep()) {
+        sum = stmt.row.sum;
+      }
+      
+      stmt.reset();
+      
+      return sum;
+    }catch(aError){
+      restclient.error(aError);
+    }finally{
+      stmt.reset();
+    }
+    return false;
+  },
+  findRequestsByKeywordAndLabels: function(word, labels, offset){
+    word = (typeof word !== 'string') ? '' : $.trim(word);
+    if(typeof labels === 'string' && labels != '')
+      labels = [labels];
+      
+    var sql;
+    if(word === '')
+      if(typeof labels === 'undefined' || labels.length === 0)
+        sql = restclient.sqlite.sql.findRequests;
+      else
+        sql = restclient.sqlite.sql.findRequestsByLabels;
+    else
+      if(typeof labels === 'undefined' || labels.length === 0)
+        sql = restclient.sqlite.sql.findRequestsByKeyword;
+      else
+        sql = restclient.sqlite.sql.findRequestsByKeywordAndLabels;
+    
+    if(typeof labels === 'object' && labels.length > 0)
+    {
+      var inClause = '';
+      for(var i=0; i < labels.length; i++) {
+        inClause += ":labelName" + i + ",";
+      }
+      inClause = inClause.substring(0, inClause.length - 1);
+      sql = sql.replace(/placeholder/, inClause);
+    }
+    
+    if(typeof offset !== 'undefined')
+      sql += ' LIMIT 10 OFFSET :offset';
+      
+    var stmt = restclient.sqlite.db.createStatement(sql);
+    try{
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      if(word !== '')
+        binding.bindByName("word", '%' + word + '%');
+      
+      if(typeof labels === 'object' && labels.length > 0){
+        for(var i=0; i < labels.length; i++) {
+          binding.bindByName("labelName" + i, labels[i]);
+        }
+        binding.bindByName("num", labels.length);
+      }
+      
+      if(typeof offset !== 'undefined')
+        binding.bindByName("offset", offset);
+      
       params.addParams(binding);
       stmt.bindParameters(params);
       
@@ -438,7 +521,6 @@ restclient.sqlite = {
         request.lastAccess = stmt.row.lastAccess;
         var labels = restclient.sqlite.getLabelsByUUID(request.uuid);
         request.labels = (labels === false) ? [] : labels;
-        
         requests.push(request);
       }
       
@@ -453,6 +535,31 @@ restclient.sqlite = {
     return false;
   },
   removeRequest: function(uuid){
+    try{
+      var stmt = restclient.sqlite.getStatement('removeLabelByUUID');
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
+      binding.bindByName("uuid", uuid);
+
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      stmt.execute();
+      
+      var stmt = restclient.sqlite.getStatement('removeRequests');
+      var params = stmt.newBindingParamsArray(),
+          binding = params.newBindingParams();
+      
+      binding.bindByName("uuid", uuid);
+
+      params.addParams(binding);
+      stmt.bindParameters(params);
+      stmt.execute();
+      
+    }catch(aError){
+      restclient.error(aError);
+      return false;
+    }
     return true;
   },
   getLabels: function(){

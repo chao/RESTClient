@@ -1,8 +1,8 @@
-#labels .label {
+#mb-labels .label {
   font-size: 14px;
   cursor: pointer;
 }
-span.edit {
+#mb-labels span.edit {
   font-size: 14px;
   color: #999;
   cursor: pointer;
@@ -10,55 +10,60 @@ span.edit {
 .hide {
   display: none;
 }
-.label-div{
+#mb-labels .label-div{
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 10px;
 }
-.label-div .remove {
+#mb-labels .label-div .remove {
   margin-left: 5px;
   margin-right: 3px;
   cursor: pointer;
 }
-#requests {
+#mb-requests {
   font-size: 14px;
   line-height: 12px;
 }
-#requests .requestNum {
+#mb-requests .requestNum {
   vertical-align: top;
   font-size: 12px;
   margin-left: -5px;
 }
-#requests ul{
+#mb-requests ul{
   margin-left: 0px;
 }
-#requests ul li
+#mb-requests ul li
 {
   list-style-type: none;
   margin-bottom: 15px;
   padding: 10px 19px;
 }
-.bookmark-button {
+#mb-requests .loading {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+#mb-requests .bookmark-button {
   float: right;
 }
-div.bookmark-title {
+#mb-requests div.bookmark-title {
   font-size: 16px;
 }
-div.bookmark-details {
+#mb-requests div.bookmark-details {
   margin: 5px 0;
 }
-div.curl {
+#mb-requests div.curl {
   margin-left: 30px;
 }
-span.bookmark-label {
+#mb-requests span.bookmark-label {
   text-align: left;
   font-weight:bold;
 }
-.lastAccess {
+#mb-requests .lastAccess {
   font-size: 11px;
   color: #666;
 }
-.bookmark-details .label {
+#mb-requests .bookmark-details .label {
   padding: 0px 8px;
   line-height: 20px;
   font-size: 12px;
@@ -66,16 +71,12 @@ span.bookmark-label {
   color: #333;
   text-shadow: 0px -1px 0px rgba(1, 1, 1, 0.05);
 }
-.labels {
+#mb-requests .labels {
   margin-top: 12px !important
 }
 
-.loading {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.backtotop {
+
+#mb-footer .backtotop {
   width: 100%;
   text-align: right;
 }

@@ -33,11 +33,11 @@ restclient.bookmark = {
   cachedRequests: new Array(),
   callback: null,
   init: function(){
-    var retVals = (window.hasOwnProperty('arguments') && window.arguments.length > 0) ? window.arguments[0] : {};
+    /*var retVals = (window.hasOwnProperty('arguments') && window.arguments.length > 0) ? window.arguments[0] : {};
     var theme = (typeof retVals.theme !== 'undefined') ? retVals.theme : 'simplex';
     
     restclient.bookmark.callback = (window.hasOwnProperty('arguments') && typeof window.arguments[1] === 'function') ? window.arguments[1] : false;
-    restclient.bookmark.initSkin(theme);
+    restclient.bookmark.initSkin(theme);*/
     
     restclient.init();
     restclient.sqlite.open();
@@ -89,7 +89,7 @@ restclient.bookmark = {
   },
   initEvents: function(){
     $('a.favorite').live('click', restclient.bookmark.toggleFavorite);
-    $('#labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
+    $('#mb-labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
     $('.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
     $('.requestName').live('click', restclient.bookmark.applyRequest);
     $( window ).bind('scroll', restclient.bookmark.scrollWindow);
@@ -146,12 +146,12 @@ restclient.bookmark = {
     if($(this).attr('data-state') === 'normal')
     {
       $(this).text('cancel').attr('data-state', 'edit');
-      $('#labels .remove').show();
+      $('#mb-labels .remove').show();
     }
     else
     {
       $(this).text('edit').attr('data-state', 'normal');
-      $('#labels .remove').hide();
+      $('#mb-labels .remove').hide();
     }
     return false;
   },
@@ -277,5 +277,5 @@ restclient.bookmark = {
   }
 };
 
-window.addEventListener("load", function () { restclient.bookmark.init();  }, false);
-window.addEventListener("unload", function () { restclient.bookmark.unload(); }, false);
+//window.addEventListener("load", function () { restclient.bookmark.init();  }, false);
+//window.addEventListener("unload", function () { restclient.bookmark.unload(); }, false);

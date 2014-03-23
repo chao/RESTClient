@@ -212,6 +212,11 @@ restclient.main = {
        type: "text/css",
        href: "css/animate.css"
     }).appendTo("head");
+    $("<link/>", {
+       rel: "stylesheet",
+       type: "text/css",
+       href: "css/restclient.bookmark.css"
+    }).appendTo("head");
   },
   initSkin: function () {
     var requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag'),
@@ -1411,13 +1416,10 @@ restclient.main = {
     return false;
   },
   manageFavoriteRequests: function () {
-    setTimeout(function () {
-      var win = restclient.getRecentWindow();
-      var arg = {theme: restclient.main.currentTheme};
-      win.openDialog("chrome://restclient/content/bookmarks.html", "_blank", 
-      "width=600,height=415,resizable,chrome=no,centerscreen,modal=yes,close=yes,scrollbars=yes,status=no",
-       arg, restclient.main.applyRequest);
-    }, 200);
+    //$('#bookmark-sidebar').load("chrome://restclient/content/bookmarks.html", function(){
+      $('#bookmark-sidebar').show();
+      restclient.bookmark.init();
+      //});
   },
   getFavoriteRequestHtml: function (id, name, request) {
     var group = $('<div class="accordion-group"></div>'),

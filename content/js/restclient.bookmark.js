@@ -33,66 +33,13 @@ restclient.bookmark = {
   cachedRequests: new Array(),
   callback: null,
   init: function(){
-    /*var retVals = (window.hasOwnProperty('arguments') && window.arguments.length > 0) ? window.arguments[0] : {};
-    var theme = (typeof retVals.theme !== 'undefined') ? retVals.theme : 'simplex';
-    
-    restclient.bookmark.callback = (window.hasOwnProperty('arguments') && typeof window.arguments[1] === 'function') ? window.arguments[1] : false;
-    restclient.bookmark.initSkin(theme);*/
-    
-    restclient.init();
-    restclient.sqlite.open();
-    
     restclient.bookmark.initLabels();
-    restclient.bookmark.initModals();
     restclient.bookmark.updateRequests(0);
-    restclient.bookmark.initEvents();
   },
-  unload: function(){},
-  initSkin: function(theme) {
-    $("link").remove();
-    $("<link/>", {
-       rel: "stylesheet",
-       type: "text/css",
-       href: "css/themes/" + theme + "/bootstrap.css"
-    }).appendTo("head");
-    $("<link/>", {
-       rel: "stylesheet",
-       type: "text/css",
-       href: "css/themes/" + theme + "/bootstrap-responsive.css"
-    }).appendTo("head");
-    $("<link/>", {
-       rel: "stylesheet",
-       type: "text/css",
-       href: "css/font-awesome.css"
-    }).appendTo("head");
-    $("<link/>", {
-       rel: "stylesheet",
-       type: "text/css",
-       href: "css/restclient.bookmark.css"
-    }).appendTo("head");
-    $("<link/>", {
-       rel: "stylesheet",
-       type: "text/css",
-       href: "css/animate.css"
-    }).appendTo("head");
-  },
-  initModals: function(){
-    $('#modal-label-remove').on('show', function () {
-      var label = $('#modal-label-remove').data('label');
-      $('#modal-label-remove .label').text(label);
-    });
-    
-    $('.modal .btnClose').live('click', function () {
-      $(this).parents('.modal').modal('hide');
-      return false;
-    });
-  },
-  initEvents: function(){
-    $('a.favorite').live('click', restclient.bookmark.toggleFavorite);
-    $('#mb-labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
-    $('.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
-    $('.requestName').live('click', restclient.bookmark.applyRequest);
-    $( window ).bind('scroll', restclient.bookmark.scrollWindow);
+  unload: function(){
+    $('#bookmark-sidebar').hide();
+    $('#bookmark-sidebar #bm-labels .edit').text('edit').attr('data-state', 'normal');
+    $('#bookmark-sidebar .labels-panel').empty();
   },
   initLabels: function(){
     var labels = restclient.sqlite.getLabels();
@@ -116,11 +63,12 @@ restclient.bookmark = {
     if( restclient.bookmark.scrollProcessing )
       return false;
     restclient.bookmark.scrollProcessing = true;
-    if ($(window).scrollTop() >= $(document).height() - $(window).height() - 700){
-      console.log('scrolling');
-      var num = $('#requests li[data-uuid]').length;
-      console.log(num);
-      var requestNum = parseInt($('.requestNum').text());
+    //console.log($('#bm-sidebar-inner').scrollTop());
+    //console.log($('#bm-requests').height() + $('#bm-labels').height() + $('#bm-footer').height() - $('#bm-sidebar-inner').height() - 400);
+    if ($('#bm-sidebar-inner').scrollTop() >= $('#bm-requests').height() + $('#bm-labels').height() + $('#bm-footer').height() - $('#bm-sidebar-inner').height() - 400){
+      var num = $('#bm-requests li[data-uuid]').length;
+      //console.log(num);
+      var requestNum = parseInt($('#bm-requests .requestNum').text());
       if(num < requestNum)
       {
         $('.loading').show();
@@ -129,6 +77,10 @@ restclient.bookmark = {
       }
     }
     restclient.bookmark.scrollProcessing = false;
+  },
+  scrollToTop: function(){
+    $('#bm-sidebar-inner').scrollTop(0);
+    return false;
   },
   clickLabel: function(){
     $(this).toggleClass('label-important');
@@ -146,12 +98,12 @@ restclient.bookmark = {
     if($(this).attr('data-state') === 'normal')
     {
       $(this).text('cancel').attr('data-state', 'edit');
-      $('#mb-labels .remove').show();
+      $('#bm-labels .remove').show();
     }
     else
     {
       $(this).text('edit').attr('data-state', 'normal');
-      $('#mb-labels .remove').hide();
+      $('#bm-labels .remove').hide();
     }
     return false;
   },

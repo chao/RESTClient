@@ -363,7 +363,7 @@ issue: https://github.com/twitter/bootstrap/issues/6344
 }
 #bookmark-sidebar {
   background-color:rgba(0, 0, 0, 0.2);
-  z-index:10160;
+  z-index:1038;
   position: fixed;
   top: 0;
   right: 0;
@@ -380,7 +380,7 @@ issue: https://github.com/twitter/bootstrap/issues/6344
   width: 674px;
   background: #fff;
   height: 100%;
-  z-index: 1999;
+  z-index: 1039;
   -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.1);
   overflow: scroll;

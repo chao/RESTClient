@@ -53,15 +53,11 @@ restclient.main = {
     restclient.init();
     restclient.sqlite.open();
     
+    this.initEvents();
     this.initSkin();
 
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
     $(window).on('scroll', restclient.main.processScroll).scroll();
-
-    $('.modal .btnClose').live('click', function () {
-      $(this).parents('.modal').modal('hide');
-      return false;
-    });
 
     this.initHotKeys();
     this.initModal();
@@ -131,6 +127,15 @@ restclient.main = {
     
     window.onhashchange = restclient.main.hashChange;
     restclient.main.hashChange();
+  },
+  initEvents: function(){
+    $('#bm-sidebar-inner a.favorite').live('click', restclient.bookmark.toggleFavorite);
+    $('#bm-labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
+    $('#bm-sidebar-inner.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
+    $('#bm-sidebar-inner.requestName').live('click', restclient.bookmark.applyRequest);
+    $('#bm-sidebar-inner .close').on('click', restclient.bookmark.unload);
+    $('#bm-sidebar-inner').bind('scroll', restclient.bookmark.scrollWindow);
+    $('#bm-sidebar-inner .bm-top').bind('click', restclient.bookmark.scrollToTop);
   },
   unload: function() {
     restclient.sqlite.close();
@@ -634,6 +639,15 @@ restclient.main = {
         autoRefresh.addClass('active');
       else
         autoRefresh.removeClass('active');
+    });
+    $('#modal-label-remove').on('show', function () {
+      var label = $('#modal-label-remove').data('label');
+      $('#modal-label-remove .label').text(label);
+    });
+    
+    $('.modal .btnClose').live('click', function () {
+      $(this).parents('.modal').modal('hide');
+      return false;
     });
   },
   showModal: function (modalId) {

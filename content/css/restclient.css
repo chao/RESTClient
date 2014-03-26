@@ -370,7 +370,7 @@ issue: https://github.com/twitter/bootstrap/issues/6344
   bottom: 0;
   left: 0;
   opacity: 1;
-  overflow-y: scroll;
+  overflow: none;
 }
 #bm-sidebar-inner {
   position: absolute;
@@ -384,4 +384,45 @@ issue: https://github.com/twitter/bootstrap/issues/6344
   -webkit-box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0px 0 20px 0 rgba(0, 0, 0, 0.1);
   overflow: scroll;
+}
+
+.bookmark-sidebar-scrollbar {
+  position: absolute;
+  height: 100%;
+  width: 15px;
+  right: 0;
+  top: 0;
+  z-index: 1039;
+  overflow: none;
+}
+.bookmark-sidebar-scrollbar .scrollbg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 15px;
+  z-index: 1;
+  background: url(chrome://restclient/content/images/scrollbarbg.gif) repeat-y
+}
+.bookmark-sidebar-scrollbar .scrollbar-slider {
+  position: absolute;
+  display: block;
+  padding-bottom: 4px;
+  height: 4px;
+  width: 8px;
+  right: 3px;
+  top: 0;
+  cursor: move;
+  z-index: 2;
+  background: url(chrome://restclient/content/images/scrollbarbottom.gif) 50% bottom no-repeat #c2c2c2
+}
+.bookmark-sidebar-scrollbar .scrollbar-slider .ss-top {
+  height: 4px;
+  background: url(chrome://restclient/content/images/scrollbartop.gif) 50% top no-repeat #c2c2c2
+}
+.bookmark-sidebar-scrollbar .scrollbar-slider:hover {
+  background: url(chrome://restclient/content/images/scrollbarbottomh.gif) 50% bottom no-repeat #aeaeae
+}
+.bookmark-sidebar-scrollbar .scrollbar-slider:hover .ss-top {
+  background: url(chrome://restclient/content/images/scrollbartoph.gif) 50% top no-repeat #aeaeae
 }

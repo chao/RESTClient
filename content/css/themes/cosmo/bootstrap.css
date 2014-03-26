@@ -6667,8 +6667,6 @@ legend {
 }
 
 .label {
-  min-width: 80px;
-  min-height: 80px;
   font-weight: 300;
   text-shadow: none;
   -webkit-border-radius: 0;

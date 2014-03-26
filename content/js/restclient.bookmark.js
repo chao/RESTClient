@@ -35,6 +35,9 @@ restclient.bookmark = {
   init: function(){
     restclient.bookmark.initLabels();
     restclient.bookmark.updateRequests(0);
+    $('#bookmark-sidebar').show();
+    var bgColor = $('body').css('background-color');
+    $('#bm-sidebar-inner').css('background-color', bgColor);
   },
   unload: function(){
     if(!$('#bookmark-sidebar').is(':visible'))
@@ -61,7 +64,17 @@ restclient.bookmark = {
       $('.labels-panel').append(div);
     });
   },
+  initScrollbarSize: function(){
+    var scrollbarHeight = $('.bookmark-sidebar-scrollbar').outerHeight(),
+        sidebarHeight = $('#bm-sidebar-inner').outerHeight(),
+        sidebarContentHeight = $('#bm-requests').outerHeight() + $('#bm-labels').outerHeight() + $('#bm-footer').outerHeight();
+    var ratio = Math.floor(sidebarContentHeight /sidebarHeight);
+    var sliderHeight = Math.floor(scrollbarHeight / ratio);
+    var sliderTop = Math.floor($('#bm-sidebar-inner').scrollTop() / ratio);
+    $('.bookmark-sidebar-scrollbar .scrollbar-slider').css('height', sliderHeight).css('top', sliderTop);
+  },
   scrollWindow: function(event){
+    //restclient.bookmark.initScrollbarSize();
     if( restclient.bookmark.scrollProcessing )
       return false;
     restclient.bookmark.scrollProcessing = true;

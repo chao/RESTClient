@@ -1437,7 +1437,6 @@ restclient.main = {
   },
   manageFavoriteRequests: function () {
     //$('#bookmark-sidebar').load("chrome://restclient/content/bookmarks.html", function(){
-      $('#bookmark-sidebar').show();
       restclient.bookmark.init();
       //});
   },

@@ -37,6 +37,8 @@ restclient.bookmark = {
     restclient.bookmark.updateRequests(0);
   },
   unload: function(){
+    if(!$('#bookmark-sidebar').is(':visible'))
+      return false;
     $('#bookmark-sidebar').hide();
     $('#bookmark-sidebar #bm-labels .edit').text('edit').attr('data-state', 'normal');
     $('#bookmark-sidebar .labels-panel').empty();
@@ -223,9 +225,11 @@ restclient.bookmark = {
     var uuid = $(this).parents('li').attr('data-uuid');
     var request = _.where(restclient.bookmark.cachedRequests, {uuid: uuid});
     if(request.length > 0) {
-      restclient.bookmark.callback(request[0].request);
-      window.close();
+      //console.log(request[0].request);
+      restclient.main.applyRequest(request[0].request);
+      restclient.bookmark.unload();
     }
+    return false;
   }
 };
 

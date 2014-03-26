@@ -47,7 +47,8 @@ restclient.main = {
     toggleRequest: 'alt+q',
     toggleResponse: 'alt+s',
     back: 'left',
-    forward: 'right'
+    forward: 'right',
+    escape: 'esc'
   },
   init: function () {
     restclient.init();
@@ -131,8 +132,8 @@ restclient.main = {
   initEvents: function(){
     $('#bm-sidebar-inner a.favorite').live('click', restclient.bookmark.toggleFavorite);
     $('#bm-labels span.edit').on('click', restclient.bookmark.clickLabelEdit);
-    $('#bm-sidebar-inner.removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
-    $('#bm-sidebar-inner.requestName').live('click', restclient.bookmark.applyRequest);
+    $('#bm-sidebar-inner .removeBookmark').live('click', restclient.bookmark.clickRemoveBookmark);
+    $('#bm-sidebar-inner .requestName').live('click', restclient.bookmark.applyRequest);
     $('#bm-sidebar-inner .close').on('click', restclient.bookmark.unload);
     $('#bm-sidebar-inner').bind('scroll', restclient.bookmark.scrollWindow);
     $('#bm-sidebar-inner .bm-top').bind('click', restclient.bookmark.scrollToTop);
@@ -320,6 +321,11 @@ restclient.main = {
     });
     $(document).bind('keydown', restclient.main.hotkey.forward, function () {
       window.history.forward();
+      return false;
+    });
+    
+    $(document).bind('keydown', restclient.main.hotkey.escape, function () {
+      restclient.bookmark.unload();
       return false;
     });
     

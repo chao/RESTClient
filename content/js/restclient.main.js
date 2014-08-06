@@ -51,7 +51,7 @@ restclient.main = {
     restclient.init();
     restclient.sqlite.open();
     restclient.sqlite.initTables();
-    
+
     this.initSkin();
 
     restclient.main.navTop = $('.subnav').length && $('.subnav').offset().top - $('.navbar').first().height();
@@ -128,7 +128,7 @@ restclient.main = {
       $('#modal-oauth-view').data('source-header-id', headerId);
       $('#modal-oauth-view textarea').val($('span[data-header-id="' + headerId + '"]').attr('header-value'));
     });
-    
+
     window.onhashchange = restclient.main.hashChange;
     restclient.main.hashChange();
   },
@@ -170,7 +170,7 @@ restclient.main = {
   },
   clearCachedRequests: function() {
     var num = restclient.sqlite.getRequestCount();
-    
+
     if(num > 0)
       restclient.sqlite.initTables(true);
     restclient.message.show({
@@ -223,7 +223,7 @@ restclient.main = {
     var pageLayout = restclient.getPref('pageLayout', 'fixed'),
         requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag'),
         requestTimer = restclient.getPref('requestTimer', false);
-        
+
     if (pageLayout === 'percentage') {
       $('.container').addClass('container-fluid').removeClass('container');
       $('.toggle-page-layout').attr('data-layout', 'percentage');
@@ -236,12 +236,12 @@ restclient.main = {
       $('.toggle-header-layout').attr('data-layout', 'table');
       $('.toggle-header-layout').text('List request headers in tag');
     }
-    
+
     if (requestTimer === true) {
       $('.toggle-request-timer').attr('data-timer', 'enable');
       $('.toggle-request-timer').text('Disable request execution timer');
     }
-    
+
     var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.simplex.css');
     restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function () {
@@ -306,7 +306,7 @@ restclient.main = {
       restclient.main.toggleResponse();
       return false;
     });
-    
+
     $(document).bind('keydown', restclient.main.hotkey.back, function () {
       window.history.back();
       return false;
@@ -633,15 +633,15 @@ restclient.main = {
         password = $("#modal-basic-authorization [name='password']"),
         btnOkay  = $("#modal-basic-authorization .btnOkay"),
         btnGroup = $("#modal-basic-authorization .btn-group");
-    
+
     if(remember === true)
       restclient.setPref('ignoreBasicAuthCheck', 'yes');
-      
+
     if(restclient.getPref('ignoreBasicAuthCheck', 'no') === 'yes')
       ignore = true;
     if(typeof ignore === 'undefined')
       ignore = false;
-    
+
     if (username.val() == '' && !ignore) {
       username.next().text('Please input the username for authorization').show();
       username.focus();
@@ -656,7 +656,7 @@ restclient.main = {
       btnGroup.show();
       return false;
     }
-    
+
     btnOkay.show();
     btnGroup.hide();
     var strValue = username.val() + ":" + password.val(),
@@ -703,7 +703,7 @@ restclient.main = {
         header    = $('#request-headers .tag span[data-header-id="' + id + '"]'),
         attrName  = header.attr('header-name'),
         attrValue = header.attr('header-value');
-    
+
     restclient.log(attrName);
     if(attrName.toLowerCase() === 'authorization') {
       //OAuth 2.0
@@ -736,7 +736,7 @@ restclient.main = {
         return;
       }
     }
-    
+
     $('#modal-custom-header').data('source-header-id', id);
     $('#modal-custom-header').modal('show');
   },
@@ -795,24 +795,24 @@ restclient.main = {
     try{
       var text    = name + ": " + value,
           newId   = restclient.helper.sha1(text);
-      
+
       if (text.length > restclient.main.headerLabelMaxLength)
          text = text.substr(0, restclient.main.headerLabelMaxLength-3) + "...";
-      
+
       var tag = $('span[data-header-id="' + oldId + '"]');
       tag.attr('header-name', name)
       .attr('header-value', value)
       .attr("title", name + ": " + value)
       .attr('data-header-id', newId)
       .text(text);
-      
+
       var tr = $('tr[data-header-id="' + oldId + '"]');
       tr.attr('data-header-id', newId)
       .attr('header-name', name)
       .attr('header-value', value);
       tr.find('td').first().text(name);
       tr.find('td').last().text(value);
-      
+
       if (param)
         for(var n in param) {
           if (!param.hasOwnProperty(n))
@@ -887,7 +887,7 @@ restclient.main = {
       responseTabs.push(['showBodyHighlight', showBodyHighlight]);
       responseTabs.push(['showBodyPreview', showBodyPreview]);
       responseTabs.push(['showBodyXPath', showBodyXPath]);
-      
+
       restclient.setPref('responseTabs', JSON.stringify(responseTabs));
       this.initResponseTabs();
   } catch (e) {
@@ -1201,47 +1201,73 @@ restclient.main = {
   },
   formatXPath: function(xml) {
     var xPathString = '';
+    var results;
     try {
       var xmlDoc = jQuery.parseXML(xml);
-      xPathString = restclient.main.processChildNodes(xmlDoc.childNodes);
+      results = restclient.main.processChildNodes(xmlDoc.childNodes);
     } catch (e) {
-      console.error(e);
+    //   console.error(e);
+      return "Invalid XML\n\nPlease check your XML and try again.";
     }
-    return xPathString;
+    return results.xPathString + "\n\n" + results.countString;
   },
   processChildNodes: function (xmlNodes) {
     var xPathString = '';
+    var countString = '';
     var currentChildCount;
     for (var i = 0; i < xmlNodes.length; i++) {
-      if (xmlNodes[i].nodeName != "#text") {
+      if (xmlNodes[i].nodeName != "#text" && xmlNodes[i].nodeName != "#comment") {
         xPathString += restclient.main.getXpath(xmlNodes[i]);
         var childCount = xmlNodes[i].childNodes.length;
+        var childElementCount = restclient.main.getChildElementCount(xmlNodes[i].childNodes);
+        if (childElementCount > 1) {
+            countString += 'count('+restclient.main.getXpath(xmlNodes[i], true)+'/*) = ' + childElementCount + "\n";
+        }
         // no child nodes, so it must be an empty data element
-        if (childCount == 0) {
-          xPathString += "[text()='']";
+        if (childCount == 0 && xmlNodes[i].nodeName != "#cdata-section") {
+          xPathString += "[not(text())]";
         }
         // only 1 child, and it's a #text
-        if (childCount == 1 && xmlNodes[i].childNodes[0].nodeName == "#text") {
-          xPathString += "[text()='"+jQuery.trim(xmlNodes[i].childNodes[0].nodeValue)+"']";
+        if (childCount == 1 && (xmlNodes[i].childNodes[0].nodeName == "#text" || xmlNodes[i].childNodes[0].nodeName == "#cdata-section")) {
+            if (xmlNodes[i].childNodes[0].nodeValue.indexOf("'") >= 0) {
+                xPathString += "[text()=\""+xmlNodes[i].childNodes[0].nodeValue+"\"]";
+            } else {
+                xPathString += "[text()='"+xmlNodes[i].childNodes[0].nodeValue+"']";
+            }
         }
         xPathString += "\n";
         // check for actual child elements, and not #text
         if (childCount >= 1 && !(childCount == 1 && xmlNodes[i].childNodes[0].nodeName == "#text")) {
-          xPathString += restclient.main.processChildNodes(xmlNodes[i].childNodes);
+          var results = restclient.main.processChildNodes(xmlNodes[i].childNodes);
+          xPathString += results.xPathString;
+          countString += results.countString;
         }
       }
     }
-    return xPathString;
+    return {'xPathString':xPathString, 'countString':countString};
   },
-  getXpath: function(element) {
+  getXpath: function(element, forCount) {
     var xpath = '';
       for ( ; element && element.nodeType == 1; element = element.parentNode) {
           var id = $(element.parentNode).children(element.tagName).index(element) + 1;
-          id > 1 ? (id = '[' + id + ']') : (id = '');
-          xpath = '/' + element.tagName.toLowerCase() + id + xpath;
+          if (forCount && id >= 1 && $(element.parentNode).children(element.tagName).length > 1) {
+              id = '[' + id + ']';
+          } else {
+              id >= 1 && $(element.parentNode).children(element.tagName).length > 1? (id = '[' + id + ']') : (id = '');
+          }
+          xpath = '/' + element.tagName + id + xpath;
       }
       return xpath;
   },
+    getChildElementCount: function(nodes) {
+      var count = 0;
+        for (var t = 0; t < nodes.length; t++) {
+            if (nodes[t].nodeName != "#text" && nodes[t].nodeName != "#comment") {
+                count++;
+            }
+        }
+        return count;
+    },
   display: function () {
     var responseData = this.xhr.responseText;
     $('#response-body-raw pre').text(responseData);
@@ -1257,7 +1283,7 @@ restclient.main = {
                                .getService(Components.interfaces.nsIScriptableUnescapeHTML)
                                .parseFragment(responseData, false, null, target);
       //TODO: https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIParserUtils
-      
+
       $("#response-body-preview div.pre").append(fragment);
       $("#response-body-preview div.pre").removeClass('overflow');
 
@@ -1657,20 +1683,20 @@ restclient.main = {
         oauth_realm             = $('#oauth-setting [name="oauth_realm"]'),
         disable_oauth_realm     = $('#oauth-setting [name="disable_oauth_realm"]'),
         setting                 = restclient.getPref('OAuth.setting', '');
-    
+
     //$('#get-access-token .btnOkay').bind('click', restclient.main.oauthAuthorize);
     $('#oauth-setting .help-block').hide();
-    
+
     function autoRealm(checked) {
       if(typeof checked === 'boolean')
         if(checked)
           auto_oauth_realm.attr('checked', true);
         else
           auto_oauth_realm.removeAttr('checked');
-      
-      if (disable_oauth_realm.attr('checked') !== 'checked' && auto_oauth_realm.attr('checked') !== 'checked') 
+
+      if (disable_oauth_realm.attr('checked') !== 'checked' && auto_oauth_realm.attr('checked') !== 'checked')
         oauth_realm.removeClass('disabled').removeAttr('disabled');
-      else 
+      else
         oauth_realm.addClass('disabled').attr('disabled', true);
     }
     function disableRealm(disabled) {
@@ -1679,12 +1705,12 @@ restclient.main = {
           disable_oauth_realm.attr('checked', true);
         else
           disable_oauth_realm.removeAttr('checked');
-          
+
       if (disable_oauth_realm.attr('checked') === 'checked')
         auto_oauth_realm.addClass('disabled').attr('disabled',true);
       else
         auto_oauth_realm.removeClass('disabled').removeAttr('disabled');
-      
+
       autoRealm();
     }
     function autoTimeStamp(auto) {
@@ -1693,7 +1719,7 @@ restclient.main = {
           auto_oauth_timestamp.attr('checked', true);
         else
           auto_oauth_timestamp.removeAttr('checked');
-          
+
       if (auto_oauth_timestamp.attr('checked') == 'checked') {
         oauth_timestamp.val('').addClass('disabled').attr('disabled',true);
         oauth_timestamp.parent().next().hide();
@@ -1710,23 +1736,23 @@ restclient.main = {
           auto_oauth_nonce.attr('checked', true);
         else
           auto_oauth_nonce.removeAttr('checked');
-          
+
       if (auto_oauth_nonce.attr('checked') == 'checked') {
         oauth_nonce.val('').addClass('disabled').attr('disabled',true);
       }
       else
         oauth_nonce.val(restclient.oauth.getNonce()).removeClass('disabled').removeAttr('disabled');
     }
-    
+
     //Load setting from preferences
     if (setting != '') {
       setting = JSON.parse(setting);
-      
+
       autoTimeStamp (setting.auto_oauth_timestamp === true);
       autoNonce (setting.auto_oauth_nonce === true);
       disableRealm (setting.disable_oauth_realm === true);
       autoRealm (setting.auto_oauth_realm === true);
-      
+
       oauth_realm.val((typeof (setting.oauth_realm) === 'string') ? setting.oauth_realm : '');
       $('#oauth-setting [name="oauth_version"] option[value="' + setting.oauth_version + '"]').attr('selected', true);
       $('#oauth-setting [name="oauth_signature_method"] option[value="' + setting.oauth_signature_method + '"]').attr('selected', true);
@@ -1738,10 +1764,10 @@ restclient.main = {
       disableRealm(true);
       autoRealm(true);
     }
-    
+
     $('#oauth-setting .btnOkay').click(function () {
-      
-      if (!oauth_realm.hasClass('disabled') 
+
+      if (!oauth_realm.hasClass('disabled')
             && (oauth_realm.val().indexOf('?') > -1 || oauth_realm.val().indexOf('#') > -1))
       {
         oauth_realm.parents('.control-group').addClass('error');
@@ -1758,9 +1784,9 @@ restclient.main = {
       param.auto_oauth_realm        = (auto_oauth_realm.attr('checked') === 'checked');
       param.disable_oauth_realm     = (disable_oauth_realm.attr('checked') === 'checked');
       param.oauth_realm             = oauth_realm.val();
-      
+
       restclient.setPref('OAuth.setting', JSON.stringify(param));
-      
+
       var message = restclient.message.show({
         id: 'alert-oauth-setting-saved',
         parent: $('#oauth-setting .infobar'),
@@ -1787,7 +1813,7 @@ restclient.main = {
         sign_access_token_secret  = $('#signature-request [name="access_token_secret"]'),
         sign_remember             = $('#signature-request [name="remember"]'),
         sign = restclient.getPref('OAuth.sign', '');
-        
+
     if (sign != '') {
       sign = JSON.parse(sign);
       if (sign.consumer_key)
@@ -1798,7 +1824,7 @@ restclient.main = {
         sign_access_token.val (           sign.access_token);
       if (sign.access_token_secret)
         sign_access_token_secret.val (    sign.access_token_secret);
-      
+
       (sign.remember === true) ? sign_remember.attr('checked', true) : sign_remember.removeAttr('checked');
     }
 
@@ -1820,7 +1846,7 @@ restclient.main = {
         auto_oauth_realm          = $('#oauth-setting [name="auto_oauth_realm"]'),
         oauth_realm               = $('#oauth-setting [name="oauth_realm"]'),
         disable_oauth_realm       = $('#oauth-setting [name="disable_oauth_realm"]'),
-            
+
         sign_okay                 = $('#signature-request .btnOkay'),
 
         errors = [];
@@ -1848,7 +1874,7 @@ restclient.main = {
     }
 
     sign_okay.button('loading');
-    
+
     if (sign_remember.attr('checked') == 'checked') {
       var setting = {
         consumer_key        : sign_consumer_key.val(),
@@ -1873,7 +1899,7 @@ restclient.main = {
       oauth_version: oauth_version.val(),
       oauth_signature_method: oauth_signature_method.val()
     };
-    
+
     (oauth_nonce.val() === '') ? null : parameters.oauth_nonce = oauth_nonce.val();
     (oauth_timestamp.val() === '') ? null : parameters.oauth_timestamp = oauth_timestamp.val();
 
@@ -1901,7 +1927,7 @@ restclient.main = {
       }
     }
     //console.warn(param);
-    
+
     var sign = {
       action: requestMethod,
       path: requestUrl,
@@ -1914,11 +1940,11 @@ restclient.main = {
       else
         sign.realm = oauth_realm.val();
     }
-    
+
     var signature = restclient.oauth.sign(sign),
         headerValue = signature.headerString,
         param       = {'oauth-parameters': JSON.stringify(parameters), 'oauth-secrets': JSON.stringify(secrets)};
-        
+
     if (disable_oauth_realm.attr('checked') !== 'checked') {
       if(auto_oauth_realm.attr('checked') === 'checked')
         param['auto-realm'] = true;
@@ -1960,23 +1986,23 @@ restclient.main = {
   updateOAuthSign: function (headerId) {
     try {
       restclient.log('.tag span[data-header-id="' + headerId + '"]');
-      
+
       var headerSpan      = $('.tag span[data-header-id="' + headerId + '"]'),
           secrets         = JSON.parse(headerSpan.attr('oauth-secrets')),
           parameters      = JSON.parse(headerSpan.attr('oauth-parameters')),
           oauth_realm     = headerSpan.attr('realm'),
           auto_realm      = (typeof headerSpan.attr('auto-realm') === 'string') ? JSON.parse(headerSpan.attr('auto-realm')) : false;
-          
+
       //restclient.log('[updateOAuthSign] headerId: ' + headerId);
       //restclient.log('[updateOAuthSign] oauth_realm: ' + oauth_realm);
-      
+
       var requestMethod = $.trim($('#request-method').val()),
           requestUrl    = $.trim($('#request-url').val()),
           requestBody   = $('#request-body').val();
-      
+
       restclient.oauth.reset();
       var param = JSON.parse(JSON.stringify(parameters));
-      
+
       if (requestUrl !== '') {
         var paths = restclient.helper.parseUrl(requestUrl);
         if (typeof paths['search'] === 'string')
@@ -1986,15 +2012,15 @@ restclient.main = {
         }
         requestUrl = paths['hrefNoSearch'];
       }
-      
+
       if (["put", "post"].indexOf(requestMethod.toLowerCase()) > -1) {
         var requestBody = $('#request-body').val();
         if (requestBody != '' && requestBody.indexOf('=') > -1) {
           param = $.extend(param, restclient.oauth.parseParameterString(requestBody));
         }
       }
-      
-      
+
+
       var sign = {
                   action: requestMethod,
                   path: requestUrl,
@@ -2006,19 +2032,19 @@ restclient.main = {
       else
         if (typeof oauth_realm === 'string')
           sign.realm = oauth_realm;
-      
+
       //restclient.log(sign);
       var signature = restclient.oauth.sign(sign);
       //restclient.log(signature);
       var headerValue = signature.headerString,
           param       = {"oauth-secrets": secrets, "oauth-parameters": parameters};
-      
+
       if (auto_realm === true)
         param.realm = true;
       else
         if (typeof oauth_realm === 'string')
           param.realm = oauth_realm;
-      
+
       //console.warn(param);
       //restclient.log('[updateOAuthSign] header Id: ' + headerId);
       //restclient.log('[updateOAuthSign] headerValue: ' + headerValue);

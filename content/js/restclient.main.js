@@ -158,7 +158,7 @@ restclient.main = {
     var pageLayout = restclient.getPref('pageLayout', 'fixed'),
         requestHeaderLayout = restclient.getPref('requestHeaderLayout', 'tag'),
         requestTimer = restclient.getPref('requestTimer', false);
-        
+
     if (pageLayout === 'percentage') {
       $('.container').addClass('container-fluid').removeClass('container');
       $('.toggle-page-layout').attr('data-layout', 'percentage');
@@ -171,12 +171,12 @@ restclient.main = {
       $('.toggle-header-layout').attr('data-layout', 'table');
       $('.toggle-header-layout').text('List request headers in tag');
     }
-    
+
     if (requestTimer === true) {
       $('.toggle-request-timer').attr('data-timer', 'enable');
       $('.toggle-request-timer').text('Disable request execution timer');
     }
-    
+
     var defaultCSS = restclient.getPref('defaultSkin', 'bootstrap.simplex.css');
     restclient.main.changeSkin(defaultCSS);
     $('a[css]').click(function () {
@@ -580,7 +580,7 @@ restclient.main = {
         header    = $('#request-headers .tag span[data-header-id="' + id + '"]'),
         attrName  = header.attr('header-name'),
         attrValue = header.attr('header-value');
-    
+
     restclient.log(attrName);
     if(attrName.toLowerCase() === 'authorization') {
       //OAuth 2.0
@@ -613,7 +613,7 @@ restclient.main = {
         return;
       }
     }
-    
+
     $('#modal-custom-header').data('source-header-id', id);
     $('#modal-custom-header').modal('show');
   },
@@ -672,24 +672,24 @@ restclient.main = {
     try{
       var text    = name + ": " + value,
           newId   = restclient.helper.sha1(text);
-      
+
       if (text.length > restclient.main.headerLabelMaxLength)
          text = text.substr(0, restclient.main.headerLabelMaxLength-3) + "...";
-      
+
       var tag = $('span[data-header-id="' + oldId + '"]');
       tag.attr('header-name', name)
       .attr('header-value', value)
       .attr("title", name + ": " + value)
       .attr('data-header-id', newId)
       .text(text);
-      
+
       var tr = $('tr[data-header-id="' + oldId + '"]');
       tr.attr('data-header-id', newId)
       .attr('header-name', name)
       .attr('header-value', value);
       tr.find('td').first().text(name);
       tr.find('td').last().text(value);
-      
+
       if (param)
         for(var n in param) {
           if (!param.hasOwnProperty(n))
@@ -1069,7 +1069,9 @@ restclient.main = {
       reformatted = JSON.stringify(JSON.parse(responseData), null, "  ");
     }catch(e) {}
     $('#response-body-highlight pre').empty().removeClass('prettyprint linenums');
-    $.JSONView(reformatted, $('#response-body-highlight pre'));
+    if (reformatted.length > 0) {
+      $.JSONView(reformatted, $('#response-body-highlight pre'));
+    }
     //$('#response-body-highlight pre').text(reformatted);
     $("#response-body-preview div.pre").removeClass('overflow').append($('<textarea></textarea>').text(reformatted));
   },

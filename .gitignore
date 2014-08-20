@@ -37,4 +37,8 @@ RESTClient.tmproj
 *.test.js
 *.xpi
 
+#Intellij files
+.idea
+*.iml
+
 content/test.html

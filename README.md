@@ -34,6 +34,6 @@
 * Version 2.0.0
   * Re-designed the UI by using [twitter bootstrap](twitter.github.com/bootstrap/)
   * Bind hotkeys to send request, input url, etc.
-  * Fixed multiple set-cookie response bug  (isseue #26)
+  * Fixed multiple set-cookie response bug  ([issue #26](https://github.com/chao/RESTClient/issues/26))
   * Allow to copy response headers
   * Added theme support

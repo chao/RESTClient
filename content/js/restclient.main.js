@@ -103,13 +103,6 @@ restclient.main = {
     $('.toggle-header-layout').click(restclient.main.toggleRequestHeaderLayout);
     $('.toggle-request-timer').click(restclient.main.toggleRequestTimer);
     $('.clear-cached-requests').click(restclient.main.clearCachedRequests);
-    $('#request-body').focus(function () {
-      if ($(this).innerHeight() < 200 )
-        $(this).css('height', '200px');
-    }).blur(function () {
-      if ($(this).innerHeight() > 60 )
-        $(this).css('height', '60px');
-    });
 
     $('#modal-oauth-view .btnAutoRefresh').bind('click', function () {
       var headerId = $('#modal-oauth-view').data('source-header-id');

@@ -33,6 +33,7 @@ restclient.headers = {
   "Accept-Charset": ["iso-8859-5", "utf-8"],
   "Accept-Encoding": ["gzip", "compress"],
   "Accept-Language": ["en-US"],
+  "Authorization": [],
   "Cache-Control": ["no-cache"],
   "Connection": ["close"],
   "Content-Length": [],

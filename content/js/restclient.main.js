@@ -29,8 +29,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 
 restclient.main = {
-  headerLabelMaxLength: 35,
-  headerMenuMaxLength: 25,
+  headerLabelMaxLength: 100,
+  headerMenuMaxLength: 100,
   uniqueHeaders: ['authorization'],
   navTop: null,
   ignoreHashChange: false,

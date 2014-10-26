@@ -102,9 +102,13 @@ restclient.sqlite = {
   },
   init: function() {
 	  var stmt = restclient.sqlite.getStatement('tablesExist');
-	  if(!stmt.executeStep()) {
+      try { 
+	    if(!stmt.executeStep()) {
 		  restclient.sqlite.initTables();
-	  }
+        }
+	  } finally {
+        stmt.reset();
+      }
   },
   initTables: function() {
     try{

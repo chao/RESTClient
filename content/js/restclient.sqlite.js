@@ -75,13 +75,16 @@ restclient.sqlite = {
     removeRequests: 'DELETE FROM requests WHERE uuid = :uuid',
     removeRequestByLabel: 'DELETE FROM requests WHERE uuid IN (SELECT uuid FROM labels WHERE labelName=:labelName)',
     updateRequestName: 'UPDATE requests SET requestName = :requestName WHERE uuid = :uuid',
-    updateRequestFavorite: 'UPDATE requests SET favorite = :favorite, lastAccess = :lastAccess WHERE uuid = :uuid'
+    updateRequestFavorite: 'UPDATE requests SET favorite = :favorite, lastAccess = :lastAccess WHERE uuid = :uuid',
+    	
+    tablesExist: "SELECT name FROM sqlite_master WHERE type='table' AND name='history'"
   },
   open: function() {
     try{
       var file = restclient.FileUtils.getFile("ProfD", ["restclient.sqlite"]);
       //restclient.log(file.path);
       restclient.sqlite.db = restclient.Services.storage.openDatabase(file);
+      restclient.sqlite.init();
       return true;
     }
     catch(e) {
@@ -96,6 +99,12 @@ restclient.sqlite = {
     catch(e) {
       restclient.error(e);
     }
+  },
+  init: function() {
+	  var stmt = restclient.sqlite.getStatement('tablesExist');
+	  if(!stmt.executeStep()) {
+		  restclient.sqlite.initTables();
+	  }
   },
   initTables: function() {
     try{
@@ -660,7 +669,6 @@ restclient.sqlite = {
       return false;
 
     restclient.sqlite.open();
-    restclient.sqlite.initTables();
     restclient.sqlite.importRequestFromJSON(JSON.parse(requests));
     restclient.sqlite.close();
   }

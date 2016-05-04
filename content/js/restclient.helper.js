@@ -180,7 +180,7 @@ restclient.helper = {
     }
 
     // convert the binary hash data to a hex string.
-    var s = [toHexString(hash.charCodeAt(i)) for (i in hash)].join("");
+    var s = hash.split("").map( c => toHexString(c.charCodeAt(0)) ).join("");
 
     return s;
   }

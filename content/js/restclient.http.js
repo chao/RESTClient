@@ -134,6 +134,11 @@ restclient.http = {
       }
     }
     
+    // handle a zero length body
+    if(xhr.responseText.length == 0) {
+      displayHandler = 'displayImageRaw';
+    }
+    
     //restclient.log(displayHandler);
     //restclient.log(contentType);
     restclient.main.checkMimeType.apply(restclient.http, []);

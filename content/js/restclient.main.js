@@ -686,6 +686,7 @@ restclient.main = {
       btnGroup.css('display', 'inline-block');
       return false;
     }
+    /* It's should be possible to use Basic Auth without password.
     if (password.val() == '' && !ignore) {
       password.next().text('Please input the password for authorization').css('display', 'block').parents('.control-group').addClass('error');
       password.focus();
@@ -693,6 +694,7 @@ restclient.main = {
       btnGroup.css('display', 'inline-block');
       return false;
     }
+    */
     
     btnOkay.show();
     btnGroup.hide();

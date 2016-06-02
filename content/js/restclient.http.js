@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 restclient.http = {
   mimeType : false,
-  methods: ['GET','POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE', 'CONNECT'],
+  methods: ['GET','POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE', 'CONNECT'],
   sendRequest: function(requestMethod, requestUrl, requestHeaders, mimeType, requestBody) {
     try{
       restclient.main.updateProgressBar(100);

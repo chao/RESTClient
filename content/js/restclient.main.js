@@ -697,7 +697,7 @@ restclient.main = {
     btnOkay.show();
     btnGroup.hide();
     var strValue = username.val() + ":" + password.val(),
-        strBase64 = btoa(strValue).replace(/.{76}(?=.)/g,'$&\n');
+        strBase64 = btoa(strValue);
 
     restclient.main.addHttpRequestHeader('Authorization', "Basic " + strBase64);
     if ( $("#modal-basic-authorization [name='remember']").attr('checked') === 'checked') {

@@ -39,7 +39,7 @@ var manifest = {
 // Tasks
 gulp.task('clean', () => {
   return pipe(`./build/${target}`, $.clean())
-})
+});
 
 gulp.task('build', (cb) => {
   $.runSequence('clean', 'styles', 'ext', cb)
@@ -130,7 +130,8 @@ function buildJS(target) {
     'background.js',
     'contentscript.js',
     'options.js',
-    'livereload.js'
+    'livereload.js',
+    'index.js'
   ]
 
   let tasks = files.map( file => {

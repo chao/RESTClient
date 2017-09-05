@@ -1,8 +1,8 @@
 {
-  "name": "__MSG_appName__",
-  "version": "0.0.1",
+  "name": "RESTClient",
+  "version": "3.0.0",
   "manifest_version": 2,
-  "description": "__MSG_appDescription__",
+  "description": "a debugger for RESTful web services.",
   "icons": {
     "16": "icons/icon-16.png",
     "128": "icons/icon-128.png"
@@ -40,8 +40,7 @@
       "19": "icons/icon-19.png",
       "38": "icons/icon-38.png"
     },
-    "default_title": "Extension Boilerplate",
-    "default_popup": "popup.html"
+    "default_title": "RESTClient"
   }
 }
 

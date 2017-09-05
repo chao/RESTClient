@@ -1,7 +1,7 @@
 {
-  "name": "extension-boilerplate",
-  "version": "0.0.2",
-  "description": "A template for creating cross-browser extensions",
+  "name": "RESTClient",
+  "version": "3.0.0",
+  "description": "a debugger for RESTful web services.",
   "scripts": {
     "chrome-build": "cross-env TARGET=chrome gulp",
     "opera-build": "cross-env TARGET=opera gulp",
@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/EmailThis/extension-boilerplate"
+    "url": "https://github.com/chao/RESTClient"
   },
-  "author": "Bharani <bharani91@gmail.com> (https://github.com/bharani91)",
+  "author": "Chao ZHOU <chao@zhou.fr> (https://github.com/chao)",
   "bugs": {
-    "url": "https://github.com/EmailThis/extension-boilerplate/issues"
+    "url": "https://github.com/chao/RESTClient/issues"
   },
-  "homepage": "https://www.emailthis.me/extension-boilerplate",
+  "homepage": "http://www.restclient.net",
   "devDependencies": {
     "babel-core": "^6.1.2",
     "babel-preset-es2015": "^6.1.2",

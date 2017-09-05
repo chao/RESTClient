@@ -38,3 +38,4 @@ RESTClient.tmproj
 *.xpi
 
 content/test.html
+node_modules

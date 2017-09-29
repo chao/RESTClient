@@ -55,6 +55,7 @@
     "browserify-shim": "^3.8.14",
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
+    "path": "^0.12.7",
     "popper.js": "^1.12.5"
   },
   "browser": {

@@ -121,6 +121,8 @@ function mergeAll(dest) {
     pipe(['./src/_locales/**/*'], `./build/${dest}/_locales`),
     pipe([`./src/images/${target}/**/*`], `./build/${dest}/images`),
     pipe(['./src/images/shared/**/*'], `./build/${dest}/images`),
+    pipe(['./src/plugins/css/**/*'], `./build/${dest}/styles/plugins`),
+    pipe(['./src/plugins/js/**/*'], `./build/${dest}/scripts/plugins`),
     pipe(['./src/**/*.html'], `./build/${dest}`)
   )
 }

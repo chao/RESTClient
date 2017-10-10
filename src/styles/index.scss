@@ -1,5 +1,6 @@
 body {
     padding-top: 5rem;
+    background-color: #CCC3;
 }
 .navbar-brand {
     margin-right: 0rem;
@@ -8,19 +9,21 @@ body {
 #nav-item-file {
     padding-left: 0 !important;
 }
-.box {
-    border: 0.1rem solid #DAD4D44D;
-    background-color: #FFF;
-    padding: 0.5rem;
-    margin-bottom: 0.8rem;
-    .box-title {
-        font-weight: 600;
-    }
+.m-t-sm {
+    margin-top: 0.6rem;
 }
-
+.m-t-md {
+    margin-top: 1rem;
+}
+.m-t-lg {
+    margin-top: 1.2rem;
+}
 .request-container {
     .title {
         margin-left: 0.1rem;
+    }
+    .card-block {
+        padding: 0.5rem;
     }
     .request-form {
         margin-top: 0.5rem;
@@ -58,6 +61,32 @@ body {
 
         .div-request-body {
             #request-body {
+                flex: 1;
+            }
+        }
+    }
+}
+
+.response-container {
+    #response-headers {
+        .card-block {
+            padding-left: 0;
+        }
+        ol.linenums li {
+            padding-left: 12px;
+            color: #bebec5;
+            line-height: 1.4rem;
+            text-shadow: 0 1px 0 #fff;
+            .header-name {
+                color: teal;
+                width: 10rem;
+            }
+            .header-split {
+                color: #93a1a1;
+                width: 0.8rem;
+            }
+            .header-value {
+                color: #D14;
                 flex: 1;
             }
         }

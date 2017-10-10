@@ -82,43 +82,101 @@
   <!-- Request -->
   <div class="request-container container-fluid">
     <div class="row">
-      <div class="col">
+      <div class="col-12">
         <h5 class="text-muted title"> [+] Request</h5>
       </div>
     </div>
     <div class="request-form row">
       <div class="col-12">
-        <div class="box">
-          <div class="form-inline d-flex flex-row">
-            <label for="request-method">Method</label>
-            <input type="text" class="form-control" id="request-method" value="GET">
-            <label for="request-url" class="d-inline-flex">URL</label>
-            <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
-            <button type="submit" class="btn btn-primary">SEND</button>
+        <div class="card">
+          <div class="card-block">
+            <div class="form-inline d-flex flex-row">
+              <label for="request-method">Method</label>
+              <input type="text" class="form-control" id="request-method" value="GET">
+              <label for="request-url" class="d-inline-flex">URL</label>
+              <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
+              <button type="submit" class="btn btn-primary">SEND</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-12 div-request-headers">
-        <div class="box">
-          <h6 class="box-title">Headers <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm"><i class="fa fa-trash"></i> Remove all</button></h6>
-          <div class="d-flex flex-wrap">
-            <span class="badge badge-default p-2">Accept: Application/Json <a href="javascript:;" class="btn-remove-header">x</a></span>
+      <div class="col-12 div-request-headers m-t-sm">
+        <div class="card">
+          <div class="card-block">
+            <h6 class="card-title">Headers <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm"><i class="fa fa-trash"></i> Remove all</button></h6>
+            <div class="d-flex flex-wrap">
+              <span class="badge badge-default p-2">Accept: Application/Json <a href="javascript:;" class="btn-remove-header">x</a></span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="col-12 div-request-body">
-        <div class="box">
-          <h6 class="box-title">Body</h6>
-          <div class="d-flex">
+      <div class="col-12 div-request-body m-t-sm">
+        <div class="card">
+          <div class="card-block">
+            <h6 class="card-title">Body</h6>
+            <div class="d-flex">
             <textarea id="request-body" class="form-control" placeholder="Request Body"></textarea>
           </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Request end -->
+
+  <!-- Response -->
+  <div class="response-container container-fluid m-t-lg">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="text-muted title"> [+] Response</h5>
+      </div>
+    </div>
+
+    <div class="row div-response m-t-md">
+      <div class="col-12">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#response-headers" role="tab">Headers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#response-body" role="tab">Response</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#response-preview" role="tab">Preview</a>
+          </li>
+        </ul>
+        <div class="tab-content m-t-sm">
+          <!-- response-headers -->
+          <div class="tab-pane active" id="response-headers" role="tabpanel">
+            <div class="card">
+              <div class="card-block">
+                <ol class="linenums">
+                  <li><span class="d-flex"><span class="header-name">Status Code</span><span class="header-split">: </span><span class="header-value">405 Method Not Allowed</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Allow</span><span class="header-split">: </span><span class="header-value">GET, POST</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Cache-Control</span><span class="header-split">: </span><span class="header-value">no-cache, private</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Connection</span><span class="header-split">: </span><span class="header-value">keep-alive</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Content-Type</span><span class="header-split">: </span><span class="header-value">text/html; charset=UTF-8</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Date</span><span class="header-split">: </span><span class="header-value">Tue, 10 Oct 2017 10:32:09 GMT</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Server</span><span class="header-split">: </span><span class="header-value">nginx</span></span></li>
+                  <li><span class="d-flex"><span class="header-name">Transfer-Encoding</span><span class="header-split">: </span><span class="header-value">chunked</span></span></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <!-- response-headers end -->
+
+          <div class="tab-pane" id="response-body" role="tabpanel">...</div>
+          <div class="tab-pane" id="response-preview" role="tabpanel">...</div>
         </div>
       </div>
     </div>
   </div>
-  <!-- Request end -->
+  <!-- Response End -->
+
+
   <script src="scripts/plugins/jquery/jquery.js"></script>
   <script src="scripts/plugins/popper.js/popper.js"></script>
   <script src="scripts/plugins/bootstrap/bootstrap.js"></script>

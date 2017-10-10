@@ -1,0 +1,36 @@
+body {
+    padding-top: 5rem;
+}
+.navbar-brand {
+    margin-right: 0rem;
+    margin-left: 1rem;
+}
+#nav-item-file {
+    padding-left: 0 !important;
+}
+.box {
+    border: 0.2rem solid #F7F7F7;
+    background-color: #FFF;
+    padding: 0.5rem;
+}
+.request-container {
+    .title {
+        margin-left: 0.1rem;
+    }
+    .request-form {
+        margin-top: 0.5rem;
+        label {
+            padding-right: 0.5rem;
+        }
+        input {
+            margin-right: 0.5rem;
+        }
+        #request-url {
+            flex: 1;
+        }
+        button[type="submit"] {
+            width: 5rem;
+        }
+    }
+}
+

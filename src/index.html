@@ -14,74 +14,89 @@
 </head>
 <body>
   <!-- Navbar start -->
-  <div class="navbar navbar-toggleable-md fixed-top navbar-light bg-primary">
+  <div class="navbar navbar-toggleable-md fixed-top flex-column flex-md-row navbar-light bg-primary">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="container">
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <a href="../" class="navbar-brand">RESTClient</a>
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-file">File <span class="caret"></span></a>
-            <div class="dropdown-menu" aria-labelledby="nav-item-file">
-              <a class="dropdown-item" href="../default/">Load request</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-authentication">Authentication <span class="caret"></span></a>
-            <div class="dropdown-menu" aria-labelledby="nav-item-authentication">
-              <div class="dropdown-header">HTTP authentication</div>
-              <a class="dropdown-item" href="../default/">Basic Authentication</a>
-              <div class="dropdown-divider"></div>
-              <div class="dropdown-header">OAuth Protocol</div>
-              <a class="dropdown-item" href="../default/">OAuth</a>
-              <a class="dropdown-item" href="../default/">OAuth2</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-headers">Headers <span class="caret"></span></a>
-            <div class="dropdown-menu" aria-labelledby="nav-item-headers">
-              <a class="dropdown-item" href="../default/">Custom Header</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="../default/">Clear Favorites</a>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-view">View <span class="caret"></span></a>
-            <div class="dropdown-menu" aria-labelledby="nav-item-view">
-              <a class="dropdown-item" href="../default/">Request</a>
-              <a class="dropdown-item" href="../default/">Response</a>
-            </div>
-          </li>
-        </ul>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
 
-        <ul class="nav navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-favorite">Favorites<span class="caret"></span></a>
-            <div class="dropdown-menu" aria-labelledby="nav-item-favorite">
+      <!-- menu at the left -->
+      <ul class="navbar-nav navbar-left">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-file">File <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="nav-item-file">
+            <a class="dropdown-item" href="../default/">Load request</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-authentication">Authentication <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="nav-item-authentication">
+            <div class="dropdown-header">HTTP authentication</div>
+            <a class="dropdown-item" href="../default/">Basic Authentication</a>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-header">OAuth Protocol</div>
+            <a class="dropdown-item" href="../default/">OAuth</a>
+            <a class="dropdown-item" href="../default/">OAuth2</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-headers">Headers <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="nav-item-headers">
+            <a class="dropdown-item" href="../default/">Custom Header</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="../default/">Clear Favorites</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-view">View <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="nav-item-view">
+            <a class="dropdown-item" href="../default/">Request</a>
+            <a class="dropdown-item" href="../default/">Response</a>
+          </div>
+        </li>
+      </ul>
 
-              <a class="dropdown-item" href="./bootstrap.min.css">Import Favorite Request</a>
-              <a class="dropdown-item" href="./bootstrap.css">Export Favorite Request</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="./_variables.scss">Manage Favorite Request</a>
-              <a class="dropdown-item" href="./_bootswatch.scss">Save Current Request</a>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="https://wrapbootstrap.com/?ref=bsw" target="_blank">Setting</a>
-          </li>
-        </ul>
-      </div>
+      <!-- menu at the right -->
+      <ul class="nav navbar-nav navbar-right ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-favorite">Favorites<span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="nav-item-favorite">
+
+            <a class="dropdown-item" href="./bootstrap.min.css">Import Favorite Request</a>
+            <a class="dropdown-item" href="./bootstrap.css">Export Favorite Request</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="./_variables.scss">Manage Favorite Request</a>
+            <a class="dropdown-item" href="./_bootswatch.scss">Save Current Request</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://wrapbootstrap.com/?ref=bsw" target="_blank">Setting</a>
+        </li>
+      </ul>
+
+      <a href="../" class="navbar-brand">RESTClient</a>
     </div>
   </div>
   <!-- Navbar end -->
 
   <!-- Request -->
-  <div class="div-request">
+  <div class="request-container container-fluid">
     <div class="row">
-      <div class="col-lg-12">
-        <h1>Request</h1>
+      <div class="col">
+        <h5 class="text-muted title"> [+] Request</h5>
+      </div>
+    </div>
+    <div class="request-form row">
+      <div class="col">
+        <div class="box">
+          <form class="form-inline d-flex flex-row">
+            <label for="request-method">Method</label>
+            <input type="text" class="form-control" id="request-method" value="GET">
+            <label for="request-url" class="d-inline-flex">URL</label>
+            <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
+            <button type="submit" class="btn btn-primary">SEND</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

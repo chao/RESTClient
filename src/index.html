@@ -87,15 +87,33 @@
       </div>
     </div>
     <div class="request-form row">
-      <div class="col">
+      <div class="col-12">
         <div class="box">
-          <form class="form-inline d-flex flex-row">
+          <div class="form-inline d-flex flex-row">
             <label for="request-method">Method</label>
             <input type="text" class="form-control" id="request-method" value="GET">
             <label for="request-url" class="d-inline-flex">URL</label>
             <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
             <button type="submit" class="btn btn-primary">SEND</button>
-          </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 div-request-headers">
+        <div class="box">
+          <h6 class="box-title">Headers <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm"><i class="fa fa-trash"></i> Remove all</button></h6>
+          <div class="d-flex flex-wrap">
+            <span class="badge badge-default p-2">Accept: Application/Json <a href="javascript:;" class="btn-remove-header">x</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 div-request-body">
+        <div class="box">
+          <h6 class="box-title">Body</h6>
+          <div class="d-flex">
+            <textarea id="request-body" class="form-control" placeholder="Request Body"></textarea>
+          </div>
         </div>
       </div>
     </div>

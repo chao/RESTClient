@@ -9,10 +9,15 @@ body {
     padding-left: 0 !important;
 }
 .box {
-    border: 0.2rem solid #F7F7F7;
+    border: 0.1rem solid #DAD4D44D;
     background-color: #FFF;
     padding: 0.5rem;
+    margin-bottom: 0.8rem;
+    .box-title {
+        font-weight: 600;
+    }
 }
+
 .request-container {
     .title {
         margin-left: 0.1rem;
@@ -30,6 +35,31 @@ body {
         }
         button[type="submit"] {
             width: 5rem;
+        }
+        .div-request-headers {
+            .btn-remove-all-headers {
+                float: right;
+                font-size: 0.7rem;
+                color: #555;
+                border-color: #FFF;
+            }
+
+            .btn-remove-header {
+                color: #333 !important;
+                margin-left: 0.2rem;
+                text-decoration: none !important;
+            }
+            .badge {
+                background-color: #ddd;
+                color: #333;
+                font-weight: 500;
+            }
+        }
+
+        .div-request-body {
+            #request-body {
+                flex: 1;
+            }
         }
     }
 }

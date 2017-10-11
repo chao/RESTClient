@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="icons/icon-16.png" />
     <link href="styles/plugins/simplex/bootstrap.css" rel="stylesheet" />
     <link href="styles/plugins/font-awesome/font-awesome.css" rel="stylesheet" />
+    <link href="styles/plugins/typeahead/typeaheadjs.css" rel="stylesheet" />
     <link href="styles/index.css" rel="stylesheet" />
     <title>RESTClient</title>
 </head>
@@ -92,9 +93,34 @@
           <div class="card-block">
             <div class="form-inline d-flex flex-row">
               <label for="request-method">Method</label>
-              <input type="text" class="form-control" id="request-method" value="GET">
+              <div class="input-group ig-request-method">
+                <input type="text" class="form-control" id="request-method" placeholder="GET">
+
+                <button class="input-group-addon" id="dd-request-methods" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" autocomplete="off">
+                  <i class="fa fa-angle-down"></i>
+                </button>
+                <div id="request-method-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-request-methods">
+                  <a class="dropdown-item" href="#">GET</a>
+                  <a class="dropdown-item" href="#">POST</a>
+                  <a class="dropdown-item" href="#">PUT</a>
+                  <a class="dropdown-item" href="#">DELETE</a>
+                  <a class="dropdown-item" href="#">OPTIONS</a>
+                  <a class="dropdown-item" href="#">HEAD</a>
+                  <a class="dropdown-item" href="#">TRACE</a>
+                  <a class="dropdown-item" href="#">CONNECT</a>
+                  <a class="dropdown-item" href="#">PATCH</a>
+                </div>
+              </div>
               <label for="request-url" class="d-inline-flex">URL</label>
-              <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
+              <div class="input-group ig-request-url">
+                <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
+                <button class="input-group-addon">
+                  <i class="fa fa-star-o"></i>
+                </button>
+                <button class="input-group-addon" disabled="">
+                  <i class="fa fa-angle-down"></i>
+                </button>
+              </div>
               <button type="submit" class="btn btn-primary">SEND</button>
             </div>
           </div>
@@ -180,6 +206,7 @@
   <script src="scripts/plugins/jquery/jquery.js"></script>
   <script src="scripts/plugins/popper.js/popper.js"></script>
   <script src="scripts/plugins/bootstrap/bootstrap.js"></script>
+  <script src="scripts/plugins/typeahead/typeahead.bundle.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 </html>

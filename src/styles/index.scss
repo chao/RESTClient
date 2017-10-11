@@ -18,6 +18,12 @@ body {
 .m-t-lg {
     margin-top: 1.2rem;
 }
+button {
+    cursor: pointer;
+}
+.underline {
+    text-decoration: underline;
+}
 .request-container {
     .title {
         margin-left: 0.1rem;
@@ -25,16 +31,50 @@ body {
     .card-block {
         padding: 0.5rem;
     }
+    .card-title {
+        color: #AAA;
+    }
     .request-form {
         margin-top: 0.5rem;
+        .input-group-addon {
+            border: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .input-group-addon:hover{
+            text-decoration: none;
+            color: #FFF;
+            background-color: #555;
+        }
         label {
             padding-right: 0.5rem;
+            color: #AAA;
         }
         input {
-            margin-right: 0.5rem;
+            color: #000;
         }
-        #request-url {
+        .ig-request-method {
+            width: 8rem;
+            margin-right: 0.5rem;
+            .input-group-addon {
+                border-top-right-radius: 0.25rem;
+                border-bottom-right-radius: 0.25rem;
+            }
+        }
+        .ig-request-method:focus-within,
+        .ig-request-url:focus-within {
+            input {
+                border: #D9230F solid 1px;
+            }
+            .input-group-addon {
+                background-color: #D9230F;
+                text-decoration: none;
+                color: #FFF;
+            }
+        }
+        .ig-request-url {
             flex: 1;
+            margin-right: 0.5rem;
         }
         button[type="submit"] {
             width: 5rem;
@@ -43,18 +83,23 @@ body {
             .btn-remove-all-headers {
                 float: right;
                 font-size: 0.7rem;
-                color: #555;
+                color: #AAA;
                 border-color: #FFF;
+                border-radius: 0.25rem;
+            }
+            .btn-remove-all-headers:hover,
+            .btn-remove-all-headers:focus {
+                color: #333;
             }
 
             .btn-remove-header {
-                color: #333 !important;
+                color: #AAA !important;
                 margin-left: 0.2rem;
                 text-decoration: none !important;
             }
             .badge {
                 background-color: #ddd;
-                color: #333;
+                color: #000;
                 font-weight: 500;
             }
         }
@@ -72,22 +117,25 @@ body {
         .card-block {
             padding-left: 0;
         }
-        ol.linenums li {
-            padding-left: 12px;
-            color: #bebec5;
-            line-height: 1.4rem;
-            text-shadow: 0 1px 0 #fff;
-            .header-name {
-                color: teal;
-                width: 10rem;
-            }
-            .header-split {
-                color: #93a1a1;
-                width: 0.8rem;
-            }
-            .header-value {
-                color: #D14;
-                flex: 1;
+        ol.linenums {
+            margin-bottom: 0rem !important;
+            li {
+                padding-left: 12px;
+                color: #bebec5;
+                line-height: 1.4rem;
+                text-shadow: 0 1px 0 #fff;
+                .header-name {
+                    color: teal;
+                    width: 10rem;
+                }
+                .header-split {
+                    color: #93a1a1;
+                    width: 0.8rem;
+                }
+                .header-value {
+                    color: #D9230F;
+                    flex: 1;
+                }
             }
         }
     }

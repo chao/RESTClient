@@ -38,8 +38,10 @@ button {
         margin-top: 0.5rem;
         .input-group-addon {
             border: none;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
+            outline: 0;
+        }
+        input:focus {
+            outline:0;
         }
         .input-group-addon:hover{
             text-decoration: none;
@@ -75,6 +77,10 @@ button {
         .ig-request-url {
             flex: 1;
             margin-right: 0.5rem;
+            #dd-request-urls {
+                border-top-right-radius: 0.25rem;
+                border-bottom-right-radius: 0.25rem;
+            }
         }
         button[type="submit"] {
             width: 5rem;

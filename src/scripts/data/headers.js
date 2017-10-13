@@ -1,4 +1,4 @@
-var headers = {
+var requestHeaders = {
   "Accept": ["application/json", "application/xml", "text/plain", "text/html", "image/jpeg"],
   "Accept-Charset": ["iso-8859-5", "UTF-8", "UTF-16"],
   "Accept-Encoding": ["gzip", "compress"],

@@ -1,5 +1,6 @@
 span.twitter-typeahead .tt-menu {
   cursor: pointer;
+  width: 100%;
 }
 
  span.twitter-typeahead .tt-menu {

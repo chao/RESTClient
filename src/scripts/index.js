@@ -135,11 +135,11 @@ $(function () {
     );
 
     $(document).on('init-favorite-headers-dropdown-items', function(e, saveToStorage){
-        $('.di-favorite-header').remove();
+        $('.di-favorite-header, .di-favorite-divider').remove();
         // console.log(favoriteUrls);
         if(typeof favoriteHeaders == 'object' && favoriteHeaders.length > 0)
         {
-            $('<div class="dropdown-divider di-favorite-header di-favorite-divider"></div>')
+            $('<div class="dropdown-divider di-favorite-divider"></div>')
                 .insertAfter('.nav-custom-header');
             _.forEach(favoriteHeaders, function(header) {
                 var el = $('<a class="dropdown-item di-favorite-header" href="#"></a>')
@@ -195,7 +195,7 @@ $(function () {
     $(document).on('click', '.nav-custom-header-clear', function() {
         favoriteHeaders = [];
         $(document).trigger('init-favorite-headers-dropdown-items', true);
-        $('.di-favorite-header').remove();
+        $('.di-favorite-header, .di-favorite-divider').remove();
         toastr.success('All favorite request headers are removed.');
     });
 
@@ -250,6 +250,58 @@ $(function () {
         else
         {
             $('.list-request-headers').append(el.addClass('animated zoomIn'));
+        }
+    });
+
+    $(document).on('click', '.di-favorite-header', function(){
+        var name = $(this).data('name');
+        var value = $(this).data('value');
+        var favorite = true;
+        $(document).trigger('append-request-header', [name, value, favorite]);
+    });
+
+    var requestHeaderNames = _.keys(requestHeaders);
+    var thNames = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.whitespace,
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      local: requestHeaderNames
+    });
+
+    // init typeahead for request name
+    $('#request-header-name').typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },
+    {
+      name: 'names',
+      source: thNames
+    }).on('typeahead:select typeahead:autocomplete', function(src, name){
+        console.log(name);
+        if(name && typeof requestHeaders[name] != 'undefined')
+        {
+            try {
+                $('#request-header-value').typeahead('destroy');
+            }catch(e) {}
+            var values = requestHeaders[name];
+            console.log(values);
+            if(values.length > 0)
+            {
+                var thValues = new Bloodhound({
+                  datumTokenizer: Bloodhound.tokenizers.whitespace,
+                  queryTokenizer: Bloodhound.tokenizers.whitespace,
+                  local: values
+                });
+                $('#request-header-value').typeahead({
+                  hint: true,
+                  highlight: true,
+                  minLength: 1
+                },
+                {
+                  name: 'values',
+                  source: thValues
+                });
+            }
         }
     });
 });

@@ -86,6 +86,27 @@ button {
             width: 5rem;
         }
         .div-request-headers {
+            .card-block {
+                padding-bottom: 0;
+            }
+            .list-request-headers {
+                line-height: 1.5;
+                .badge {
+                    background-color: #EEE;
+                    color: #555;
+                    font-weight: 500;
+                    margin-right: 0.5rem;
+                    line-height: 1rem;
+                    margin-bottom: 0.5rem;
+                    .btn-remove-header {
+                        color: #000 !important;
+                        margin-right: 0.2rem;
+                        margin-left: 0.2rem;
+                        text-decoration: none !important;
+                    }
+                }
+            }
+
             .btn-remove-all-headers {
                 float: right;
                 font-size: 0.7rem;
@@ -98,22 +119,6 @@ button {
                 color: #333;
             }
 
-            .btn-remove-header {
-                color: #AAA !important;
-                margin-left: 0.2rem;
-                text-decoration: none !important;
-            }
-            .badge {
-                background-color: #ddd;
-                color: #555;
-                font-weight: 500;
-                margin-right: 0.5rem;
-                line-height: 1rem;
-                .btn-remove-header {
-                    color: #000 !important;
-                    padding-right: 0.3rem;
-                }
-            }
         }
 
         .div-request-body {

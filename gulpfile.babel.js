@@ -123,6 +123,7 @@ function mergeAll(dest) {
     pipe(['./src/images/shared/**/*'], `./build/${dest}/images`),
     pipe(['./src/plugins/css/**/*'], `./build/${dest}/styles/plugins`),
     pipe(['./src/plugins/js/**/*'], `./build/${dest}/scripts/plugins`),
+    pipe(['./src/scripts/data/**/*'], `./build/${dest}/scripts/data`),
     pipe(['./src/**/*.html'], `./build/${dest}`)
   )
 }

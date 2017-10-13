@@ -163,13 +163,18 @@ $(function () {
     $('#modal-header').on('shown.bs.modal', function(){
         $('#request-header-name').focus().select();
     });
+    $('#modal-header').on('hide.bs.modal', function(){
+        $('#modal-header').removeData('source');
+        $('#save-request-header-favorite').removeAttr('checked').prop('checked', false);
+    });
 
     $(document).on('submit', '.form-request-header', function(e){
         e.preventDefault();
-        var requestName = $('#request-header-name').val();
-        var requestValue = $('#request-header-value').val();
+        var requestName = $('#request-header-name').typeahead('val');
+        var requestValue = $('#request-header-value').typeahead('val');
         var favorite = ($('#save-request-header-favorite:checked').length == 1);
-        $(document).trigger('append-request-header', [requestName, requestValue, favorite]);
+        var source = $('#modal-header').data('source');
+        $(document).trigger('append-request-header', [requestName, requestValue, favorite, source]);
         $('#modal-header').modal('hide');
         if(favorite)
         {
@@ -183,8 +188,13 @@ $(function () {
         else
         {
             var result = _.remove(favoriteHeaders, function(item){
+                console.log(requestName);
+                console.log(requestValue);
+                console.log(item);
                 return item.name == requestName && item.value == requestValue;
             });
+            console.log(result);
+            console.log(favoriteHeaders);
             if(result.length > 0)
             {
                 $(document).trigger('init-favorite-headers-dropdown-items', true);
@@ -199,7 +209,9 @@ $(function () {
         toastr.success('All favorite request headers are removed.');
     });
 
-    $(document).on('click', '.btn-remove-header', function() {
+    $(document).on('click', '.btn-remove-header', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
         var badge = $(this).parents('.badge');
         if($('.btn-remove-header').length == 1)
         {
@@ -229,27 +241,34 @@ $(function () {
         }, 750);
     });
 
-    $(document).on('append-request-header', function(e, name, value, favorite){
+    $(document).on('append-request-header', function(e, name, value, favorite, source){
         console.log('append request: ' + name + ',' + value);
         var closer = $('<a href="javascript:;" class="btn-remove-header">x</a>');
         var el = $('<span class="badge badge-default p-2"></span>')
             .text(name + ': ' + value)
             .append(closer)
-            .data('request-name', name)
-            .data('request-value', value)
+            .data('name', name)
+            .data('value', value)
             .data('favorite', favorite);
-        if($('.btn-remove-header').length == 0)
+        if(source)
         {
-            $('.list-request-headers').append(el);
-            $('.div-request-headers').show();
-            $('.div-request-headers').addClass('animated zoomInLeft');
-            setTimeout(function(){
-                $('.div-request-headers').removeClass('animated zoomInLeft');
-            }, 750);
+            source.replaceWith(el);
         }
         else
         {
-            $('.list-request-headers').append(el.addClass('animated zoomIn'));
+            if($('.btn-remove-header').length == 0)
+            {
+                $('.list-request-headers').append(el);
+                $('.div-request-headers').show();
+                $('.div-request-headers').addClass('animated zoomInLeft');
+                setTimeout(function(){
+                    $('.div-request-headers').removeClass('animated zoomInLeft');
+                }, 750);
+            }
+            else
+            {
+                $('.list-request-headers').append(el.addClass('animated zoomIn'));
+            }
         }
     });
 
@@ -260,6 +279,24 @@ $(function () {
         $(document).trigger('append-request-header', [name, value, favorite]);
     });
 
+    $(document).on('click', '.list-request-headers .badge', function() {
+        var name = $(this).data('name');
+        var value = $(this).data('value');
+        var favorite = $(this).data('favorite');
+        $('#request-header-name').typeahead('val', name);
+        $(document).trigger('update-request-header-value-typeahead', name);
+        $('#request-header-value').typeahead('val', value);
+        if(favorite)
+        {
+            $('#save-request-header-favorite').attr('checked', true).prop('checked', true);
+        }
+        else
+        {
+            $('#save-request-header-favorite').removeAttr('checked').prop('checked', false);
+        }
+        $('#modal-header').data('source', $(this)).modal('show');
+    });
+
     var requestHeaderNames = _.keys(requestHeaders);
     var thNames = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.whitespace,
@@ -268,6 +305,21 @@ $(function () {
     });
 
     // init typeahead for request name
+    var thValues = new Bloodhound({
+      datumTokenizer: Bloodhound.tokenizers.whitespace,
+      queryTokenizer: Bloodhound.tokenizers.whitespace,
+      local: []
+    });
+    $('#request-header-value').typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },
+    {
+      name: 'values',
+      source: thValues
+    });
+
     $('#request-header-name').typeahead({
       hint: true,
       highlight: true,
@@ -277,31 +329,29 @@ $(function () {
       name: 'names',
       source: thNames
     }).on('typeahead:select typeahead:autocomplete', function(src, name){
-        console.log(name);
+        $(document).trigger('update-request-header-value-typeahead', name);
+    });
+
+    $(document).on('update-request-header-value-typeahead', function(e, name) {
+        try{ $('#request-header-value').typeahead('destroy'); }catch(e){}
+        var values = [];
         if(name && typeof requestHeaders[name] != 'undefined')
         {
-            try {
-                $('#request-header-value').typeahead('destroy');
-            }catch(e) {}
-            var values = requestHeaders[name];
-            console.log(values);
-            if(values.length > 0)
-            {
-                var thValues = new Bloodhound({
-                  datumTokenizer: Bloodhound.tokenizers.whitespace,
-                  queryTokenizer: Bloodhound.tokenizers.whitespace,
-                  local: values
-                });
-                $('#request-header-value').typeahead({
-                  hint: true,
-                  highlight: true,
-                  minLength: 1
-                },
-                {
-                  name: 'values',
-                  source: thValues
-                });
-            }
+            values = requestHeaders[name];
         }
+        var thValues = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          local: values
+        });
+        $('#request-header-value').typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+        },
+        {
+          name: 'values',
+          source: thValues
+        });
     });
 });

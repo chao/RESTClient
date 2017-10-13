@@ -105,8 +105,14 @@ button {
             }
             .badge {
                 background-color: #ddd;
-                color: #000;
+                color: #555;
                 font-weight: 500;
+                margin-right: 0.5rem;
+                line-height: 1rem;
+                .btn-remove-header {
+                    color: #000 !important;
+                    padding-right: 0.3rem;
+                }
             }
         }
 

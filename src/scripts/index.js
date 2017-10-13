@@ -152,16 +152,58 @@ $(function () {
         $('#modal-header').modal('hide');
     });
 
+    $(document).on('click', '.btn-remove-header', function() {
+        var badge = $(this).parents('.badge');
+        if($('.btn-remove-header').length == 1)
+        {
+            $('.div-request-headers').addClass('animated zoomOutRight');
+            setTimeout(function(){
+                badge.remove();
+                $('.div-request-headers').hide();
+                $('.div-request-headers').removeClass('animated zoomOutRight');
+            }, 750);
+        }
+        else
+        {
+            badge.removeClass('animated zoomInLeft');
+            badge.addClass('animated zoomOutRight');
+            setTimeout(function(){
+                badge.remove();
+            }, 750);
+        }
+    });
+
+    $(document).on('click', '.btn-remove-all-headers', function() {
+        $('.div-request-headers').addClass('animated zoomOutRight');
+        setTimeout(function(){
+            $('.list-request-headers').empty();
+            $('.div-request-headers').hide();
+            $('.div-request-headers').removeClass('animated zoomOutRight');
+        }, 750);
+    });
+
     $(document).on('append-request-header', function(e, name, value, favorite){
         console.log('append request: ' + name + ',' + value);
         var closer = $('<a href="javascript:;" class="btn-remove-header">x</a>');
         var el = $('<span class="badge badge-default p-2"></span>')
-            .text(requestName + ': ' + value)
-            .append(closer).
-            .data('request-name', requestName)
-            .data('request-value', requestValue)
+            .text(name + ': ' + value)
+            .append(closer)
+            .data('request-name', name)
+            .data('request-value', value)
             .data('favorite', favorite);
-        $('.list-request-headers').append(el);
+        if($('.btn-remove-header').length == 0)
+        {
+            $('.list-request-headers').append(el);
+            $('.div-request-headers').show();
+            $('.div-request-headers').addClass('animated zoomInLeft');
+            setTimeout(function(){
+                $('.div-request-headers').removeClass('animated zoomInLeft');
+            }, 750);
+        }
+        else
+        {
+            $('.list-request-headers').append(el.addClass('animated zoomInLeft'));
+        }
     });
 
     $(document).on('click', '.dd-favorite-headers .dropdown-item', function(){

@@ -252,7 +252,4 @@ $(function () {
             $('.list-request-headers').append(el.addClass('animated zoomIn'));
         }
     });
-
-    $(document).on('click', '.dd-favorite-headers .dropdown-item', function(){
-    });
 });

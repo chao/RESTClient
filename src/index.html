@@ -11,6 +11,7 @@
     <link href="styles/plugins/font-awesome/font-awesome.css" rel="stylesheet" />
     <link href="styles/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" />
     <link href="styles/plugins/animate/animate.css" rel="stylesheet" />
+    <link href="styles/plugins/toastrjs/toastr.css" rel="stylesheet" />
     <link href="styles/index.css" rel="stylesheet" />
     <title>RESTClient</title>
 </head>
@@ -46,7 +47,7 @@
           <div class="dropdown-menu dd-favorite-headers" aria-labelledby="nav-item-headers">
             <a class="dropdown-item default-menu nav-custom-header" href="#">Custom Header</a>
             <div class="dropdown-divider default-menu"></div>
-            <a class="dropdown-item default-menu" href="#">Clear Favorites</a>
+            <a class="dropdown-item default-menu nav-custom-header-clear" href="#">Clear Favorites</a>
           </div>
         </li>
         <li class="nav-item dropdown">
@@ -129,12 +130,11 @@
         </div>
       </div>
 
-      <div class="col-12 div-request-headers m-t-sm">
+      <div class="col-12 div-request-headers m-t-sm" style="display: none;">
         <div class="card">
           <div class="card-block">
             <h6 class="card-title">Headers <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm"><i class="fa fa-trash"></i> Remove all</button></h6>
             <div class="d-flex flex-wrap list-request-headers">
-              <span class="badge badge-default p-2">Accept: Application/Json <a href="javascript:;" class="btn-remove-header">x</a></span>
             </div>
           </div>
         </div>
@@ -207,37 +207,38 @@
   <!-- Modals -->
   <div class="modal fade" id="modal-header" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modal-headers">Request Headers</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+      <form class="form-request-header">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-headers">Request Headers</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+              <div class="form-group">
+                <label for="request-header-name">Name</label>
+                <input type="text" class="form-control" id="request-header-name" placeholder="Attribute Name" autocomplete="off">
+                <small class="form-text" style="display: none;">We'll never share your email with anyone else.</small>
+              </div>
+              <div class="form-group">
+                <label for="request-header-value">Value</label>
+                <input type="text" class="form-control" id="request-header-value" placeholder="Attribute Value" autocomplete="off">
+              </div>
+              <div class="form-check abc-checkbox abc-checkbox-danger">
+                <input class="form-check-input" id="save-request-header-favorite" type="checkbox">
+                <label class="form-check-label" for="save-request-header-favorite">
+                  Save as favorite header
+                </label>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
         </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="request-header-name">Name</label>
-              <input type="text" class="form-control" id="request-header-name" placeholder="Attribute Name" autocomplete="off">
-              <small class="form-text" style="display: none;">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-              <label for="request-header-value">Value</label>
-              <input type="text" class="form-control" id="request-header-value" placeholder="Attribute Value" autocomplete="off">
-            </div>
-            <div class="form-check abc-checkbox abc-checkbox-danger">
-              <input class="form-check-input" id="save-request-header-favorite" type="checkbox">
-              <label class="form-check-label" for="save-request-header-favorite">
-                Save as favorite header
-              </label>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary btn-save-request-header">Save</button>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
   <!-- Modals end -->
@@ -245,6 +246,7 @@
   <script src="scripts/plugins/popper.js/popper.js"></script>
   <script src="scripts/plugins/bootstrap/bootstrap.js"></script>
   <script src="scripts/plugins/lodash/lodash.js"></script>
+  <script src="scripts/plugins/toastrjs/toastr.min.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 </html>

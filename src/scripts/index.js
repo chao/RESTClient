@@ -145,7 +145,8 @@ $(function () {
                 var el = $('<a class="dropdown-item di-favorite-header" href="#"></a>')
                             .text(header.name + ': ' + header.value)
                             .data('name', header.name)
-                            .data('value', header.value);
+                            .data('value', header.value)
+                            .attr('title', header.name + ': ' + header.value);
                 el.insertAfter('.di-favorite-divider');
             });
         }
@@ -244,7 +245,7 @@ $(function () {
     $(document).on('append-request-header', function(e, name, value, favorite, source){
         console.log('append request: ' + name + ',' + value);
         var closer = $('<a href="javascript:;" class="btn-remove-header">x</a>');
-        var el = $('<span class="badge badge-default p-2"></span>')
+        var el = $('<span class="badge custom badge-default p-2"></span>')
             .text(name + ': ' + value)
             .append(closer)
             .data('name', name)
@@ -279,7 +280,7 @@ $(function () {
         $(document).trigger('append-request-header', [name, value, favorite]);
     });
 
-    $(document).on('click', '.list-request-headers .badge', function() {
+    $(document).on('click', '.list-request-headers .badge.custom', function() {
         var name = $(this).data('name');
         var value = $(this).data('value');
         var favorite = $(this).data('favorite');
@@ -354,4 +355,31 @@ $(function () {
           source: thValues
         });
     });
+
+    /*********************** Toggle Panel ***************************/
+    $(document).on('click', '.btn-toggle-panel', function(){
+        var text = $(this).find('span').text();
+        if(text == '-')
+        {
+            $(this).parents('.row').next().hide();
+            $(this).find('span').text('+');
+        }
+        else
+        {
+            $(this).parents('.row').next().show();
+            $(this).find('span').text('-');
+        }
+    });
+    $(document).on('click', '[data-action="toggle"]', function(){
+        var target = $(this).data('target');
+        if(target == '')
+        {
+            $('.request-container, .response-container').show();
+        }
+        else
+        {
+            $('.' + target).toggle();
+        }
+
+    })
 });

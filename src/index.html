@@ -54,8 +54,10 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-view">View <span class="caret"></span></a>
           <div class="dropdown-menu" aria-labelledby="nav-item-view">
-            <a class="dropdown-item" href="../default/">Request</a>
-            <a class="dropdown-item" href="../default/">Response</a>
+            <a class="dropdown-item" href="#request-title" data-action="toggle" data-target="request-container">Request</a>
+            <a class="dropdown-item" href="#response-title" data-action="toggle" data-target="response-container">Response</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#request-title" data-action="toggle" data-target="">Show All</a>
           </div>
         </li>
       </ul>
@@ -84,10 +86,10 @@
   <!-- Navbar end -->
 
   <!-- Request -->
-  <div class="request-container container-fluid">
+  <div class="request-container container-fluid panel">
     <div class="row">
       <div class="col-12">
-        <h5 class="text-muted title"> [+] Request</h5>
+        <h5 id="request-title" class="text-muted title"> <a class="btn-toggle-panel">[<span>-</span>] Request</a></h5>
       </div>
     </div>
     <div class="request-form row">
@@ -157,10 +159,10 @@
   <!-- Request end -->
 
   <!-- Response -->
-  <div class="response-container container-fluid m-t-lg">
+  <div class="response-container container-fluid m-t-lg panel">
     <div class="row">
       <div class="col-12">
-        <h5 class="text-muted title"> [+] Response</h5>
+        <h5 id="response-title" class="text-muted title"><a class="btn-toggle-panel">[<span>-</span>] Response</a></h5>
       </div>
     </div>
 

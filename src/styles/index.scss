@@ -24,6 +24,17 @@ button {
 .underline {
     text-decoration: underline;
 }
+.dd-favorite-headers {
+    .di-favorite-header {
+        max-width: 20rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+.btn-toggle-panel {
+    text-decoration: none;
+    cursor: pointer;
+}
 .request-container {
     .title {
         margin-left: 0.1rem;

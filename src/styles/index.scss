@@ -147,3 +147,14 @@ button {
     }
 }
 
+#modal-header {
+    label {
+        color: #AAA;
+    }
+    input[type="text"] {
+        color: #000;
+    }
+    .abc-checkbox-danger label {
+        color: #777;
+    }
+}

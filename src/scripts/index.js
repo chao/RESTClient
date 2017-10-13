@@ -2,21 +2,7 @@
 // import storage from "./utils/storage";
 $(function () {
 
-    // init request method typeahead
-    // var requestMethods = new Bloodhound({
-    //   datumTokenizer: Bloodhound.tokenizers.whitespace,
-    //   queryTokenizer: Bloodhound.tokenizers.whitespace,
-    //   local: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'TRACE', 'CONNECT']
-    // });
-    // $('#request-method').typeahead({
-    //   hint: true,
-    //   highlight: true,
-    //   minLength: 0
-    // },
-    // {
-    //   name: 'methods',
-    //   source: requestMethods
-    // });
+    /********************** Init Request Method & URL **************************/
     $('#request-method, #request-url').on('focus', function(){
         $(this).select();
     });
@@ -117,4 +103,67 @@ $(function () {
         $('#request-url').val(url).trigger('change');
     });
 
+    /********************** Init Request Headers **************************/
+    browser.storage.local.get('request-headers').then(
+        (data) => {
+            console.log(data);
+            if(data['request-headers'] && data['request-headers'].length > 0)
+            {
+                window.favoriteHeaders = data['request-headers'];
+            }
+            else
+            {
+                window.favoriteHeaders = [];
+            }
+            $(document).trigger('init-favorite-headers-dropdown-items', false);
+            $('.btn-toggle-favorite-url').prop('disabled', false);
+        }
+    );
+
+    $(document).on('init-favorite-headers-dropdown-items', function(e, saveToStorage){
+        $('.dd-favorite-headers .dropdown-item:not(.default-menu)').remove();
+        // console.log(favoriteUrls);
+        if(typeof favoriteHeaders == 'object' && favoriteHeaders.length > 0)
+        {
+            $('<div class="dropdown-divider"></div>')
+                .insertAfter('.dd-favorite-headers .dropdown-item:first-child');
+            _.forEach(favoriteHeaders, function(header) {
+                var el = $('<a class="dropdown-item" href="#"></a>').text(header);
+                el.insertAfter('.dd-favorite-headers .dropdown-divider:not(.default-menu)');
+            });
+        }
+        if(saveToStorage)
+        {
+            browser.storage.local.set({ ['request-headers'] : favoriteHeaders }).then(() => {
+                // console.log(favoriteUrls);
+            });
+        }
+    });
+
+    $(document).on('click', '.nav-custom-header', function(){
+        $('#modal-header').modal('show');
+    });
+
+    $(document).on('click', '.btn-save-request-header', function(){
+        var requestName = $('#request-header-name').val();
+        var requestValue = $('#request-header-value').val();
+        var favorite = ($('#save-request-header-favorite:checked').length == 1);
+        $(document).trigger('append-request-header', [requestName, requestValue, favorite]);
+        $('#modal-header').modal('hide');
+    });
+
+    $(document).on('append-request-header', function(e, name, value, favorite){
+        console.log('append request: ' + name + ',' + value);
+        var closer = $('<a href="javascript:;" class="btn-remove-header">x</a>');
+        var el = $('<span class="badge badge-default p-2"></span>')
+            .text(requestName + ': ' + value)
+            .append(closer).
+            .data('request-name', requestName)
+            .data('request-value', requestValue)
+            .data('favorite', favorite);
+        $('.list-request-headers').append(el);
+    });
+
+    $(document).on('click', '.dd-favorite-headers .dropdown-item', function(){
+    });
 });

@@ -265,7 +265,8 @@ $(function () {
         }, 750);
     });
 
-    $(document).on('append-request-header', function(e, name, value, favorite, source, className){
+    $(document).on('append-request-header', function(e, name, value,
+                        favorite, source, className, data) {
         console.log('append request: ' + name + ',' + value);
         if(!className)
         {
@@ -279,6 +280,10 @@ $(function () {
             .data('name', name)
             .data('value', value)
             .data('favorite', favorite);
+        if(data)
+        {
+            el.data('data', data)
+        }
         if(source)
         {
             source.replaceWith(el);
@@ -432,10 +437,33 @@ $(function () {
         var value = 'Basic ' + window.btoa(username + ':' + password);
         var source = ($('.list-request-headers .basic-auth').length > 0) ?
             $('.list-request-headers .basic-auth') : false;
-        $(document).trigger('append-request-header', ['Authorization', value, false, source, 'basic-auth']);
+        var data = {'username': username, 'password': password};
+        $(document).trigger('append-request-header', ['Authorization', value, false, source, 'basic-auth', data]);
         $('#modal-basic-auth').modal('hide');
     });
-
+    $(document).on('click', '.list-request-headers .badge.basic-auth', function() {
+        var data = $(this).data('data');
+        $('#basic-auth-name').val(data['username']);
+        $('#basic-auth-password').val(data['password']);
+        $('#modal-basic-auth').modal('show');
+    });
+    /******************** Send Button ****************/
+    $('.btn-send-request').prop('disabled', true);
+    $(document).on('change keyup', '#request-method, #request-url', function(){
+        var method = $('#request-method').val();
+        var url = $('#request-url').val();
+        var isUrl = urlHelper.is_web_iri(url);
+        console.log(isUrl);
+        console.log(method != '' && typeof isUrl != 'undefined');
+        if(method != '' && typeof isUrl != 'undefined')
+        {
+            $('.btn-send-request').prop('disabled', false);
+        }
+        else
+        {
+            $('.btn-send-request').prop('disabled', true);
+        }
+    }).trigger('change');
     /******************** Back to Top *************************/
     $(window).scroll(function(){
         if($(this).scrollTop() > 100){

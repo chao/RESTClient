@@ -24,6 +24,16 @@ button {
 .underline {
     text-decoration: underline;
 }
+.valid-info {
+    display: none;
+}
+.invalid-feedback.valid-info {
+    display: block;
+}
+.has-danger .valid-info {
+    display: block;
+    color: #F57A00;
+}
 .dd-favorite-headers {
     .di-favorite-header {
         max-width: 20rem;

@@ -36,7 +36,7 @@
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-authentication">Authentication <span class="caret"></span></a>
           <div class="dropdown-menu" aria-labelledby="nav-item-authentication">
             <div class="dropdown-header">HTTP authentication</div>
-            <a class="dropdown-item" href="../default/">Basic Authentication</a>
+            <a class="dropdown-item" href="#" data-target="#modal-basic-auth" data-toggle="modal">Basic Authentication</a>
             <div class="dropdown-divider"></div>
             <div class="dropdown-header">OAuth Protocol</div>
             <a class="dropdown-item" href="../default/">OAuth</a>
@@ -223,7 +223,7 @@
               <div class="form-group">
                 <label for="request-header-name">Name</label>
                 <input type="text" class="form-control" id="request-header-name" placeholder="Attribute Name" autocomplete="off">
-                <small class="form-text" style="display: none;">We'll never share your email with anyone else.</small>
+                <small class="form-text" style="display: none;">Attribute name cannot be null</small>
               </div>
               <div class="form-group">
                 <label for="request-header-value">Value</label>
@@ -234,6 +234,35 @@
                 <label class="form-check-label" for="save-request-header-favorite">
                   Favorite header
                 </label>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Okay</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="modal-basic-auth" tabindex="-1" role="dialog" aria-labelledby="modal-basic-auth" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <form class="form-basic-auth">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Basic Authentication</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                <label class="form-control-label" for="basic-auth-name">Username</label>
+                <input type="text" class="form-control" id="basic-auth-name" placeholder="Username">
+                <small class="form-text valid-info">Username cannot be empty.</small>
+              </div>
+              <div class="form-group">
+                <label class="form-control-label" for="basic-auth-password">Password</label>
+                <input type="password" class="form-control" id="basic-auth-password" placeholder="Password">
               </div>
           </div>
           <div class="modal-footer">

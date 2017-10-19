@@ -265,10 +265,15 @@ $(function () {
         }, 750);
     });
 
-    $(document).on('append-request-header', function(e, name, value, favorite, source){
+    $(document).on('append-request-header', function(e, name, value, favorite, source, className){
         console.log('append request: ' + name + ',' + value);
+        if(!className)
+        {
+            className = 'custom';
+        }
         var closer = $('<a href="javascript:;" class="btn-remove-header">x</a>');
-        var el = $('<span class="badge custom badge-default p-2"></span>')
+        var el = $('<span class="badge badge-default p-2"></span>')
+            .addClass(className)
             .text(name + ': ' + value)
             .append(closer)
             .data('name', name)
@@ -403,6 +408,32 @@ $(function () {
         {
             $('.' + target).toggle();
         }
+    });
+
+    /******************** Basic Authentication ****************/
+    $('#modal-basic-auth').on('shown.bs.modal', function(){
+        // $('#modal-basic-auth').find('.is-invalid').removeClass('is-invalid');
+        // $('#modal-basic-auth').find('.invalid-feedback').removeClass('invalid-feedback');
+        $('#modal-basic-auth').find('.has-danger').removeClass('has-danger');
+        $('#basic-auth-name').select().focus();
+    });
+    $('.form-basic-auth').on('submit', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var username = $('#basic-auth-name').val();
+        var password = $('#basic-auth-password').val();
+        if(username == '')
+        {
+            // $('#basic-auth-name').addClass('is-invalid').next()
+            //     .addClass('invalid-feedback');
+            $('#basic-auth-name').parents('.form-group').addClass('has-danger').focus();
+            return false;
+        }
+        var value = 'Basic ' + window.btoa(username + ':' + password);
+        var source = ($('.list-request-headers .basic-auth').length > 0) ?
+            $('.list-request-headers .basic-auth') : false;
+        $(document).trigger('append-request-header', ['Authorization', value, false, source, 'basic-auth']);
+        $('#modal-basic-auth').modal('hide');
     });
 
     /******************** Back to Top *************************/

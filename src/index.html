@@ -1,25 +1,30 @@
 <!doctype html>
 <html>
+
 <head>
-    <title>RESTClient</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="RESTClient, a debugger for RESTful web services." />
-    <meta name="author" content="Chao ZHOU (chao@zhou.fr)" />
-    <link rel="shortcut icon" href="icons/icon-16.png" />
-    <link href="styles/plugins/simplex/bootstrap.css" rel="stylesheet" />
-    <link href="styles/plugins/font-awesome/font-awesome.css" rel="stylesheet" />
-    <link href="styles/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" />
-    <link href="styles/plugins/animate/animate.css" rel="stylesheet" />
-    <link href="styles/plugins/toastrjs/toastr.css" rel="stylesheet" />
-    <link href="styles/plugins/typeahead/typeaheadjs.css" rel="stylesheet" />
-    <link href="styles/index.css" rel="stylesheet" />
-    <title>RESTClient</title>
+  <title>RESTClient</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RESTClient, a debugger for RESTful web services." />
+  <meta name="author" content="Chao ZHOU (chao@zhou.fr)" />
+  <link rel="shortcut icon" href="icons/icon-16.png" />
+  <link href="styles/plugins/simplex/bootstrap.css" rel="stylesheet" />
+  <link href="styles/plugins/font-awesome/font-awesome.css" rel="stylesheet" />
+  <link href="styles/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet" />
+  <link href="styles/plugins/animate/animate.css" rel="stylesheet" />
+  <link href="styles/plugins/toastrjs/toastr.css" rel="stylesheet" />
+  <link href="styles/plugins/typeahead/typeaheadjs.css" rel="stylesheet" />
+  <link href="styles/plugins/pace/pace-theme-minimal.css" rel="stylesheet" />
+  <link href="styles/plugins/bttn.css/bttn.css" rel="stylesheet" />
+  <link href="styles/index.css" rel="stylesheet" />
+  <title>RESTClient</title>
 </head>
+
 <body>
   <!-- Navbar start -->
   <div class="navbar navbar-toggleable-md fixed-top flex-column flex-md-row navbar-light bg-primary">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+      aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -27,13 +32,17 @@
       <!-- menu at the left -->
       <ul class="navbar-nav navbar-left">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-file">File <span class="caret"></span></a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-file">File
+            <span class="caret"></span>
+          </a>
           <div class="dropdown-menu" aria-labelledby="nav-item-file">
             <a class="dropdown-item" href="../default/">Load request</a>
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-authentication">Authentication <span class="caret"></span></a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-authentication">Authentication
+            <span class="caret"></span>
+          </a>
           <div class="dropdown-menu" aria-labelledby="nav-item-authentication">
             <div class="dropdown-header">HTTP authentication</div>
             <a class="dropdown-item" href="#" data-target="#modal-basic-auth" data-toggle="modal">Basic Authentication</a>
@@ -44,7 +53,9 @@
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-headers">Headers <span class="caret"></span></a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-headers">Headers
+            <span class="caret"></span>
+          </a>
           <div class="dropdown-menu dd-favorite-headers" aria-labelledby="nav-item-headers">
             <a class="dropdown-item default-menu nav-custom-header" href="#">Custom Header</a>
             <div class="dropdown-divider default-menu"></div>
@@ -52,7 +63,9 @@
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-view">View <span class="caret"></span></a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-view">View
+            <span class="caret"></span>
+          </a>
           <div class="dropdown-menu" aria-labelledby="nav-item-view">
             <a class="dropdown-item" href="#request-title" data-action="toggle" data-target="request-container">Request</a>
             <a class="dropdown-item" href="#response-title" data-action="toggle" data-target="response-container">Response</a>
@@ -65,7 +78,9 @@
       <!-- menu at the right -->
       <ul class="nav navbar-nav navbar-right ml-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-favorite">Favorites<span class="caret"></span></a>
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-favorite">Favorites
+            <span class="caret"></span>
+          </a>
           <div class="dropdown-menu" aria-labelledby="nav-item-favorite">
 
             <a class="dropdown-item" href="./bootstrap.min.css">Import Favorite Request</a>
@@ -89,7 +104,10 @@
   <div class="request-container container-fluid panel">
     <div class="row">
       <div class="col-12">
-        <h5 id="request-title" class="text-muted title"> <a class="btn-toggle-panel">[<span>-</span>] Request</a></h5>
+        <h5 id="request-title" class="text-muted title">
+          <a class="btn-toggle-panel">[
+            <span>-</span>] Request</a>
+        </h5>
       </div>
     </div>
     <form class="request-form row">
@@ -136,7 +154,10 @@
       <div class="col-12 div-request-headers m-t-sm" style="display: none;">
         <div class="card">
           <div class="card-block">
-            <h6 class="card-title">Headers <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm"><i class="fa fa-trash"></i> Remove all</button></h6>
+            <h6 class="card-title">Headers
+              <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm">
+                <i class="fa fa-trash"></i> Remove all</button>
+            </h6>
             <div class="d-flex flex-wrap list-request-headers">
             </div>
           </div>
@@ -148,8 +169,8 @@
           <div class="card-block">
             <h6 class="card-title">Body</h6>
             <div class="d-flex">
-            <textarea id="request-body" class="form-control" placeholder="Request Body"></textarea>
-          </div>
+              <textarea id="request-body" class="form-control" placeholder="Request Body"></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -161,7 +182,10 @@
   <div class="response-container container-fluid m-t-lg panel">
     <div class="row">
       <div class="col-12">
-        <h5 id="response-title" class="text-muted title"><a class="btn-toggle-panel">[<span>-</span>] Response</a></h5>
+        <h5 id="response-title" class="text-muted title">
+          <a class="btn-toggle-panel">[
+            <span>-</span>] Response</a>
+        </h5>
       </div>
     </div>
 
@@ -184,14 +208,62 @@
             <div class="card">
               <div class="card-block">
                 <ol class="linenums">
-                  <li><span class="d-flex"><span class="header-name">Status Code</span><span class="header-split">: </span><span class="header-value">405 Method Not Allowed</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Allow</span><span class="header-split">: </span><span class="header-value">GET, POST</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Cache-Control</span><span class="header-split">: </span><span class="header-value">no-cache, private</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Connection</span><span class="header-split">: </span><span class="header-value">keep-alive</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Content-Type</span><span class="header-split">: </span><span class="header-value">text/html; charset=UTF-8</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Date</span><span class="header-split">: </span><span class="header-value">Tue, 10 Oct 2017 10:32:09 GMT</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Server</span><span class="header-split">: </span><span class="header-value">nginx</span></span></li>
-                  <li><span class="d-flex"><span class="header-name">Transfer-Encoding</span><span class="header-split">: </span><span class="header-value">chunked</span></span></li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Status Code</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">405 Method Not Allowed</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Allow</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">GET, POST</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Cache-Control</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">no-cache, private</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Connection</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">keep-alive</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Content-Type</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">text/html; charset=UTF-8</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Date</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">Tue, 10 Oct 2017 10:32:09 GMT</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Server</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">nginx</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span class="d-flex">
+                      <span class="header-name">Transfer-Encoding</span>
+                      <span class="header-split">: </span>
+                      <span class="header-value">chunked</span>
+                    </span>
+                  </li>
                 </ol>
               </div>
             </div>
@@ -206,6 +278,44 @@
   </div>
   <!-- Response End -->
 
+  <!-- Section for fullscreen progress bar -->
+  <section id="fullscreen-progressbar" class="module-hero overlay-light" style="display: none;">
+    <!-- button for abort current request -->
+    <div class="panic-button">
+      <button type="button" id="btn-abort-request" class="bttn-material-circle bttn-lg bttn-danger">
+        <i class="fa fa-close"></i>
+      </button>
+    </div>
+
+    <div class="container container-progressbar">
+      <div class="row">
+        <div class="col col-lg-4"></div>
+        <div class="col col-lg-4">
+          <h1 style="margin-bottom: 30px;">
+            <b>RESTClient</b> <small class="text-muted">v3.0.0</small>
+          </h1>
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0"
+              aria-valuemax="100"></div>
+          </div>
+          <p class="current-request" style="margin-top: 20px;">
+              <span class="current-request-basic">GET http://www.baidu.com</span>
+              <br class="hidden-xs">
+              <span class="current-request-status">is waiting for response</span>
+          </p>
+        </div>
+        <div class="col col-lg-4"></div>
+      </div>
+    </div>
+
+    <div id="time-passed" style="margin-top: 60px;">
+      <div>
+        <div class="div-seconds">000.0</div>
+        <i>Seconds Passed</i>
+      </div>
+    </div>
+  </section>
+
   <!-- Modals -->
   <div class="modal fade" id="modal-header" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -219,21 +329,21 @@
           </div>
           <div class="modal-body">
 
-              <div class="form-group">
-                <label for="request-header-name">Name</label>
-                <input type="text" class="form-control" id="request-header-name" placeholder="Attribute Name" autocomplete="off">
-                <small class="form-text" style="display: none;">Attribute name cannot be null</small>
-              </div>
-              <div class="form-group">
-                <label for="request-header-value">Value</label>
-                <input type="text" class="form-control" id="request-header-value" placeholder="Attribute Value" autocomplete="off">
-              </div>
-              <div class="form-check abc-checkbox abc-checkbox-danger">
-                <input class="form-check-input" id="save-request-header-favorite" type="checkbox">
-                <label class="form-check-label" for="save-request-header-favorite">
-                  Favorite header
-                </label>
-              </div>
+            <div class="form-group">
+              <label for="request-header-name">Name</label>
+              <input type="text" class="form-control" id="request-header-name" placeholder="Attribute Name" autocomplete="off">
+              <small class="form-text" style="display: none;">Attribute name cannot be null</small>
+            </div>
+            <div class="form-group">
+              <label for="request-header-value">Value</label>
+              <input type="text" class="form-control" id="request-header-value" placeholder="Attribute Value" autocomplete="off">
+            </div>
+            <div class="form-check abc-checkbox abc-checkbox-danger">
+              <input class="form-check-input" id="save-request-header-favorite" type="checkbox">
+              <label class="form-check-label" for="save-request-header-favorite">
+                Favorite header
+              </label>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -254,15 +364,15 @@
             </button>
           </div>
           <div class="modal-body">
-              <div class="form-group">
-                <label class="form-control-label" for="basic-auth-name">Username</label>
-                <input type="text" class="form-control" id="basic-auth-name" placeholder="Username">
-                <small class="form-text valid-info">Username cannot be empty.</small>
-              </div>
-              <div class="form-group">
-                <label class="form-control-label" for="basic-auth-password">Password</label>
-                <input type="password" class="form-control" id="basic-auth-password" placeholder="Password">
-              </div>
+            <div class="form-group">
+              <label class="form-control-label" for="basic-auth-name">Username</label>
+              <input type="text" class="form-control" id="basic-auth-name" placeholder="Username">
+              <small class="form-text valid-info">Username cannot be empty.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label" for="basic-auth-password">Password</label>
+              <input type="password" class="form-control" id="basic-auth-password" placeholder="Password">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -274,16 +384,21 @@
   </div>
   <!-- Modals end -->
 
-  <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top<span></span></a>
+  <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top
+    <span></span>
+  </a>
 
+  <script src="scripts/plugins/pace/pace.js" data-pace-options='{ "document": false }'></script>
   <script src="scripts/plugins/jquery/jquery.js"></script>
   <script src="scripts/plugins/popper.js/popper.js"></script>
   <script src="scripts/plugins/bootstrap/bootstrap.js"></script>
   <script src="scripts/plugins/lodash/lodash.js"></script>
   <script src="scripts/plugins/toastrjs/toastr.min.js"></script>
   <script src="scripts/plugins/typeahead/typeahead.bundle.js"></script>
+  <script src="scripts/plugins/numeral/numeral.js"></script>
   <script src="scripts/helpers/url.js"></script>
   <script src="scripts/data/headers.js"></script>
   <script src="scripts/index.js"></script>
 </body>
+
 </html>

@@ -114,7 +114,6 @@ $(function () {
         }
     });
 
-
     $(document).on('init-favorite-url-dropdown-items', function(e, saveToStorage){
         $('#request-urls-dropdown').empty();
         // console.log(favoriteUrls);
@@ -140,6 +139,10 @@ $(function () {
 
     $(document).on('click', '#request-urls-dropdown .dropdown-item', function(){
         var url = $(this).text();
+        if($(this).hasClass('disabled'))
+        {
+            return false;
+        }
         $('#request-url').val(url).trigger('change');
     });
 
@@ -449,12 +452,13 @@ $(function () {
     });
     /******************** Send Button ****************/
     $('.btn-send-request').prop('disabled', true);
-    $(document).on('change keyup', '#request-method, #request-url', function(){
+    $(document).on('keyup input change paste', '#request-method, #request-url', function(){
+        console.log('url changed');
         var method = $('#request-method').val();
         var url = $('#request-url').val();
         var isUrl = urlHelper.is_web_iri(url);
-        console.log(isUrl);
-        console.log(method != '' && typeof isUrl != 'undefined');
+        // console.log(isUrl);
+        // console.log(method != '' && typeof isUrl != 'undefined');
         if(method != '' && typeof isUrl != 'undefined')
         {
             $('.btn-send-request').prop('disabled', false);
@@ -464,6 +468,20 @@ $(function () {
             $('.btn-send-request').prop('disabled', true);
         }
     }).trigger('change');
+    /*************************** Execute request ******************************/
+    $('.request-form').on('submit', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if($('.btn-send-request').prop('disabled'))
+        {
+            return false;
+        }
+
+        var method = $('#request-method').val();
+        var url = $('#request-url').val();
+        var headers = [];
+    });
+
     /******************** Back to Top *************************/
     $(window).scroll(function(){
         if($(this).scrollTop() > 100){
@@ -475,5 +493,37 @@ $(function () {
     $('#scroll').click(function(){
         $("html, body").animate({ scrollTop: 0 }, 600);
         return false;
+    });
+
+    /**********************FULL Screen Function ********************************/
+    $(document).on('start-counting', function(){
+        window.counting = 0;
+        window.timeoutCounting = setInterval(function(){
+            window.counting += 0.1;
+            $(".div-seconds").text(numeral(window.counting).format("000.0"));
+        }, 100);
+    });
+
+    $(document).on("show-fullscreen", function() {
+      if (window.timeoutCounting) {
+        clearInterval(window.timeoutCounting);
+      }
+      window.counting = 0;
+      $(".current-request-basic").text($('#request-method').text() + ' ' + $('request-url').text());
+      $(".current-request-status").text("is waiting for response");
+      $("#fullscreen-progressbar").show();
+    });
+
+    $(document).on("hide-fullscreen", function() {
+        if (window.timeoutCounting)
+        {
+            clearInterval(window.timeoutCounting);
+        }
+        $("#fullscreen-progressbar").hide();
+    });
+
+    $(document).on('click', "#btn-abort-request", function(){
+        $(document).trigger('abort-current-ajax');
+        $(document).trigger("hide-fullscreen");
     });
 });

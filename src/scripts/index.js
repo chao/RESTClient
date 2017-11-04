@@ -22,7 +22,8 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
-
+import ext from "./utils/ext";
+import storage from "./utils/storage";
 $(function () {
     window.favoriteHeaders = [];
     window.favoriteUrls = [];
@@ -56,7 +57,7 @@ $(function () {
     });
     // Load favorite urls from storage
     $('.btn-toggle-favorite-url').prop('disabled', true);
-    browser.storage.local.get('request-urls').then(
+    storage.get('request-urls').then(
         (data) => {
             console.log(data);
             if(data['request-urls'] && data['request-urls'].length > 0)
@@ -131,7 +132,7 @@ $(function () {
         }
         if(saveToStorage)
         {
-            browser.storage.local.set({ ['request-urls'] : favoriteUrls }).then(() => {
+            storage.set({ ['request-urls'] : favoriteUrls }).then(() => {
                 // console.log(favoriteUrls);
             });
         }
@@ -148,7 +149,7 @@ $(function () {
 
     /********************** Init Request Headers **************************/
     $('.nav-custom-header, .nav-custom-header-clear').addClass('disabled');
-    browser.storage.local.get('request-headers').then(
+    storage.get('request-headers').then(
         (data) => {
             console.log(data);
             if(data['request-headers'] && data['request-headers'].length > 0)
@@ -178,7 +179,7 @@ $(function () {
         }
         if(saveToStorage)
         {
-            browser.storage.local.set({ ['request-headers'] : favoriteHeaders }).then(() => {
+            storage.set({ ['request-headers'] : favoriteHeaders }).then(() => {
             });
         }
     });
@@ -525,5 +526,39 @@ $(function () {
     $(document).on('click', "#btn-abort-request", function(){
         $(document).trigger('abort-current-ajax');
         $(document).trigger("hide-fullscreen");
+    });
+
+    /******************* Start to execute request ******************************/
+    $(document).on('click', '.btn-send-request', function() {
+        $(document).trigger("show-fullscreen");
+        var headers = [];
+
+        $(".list-request-headers .badge").each(function(idx, item){
+            var name  = $(item).data('name');
+            var value = $(item).data('value');
+            headers.push( {'name': name, 'value': value} );
+        });
+        
+        var data = {
+            'method': $('#request-method').val(),
+            'url': $('#request-url').val(),
+            'headers': headers,
+            'body': $('#request-body').val()
+        };
+
+        ext.runtime.sendMessage({
+                action: "execute-http-request",
+                data: data
+            },
+            function (response) {
+                if (response && response.action === "saved") {
+                    renderMessage("Your bookmark was saved successfully!");
+                } else {
+                    renderMessage(
+                        "Sorry, there was an error while saving your bookmark."
+                    );
+                }
+            }
+        );
     });
 });

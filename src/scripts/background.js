@@ -9,11 +9,10 @@ browser.browserAction.onClicked.addListener(function () {
 
 ext.runtime.onMessage.addListener(
     function (request, sender, callback) {
+        console.log(request.action);
         if (request.action === "execute-http-request") {
-
-
-            console.log("Extension Type: ", "/* @echo extension */");
-            console.log("PERFORM AJAX", request.data);
+            console.log(request.data);
+            ext.runtime.sendMessage({ action: "update-progress-bar", data: 100 });
         }
     }
 );

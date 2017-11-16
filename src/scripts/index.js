@@ -551,14 +551,18 @@ $(function () {
                 data: data
             },
             function (response) {
-                if (response && response.action === "saved") {
-                    renderMessage("Your bookmark was saved successfully!");
-                } else {
-                    renderMessage(
-                        "Sorry, there was an error while saving your bookmark."
-                    );
+                if (response) {
+                   console.log(response);
                 }
             }
         );
     });
 });
+
+ext.runtime.onMessage.addListener(
+    function (request, sender, callback) {
+        if (request.action === "update-progress-bar") {
+            console.log(request.data);
+        }
+    }
+);

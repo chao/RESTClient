@@ -575,6 +575,7 @@ ext.runtime.onMessage.addListener(
                 .addClass('progress-bar-animated')
                 .attr('aria-valuenow', request.data)
                 .css('width', request.data + '%');
+            return false;
         }
         if (request.action == "set-progress-bar-animated") {
             console.log('animated progress-bar');
@@ -582,18 +583,39 @@ ext.runtime.onMessage.addListener(
                 .attr('aria-valuenow', '100')
                 .css('width', '100%');
             $('.current-request-status').html(request.data);
+            return false;
         }
         if (request.action == "update-progress-label") {
             $('.current-request-status').html(request.data);
+            return false;
         }
         if (request.action == "hide-overlay") {
             $(document).trigger("hide-fullscreen");
+            return false;
         }
         if (request.action == "start-counting") {
             $(document).trigger('start-counting');
+            return false;
         }
         if (request.action == "abort-http-request") {
             toastr.warning("HTTP request (" + $('#request-method').val() + " " + $('#request-url').val() + ") aborted.");
+            return false;
+        }
+        if (request.action == "http-request-timeout") {
+            $(document).trigger("hide-fullscreen");
+            toastr.error("HTTP request (" + $('#request-method').val() + " " + $('#request-url').val() + ") timed out.");
+            return false;
+        }
+        if (request.action == "http-request-error") {
+            $(document).trigger("hide-fullscreen");
+            toastr.error(request.detail || "Request error", request.title || "Error");
+            return false;
+        }
+        if (request.action == "http-request-load")
+        {
+            $(document).trigger("hide-fullscreen");
+            console.log(request.data);
+            return false;
         }
     }
 );

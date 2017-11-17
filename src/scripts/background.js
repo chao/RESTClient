@@ -59,7 +59,7 @@ xhr.onload = function(e) {
     var response = {};
     response.timeCosted = (new Date().getTime()) - startedAt;
     response.headers = [];
-    response.headers.push( {"Status Code": xhr.status + " " + xhr.statusText});
+    response.headers.push( {key: "Status Code", value: xhr.status + " " + xhr.statusText});
     var headersText = xhr.getAllResponseHeaders(),
         responseHeaders = headersText.split("\n"),
         key, value;
@@ -70,7 +70,7 @@ xhr.onload = function(e) {
             value = xhr.getResponseHeader(key);
             if (value)
             {
-                response.headers.push({ key: value });
+                response.headers.push({ key: key, value: value });
             }
         }
     }
@@ -78,8 +78,8 @@ xhr.onload = function(e) {
     response.xml = xhr.responseXML;
     if (contentType && contentType.indexOf('image') >= 0) {
         var toConvert = "";
-        for (var i = 0; i < responseData.length; i++) {
-            toConvert += String.fromCharCode(responseData.charCodeAt(i) & 0xff);
+        for (var i = 0; i < response.body.length; i++) {
+            toConvert += String.fromCharCode(response.body.charCodeAt(i) & 0xff);
         }
         var base64encoded = btoa(toConvert);
         response.image = "data:" + contentType + ";base64," + base64encoded;

@@ -28,7 +28,6 @@ $(function () {
     window.favoriteHeaders = [];
     window.favoriteUrls = [];
 
-
     /**************************** Init Toastr ********************************/
     toastr.options = {
         "closeButton": true,
@@ -615,6 +614,19 @@ ext.runtime.onMessage.addListener(
         {
             $(document).trigger("hide-fullscreen");
             console.log(request.data);
+            $('#response-headers ol').empty();
+            if(request.data && request.data.headers)
+            {
+                _.each(request.data.headers, function(header){
+                    var span = $('<span class="d-flex"></span>');
+                    span.append($('<span class="header-name"></span>').text(header['key']));
+                    span.append($('<span class="header-split">: </span>'));
+                    span.append($('<span class="header-value"></span>').text(header['value']));
+                    var li = $('<li></li>').append(span);
+                    $('#response-headers ol').append(li);
+                });
+            }
+            $('#response-body').text(request.data.body || '');
             return false;
         }
     }

@@ -31,21 +31,22 @@ $(function () {
 
     /**************************** Init Toastr ********************************/
     toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "progressBar": true,
-      "preventDuplicates": true,
-      "positionClass": "toast-bottom-full-width",
-      "onclick": null,
-      "showDuration": "400",
-      "hideDuration": "1000",
-      "timeOut": "7000",
-      "extendedTimeOut": "1000",
-      "showEasing": "swing",
-      "hideEasing": "linear",
-      "showMethod": "fadeIn",
-      "hideMethod": "fadeOut"
-    };
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
 
     /********************** Init Request Method & URL **************************/
     $('#request-method, #request-url').on('focus', function(){
@@ -497,8 +498,8 @@ $(function () {
     });
 
     /**********************FULL Screen Function ********************************/
-    $(document).on('start-counting', function(){
-        window.counting = 0;
+    $(document).on('start-counting', function(evt, initCount){
+        window.counting = initCount || 0;
         window.timeoutCounting = setInterval(function(){
             window.counting += 0.1;
             $(".div-seconds").text(numeral(window.counting).format("000.0"));
@@ -526,6 +527,10 @@ $(function () {
     $(document).on('click', "#btn-abort-request", function(){
         $(document).trigger('abort-current-ajax');
         $(document).trigger("hide-fullscreen");
+        ext.runtime.sendMessage({
+            action: "abort-http-request",
+            target: "background"
+        });
     });
 
     /******************* Start to execute request ******************************/
@@ -545,24 +550,50 @@ $(function () {
             'headers': headers,
             'body': $('#request-body').val()
         };
-
+        $('.current-request-basic').html($('#request-method').val() + ' ' + $('#request-url').val());
         ext.runtime.sendMessage({
                 action: "execute-http-request",
+                target: "background",
                 data: data
-            },
-            function (response) {
-                if (response) {
-                   console.log(response);
-                }
             }
         );
     });
 });
 
 ext.runtime.onMessage.addListener(
-    function (request, sender, callback) {
-        if (request.action === "update-progress-bar") {
+    function (request, sender) {
+        
+        if (request.target !== 'index')
+        {
+            return false;
+        }
+        
+        console.log('[index.js]' + request.action);
+        if (request.action == "update-progress-bar") {
             console.log(request.data);
+            $('[role="progressbar"]')
+                .addClass('progress-bar-animated')
+                .attr('aria-valuenow', request.data)
+                .css('width', request.data + '%');
+        }
+        if (request.action == "set-progress-bar-animated") {
+            console.log('animated progress-bar');
+            $('[role="progressbar"]').addClass('progress-bar-animated')
+                .attr('aria-valuenow', '100')
+                .css('width', '100%');
+            $('.current-request-status').html(request.data);
+        }
+        if (request.action == "update-progress-label") {
+            $('.current-request-status').html(request.data);
+        }
+        if (request.action == "hide-overlay") {
+            $(document).trigger("hide-fullscreen");
+        }
+        if (request.action == "start-counting") {
+            $(document).trigger('start-counting');
+        }
+        if (request.action == "abort-http-request") {
+            toastr.warning("HTTP request (" + $('#request-method').val() + " " + $('#request-url').val() + ") aborted.");
         }
     }
 );

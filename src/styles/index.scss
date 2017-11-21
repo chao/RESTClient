@@ -45,9 +45,11 @@ button {
     text-decoration: none;
     cursor: pointer;
 }
+
 .request-container {
     .title {
         margin-left: 0.1rem;
+        font-family: Consolas, Monaco, monospace;
     }
     .card-block {
         padding: 0.5rem;
@@ -152,6 +154,10 @@ button {
 }
 
 .response-container {
+    .title {
+        margin-left: 0.1rem;
+        font-family: Consolas, Monaco, monospace;
+    }
     #response-headers {
         .card-block {
             padding-left: 0;
@@ -165,7 +171,7 @@ button {
                 text-shadow: 0 1px 0 #fff;
                 .header-name {
                     color: teal;
-                    width: 10rem;
+                    width: 12rem;
                 }
                 .header-split {
                     color: #93a1a1;
@@ -177,6 +183,12 @@ button {
                 }
             }
         }
+    }
+    .CodeMirror {
+        border: 1px solid #eee;
+        min-height: 300px;
+        height: auto;
+        max-height: 1600px;
     }
 }
 

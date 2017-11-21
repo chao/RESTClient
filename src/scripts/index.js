@@ -47,6 +47,18 @@ $(function () {
         "hideMethod": "fadeOut"
     }
 
+    /********************** Init Response Raw and Preview **************************/
+    window.cmResponseBody = CodeMirror.fromTextArea(document.getElementById("response-body"), {
+        lineNumbers: true,
+        matchBrackets: true
+    });
+    $('.response-container a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        if ($(e.target).attr('href') == '#tab-response-body')
+        {
+            cmResponseBody.refresh();   
+        }
+    });
+    
     /********************** Init Request Method & URL **************************/
     $('#request-method, #request-url').on('focus', function(){
         $(this).select();
@@ -626,7 +638,7 @@ ext.runtime.onMessage.addListener(
                     $('#response-headers ol').append(li);
                 });
             }
-            $('#response-body').text(request.data.body || '');
+            cmResponseBody.getDoc().setValue(request.data.body || '');
             return false;
         }
     }

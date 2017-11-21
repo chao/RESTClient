@@ -48,9 +48,9 @@ $(function () {
     }
 
     /********************** Init Response Raw and Preview **************************/
+    CodeMirror.modeURL = "scripts/plugins/codemirror-5.31.0/mode/%N/%N.js";
     window.cmResponseBody = CodeMirror.fromTextArea(document.getElementById("response-body"), {
-        lineNumbers: true,
-        matchBrackets: true
+        lineNumbers: true
     });
     $('.response-container a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if ($(e.target).attr('href') == '#tab-response-body')
@@ -58,7 +58,47 @@ $(function () {
             cmResponseBody.refresh();   
         }
     });
-    
+    $(document).on('update-response-body', function(e, mime) {
+        if(!mime || mime == '')
+        {
+            mime = 'text/plain';
+        }
+
+        mime = mime.toLowerCase();
+        
+        var mode = false;
+        if(mime.indexOf('text/html') >= 0)
+        {
+            mode = 'htmlmixed';
+            $('.response-container a.preview[data-toggle="tab"]').show();
+        }
+        if (mode === false && mime.indexOf('json') >= 0) {
+            mode = { name: "javascript", json: true };
+        }
+        if(mode === false && mime.indexOf('image') >= 0)
+        {
+            mode = null;
+            $('.response-container a.preview[data-toggle="tab"]').show();
+        }
+        if(mode === false)
+        {
+            var info = CodeMirror.findModeByMIME(mime);
+            mode = info.mode || null;
+        }
+        console.log(mode);
+        if( mode )
+        {
+            cmResponseBody.setOption('mode', mode);
+            CodeMirror.autoLoadMode(cmResponseBody, mode.name || mode);
+        }
+        else
+        {
+            cmResponseBody.setOption('mode', null);
+        }
+        // TODO 根据mime隐藏或显示preview
+        
+    });
+
     /********************** Init Request Method & URL **************************/
     $('#request-method, #request-url').on('focus', function(){
         $(this).select();
@@ -493,6 +533,11 @@ $(function () {
         var method = $('#request-method').val();
         var url = $('#request-url').val();
         var headers = [];
+
+        $('#response-headers ol').empty();
+        cmResponseBody.getDoc().setValue('');
+        $('.response-container a[data-toggle="tab"]:first').tab('show');
+        $('.response-container a.preview[data-toggle="tab"]').hide();
     });
 
     /******************** Back to Top *************************/
@@ -636,8 +681,15 @@ ext.runtime.onMessage.addListener(
                     span.append($('<span class="header-value"></span>').text(header['value']));
                     var li = $('<li></li>').append(span);
                     $('#response-headers ol').append(li);
+
+                    if (header['key'].toLowerCase() == 'content-type')
+                    {
+                        $(document).trigger('update-response-body', [header['value']]);
+                    }
+                    
                 });
             }
+
             cmResponseBody.getDoc().setValue(request.data.body || '');
             return false;
         }

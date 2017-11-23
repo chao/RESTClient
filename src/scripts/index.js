@@ -58,19 +58,36 @@ $(function () {
             cmResponseBody.refresh();   
         }
     });
-    $(document).on('update-response-body', function(e, mime) {
+    $(document).on('update-response-body', function(e, mime, body) {
+        // console.log("[index.js]['update-response-body']" + mime + "\n" + body);
+        var iframe = document.getElementById("iframe-response")
+        var iframeDoc = iframe.contentWindow.document;
         if(!mime || mime == '')
         {
             mime = 'text/plain';
         }
 
         mime = mime.toLowerCase();
-        
+        try {
+            iframeDoc.open();
+            iframeDoc.write('');
+            iframeDoc.close();
+        } catch (e) {
+            console.error(e);
+        }
+
         var mode = false;
         if(mime.indexOf('text/html') >= 0)
         {
             mode = 'htmlmixed';
             $('.response-container a.preview[data-toggle="tab"]').show();
+            try {
+                iframeDoc.open();
+                iframeDoc.write(body);
+                iframeDoc.close();
+            } catch (e) {
+                console.error(e);
+            }
         }
         if (mode === false && mime.indexOf('json') >= 0) {
             mode = { name: "javascript", json: true };
@@ -79,6 +96,14 @@ $(function () {
         {
             mode = null;
             $('.response-container a.preview[data-toggle="tab"]').show();
+            var body = ""; // TODO preview image
+            try {
+                iframeDoc.open();
+                iframeDoc.write(body);
+                iframeDoc.close();
+            } catch (e) {
+                console.error(e);
+            }
         }
         if(mode === false)
         {
@@ -95,8 +120,8 @@ $(function () {
         {
             cmResponseBody.setOption('mode', null);
         }
-        // TODO 根据mime隐藏或显示preview
         
+        cmResponseBody.getDoc().setValue(body);
     });
 
     /********************** Init Request Method & URL **************************/
@@ -669,8 +694,9 @@ ext.runtime.onMessage.addListener(
         }
         if (request.action == "http-request-load")
         {
+            var mime = false;
             $(document).trigger("hide-fullscreen");
-            console.log(request.data);
+            // console.log(request.data);
             $('#response-headers ol').empty();
             if(request.data && request.data.headers)
             {
@@ -684,13 +710,15 @@ ext.runtime.onMessage.addListener(
 
                     if (header['key'].toLowerCase() == 'content-type')
                     {
-                        $(document).trigger('update-response-body', [header['value']]);
+                        mime = header['value'];
                     }
                     
                 });
             }
-
-            cmResponseBody.getDoc().setValue(request.data.body || '');
+            var body = request.data.body || '';
+            console.log([mime, body]);
+            $(document).trigger('update-response-body', [mime, body]);
+            
             return false;
         }
     }

@@ -108,7 +108,7 @@ ext.runtime.onMessage.addListener(
             var requestMethod = params.method || 'GET';
             var requestUrl = params.url || '';
             var requestHeaders = params.headers || [];
-
+            var requestBody = params.body || '';
             xhr.open(requestMethod, requestUrl, true);
             console.log('[background] start to send request');
             sendResponse({ action: "start-counting" });
@@ -125,7 +125,7 @@ ext.runtime.onMessage.addListener(
                 }
             }
             startedAt = new Date().getTime();
-            xhr.send();
+            xhr.send(requestBody);
         }
         if (request.action == "abort-http-request")
         {

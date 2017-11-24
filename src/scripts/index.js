@@ -489,6 +489,86 @@ $(function () {
           source: thValues
         });
     });
+    /********************** Init Request Body **************************/
+    
+    $(document).on('modal-form-data-row-changed', function(){
+        if ($('#modal-form-data .btn-minus').length == 1)
+        {
+            $('#modal-form-data .btn-minus').prop('disabled', true);
+        }
+        else
+        {
+            $('#modal-form-data .btn-minus').prop('disabled', false);
+        }
+    }).trigger('modal-form-data-row-changed');
+
+    $(document).on('focus', '#modal-form-data input', function () {
+        $(this).select();
+    });
+
+    $(document).on('click', '#modal-form-data .btn-minus', function () {
+        $(this).parents('.row').remove();
+        $(document).trigger('modal-form-data-row-changed');
+    });
+    
+    $(document).on('click', '#modal-form-data .btn-plus', function () {
+        var row = $(this).parents('.row').clone();
+        row.find('input[name="name"]').val($(this).parents('.row').find('input[name="name"]').val());
+        row.find('input[name="value"]').val($(this).parents('.row').find('input[name="value"]').val());
+        row.insertAfter($(this).parents('.row'));
+        $(document).trigger('modal-form-data-row-changed');
+    });
+
+    $(document).on('click', '#modal-form-data .btn-update-form-data', function (e) {
+        e.preventDefault();
+        var params = [];
+        _.each($('#modal-form-data .modal-body .row'), function(item){
+            var name = $(item).find('[name="name"]').val();
+            var value = $(item).find('[name="value"]').val();
+            console.log(item);
+            params.push({name: name, value: value});
+        });
+        
+        $('#modal-form-data').modal('hide');
+        if (params.length > 0)
+        {
+            $('#request-body').val($.param(params)).data('form-data', params);
+            $('.btn-form-data').addClass('active');
+        }
+        else
+        {
+            $('#request-body').val('').removeData('form-data');
+            $('.btn-form-data').removeClass('active');
+        }
+    });
+
+    $('#modal-form-data').on('show.bs.modal', function (e) {
+        var row = $('#modal-form-data .row:first-child')[0];
+        $('#modal-form-data .modal-body').empty();
+        var template = $(row).clone();
+        template.find('[name="name"]').val('');
+        template.find('[name="value"]').val('');
+        var data = $('#request-body').data('form-data');
+        if(data && data.length > 0)
+        {
+            _.each(data, function(item){
+                var newRow = template.clone();
+                newRow.find('[name="name"]').val(item.name);
+                newRow.find('[name="value"]').val(item.value);
+                $('#modal-form-data .modal-body').append(newRow);
+            });
+        }
+        else
+        {
+            $('#modal-form-data .modal-body').append(template);
+        }
+        $(document).trigger('modal-form-data-row-changed');
+    });
+    
+    $(document).on('change', '#request-body', function(e){
+        $('#request-body').removeData('form-data');
+        $('.btn-form-data').removeClass('active');
+    });
 
     /*********************** Toggle Panel ***************************/
     $(document).on('click', '.btn-toggle-panel', function(){

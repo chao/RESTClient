@@ -30,7 +30,7 @@ var manifest = {
   firefox: {
     "applications": {
       "gecko": {
-        "id": "my-app-id@mozilla.org"
+        "id": "{ad0d925d-88f8-47f1-85ea-8463569e756e}"
       }
     }
   }

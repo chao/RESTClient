@@ -148,7 +148,8 @@
           <div class="card-block">
             <h6 class="card-title">Headers
               <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm">
-                <i class="fa fa-trash"></i> Remove all</button>
+                <i class="fa fa-trash"></i> Remove all
+              </button>
             </h6>
             <div class="d-flex flex-wrap list-request-headers">
             </div>
@@ -159,7 +160,12 @@
       <div class="col-12 div-request-body m-t-sm">
         <div class="card">
           <div class="card-block">
-            <h6 class="card-title">Body</h6>
+            <h6 class="card-title">
+              Body
+              <button type="button" class="btn btn-link pull-right btn-form-data" data-target="#modal-form-data" data-toggle="modal">
+                <i class="fa fa-table"></i>
+              </button>
+            </h6>
             <div class="d-flex">
               <textarea id="request-body" class="form-control" placeholder="Request Body"></textarea>
             </div>
@@ -340,6 +346,40 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="modal-form-data" tabindex="-1" role="dialog" aria-labelledby="modal-form-data" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <form class="form-form-data">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Form Data Editor</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col col-md-3">
+                <input type="text" class="form-control" name="name" placeholder="Name">
+              </div>
+              <div class="col col-md-6">
+                <input type="text" class="form-control" name="value" placeholder="Value">
+              </div>
+              <div class="col col-md-3">
+                <div class="btn-group" role="group" aria-label="operation">
+                  <button type="button" class="btn btn-plus btn-secondary"><i class="fa fa-plus"></i></button>
+                  <button type="button" class="btn btn-minus btn-secondary"><i class="fa fa-minus"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-update-form-data">Okay</button>
           </div>
         </div>
       </form>

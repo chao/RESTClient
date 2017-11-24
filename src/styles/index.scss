@@ -151,9 +151,19 @@ button {
         }
 
         .div-request-body {
+            .btn-form-data {
+                padding: 0;
+                color: #CCC;
+                outline: 0 !important;
+                border: none !important;
+            }
+            .btn-form-data.active {
+                color: #F00;
+            }
             #request-body {
                 flex: 1;
             }
+
         }
     }
 }
@@ -323,6 +333,20 @@ button {
             font-size: 14px;
             text-align: center;
             color: #777;
+        }
+    }
+}
+#modal-form-data {
+    .modal-body {
+        .row {
+            padding-left: 35px;
+            .col {
+                padding-right: 5px;
+                padding-left: 0px;
+            }
+        }
+        .row + .row {
+            margin-top: 10px;
         }
     }
 }

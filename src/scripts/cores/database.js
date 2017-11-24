@@ -96,18 +96,35 @@ var Database = {
         this._requests = requests;
     },
 
-    async importRequests(items) {
+    async importRequests(data) {
         if (this._db === null) {
             return;
         }
         let tx = this._db.transaction(['requests'], 'readwrite');
         let imported = 0;
-        for (let name in items) {
-            let item = items[name];
-            item.name = name;
-            item.tags = [];
-            tx.objectStore('requests').put(item);
-            imported++;
+        if(!data.version)
+        {
+            for (let name in data) {
+                let item = data[name];
+                item.name = name;
+                item.tags = [];
+                if (typeof item.overrideMimeType != 'undefined')
+                {
+                    delete item.overrideMimeType;
+                }
+                
+                tx.objectStore('requests').put(item);
+                imported++;
+            }
+        }
+        console.log(data);
+        if(data.version && data.version == 1 && data.data && data.data.length > 0)
+        {
+            for (let item of data.data) {
+                delete item['id'];
+                tx.objectStore('requests').put(item);
+                imported++;
+            }
         }
         await this._transactionPromise(tx);
         console.log(`[RESTClient][database.js]: ${imported} requests imported.`);

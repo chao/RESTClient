@@ -230,8 +230,11 @@ $(function () {
 
         Database.loadRequests().then(function () {
             let requests = Database.requests;
-            requests = JSON.stringify(requests);
-            let file = new Blob([requests], { type: 'text/json' });
+            let dump = JSON.stringify({
+                    version: Database.DB_VERSION,
+                    data: requests
+                });
+            let file = new Blob([dump], { type: 'text/json' });
             console.log(ext);
             ext.downloads.download({
                 url: URL.createObjectURL(file),

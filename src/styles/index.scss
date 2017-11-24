@@ -100,10 +100,15 @@ button {
         .ig-request-url {
             flex: 1;
             margin-right: 0.5rem;
+            display: flex;
             #dd-request-urls {
                 border-top-right-radius: 0.25rem;
                 border-bottom-right-radius: 0.25rem;
             }
+            #request-urls-dropdown {
+                transform: translate3d(-1px, 34px, 0px) !important;
+            }
+            
         }
         button[type="submit"] {
             width: 5rem;

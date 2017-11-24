@@ -16,8 +16,10 @@
   "permissions": [
     "tabs",
     "storage",
-    "http://*/*",
-    "https://*/*"
+    "*://*/*",
+    "downloads",
+    "unlimitedStorage",
+    "clipboardWrite"
   ],
   "options_ui": {
     "page": "options.html"

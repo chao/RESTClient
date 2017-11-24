@@ -62,7 +62,6 @@ let Favorite = {
         });
     },
 
-
     init() {
         this.favoriteReader = new FileReader();
 

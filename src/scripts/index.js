@@ -223,6 +223,23 @@ $(function () {
         }
         $('#request-url').val(url).trigger('change');
     });
+    
+    $(document).on('click', '#nav-download-favorite-request', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        Database.loadRequests().then(function () {
+            let requests = Database.requests;
+            requests = JSON.stringify(requests);
+            let file = new Blob([requests], { type: 'text/json' });
+            console.log(ext);
+            ext.downloads.download({
+                url: URL.createObjectURL(file),
+                saveAs: true,
+                filename: 'RESTClient_dump_' + (new Date()).toISOString().split('T')[0] + '.json'
+            });
+        });
+    });
 
     /********************** Init Request Headers **************************/
     $('.nav-custom-header, .nav-custom-header-clear').addClass('disabled');

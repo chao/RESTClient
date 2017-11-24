@@ -84,7 +84,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="nav-item-favorite">
 
-            <a class="dropdown-item" href="./bootstrap.min.css">Import Favorite Request</a>
+            <a class="dropdown-item" href="#" data-target="#modal-file-import" data-toggle="modal">Import Favorite Request</a>
             <a class="dropdown-item" href="./bootstrap.css">Export Favorite Request</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="./_variables.scss">Manage Favorite Request</a>
@@ -330,6 +330,29 @@
       </form>
     </div>
   </div>
+  <div class="modal fade" id="modal-file-import" tabindex="-1" role="dialog" aria-labelledby="modal-file-import" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <form class="form-file-import">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Import Favorite Request</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="dropzone-import" class="dropzone">
+              Drag and drop your favorite request file (.json) here <br/>Click here to select file. <br />
+              <small>Max file size: 5MB</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
   <!-- Modals end -->
 
   <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top
@@ -348,6 +371,7 @@
   <script src="scripts/plugins/codemirror-5.31.0/mode/meta.js"></script>
   <script src="scripts/helpers/url.js"></script>
   <script src="scripts/cores/keyboard.js"></script>
+  <script src="scripts/cores/favorite.js"></script>
   <script src="scripts/data/headers.js"></script>
   <script src="scripts/index.js"></script>
 

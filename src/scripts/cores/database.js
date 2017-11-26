@@ -3,7 +3,7 @@ var Database = {
     DB_NAME: 'restclient',
 
     _db: null,
-    _requests: [],
+    _requests: {},
     _tags: [],
     db() {
         return this._db;
@@ -82,35 +82,27 @@ var Database = {
     },
 
     async loadRequests() {
-        let tx = this._db.transaction(['requests']);
-        let request = tx.objectStore('requests').getAll();
-        let requests = await this._requestPromise(request);
-        console.log(`[RESTClient][database.js]:${requests.length} requests in database`);
-
-        if (requests.length === 0) {
-            console.log(`[RESTClient][database.js]: the database looks empty`);
-            ({ requests } = await browser.storage.local.get({ requests: [] }));
-            console.log(`[RESTClient][database.js]: ${requests.length} requests found in local storage`);
-            if (requests.length === 0) {
-                ({ requests } = await browser.storage.sync.get({ requests: [] }));
-                console.log(`[RESTClient][database.js]: ${requests.length} requests found in sync storage`);
+        this._requests = {};
+        let tx = this._db.transaction(['requests'], 'readonly');
+        let store = tx.objectStore('requests');
+        let request = store.openCursor();
+        request.onsuccess = function (event) {
+            var cursor = event.target.result;
+            console.log(`[RESTClient][database.js]: Open cursor`, cursor);
+            
+            if (cursor) {
+                Database._requests[cursor.key] = cursor.value;
+                if (cursor.value && cursor.value.tags && Array.isArray(cursor.value.tags) && cursor.value.tags.length > 0) {
+                    Database._tags = _.union(Database._tags, cursor.value.tags);
+                }
+                cursor.continue();
+            } else {
             }
-            this._requests = requests;
-        }
-        else
-        {
-            var tags = this._tags;
-            _.each(requests, function(request){
-                if (request.tags && Array.isArray(request.tags) && request.tags.length > 0)
-                {
-                    tags = _.union(tags, request.tags);
-                } 
-            });
-            this._tags = tags;
-            console.log('[RESTClient][database.js]: tags', tags);
-        }
-        requests.sort((a, b) => a.rowIndex - b.rowIndex);
-        this._requests = requests;
+        };
+        request.onerror = function (event) {
+            console.error(`[RESTClient][database.js]: cannot read request objectstore`, event);
+        };
+        await Database._transactionPromise(tx);
     },
 
     async importRequests(data) {
@@ -132,28 +124,46 @@ var Database = {
                     delete item.overrideMimeType;
                 }
                 console.log(`[RESTClient][database.js]: processing ${imported}.`, item);
+                if(item.headers)
+                {
+                    if(item.headers.length > 0)
+                    {
+                        var headers = [];
+                        _.each(item.headers, function (header) {
+                            headers.push({ name: header[0], value: header[1] });
+                        })
+                        item.headers = headers;
+                    }
+                    else
+                    {
+                        delete item.headers;
+                    }
+                }
+
                 try {
                     tx.objectStore('requests').put(item, name);
+                    imported++;
                 }catch(e)
                 {
                     console.error(e);
                 }
-                
-                
-                imported++;
             }
         }
-        console.log(data);
-        if(data.version && data.version == 1 && data.data && data.data.length > 0)
+        
+        if(data.version && data.version == 1 && data.data)
         {
-            for (let item of data.data) {
-                delete item['id'];
-                tx.objectStore('requests').put(item, item.name);
+            console.log(`[RESTClient][database.js]: start to import from version: `, data.version);
+            _.each(data.data, function(request, name) {
+                tx.objectStore('requests').put(request, name);
                 imported++;
-            }
+            });
         }
         await this._transactionPromise(tx);
         console.log(`[RESTClient][database.js]: ${imported} requests imported.`);
+        if(imported > 0)
+        {
+            this.loadRequests();
+        }
     },
 }
 Database.init().then(function(){

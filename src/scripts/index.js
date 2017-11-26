@@ -230,6 +230,7 @@ $(function () {
 
         Database.loadRequests().then(function () {
             let requests = Database.requests;
+            console.log('[RESTClient][index.j] start to export requests', requests);
             let dump = JSON.stringify({
                     version: Database.DB_VERSION,
                     data: requests

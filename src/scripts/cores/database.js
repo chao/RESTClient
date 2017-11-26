@@ -21,12 +21,16 @@ var Database = {
         return this._tags;
     },
 
-    getRequest(requestId) {
-        let request = this.requests.filter(f => f.id === requestId);
+    getRequest(name) {
+        let request = this.requests.filter(f => f.name === name);
         if (request === undefined) {
             return undefined;
         }
         return Object.assign({}, request);
+    },
+
+    saveRequest(request) {
+
     },
 
     async init() {
@@ -39,6 +43,7 @@ var Database = {
         if (storage === 'persistent') {
             options.storage = 'persistent';
         }
+        console.log(`[RESTClient][database.js]: opening database ${this.DB_NAME}.`, options);
         let opener = indexedDB.open(this.DB_NAME, options);
 
         opener.onupgradeneeded = (event) => this._upgradeSchema(event);
@@ -53,11 +58,7 @@ var Database = {
         let requests;
         switch (event.oldVersion) {
             case 0:
-                requests = db.createObjectStore("requests", {
-                    keyPath: "id", autoIncrement: true
-                });
-
-                requests.createIndex("idxRequestName", "request_name");
+                requests = db.createObjectStore("requests");
                 requests.createIndex("idxTagName", "tags", { multiEntry: true });
         }
     },
@@ -118,18 +119,27 @@ var Database = {
         }
         let tx = this._db.transaction(['requests'], 'readwrite');
         let imported = 0;
+        console.log(`[RESTClient][database.js]: start to import favorite requests.`);
         if(!data.version)
         {
+            console.log(`[RESTClient][database.js]: favorite requests from old RESTClient.`);
             for (let name in data) {
                 let item = data[name];
-                item.name = name;
+                // item.name = name;
                 item.tags = [];
                 if (typeof item.overrideMimeType != 'undefined')
                 {
                     delete item.overrideMimeType;
                 }
+                console.log(`[RESTClient][database.js]: processing ${imported}.`, item);
+                try {
+                    tx.objectStore('requests').put(item, name);
+                }catch(e)
+                {
+                    console.error(e);
+                }
                 
-                tx.objectStore('requests').put(item);
+                
                 imported++;
             }
         }
@@ -138,7 +148,7 @@ var Database = {
         {
             for (let item of data.data) {
                 delete item['id'];
-                tx.objectStore('requests').put(item);
+                tx.objectStore('requests').put(item, item.name);
                 imported++;
             }
         }
@@ -148,4 +158,5 @@ var Database = {
 }
 Database.init().then(function(){
     console.log('database inited');
+    $(document).trigger('favorite-requests-loaded');
 });

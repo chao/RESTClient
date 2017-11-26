@@ -84,9 +84,9 @@
             <a class="dropdown-item" href="#" data-target="#modal-favorite-save" data-toggle="modal">Save Current Request</a>
           </div>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="https://wrapbootstrap.com/?ref=bsw" target="_blank">Setting</a>
-        </li>
+        </li> -->
       </ul>
 
       <a href="../" class="navbar-brand">RESTClient</a>
@@ -401,20 +401,20 @@
               <label for="favorite-name" class="col-2 col-form-label">Name</label>
               <div class="col-10">
                 <input type="text" class="form-control" id="favorite-name" name="favorite-name" aria-describedby="favorite name" placeholder="Name">
-                <small id="favorite-name-helper" class="form-text text-muted" style="display: none">Name must be filled out</small>
+                <small id="favorite-name-helper" class="form-text text-danger" style="display: none">Name must be filled out</small>
               </div>
             </div>
             <div class="form-group row">
               <label for="favorite-tags" class="col-2 col-form-label">Tags</label>
               <div class="col-10">
-              <input type="text" class="form-control" id="favorite-tags" name="favorite-tags" aria-describedby="favorite tags" placeholder="Tags" data-role="tagsinput">
+              <input type="text" class="form-control" id="favorite-tags" name="favorite-tags" aria-describedby="favorite tags" placeholder="Tags">
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary btn-update-favorite">Save</button>
+          <button type="button" class="btn btn-primary btn-save-favorite">Save</button>
         </div>
       </div>
     </div>
@@ -440,6 +440,7 @@
   <script src="scripts/cores/keyboard.js"></script>
   <script src="scripts/cores/favorite.js"></script>
   <script src="scripts/cores/database.js"></script>
+  <script src="scripts/cores/request.js"></script>
   <script src="scripts/data/headers.js"></script>
   <script src="scripts/index.js"></script>
 

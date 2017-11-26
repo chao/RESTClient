@@ -295,7 +295,6 @@
       makeOptionItemFunction(self.options, 'itemValue');
       makeOptionItemFunction(self.options, 'itemText');
       makeOptionFunction(self.options, 'tagClass');
-
       // Typeahead Bootstrap version 2.3.2
       if (self.options.typeahead) {
         var typeahead = self.options.typeahead || {};
@@ -355,24 +354,30 @@
         if (!$.isArray(typeaheadjs)) {
             typeaheadjs = [null, typeaheadjs];
         }
-
         $.fn.typeahead.apply(self.$input, typeaheadjs).on('typeahead:selected', $.proxy(function (obj, datum, name) {
-          var index = 0;
-          typeaheadjs.some(function(dataset, _index) {
-            if (dataset.name === name) {
-              index = _index;
-              return true;
-            }
-            return false;
-          });
-
-          // @TODO Dep: https://github.com/corejavascript/typeahead.js/issues/89
-          if (typeaheadjs[index].valueKey) {
-            self.add(datum[typeaheadjs[index].valueKey]);
-          } else {
+          
+          if(typeof datum == 'string') {
             self.add(datum);
           }
+          else
+          {
+            var index = 0;
 
+            typeaheadjs.some(function (dataset, _index) {
+              if (dataset.name === name) {
+                index = _index;
+                return true;
+              }
+              return false;
+            });
+
+            // @TODO Dep: https://github.com/corejavascript/typeahead.js/issues/89
+            if (typeaheadjs[index].valueKey) {
+              self.add(datum[typeaheadjs[index].valueKey]);
+            } else {
+              self.add(datum);
+            }
+          }
           self.$input.typeahead('val', '');
         }, self));
       }

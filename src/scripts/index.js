@@ -433,6 +433,7 @@ $(function () {
     });
 
     var requestHeaderNames = _.keys(requestHeaders);
+    console.log(requestHeaderNames);
     var thNames = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.whitespace,
       queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -738,6 +739,49 @@ $(function () {
                 data: data
             }
         );
+    });
+
+    /********************** Init Favorite Request **************************/
+    $('#favorite-tags').tagsinput();
+    $(document).on('favorite-tags-changed', function(e, tags){
+        console.log('init');
+        var tags = tags || [];
+        var bhfavoriteTags = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: tags
+        });
+        try { $('#favorite-tags').tagsinput('destroy'); } catch(e) {}
+        $('#favorite-tags').tagsinput({
+            typeaheadjs: {
+                name: 'tags',
+                source: bhfavoriteTags
+            }
+        });
+    });
+    $(document).on('favorite-requests-loaded', function(){
+        console.log('favorite request loaded');
+        $(document).trigger('favorite-tags-changed', [Database.tags]);
+    });
+
+    $('#modal-form-data').on('show.bs.modal', function (e) {
+        $('.has-danger').removeClass('has-danger');
+    });
+    
+    $(document).on('click', '.btn-save-favorite', function (e, tags) {
+        var name = $('#favorite-name').val();
+        if(name.length == 0)
+        {
+            $('#favorite-name').parents('.form-group').addClass('has-danger');
+            return false;
+        }
+        $('.has-danger').removeClass('has-danger');
+        var tags = $('#favorite-tags').tagsinput('items');
+
+        var request = Request.get();
+        request = Object.assign({ 'name': name, 'tags': tags }, request);
+
+        console.log(request);
     });
 });
 

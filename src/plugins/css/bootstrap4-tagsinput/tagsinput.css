@@ -18,7 +18,7 @@
   vertical-align: middle;
   border-radius: 4px;
   width: 100%;
-  line-height: 22px;
+  line-height: 28px;
   cursor: text;
   font-size: 0.8125rem;
 }
@@ -32,14 +32,14 @@
   width: auto;
   max-width: inherit;
 }
-.bootstrap-tagsinput.form-control input::-moz-placeholder {
+.bootstrap-tagsinput input::-moz-placeholder {
   color: #CCC;
   opacity: 1;
 }
-.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+.bootstrap-tagsinput input:-ms-input-placeholder {
   color: #CCC;
 }
-.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+.bootstrap-tagsinput input::-webkit-input-placeholder {
   color: #CCC;
 }
 .bootstrap-tagsinput input:focus {
@@ -68,8 +68,14 @@
   font-size:12px
 }
 .bootstrap-tagsinput .badge [data-role="remove"]:hover:after {
-
   background-color:rgba(0, 0, 0, 0.62);}
 .bootstrap-tagsinput .badge [data-role="remove"]:hover:active {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.bootstrap-tagsinput .twitter-typeahead {
+  display: inline !important;
+}
+.bootstrap-tagsinput .tt-hint {
+  display: none !important;
 }

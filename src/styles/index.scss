@@ -350,3 +350,10 @@ button {
         }
     }
 }
+#modal-favorite-save {
+    .has-danger {
+        .form-text {
+            display: inline-block !important;
+        }
+    }
+}

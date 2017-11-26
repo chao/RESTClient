@@ -17,6 +17,7 @@
   <link href="styles/plugins/pace/pace-theme-minimal.css" rel="stylesheet" />
   <link href="styles/plugins/bttn.css/bttn.css" rel="stylesheet" />
   <link href="styles/plugins/codemirror-5.31.0/codemirror.css" rel="stylesheet" />
+  <link href="styles/plugins/bootstrap4-tagsinput/tagsinput.css" rel="stylesheet" />
   <link href="styles/index.css" rel="stylesheet" />
   <title>RESTClient</title>
 </head>
@@ -80,7 +81,7 @@
             <a id="nav-download-favorite-request" class="dropdown-item" href="#">Export Favorite Request</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="./_variables.scss">Manage Favorite Request</a>
-            <a class="dropdown-item" href="./_bootswatch.scss">Save Current Request</a>
+            <a class="dropdown-item" href="#" data-target="#modal-favorite-save" data-toggle="modal">Save Current Request</a>
           </div>
         </li>
         <li class="nav-item">
@@ -385,6 +386,39 @@
       </form>
     </div>
   </div>
+  <div class="modal fade" id="modal-favorite-save" tabindex="-1" role="dialog" aria-labelledby="modal-favorite-save" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Save Current Request</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="form-favorite-save">
+            <div class="form-group row">
+              <label for="favorite-name" class="col-2 col-form-label">Name</label>
+              <div class="col-10">
+                <input type="text" class="form-control" id="favorite-name" name="favorite-name" aria-describedby="favorite name" placeholder="Name">
+                <small id="favorite-name-helper" class="form-text text-muted" style="display: none">Name must be filled out</small>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="favorite-tags" class="col-2 col-form-label">Tags</label>
+              <div class="col-10">
+              <input type="text" class="form-control" id="favorite-tags" name="favorite-tags" aria-describedby="favorite tags" placeholder="Tags" data-role="tagsinput">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-update-favorite">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modals end -->
 
   <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top
@@ -401,6 +435,7 @@
   <script src="scripts/plugins/codemirror-5.31.0/lib/codemirror.js"></script>
   <script src="scripts/plugins/codemirror-5.31.0/addon/mode/loadmode.js"></script>
   <script src="scripts/plugins/codemirror-5.31.0/mode/meta.js"></script>
+  <script src="scripts/plugins/bootstrap4-tagsinput/tagsinput.js"></script>
   <script src="scripts/helpers/url.js"></script>
   <script src="scripts/cores/keyboard.js"></script>
   <script src="scripts/cores/favorite.js"></script>

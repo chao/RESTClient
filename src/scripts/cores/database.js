@@ -4,6 +4,7 @@ var Database = {
 
     _db: null,
     _requests: [],
+    _tags: [],
     db() {
         return this._db;
     },
@@ -14,6 +15,10 @@ var Database = {
 
     set requests(value) {
         this._requests = value;
+    },
+
+    get tags() {
+        return this._tags;
     },
 
     getRequest(requestId) {
@@ -91,7 +96,18 @@ var Database = {
             }
             this._requests = requests;
         }
-
+        else
+        {
+            var tags = this._tags;
+            _.each(requests, function(request){
+                if (request.tags && Array.isArray(request.tags) && request.tags.length > 0)
+                {
+                    tags = _.union(tags, request.tags);
+                } 
+            });
+            this._tags = tags;
+            console.log('[RESTClient][database.js]: tags', tags);
+        }
         requests.sort((a, b) => a.rowIndex - b.rowIndex);
         this._requests = requests;
     },

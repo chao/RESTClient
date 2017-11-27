@@ -46,6 +46,25 @@ $(function () {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+    /********************** Init Slideout Menu  ************************************/
+    window.slideout = new Slideout({
+        'panel': document.getElementById('wrapper'),
+        'menu': document.getElementById('favorite-requests-list'),
+        'padding': 256,
+        'tolerance': 70,
+        'easing': 'cubic-bezier(.32,2,.55,.27)'
+    });
+    $(document).on('click', '[data-toggle="sidebar"]', function(){
+        slideout.toggle();
+    });
+    slideout.on('close', function () {
+        $('.hamburger').removeClass('is-open');
+        $('.hamburger').addClass('is-closed');
+    });
+    slideout.on('open', function () {
+        $('.hamburger').removeClass('is-closed');
+        $('.hamburger').addClass('is-open');
+    });
 
     /********************** Init Response Raw and Preview **************************/
     CodeMirror.modeURL = "scripts/plugins/codemirror-5.31.0/mode/%N/%N.js";

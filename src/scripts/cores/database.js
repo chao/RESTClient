@@ -29,6 +29,10 @@ var Database = {
         return Object.assign({}, request);
     },
 
+    getRequestsByTag(tag) {
+        return this._requests;
+    },
+    
     saveRequest(request) {
 
     },

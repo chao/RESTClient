@@ -1,0 +1,35 @@
+#favorite-requests-list {
+    .no-favorite {
+        display: none;
+    }
+    display: none;
+    padding: 5px;
+    color: #FFF;
+    h3 {
+        color: #fff;
+    }
+    .badge {
+        font-size: 80%;
+    }
+    .badge:active {
+        background-color: #66150d;
+    }
+    .requests-list {
+        .card {
+            margin-top: 0.2rem;
+            h4 {
+                font-size: 0.75rem;
+            }
+            .card-block {
+                padding: 0.5rem 0.35rem 0.25rem 0.35rem;
+                .card-text {
+                    display: block !important;
+                    color: #666;
+                    margin-bottom: 0.25rem;
+                    font-size: 0.7rem;
+                    word-break: break-all;
+                }
+            }
+        }
+    }
+}

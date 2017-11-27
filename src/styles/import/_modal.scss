@@ -1,0 +1,46 @@
+#modal-header {
+    label {
+        color: #AAA;
+    }
+    input[type="text"] {
+        color: #000;
+    }
+    .abc-checkbox-danger label {
+        color: #777;
+    }
+}
+#modal-file-import {
+    .modal-body {
+        padding: 10px;
+        .dropzone {
+            border: 1px dashed #AAA;
+            border-radius: 4px;
+            width: 100%;
+            padding: 30px 10px;
+            font-size: 14px;
+            text-align: center;
+            color: #777;
+        }
+    }
+}
+#modal-form-data {
+    .modal-body {
+        .row {
+            padding-left: 35px;
+            .col {
+                padding-right: 5px;
+                padding-left: 0px;
+            }
+        }
+        .row + .row {
+            margin-top: 10px;
+        }
+    }
+}
+#modal-favorite-save {
+    .has-danger {
+        .form-text {
+            display: inline-block !important;
+        }
+    }
+}

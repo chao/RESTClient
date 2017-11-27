@@ -23,10 +23,13 @@
 </head>
 
 <body>
-  <div id="favorite-requests-list">
-    <div class="tags-list"></div>
-    <div class="requests-list">
-
+  <div id="favorite-requests-list" data-count="0">
+    <h3>Favorites</h3>
+    <small class="no-favorite-tip">You have no favorite request yet, you can add your request to from menu "Favorite" - "Save Current Request".</small>
+    <div class="tags-list m-t-md">
+    </div>
+    <div class="requests-list m-t-md">
+      
     </div>
   </div>
   <main id="wrapper">
@@ -430,7 +433,22 @@
     </div>
   </div>
   <!-- Modals end -->
-
+  <!-- Template -->
+  <script type="text-template" id="template-favorite-request">
+    <div class="request card">
+      <div class="card-block">
+        <h4 class="card-title">
+          <a href="#" class="name btn-load-request"></a>
+          <a href="#" class="card-link pull-right">
+            <i class="fa fa-trash"></i>
+          </a>
+        </h4>
+        <p class="card-text"><span class="method"></span> <span class="host"></span></p>
+        
+      </div>
+    </div>
+  </script>
+  <!-- Template end -->
   <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top
     <span></span>
   </a>
@@ -454,7 +472,6 @@
   <script src="scripts/cores/request.js"></script>
   <script src="scripts/data/headers.js"></script>
   <script src="scripts/index.js"></script>
-
 </body>
 
 </html>

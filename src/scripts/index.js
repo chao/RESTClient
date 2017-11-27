@@ -778,10 +778,15 @@ $(function () {
                 source: bhfavoriteTags
             }
         });
+        $('#favorite-requests-list .tags-list').empty();
+        _.each(tags, function(tag){
+            $('#favorite-requests-list .tags-list').append($('<a href="#" class="badge badge-primary"></a>').text(tag));
+        });
     });
     $(document).on('favorite-requests-loaded', function(){
         console.log('favorite request loaded');
         $(document).trigger('favorite-tags-changed', [Database.tags]);
+        $(document).trigger('show-favorite-requests');
     });
 
     $('#modal-form-data').on('show.bs.modal', function (e) {
@@ -802,6 +807,58 @@ $(function () {
         request = Object.assign({ 'name': name, 'tags': tags }, request);
 
         console.log(request);
+    });
+
+    $(document).on('show-favorite-requests', function(){
+        var tags = [];
+        _.each($('#favorite-requests-list .badge.active'), function(item){
+            tags.push($(item).text());
+        });
+        console.log(`[RESTClient][index.js] ${tags.length} selected`, tags);
+        var requests = Database.getRequestsByTag(tags);
+        console.log(`[RESTClient][index.js] favorite requests`, requests);
+        var html = $('#template-favorite-request').html();
+        $('#favorite-requests-list .requests-list').empty();
+        _.each(requests, function(request, name) {
+            var item = $(html).clone();
+
+            item.find('.name').text(name);
+            item.find('.method').text(request.method);
+            item.find('.host').text(request.url);
+            _.each(request.tags, function(tag) {
+                item.find('.card-block').append($('<a href="#" class="badge badge-default"></a>').text(tag));
+            });
+            item.data('request', request);
+            $('#favorite-requests-list .requests-list').append(item);
+        });
+        var num = $('#favorite-requests-list .requests-list .request').length;
+        if(num > 0)
+        {
+            $('.no-favorite-tip').hide();
+        }
+        else
+        {
+            $('.no-favorite-tip').show();
+        }
+    });
+
+    $(document).on('click', '.btn-load-request', function(e){
+        var card = $(this).parents('.card');
+        var request = card.data('request');
+        console.log('[RESTClient][index.js] try to load request', request);
+        $(document).trigger('load-favorite-request', [request]);
+    });
+
+    $(document).on('load-favorite-request', function(e, request) {
+        $('#request-method').val(request.method);
+        $('#request-url').val(request.url);
+        $('#request-body').val(request.body);
+        _.each(request.headers, function(header) {
+            $(document).trigger('append-request-header', [header.name, header.value]);
+            // TODO favorite
+            // TODO authentication
+        });
+        slideout.toggle();
     });
 });
 

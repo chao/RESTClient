@@ -6,11 +6,9 @@
 
 ### Firefox Addon
 
-
-
 * Version 3.0.0
   * Rewrite RESTClient by as a WebExtensions
-  * Use Bootstrap 4.0 
+  * Use Bootstrap 4.0 alpha 4
 * Version 2.0.3
   * Supported OAuth2 authentication
   * Fixed url history bug

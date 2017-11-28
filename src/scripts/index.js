@@ -27,7 +27,9 @@ import storage from "./utils/storage";
 $(function () {
     window.favoriteHeaders = [];
     window.favoriteUrls = [];
-
+    $(document).on('click', '[data-toggle="development"]', function(){
+        toastr.error('This function is still under development.', 'Not ready yet!');
+    });
     /**************************** Init Toastr ********************************/
     toastr.options = {
         "closeButton": true,

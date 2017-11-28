@@ -35,8 +35,12 @@ var Request = {
             'method': $('#request-method').val(),
             'url': $('#request-url').val(),
             'headers': headers,
-            'body': $('#request-body').val(),
-            'form': $('#request-body').data('form-data')
+            'body': $('#request-body').val()
+        }
+        
+        if ($('#request-body').data('form-data'))
+        {
+            request.form = $('#request-body').data('form-data');
         }
         return request;
     }

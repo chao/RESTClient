@@ -45,6 +45,10 @@ var Database = {
         return this._tags;
     },
 
+    set tags(value) {
+        this._tags = value;
+    },
+
     getRequest(name) {
         let request = this.requests.filter(f => f.name === name);
         if (request === undefined) {
@@ -57,8 +61,29 @@ var Database = {
         return this._requests;
     },
     
-    saveRequest(name, request) {
-
+    async saveRequest(name, request) {
+        if (this._requests[name] && this._requests[name].created_at)
+        {
+            request.created_at = this._requests[name].created_at;
+            request.updated_at = new Date();
+        }
+        else
+        {
+            request.created_at = new Date();
+            request.updated_at = new Date();
+        }
+        let tx = this._db.transaction(['requests'], 'readwrite');
+        let store = tx.objectStore('requests');
+        let result = store.put(request, name);
+        result.onsuccess = function() {
+            console.log(`[RESTClient][Database.js][saveRequest] on success`, name, request);
+            let requests = Database.requests;
+            requests[name] = request;
+            Database.requests = requests;
+            Database.tags = _.union(Database.tags, request.tags);
+            console.log(`[RESTClient][Database.js][saveRequest] cache updated`, Database.requests, Database.tags);
+        }
+        await this._transactionPromise(tx);
     },
 
     async removeRequest(name) {
@@ -145,6 +170,7 @@ var Database = {
             return;
         }
         let tx = this._db.transaction(['requests'], 'readwrite');
+        let store = tx.objectStore('requests');
         let imported = 0;
         console.log(`[RESTClient][database.js]: start to import favorite requests.`);
         if(!data.version)
@@ -174,9 +200,10 @@ var Database = {
                         delete item.headers;
                     }
                 }
-
+                item.created_at = new Date();
+                item.updated_at = new Date();
                 try {
-                    tx.objectStore('requests').put(item, name);
+                    store.put(item, name);
                     imported++;
                 }catch(e)
                 {
@@ -189,7 +216,8 @@ var Database = {
         {
             console.log(`[RESTClient][database.js]: start to import from version: `, data.version);
             _.each(data.data, function(request, name) {
-                tx.objectStore('requests').put(request, name);
+                item.updated_at = new Date();
+                store.put(request, name);
                 imported++;
             });
         }

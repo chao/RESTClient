@@ -784,9 +784,9 @@ $(function () {
         });
     });
     $(document).on('favorite-requests-loaded', function(){
-        console.log('favorite request loaded');
         $(document).trigger('favorite-tags-changed', [Database.tags]);
         $(document).trigger('show-favorite-requests');
+        console.log('[RESTClient][index.js][favorite-requests-loaded]');
     });
 
     $('#modal-form-data').on('show.bs.modal', function (e) {
@@ -806,7 +806,29 @@ $(function () {
         var request = Request.get();
         request = Object.assign({ 'name': name, 'tags': tags }, request);
 
-        console.log(request);
+        console.log('[RESTClient][index.js][btn-save-favorite] get request', request);
+        $('#modal-favorite-save').modal('hide');
+        if(typeof Database.requests[name] !== 'undefined')
+        {
+            bootbox.confirm(`You already have a favorite request named: ${name}, Would you like to replace it?`, 
+                function (result) { 
+                    if(result)
+                    {
+                        Database.saveRequest(name, request).then(function () {
+                            $(document).trigger('favorite-requests-loaded');
+                            toastr.success('Request replaced.', name);
+                        });
+                    }
+                    console.log('This was logged in the callback: ', result); 
+                });
+        }
+        else
+        {
+            Database.saveRequest(name, request).then(function () {
+                $(document).trigger('favorite-requests-loaded');
+                toastr.success('Request saved.', name);
+            });
+        }
     });
 
     $(document).on('show-favorite-requests', function(){
@@ -840,6 +862,7 @@ $(function () {
         {
             $('.no-favorite-tip').show();
         }
+        console.log(`[RESTClient][index.js][show-favorite-requests] ${num} favorites loaded.`);
     });
 
     $(document).on('click', '.btn-load-favorite-request', function(e){
@@ -873,6 +896,8 @@ $(function () {
         });
         slideout.toggle();
     });
+
+
 });
 
 ext.runtime.onMessage.addListener(

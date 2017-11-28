@@ -54,7 +54,7 @@ $(function () {
         'tolerance': 70,
         'easing': 'cubic-bezier(.32,2,.55,.27)'
     });
-    $(document).on('click', '[data-toggle="sidebar"]', function(){
+    $(document).on('click', '[data-toggle="sidebar"], .btn-manage-favorite-request', function(){
         slideout.toggle();
     });
     slideout.on('close', function () {

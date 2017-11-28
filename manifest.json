@@ -21,22 +21,6 @@
     "unlimitedStorage",
     "clipboardWrite"
   ],
-  "options_ui": {
-    "page": "options.html"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "scripts/contentscript.js"
-      ],
-      "run_at": "document_end",
-      "all_frames": false
-    }
-  ],
   "browser_action": {
     "default_icon": {
       "19": "icons/icon-19.png",

@@ -57,8 +57,15 @@ var Database = {
         return this._requests;
     },
     
-    saveRequest(request) {
+    saveRequest(name, request) {
 
+    },
+
+    async removeRequest(name) {
+        let tx = this._db.transaction(['requests'], 'readwrite');
+        let store = tx.objectStore('requests');
+        store.delete(name);
+        await this._transactionPromise(tx);
     },
 
     async init() {
@@ -116,7 +123,7 @@ var Database = {
         let request = store.openCursor();
         request.onsuccess = function (event) {
             var cursor = event.target.result;
-            console.log(`[RESTClient][database.js]: Open cursor`, cursor);
+            // console.log(`[RESTClient][database.js]: Open cursor`, cursor);
             
             if (cursor) {
                 Database._requests[cursor.key] = cursor.value;

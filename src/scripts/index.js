@@ -50,7 +50,7 @@ $(function () {
     window.slideout = new Slideout({
         'panel': document.getElementById('wrapper'),
         'menu': document.getElementById('favorite-requests-list'),
-        'padding': 256,
+        'padding': 312,
         'tolerance': 70,
         'easing': 'cubic-bezier(.32,2,.55,.27)'
     });
@@ -842,17 +842,30 @@ $(function () {
         }
     });
 
-    $(document).on('click', '.btn-load-request', function(e){
+    $(document).on('click', '.btn-load-favorite-request', function(e){
         var card = $(this).parents('.card');
         var request = card.data('request');
         console.log('[RESTClient][index.js] try to load request', request);
         $(document).trigger('load-favorite-request', [request]);
+    });
+    $(document).on('click', '.btn-remove-favorite-request', function (e) {
+        var card = $(this).parents('.card');
+        var name = card.find('.name').text();
+        
+        console.log('[RESTClient][index.js] try to remove favorite request', name);
+        Database.removeRequest(name).then(function(){
+            card.addClass('animated zoomOutRight');
+            setTimeout(function () {
+                card.remove();
+            }, 600);
+        });
     });
 
     $(document).on('load-favorite-request', function(e, request) {
         $('#request-method').val(request.method);
         $('#request-url').val(request.url);
         $('#request-body').val(request.body);
+        $('.list-request-headers').empty();
         _.each(request.headers, function(header) {
             $(document).trigger('append-request-header', [header.name, header.value]);
             // TODO favorite

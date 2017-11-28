@@ -79,6 +79,9 @@
                     line-height: 1rem;
                     margin-bottom: 0.5rem;
                     cursor: pointer;
+                    max-width: 400px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                     .btn-remove-header {
                         color: #000 !important;
                         margin-right: 0.2rem;

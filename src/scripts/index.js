@@ -850,7 +850,7 @@ $(function () {
             _.each(request.tags, function(tag) {
                 item.find('.card-block').append($('<a href="#" class="badge badge-default"></a>').text(tag));
             });
-            item.data('request', request);
+            item.data('request', request).data('name', name).data('tags', request.tags);
             $('#favorite-requests-list .requests-list').append(item);
         });
         var num = $('#favorite-requests-list .requests-list .request').length;
@@ -868,8 +868,17 @@ $(function () {
     $(document).on('click', '.btn-load-favorite-request', function(e){
         var card = $(this).parents('.card');
         var request = card.data('request');
-        console.log('[RESTClient][index.js] try to load request', request);
+        console.log('[RESTClient][index.js] try to load request', request, card.data('name'), request.tags);
         $(document).trigger('load-favorite-request', [request]);
+        $('#modal-favorite-save #favorite-name').val(card.data('name'));
+        var tags = card.data('tags');
+        if(tags && _.isArray(request.tags))
+        {
+            $('#favorite-tags').tagsinput('removeAll');
+            _.each(request.tags, function(tag) {
+                $('#favorite-tags').tagsinput('add', tag);
+            });
+        }
     });
     $(document).on('click', '.btn-remove-favorite-request', function (e) {
         var card = $(this).parents('.card');
@@ -898,7 +907,55 @@ $(function () {
         slideout.toggle();
     });
 
+    $(document).on('click', '#favorite-requests-list .tags-list .badge', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active');
+        $(document).trigger('selected-tags-changed');
+    });
 
+    $(document).on('click', '#favorite-requests-list .requests-list .badge', function (e) {
+        e.preventDefault();
+        var tag = $(this);
+        _.each($('#favorite-requests-list .tags-list .badge'), function(item) {
+            if($(item).text() == tag.text())
+            {
+                $(item).addClass('active');
+            }
+            else
+            {
+                $(item).removeClass('active');
+            }
+        });
+        
+        $(document).trigger('selected-tags-changed');
+    });
+
+    $(document).on('selected-tags-changed', function(){
+        var tags = [];
+        _.each($('#favorite-requests-list .tags-list .badge.active'), function (item) {
+            tags.push($(item).text());
+        });
+        console.log(`[RESTClient][index.js][selected-tags-changed]`, tags);
+        if(tags.length == 0)
+        {
+            $('#favorite-requests-list .requests-list .card').show();
+            return true;
+        }
+        _.each($('#favorite-requests-list .requests-list .card'), function (item) {
+            var currentTags = $(item).data('tags');
+            var name = $(item).data('name');
+            console.log(`[RESTClient][index.js][selected-tags-changed] request: ${name}`, currentTags);
+            var is = _.intersection(tags, currentTags);
+            if(is.length == tags.length)
+            {
+                $(item).show();
+            }
+            else
+            {
+                $(item).hide();
+            }
+        });
+    });
 });
 
 ext.runtime.onMessage.addListener(

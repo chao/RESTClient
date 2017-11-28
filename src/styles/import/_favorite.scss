@@ -12,8 +12,9 @@
         font-size: 80%;
         margin-right: 0.2rem;
     }
-    .badge:active {
+    .badge.active {
         background-color: #66150d;
+        border-color: #290805;
     }
     .requests-list {
         .card {

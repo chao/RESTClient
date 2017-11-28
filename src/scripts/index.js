@@ -764,8 +764,8 @@ $(function () {
     /********************** Init Favorite Request **************************/
     $('#favorite-tags').tagsinput();
     $(document).on('favorite-tags-changed', function(e, tags){
-        console.log('init');
-        var tags = tags || [];
+        var tags = tags ? _.keys(tags) : [];
+        console.log('[RESTClient][index.js][favorite-tags-changed] init', tags);
         var bhfavoriteTags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -877,6 +877,7 @@ $(function () {
         
         console.log('[RESTClient][index.js] try to remove favorite request', name);
         Database.removeRequest(name).then(function(){
+            $(document).trigger('favorite-tags-changed', [Database.tags]);
             card.addClass('animated zoomOutRight');
             setTimeout(function () {
                 card.remove();

@@ -28,7 +28,7 @@ var Database = {
 
     _db: null,
     _requests: {},
-    _tags: [],
+    _tags: {},
     db() {
         return this._db;
     },
@@ -80,13 +80,32 @@ var Database = {
             let requests = Database.requests;
             requests[name] = request;
             Database.requests = requests;
-            Database.tags = _.union(Database.tags, request.tags);
+            if (request.tags && request.tags.length > 0) {
+                _.each(request.tags, function (tag) {
+                    Database._tags[tag] = Database._tags[tag] ? Database._tags[tag] + 1 : 1;
+                });
+            }
+            
             console.log(`[RESTClient][Database.js][saveRequest] cache updated`, Database.requests, Database.tags);
         }
         await this._transactionPromise(tx);
     },
 
     async removeRequest(name) {
+        if(!Database.requests[name])
+        {
+            return true;
+        }
+        var request = Database.requests[name];
+        if (request.tags && request.tags.length > 0) {
+            _.each(request.tags, function (tag) {
+                if(Database._tags[tag] == 1)
+                {
+                    delete Database._tags[tag];
+                }
+            });
+        }
+        delete Database._requests[name];
         let tx = this._db.transaction(['requests'], 'readwrite');
         let store = tx.objectStore('requests');
         store.delete(name);
@@ -153,7 +172,9 @@ var Database = {
             if (cursor) {
                 Database._requests[cursor.key] = cursor.value;
                 if (cursor.value && cursor.value.tags && Array.isArray(cursor.value.tags) && cursor.value.tags.length > 0) {
-                    Database._tags = _.union(Database._tags, cursor.value.tags);
+                    _.each(cursor.value.tags, function(tag) {
+                        Database._tags[tag] = Database._tags[tag] ? Database._tags[tag]+1 : 1;
+                    });
                 }
                 cursor.continue();
             } else {
@@ -225,7 +246,7 @@ var Database = {
         console.log(`[RESTClient][database.js]: ${imported} requests imported.`);
         if(imported > 0)
         {
-            this.loadRequests();
+            await this.loadRequests();
         }
     },
 }

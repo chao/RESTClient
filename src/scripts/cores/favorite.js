@@ -74,6 +74,7 @@ let Favorite = {
                         var data = JSON.parse(content);
                         Database.importRequests(data).then(function(e){
                             toastr.success("The file has been successfully imported", file.name);
+                            $(document).trigger('favorite-requests-loaded');
                         });
                     }
                     catch(e)

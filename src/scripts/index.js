@@ -24,6 +24,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 import ext from "./utils/ext";
 import storage from "./utils/storage";
+
 $(function () {
     window.favoriteHeaders = [];
     window.favoriteUrls = [];
@@ -71,16 +72,27 @@ $(function () {
     /********************** Init Response Raw and Preview **************************/
     CodeMirror.modeURL = "scripts/plugins/codemirror-5.31.0/mode/%N/%N.js";
     window.cmResponseBody = CodeMirror.fromTextArea(document.getElementById("response-body"), {
+        lineWrapping: true,
         lineNumbers: true
+    });
+    window.cmResponseBodyPreview = CodeMirror.fromTextArea(document.getElementById("response-body-preview"), {
+        lineNumbers: true,
+        lineWrapping: true,
+        extraKeys: { "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); } },
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     });
     $('.response-container a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if ($(e.target).attr('href') == '#tab-response-body')
         {
-            cmResponseBody.refresh();   
+            cmResponseBody.refresh();  
+        }
+        if ($(e.target).attr('href') == '#tab-response-preview') {
+            cmResponseBodyPreview.refresh();
         }
     });
     $(document).on('update-response-body', function(e, mime, body) {
-        // console.log("[index.js]['update-response-body']" + mime + "\n" + body);
+        console.log("[index.js]['update-response-body']", mime, body);
         var iframe = document.getElementById("iframe-response")
         var iframeDoc = iframe.contentWindow.document;
         if(!mime || mime == '')
@@ -91,7 +103,7 @@ $(function () {
         mime = mime.toLowerCase();
         try {
             iframeDoc.open();
-            iframeDoc.write('');
+            iframeDoc.write('<html></html>');
             iframeDoc.close();
         } catch (e) {
             console.error(e);
@@ -110,8 +122,37 @@ $(function () {
                 console.error(e);
             }
         }
-        if (mode === false && mime.indexOf('json') >= 0) {
+        if (mode === false && mime.indexOf('/json') >= 0) {
             mode = { name: "javascript", json: true };
+            $('.response-container a.preview[data-toggle="tab"]').show();
+            $('#tab-response-preview .CodeMirror').show();
+            $('#iframe-response').hide();
+            var json = js_beautify(body, { "indent_size": 2, "unescape_strings": true });
+            cmResponseBodyPreview.setOption('mode', mode);
+            CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
+            cmResponseBodyPreview.getDoc().setValue(json);
+        }
+        if (mode === false && mime.indexOf('/xml') >= 0) {
+            mode = 'xml';
+            $('.response-container a.preview[data-toggle="tab"]').show();
+            $('#tab-response-preview .CodeMirror').show();
+            $('#iframe-response').hide();
+            var xml = html_beautify(body, { "indent_size": 2, "unescape_strings": true });
+            cmResponseBodyPreview.setOption('mode', mode);
+            CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
+            cmResponseBodyPreview.getDoc().setValue(xml);
+        }
+        if (mode === false && mime.indexOf('text/css') >= 0) {
+            mode = 'css';
+            $('.response-container a.preview[data-toggle="tab"]').show();
+            $('#tab-response-preview .CodeMirror').show();
+            $('#iframe-response').hide();
+            console.log('[RESTClient][index.js]["update-response-body"] is css', mode);
+            var css = css_beautify(body, { "indent_size": 2 });
+            console.log('[RESTClient][index.js]["update-response-body"] is css', css);
+            cmResponseBodyPreview.setOption('mode', mode);
+            CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
+            cmResponseBodyPreview.getDoc().setValue(css);
         }
         if(mode === false && mime.indexOf('image') >= 0)
         {
@@ -684,6 +725,9 @@ $(function () {
 
         $('#response-headers ol').empty();
         cmResponseBody.getDoc().setValue('');
+        cmResponseBodyPreview.getDoc().setValue('');
+        $('#tab-response-preview .CodeMirror').hide();
+        $('#iframe-response').show();
         $('.response-container a[data-toggle="tab"]:first').tab('show');
         $('.response-container a.preview[data-toggle="tab"]').hide();
     });
@@ -1035,7 +1079,7 @@ ext.runtime.onMessage.addListener(
                 });
             }
             var body = request.data.body || '';
-            console.log([mime, body]);
+            // console.log([mime, body]);
             $(document).trigger('update-response-body', [mime, body]);
             
             return false;

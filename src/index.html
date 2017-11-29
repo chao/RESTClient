@@ -17,6 +17,7 @@
   <link href="styles/plugins/pace/pace-theme-minimal.css" rel="stylesheet" />
   <link href="styles/plugins/bttn.css/bttn.css" rel="stylesheet" />
   <link href="styles/plugins/codemirror-5.31.0/codemirror.css" rel="stylesheet" />
+  <link href="styles/plugins/codemirror-5.31.0/addon/foldgutter.css" rel="stylesheet" />
   <link href="styles/plugins/bootstrap4-tagsinput/tagsinput.css" rel="stylesheet" />
   <link href="styles/index.css" rel="stylesheet" />
   <title>RESTClient</title>
@@ -230,6 +231,7 @@
             <div class="tab-pane" id="tab-response-preview" role="tabpanel">
               <iframe id="iframe-response" src="blank.html" class="card" width="100%" height="500" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-forms">
               </iframe>
+              <textarea id="response-body-preview" class="form-control" placeholder="Response Preview" style="blank"></textarea>
             </div>
           </div>
         </div>
@@ -435,6 +437,24 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="modal-oauth" tabindex="-1" role="dialog" aria-labelledby="modal-oauth" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">OAuth</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-oauth-insert">Insert</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modals end -->
   <!-- Template -->
   <script type="text-template" id="template-favorite-request">
@@ -451,7 +471,7 @@
     </div>
   </script>
   <!-- Template end -->
-  <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none;">Top
+  <a href="javascript:void(0);" id="scroll" title="Scroll to Top" style="display: none; z-index: 99999;">Top
     <span></span>
   </a>
   <script src="scripts/plugins/pace/pace.js" data-pace-options='{ "document": false }'></script>
@@ -465,9 +485,19 @@
   <script src="scripts/plugins/codemirror-5.31.0/lib/codemirror.js"></script>
   <script src="scripts/plugins/codemirror-5.31.0/addon/mode/loadmode.js"></script>
   <script src="scripts/plugins/codemirror-5.31.0/mode/meta.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/foldcode.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/foldgutter.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/brace-fold.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/xml-fold.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/indent-fold.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/markdown-fold.js"></script>
+  <script src="scripts/plugins/codemirror-5.31.0/addon/fold/comment-fold.js"></script>
   <script src="scripts/plugins/bootstrap4-tagsinput/tagsinput.js"></script>
   <script src="scripts/plugins/slideout/slideout.js"></script>
   <script src="scripts/plugins/bootbox.js/bootbox.min.js"></script>
+  <script src="scripts/plugins/js-beautify/beautify.js"></script>
+  <script src="scripts/plugins/js-beautify/beautify-html.js"></script>
+  <script src="scripts/plugins/js-beautify/beautify-css.js"></script>
   <script src="scripts/helpers/url.js"></script>
   <script src="scripts/cores/keyboard.js"></script>
   <script src="scripts/cores/favorite.js"></script>

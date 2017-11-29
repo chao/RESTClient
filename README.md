@@ -5,7 +5,8 @@
 ## Changes
 
 ### Firefox Addon
-
+* Version 3.0.3
+  * Added preview for JSON, XML response body
 * Version 3.0.0
   * Rewrite RESTClient by as a WebExtensions
   * Use Bootstrap 4.0 alpha 4

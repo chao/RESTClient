@@ -642,7 +642,7 @@ $(function () {
         $('#request-body').removeData('form-data');
         $('.btn-form-data').removeClass('active');
     });
-    $(document).on('keyup', '#request-body', function (e) {
+    $(document).on('input', '#request-body', function (e) {
         $('#request-body').css('height', '1px');
         var height = (25 + $('#request-body').prop("scrollHeight"));
         height = (height < 140) ? 140 : height;

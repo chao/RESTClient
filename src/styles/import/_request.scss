@@ -117,7 +117,9 @@
             }
             #request-body {
                 flex: 1;
-                min-height: 120px;
+                height: 140px;
+                line-height: 22px;
+                font-family: monospace;
             }
 
         }

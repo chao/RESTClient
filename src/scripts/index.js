@@ -127,16 +127,25 @@ $(function () {
             $('.response-container a.preview[data-toggle="tab"]').show();
             $('#tab-response-preview .CodeMirror').show();
             $('#iframe-response').hide();
-            var json = js_beautify(body, { "indent_size": 2, "unescape_strings": true });
-            cmResponseBodyPreview.setOption('mode', mode);
-            CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
-            cmResponseBodyPreview.getDoc().setValue(json);
+            try {
+                // var json = JSON.stringify(JSON.parse(body), null, '  ');
+                var json = js_beautify(body, { "indent_size": 2, "unescape_strings": true });
+                cmResponseBodyPreview.setOption('mode', mode);
+                CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
+                cmResponseBodyPreview.getDoc().setValue(json);
+            }
+            catch(e)
+            {
+                console.error(e);
+                cmResponseBodyPreview.getDoc().setValue(body);
+            }
         }
         if (mode === false && mime.indexOf('/xml') >= 0) {
             mode = 'xml';
             $('.response-container a.preview[data-toggle="tab"]').show();
             $('#tab-response-preview .CodeMirror').show();
             $('#iframe-response').hide();
+            
             var xml = html_beautify(body, { "indent_size": 2, "unescape_strings": true });
             cmResponseBodyPreview.setOption('mode', mode);
             CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
@@ -632,6 +641,12 @@ $(function () {
     $(document).on('change', '#request-body', function(e){
         $('#request-body').removeData('form-data');
         $('.btn-form-data').removeClass('active');
+    });
+    $(document).on('keyup', '#request-body', function (e) {
+        $('#request-body').css('height', '1px');
+        var height = (25 + $('#request-body').prop("scrollHeight"));
+        height = (height < 140) ? 140 : height;
+        $('#request-body').css('height', height + 'px');
     });
 
     /*********************** Toggle Panel ***************************/

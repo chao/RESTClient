@@ -1,0 +1,49 @@
+body {
+    width: 100%;
+    height: 100vh;
+    background-color: #F1F1F1;
+}
+.navbar-brand {
+    margin-right: 0rem;
+    margin-left: 1rem;
+}
+
+.m-t-sm {
+    margin-top: 0.6rem;
+}
+.m-t-md {
+    margin-top: 1rem;
+}
+.m-t-lg {
+    margin-top: 1.2rem;
+}
+button {
+    cursor: pointer;
+}
+.underline {
+    text-decoration: underline;
+}
+.valid-info {
+    display: none;
+}
+.invalid-feedback.valid-info {
+    display: block;
+}
+.has-danger .valid-info {
+    display: block;
+    color: #F57A00;
+}
+.dd-favorite-headers {
+    .di-favorite-header {
+        max-width: 20rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+.btn-toggle-panel {
+    text-decoration: none;
+    cursor: pointer;
+}
+#wrapper {
+    background-color: #F1F1F1;
+}

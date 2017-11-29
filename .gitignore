@@ -33,8 +33,6 @@ RESTClient.tmproj
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-#ignore test scripts
-*.test.js
-*.xpi
-
-content/test.html
+node_modules
+build
+dist

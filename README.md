@@ -4,14 +4,16 @@
 
 ## Changes
 
-
 ### Firefox Addon
-
+* Version 3.0.3
+  * Added preview for JSON, XML response body
+* Version 3.0.0
+  * Rewrite RESTClient by as a WebExtensions
+  * Use Bootstrap 4.0 alpha 4
 * Version 2.0.3
   * Supported OAuth2 authentication
   * Fixed url history bug
   * Show HTTP request execution time
-  
 * Version 2.0.2
   * Fixed links in the returned xml - they are now clickable again
   * Added OAuth Realm support
@@ -21,7 +23,6 @@
   * Fixed request URL input box size bug
   * Fixed OAuth query string bug
   * Fixed OAuth whitespace ending bug
-
 * Version 2.0.1
   * Fixed XML result indentation
   * Remember open response tab
@@ -30,7 +31,6 @@
   * Allow user to load old requests (exported by version 1.3.x)
   * Updated favorite url, add a drop down list for showing favorite URLs
   * Updated UI color, to enhance the request form
-
 * Version 2.0.0
   * Re-designed the UI by using [twitter bootstrap](twitter.github.com/bootstrap/)
   * Bind hotkeys to send request, input url, etc.

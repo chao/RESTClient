@@ -1,0 +1,69 @@
+#fullscreen-progressbar {
+    background-image: url('../images/background.jpg');
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 2000;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
+    #btn-abort-request {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        line-height: initial;
+    }
+
+    .container-progressbar {
+        margin-top: 220px;
+        position: absolute;
+        top: 50%;
+        margin-top: -90px;
+        width: 100%;
+    }
+
+    #time-passed {
+        position: fixed;
+        left: 10px;
+        bottom: 10px;
+        text-align: center;
+        line-height: 1;
+    }
+
+    #time-passed>div {
+        display: inline-block;
+        margin: 0 30px 15px;
+    }
+
+    #time-passed>div>div {
+        margin-bottom: 22px;
+        font-weight: 200;
+        font-size: 48px;
+    }
+
+    #time-passed>div>i {
+        text-transform: uppercase;
+        letter-spacing: 1.3px;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 13px;
+    }
+}
+
+#fullscreen-progressbar::before {
+    background-image: url('../images/overlay.png');
+    opacity: 0.75;
+    content: "";
+    left: 0;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}

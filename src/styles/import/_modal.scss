@@ -44,3 +44,23 @@
         }
     }
 }
+#modal-oauth {
+    .input-group-addon.abc-checkbox {
+        input[type="checkbox"] {
+            margin-left: 10px;
+
+        }
+        label {
+            margin-left: 0px;
+            
+        }
+        label::before {
+            top: 1px;
+        }
+        label::after {
+            top: 2px;
+            left: -1px;
+        }
+        
+    }
+}

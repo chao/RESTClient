@@ -72,7 +72,7 @@ let Favorite = {
                     var content = this.result;
                     try{
                         var data = JSON.parse(content);
-                        Database.importRequests(data).then(function(e){
+                        Database.importRequests(data, file.name).then(function(e){
                             toastr.success("The file has been successfully imported", file.name);
                             $(document).trigger('favorite-requests-loaded');
                         });

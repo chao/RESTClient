@@ -966,6 +966,7 @@ $(function () {
             // TODO authentication
         });
         slideout.toggle();
+        $('#request-url').trigger('input');
     });
 
     $(document).on('click', '#favorite-requests-list .tags-list .badge', function(e){

@@ -1,4 +1,26 @@
 .request-container {
+    .authentication-mode {
+        min-width: 2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #fff;
+        line-height: 1.66667;
+        font-size: 11px;
+        background-color: #eb6651;
+        box-shadow: 0 0 0 2px hsla(8, 79%, 62%, .4);
+        font-weight: 200;
+        padding: 0 10px;
+        vertical-align: middle;
+        text-align: left;
+        outline: 0;
+        display: inline-block;
+        .a {
+            width: 24px;
+            border-left-color: rgb(54, 7, 3);
+            height: 100%;
+        }
+    }
     .title {
         margin-left: 0.1rem;
         font-family: Consolas, Monaco, monospace;
@@ -11,6 +33,7 @@
     }
     .request-form {
         margin-top: 0.5rem;
+        
         .input-group-addon {
             border: none;
             outline: 0;

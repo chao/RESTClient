@@ -60,7 +60,9 @@
         label::after {
             top: 2px;
             left: -1px;
-        }
-        
+        }   
+    }
+    input {
+        border: 1px solid rgba(0, 0, 0, 0.25);
     }
 }

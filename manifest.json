@@ -1,6 +1,6 @@
 {
   "name": "RESTClient",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "manifest_version": 2,
   "description": "a debugger for RESTful web services.",
   "icons": {

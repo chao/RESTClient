@@ -186,7 +186,7 @@ var Database = {
         await Database._transactionPromise(tx);
     },
 
-    async importRequests(data) {
+    async importRequests(data, filename, tags) {
         if (this._db === null) {
             return;
         }
@@ -196,39 +196,69 @@ var Database = {
         console.log(`[RESTClient][database.js]: start to import favorite requests.`);
         if(!data.version)
         {
-            console.log(`[RESTClient][database.js]: favorite requests from old RESTClient.`);
-            for (let name in data) {
-                let item = data[name];
-                // item.name = name;
-                item.tags = [];
-                if (typeof item.overrideMimeType != 'undefined')
+            tags = _.isArray(tags) ? tags : [];
+            if (_.isObject(data) && typeof data['requestUrl'] == 'string' && typeof data['requestMethod'] == 'string' && typeof data['requestBody'] == 'string')
+            {
+                console.log(`[RESTClient][database.js]: saved request from old RESTClient.`, data);
+                var request = {
+                    "method":  data.requestMethod,
+                    "url": data.requestUrl,
+                    "body": data.requestBody,
+                    "tags": tags,
+                    "created_at": new Date(),
+                    "updated_at": new Date(),
+                };
+
+                if(_.isArray(data.headers))
                 {
-                    delete item.overrideMimeType;
-                }
-                console.log(`[RESTClient][database.js]: processing ${imported}.`, item);
-                if(item.headers)
-                {
-                    if(item.headers.length > 0)
+                    var headers = [];
+                    for(var i = 0; i < data.headers.length; i = i + 2)
                     {
-                        var headers = [];
-                        _.each(item.headers, function (header) {
-                            headers.push({ name: header[0], value: header[1] });
-                        })
-                        item.headers = headers;
+                        headers.push({"name": data.headers[i], "value": data.headers[i+1]});
                     }
-                    else
-                    {
-                        delete item.headers;
-                    }
+                    request.headers = headers;
                 }
-                item.created_at = new Date();
-                item.updated_at = new Date();
+                var ext = filename.lastIndexOf("."); 
+                
+                var name = (ext > 0) ? filename.substr(0, ext) : filename;
                 try {
-                    store.put(item, name);
+                    store.put(request, name);
                     imported++;
-                }catch(e)
-                {
+                } catch (e) {
                     console.error(e);
+                }
+            }
+            else
+            {
+                console.log(`[RESTClient][database.js]: favorite requests from old RESTClient.`);
+                for (let name in data) {
+                    let item = data[name];
+                    // item.name = name;
+                    item.tags = tags;
+                    if (typeof item.overrideMimeType != 'undefined') {
+                        delete item.overrideMimeType;
+                    }
+                    console.log(`[RESTClient][database.js]: processing ${imported}.`, item);
+                    if (item.headers) {
+                        if (item.headers.length > 0) {
+                            var headers = [];
+                            _.each(item.headers, function (header) {
+                                headers.push({ name: header[0], value: header[1] });
+                            })
+                            item.headers = headers;
+                        }
+                        else {
+                            delete item.headers;
+                        }
+                    }
+                    item.created_at = new Date();
+                    item.updated_at = new Date();
+                    try {
+                        store.put(item, name);
+                        imported++;
+                    } catch (e) {
+                        console.error(e);
+                    }
                 }
             }
         }

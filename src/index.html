@@ -97,9 +97,9 @@
               <a class="dropdown-item" href="#" data-target="#modal-favorite-save" data-toggle="modal">Save Current Request</a>
             </div>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="https://wrapbootstrap.com/?ref=bsw" target="_blank">Setting</a>
-          </li> -->
+          <li class="nav-item" id="nav-migration">
+            <a class="nav-link" href="#" data-target="#modal-migrate-204" data-toggle="modal">Migrate</a>
+          </li>
         </ul>
 
         <a href="../" class="navbar-brand">RESTClient</a>
@@ -456,6 +456,26 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="modal-migrate-204" tabindex="-1" role="dialog" aria-labelledby="modal-migrate-204" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Migrate from RESTClient 2</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary btn-migrate">Migrate</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Modals end -->
   <!-- Template -->
   <script type="text-template" id="template-favorite-request">
@@ -505,6 +525,7 @@
   <script src="scripts/cores/database.js"></script>
   <script src="scripts/cores/request.js"></script>
   <script src="scripts/data/headers.js"></script>
+  <script src="scripts/migrates/204.js"></script>
   <script src="scripts/index.js"></script>
 </body>
 

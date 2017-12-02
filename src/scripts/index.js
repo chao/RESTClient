@@ -122,7 +122,7 @@ $(function () {
                 console.error(e);
             }
         }
-        if (mode === false && mime.indexOf('/json') >= 0) {
+        if (mode === false && (mime.indexOf('/json') >= 0 || mime.indexOf('+json') > 0)) {
             mode = { name: "javascript", json: true };
             $('.response-container a.preview[data-toggle="tab"]').show();
             $('#tab-response-preview .CodeMirror').show();
@@ -140,12 +140,12 @@ $(function () {
                 cmResponseBodyPreview.getDoc().setValue(body);
             }
         }
-        if (mode === false && mime.indexOf('/xml') >= 0) {
+        if (mode === false && (mime.indexOf('/xml') >= 0 || mime.indexOf('+xml') > 0)) {
             mode = 'xml';
             $('.response-container a.preview[data-toggle="tab"]').show();
             $('#tab-response-preview .CodeMirror').show();
             $('#iframe-response').hide();
-            
+
             var xml = html_beautify(body, { "indent_size": 2, "unescape_strings": true });
             cmResponseBodyPreview.setOption('mode', mode);
             CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);

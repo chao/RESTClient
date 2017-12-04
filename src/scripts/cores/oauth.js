@@ -105,7 +105,8 @@ $(function () {
       'oauth_version': '1.0',
       'oauth_signature_method': $('[name="oauth-signature-method"]:checked').val(),
       'oauth_nonce': $('#oauth-nonce-auto').is(':checked') ? true : $('#oauth-nonce').val(),
-      'oauth_timestamp': $('#oauth-timestamp-auto').is(':checked') ? true : $('#oauth-timestamp').val()
+      'oauth_timestamp': $('#oauth-timestamp-auto').is(':checked') ? true : $('#oauth-timestamp').val(),
+      'encode_signature': $('[name="oauth-encode-signature"][value="1"]').is(':checked')
     };
     if (!$('#oauth-realm-disabled').is(':checked'))
     {
@@ -140,26 +141,24 @@ $(function () {
       });
     }
     console.log('[oauth.js] oauth-form submit', params);
-    $('.authentication-mode .name').text('OAuth 1.0');
-    $('.authentication-mode')
-        .data('mode', 'oauth1.0')
+    $('.authentication-mode').removeClass('active');
+    $('.authentication-mode[data-mode="oauth10"]')
         .addClass('active')
         .data('params', params);
     $('#modal-oauth').modal('hide');
   });
 
   $(document).on('show.bs.modal', '#modal-oauth', function (e) {
+    $('#modal-oauth .has-error').removeClass('has-error');
     $('#form-oauth')[0].reset();
     $('#oauth-realm').prop('readonly', true);
     $('#oauth-nonce').prop('readonly', true);
     $('#oauth-timestamp').prop('readonly', true);
-    storage.get('oauth').then((data) => {
-      console.log('[oauth.js] storage loaded!', data);
-      if (!data || !data.oauth)
-      {
-        return false;
-      }
-      var oauth = data.oauth;
+    $('#save-oauth').prop('checked', false);
+
+    // update oauth 1.0 form
+    var initOauthForm = function (oauth) 
+    {
       $('#oauth-consumer-key').val(oauth.consumer_key);
       $('#oauth-shared-secret').val(oauth.shared_secret);
       $('#oauth-access-token').val(oauth.access_token);
@@ -167,13 +166,11 @@ $(function () {
       $(`[name="oauth-parameter-transmission"][value="${oauth.parameter_transmission}"]`).prop('checked', true);
       $('#oauth-version').val(oauth.oauth_version);
       $(`[name="oauth-signature-method"][value="${oauth.oauth_signature_method}"]`).prop('checked', true);
-      if (oauth.oauth_nonce === true)
-      {
+      if (oauth.oauth_nonce === true) {
         $('#oauth-nonce-auto').prop('checked', true);
         $('#oauth-nonce').val('').prop('readonly', true);
       }
-      else
-      {
+      else {
         $('#oauth-nonce-auto').prop('checked', false);
         $('#oauth-nonce').val(oauth.oauth_nonce).prop('readonly', false);
       }
@@ -187,31 +184,87 @@ $(function () {
         $('#oauth-timestamp').val(oauth.oauth_timestamp).prop('readonly', false);
       }
 
-      if(typeof oauth.oauth_realm == 'undefined')
-      {
+      if (typeof oauth.oauth_realm == 'undefined') {
         $('#oauth-realm-disabled').prop('checked', true);
         $('#oauth-realm-auto').prop('checked', true);
         $('#oauth-realm').val('').prop('readonly', true);
       }
-      else
-      {
+      else {
         $('#oauth-realm-disabled').prop('checked', false);
-        if(oauth.oauth_realm === true)
-        {
+        if (oauth.oauth_realm === true) {
           $('#oauth-realm-auto').prop('checked', true);
           $('#oauth-realm').val('').prop('readonly', true);
         }
-        else
-        {
+        else {
           $('#oauth-realm-auto').prop('checked', false);
           $('#oauth-realm').val(oauth.oauth_realm).prop('readonly', false);
         }
       }
+    };
 
-      $('#save-oauth').prop('checked', true);
-    });
+    // if it is called for updating oauth parameters
+    if ($('#modal-oauth').data('params'))
+    {
+      var params = $('#modal-oauth').data('params');
+      console.log('[oauth.js] update oauth parameters', params);
+      $('#modal-oauth').removeData('params');
+      initOauthForm(params);
+    }
+    else
+    {
+      // checked if there is saved parameters in storage
+      storage.get('oauth').then((data) => {
+        console.log('[oauth.js] storage loaded!', data);
+        if (!data || !data.oauth) {
+          return false;
+        }
 
-    $('#modal-oauth .has-error').removeClass('has-error');
+        initOauthForm(data.oauth);
+        $('#save-oauth').prop('checked', true);
+      });
+    }
+  });
+
+  $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-edit', function(e){
+    var params = $(this).parents('.authentication-mode').data('params');
+    console.log('[oauth.js] edit oauth parameters', params);
+    $('#modal-oauth').data('params', params).modal('show');
+  });
+
+  $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-preview', function (e) {
+    var params = $(this).parents('.authentication-mode').data('params');
+    console.log('[oauth.js] preview oauth parameters', params);
+    $('#modal-oauth-preview').data('params', params).modal('show');
+  });
+
+  $(document).on('show.bs.modal', '#modal-oauth-preview', function (e) {
+    var params = $('.authentication-mode[data-mode="oauth10"]').data('params');
+    var oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
+    var url = $('#request-url').val();
+    var idx = url.indexOf('?');
+    if (idx >= 0)
+    {
+      var path = url.substr(0, idx);
+      var queryString = url.substr(idx + 1);
+      oauth.setURL(path);
+      oauth.setParameters(queryString);
+      console.log('[oauth.js] setUrl & parameters', path, queryString);
+    }
+    else
+    {
+      oauth.setURL(url);
+      console.log('[oauth.js] setUrl', url);
+    }
     
+    oauth.setAction($('#request-method').val());
+    console.log('[oauth.js] setAction', $('#request-method').val());
+
+    var signed = oauth.sign();
+    console.log('[oauth.js] sign', signed);
+
+    if(params.parameter_transmission == 'query')
+    {
+      
+    }
   });
 });

@@ -24,10 +24,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 
 $(function () {
-    $(document).on('click', '.authentication-mode a.btn-close', function(e){
-        $('.authentication-mode').removeData('params').removeClass('zoomIn').addClass('zoomOutRight');
+    $(document).on('click', '.authentication-mode .btn-close', function(e){
+        var panel = $(this).parents('.authentication-mode');
+        panel.removeData('params').removeClass('zoomIn').addClass('zoomOutRight');
         setTimeout(function(){
-            $('.authentication-mode')
+            panel
                 .removeClass('zoomOutRight active')
                 .addClass('zoomIn');
         }, 600);

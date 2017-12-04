@@ -675,41 +675,7 @@ $(function () {
         }
     });
 
-    /******************** Basic Authentication ****************/
-    $('#modal-basic-auth').on('shown.bs.modal', function(){
-        // $('#modal-basic-auth').find('.is-invalid').removeClass('is-invalid');
-        // $('#modal-basic-auth').find('.invalid-feedback').removeClass('invalid-feedback');
-        $('#modal-basic-auth').find('.has-danger').removeClass('has-danger');
-        $('#basic-auth-name').select().focus();
-    });
-    $('.form-basic-auth').on('submit', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        var username = $('#basic-auth-name').val();
-        var password = $('#basic-auth-password').val();
-        if(username == '')
-        {
-            // $('#basic-auth-name').addClass('is-invalid').next()
-            //     .addClass('invalid-feedback');
-            $('#basic-auth-name').parents('.form-group').addClass('has-danger').focus();
-            return false;
-        }
-        console.log('[RESTClient][index.js] Basic Authentication', username, password);
-        var credentials = username + ':' + password;
-        console.log('[RESTClient][index.js] Basic Authentication', credentials);
-        var value = 'Basic ' + window.btoa(unescape(encodeURIComponent(credentials)));
-        var source = ($('.list-request-headers .basic-auth').length > 0) ?
-            $('.list-request-headers .basic-auth') : false;
-        var data = {'username': username, 'password': password};
-        $(document).trigger('append-request-header', ['Authorization', value, false, source, 'basic-auth', data]);
-        $('#modal-basic-auth').modal('hide');
-    });
-    $(document).on('click', '.list-request-headers .badge.basic-auth', function() {
-        var data = $(this).data('data');
-        $('#basic-auth-name').val(data['username']);
-        $('#basic-auth-password').val(data['password']);
-        $('#modal-basic-auth').modal('show');
-    });
+    
     /******************** Send Button ****************/
     $('.btn-send-request').prop('disabled', true);
     $(document).on('keyup input change paste', '#request-method, #request-url', function(){
@@ -816,6 +782,7 @@ $(function () {
             'headers': headers,
             'body': $('#request-body').val()
         };
+        
         $('.current-request-basic').html($('#request-method').val() + ' ' + $('#request-url').val());
         ext.runtime.sendMessage({
                 action: "execute-http-request",

@@ -32,6 +32,7 @@ $(function () {
         $('#modal-basic-auth').find('.has-danger').removeClass('has-danger');
         $('#basic-auth-name').select().focus();
     });
+    
     $('.form-basic-auth').on('submit', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -53,11 +54,12 @@ $(function () {
         $(document).trigger('append-request-header', ['Authorization', value, false, source, 'basic-auth', data]);
         $('#modal-basic-auth').modal('hide');
     });
+
     $(document).on('click', '.list-request-headers .badge.basic-auth', function () {
         var data = $(this).data('data');
         $('#basic-auth-name').val(data['username']);
         $('#basic-auth-password').val(data['password']);
         $('#modal-basic-auth').modal('show');
     });
-    
+
 });

@@ -92,4 +92,17 @@
             text-align: center;
         }
     }
+    .oauth-preview-header {
+        code {
+            display: inline-block
+        }
+        code.name {
+            display: inline-block;
+            word-wrap: break-word;
+            word-spacing: initial;
+            word-break: break-all;
+            margin-top: -25px;
+            margin-left: 120px;
+        }
+    }
 }

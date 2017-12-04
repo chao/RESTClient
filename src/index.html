@@ -526,12 +526,6 @@
                             Request query string
                           </label>
                         </div>
-                        <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                          <input class="form-check-input" type="radio" name="oauth-parameter-transmission" id="oauth-parameter-transmission-body" value="body">
-                          <label class="form-check-label" for="oauth-parameter-transmission-body">
-                            Request entity-body
-                          </label>
-                        </div>
                       </div>
                     </div>
                   <!-- oauth-signature -->
@@ -694,17 +688,26 @@
                 </tr>
               </tbody>
             </table>
-            <h5 class="m-t-lg">OAuth Header</h5>
+            <h5 class="m-t-lg">OAuth header</h5>
             <div class="card card-outline-primary text-xs-center m-t-md">
               <div class="card-block">
-                <blockquote class="card-blockquote oauth-preview">
-                  
+                <blockquote class="card-blockquote oauth-preview-header">
+                  <code>Authorization:</code><code class="name"></code>
+                </blockquote>
+              </div>
+            </div>
+            <h5 class="m-t-lg">OAuth signed URL</h5>
+            <div class="card card-outline-primary text-xs-center m-t-md">
+              <div class="card-block">
+                <blockquote class="card-blockquote oauth-preview-url">
+                  <code></code>
                 </blockquote>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
           </div>
         </div>
       </form>

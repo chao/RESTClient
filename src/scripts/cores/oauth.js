@@ -241,6 +241,15 @@ $(function () {
     $(document).trigger('update-oauth-preview');
   });
 
+  $(document).on('click', '#modal-oauth-preview .btn-refresh', function (e) {
+    $(document).trigger('update-oauth-preview');
+  });
+  
+  $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-refresh', function (e) {
+    $(document).trigger('update-oauth-preview');
+    toastr.success('OAuth 1.0 signature refreshed!');
+  });
+
   $(document).on('update-oauth-preview', function(){
     var params = $('.authentication-mode[data-mode="oauth10"]').data('params');
     result = oauthSign(params);
@@ -252,6 +261,10 @@ $(function () {
       var template = $('<tr><td></td><td class="name"></td><td><code></code></td>');
       var i = 1;
       _.each(result.parameters, function(value, key){
+        if(key.indexOf('oauth_') !== 0)
+        {
+          return;
+        }
         tr = template.clone();
         tr.find('td:first-child').text(i);
         tr.find('td.name').text(key);
@@ -261,6 +274,8 @@ $(function () {
       });
     }
     
+    $('#modal-oauth-preview .oauth-preview-header code.name').text(result.header);
+    $('#modal-oauth-preview .oauth-preview-url code').text(result.signed_url);
   });
 
 });
@@ -275,7 +290,7 @@ function oauthSign(params)
     var path = url.split('?')[0];
     var queryString = url.split('?')[1];
     oauth.setURL(path);
-    oauth.setQueryString(queryString);
+    // oauth.setQueryString(queryString);
     console.log('[oauth.js] set pat and query string', path, queryString);
   }
   else {

@@ -62,7 +62,14 @@
             left: -1px;
         }   
     }
-    input {
+    input[readonly] {
         border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+}
+.modal {
+    .form-group.required .form-control-label:after {
+        content:"*";
+        color:red;
+        margin-left: 4px;
     }
 }

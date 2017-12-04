@@ -115,11 +115,11 @@ $(function () {
     var error = false;
     if(params.consumer_key == '')
     {
-      $('#oauth-consumer-key').parents('.form-group').addClass('has-error').find('.helper').show();
+      $('#oauth-consumer-key').parents('.form-group').addClass('has-danger').find('.helper').show();
       error = true;
     }
     if (params.shared_secret == '') {
-      $('#oauth-shared-secret').parents('.form-group').addClass('has-error').find('.helper').show();
+      $('#oauth-shared-secret').parents('.form-group').addClass('has-danger').find('.helper').show();
       error = true;
     }
 
@@ -140,7 +140,12 @@ $(function () {
       });
     }
     console.log('[oauth.js] oauth-form submit', params);
-    
+    $('.authentication-mode .name').text('OAuth 1.0');
+    $('.authentication-mode')
+        .data('mode', 'oauth1.0')
+        .addClass('active')
+        .data('params', params);
+    $('#modal-oauth').modal('hide');
   });
 
   $(document).on('show.bs.modal', '#modal-oauth', function (e) {
@@ -207,5 +212,6 @@ $(function () {
     });
 
     $('#modal-oauth .has-error').removeClass('has-error');
+    
   });
 });

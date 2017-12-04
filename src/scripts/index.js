@@ -694,7 +694,10 @@ $(function () {
             $('#basic-auth-name').parents('.form-group').addClass('has-danger').focus();
             return false;
         }
-        var value = 'Basic ' + window.btoa(username + ':' + password);
+        console.log('[RESTClient][index.js] Basic Authentication', username, password);
+        var credentials = username + ':' + password;
+        console.log('[RESTClient][index.js] Basic Authentication', credentials);
+        var value = 'Basic ' + window.btoa(unescape(encodeURIComponent(credentials)));
         var source = ($('.list-request-headers .basic-auth').length > 0) ?
             $('.list-request-headers .basic-auth') : false;
         var data = {'username': username, 'password': password};

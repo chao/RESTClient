@@ -1,26 +1,37 @@
 .request-container {
     .authentication-mode {
+        display: none;
+        margin-left: 10px;
         min-width: 2em;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         color: #fff;
-        line-height: 1.66667;
-        font-size: 11px;
+        line-height: 16px;
+        font-size: 10px;
         background-color: #eb6651;
         box-shadow: 0 0 0 2px hsla(8, 79%, 62%, .4);
         font-weight: 200;
-        padding: 0 10px;
+        padding: 0 4px 0 10px;
         vertical-align: middle;
         text-align: left;
         outline: 0;
-        display: inline-block;
-        .a {
-            width: 24px;
-            border-left-color: rgb(54, 7, 3);
-            height: 100%;
+        a {
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 16px;
+            color: #FFF;
+            margin-right: 0px;
+            margin-top: 2px;
+            display: inline-block;
+            vertical-align: bottom;
+            margin-left: 5px;
         }
     }
+    .authentication-mode.active {
+        display: inline-block;
+    }
+    
     .title {
         margin-left: 0.1rem;
         font-family: Consolas, Monaco, monospace;
@@ -144,7 +155,6 @@
                 line-height: 22px;
                 font-family: monospace;
             }
-
         }
     }
 }

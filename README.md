@@ -5,7 +5,11 @@
 ## Changes
 
 ### Firefox Addon
-* Version 3.0.3
+* Version 3.0.5
+  * Fixed basic authentication unicode problem
+  * Added OAuth authentication
+  * Added authentication label for all the authentication mode.
+* Version 3.0.4
   * Added preview for JSON, XML response body
 * Version 3.0.0
   * Rewrite RESTClient by as a WebExtensions

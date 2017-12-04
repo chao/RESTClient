@@ -55,8 +55,8 @@
               <a class="dropdown-item" href="#" data-target="#modal-basic-auth" data-toggle="modal">Basic Authentication</a>
               <div class="dropdown-divider"></div>
               <div class="dropdown-header">OAuth Protocol</div>
-              <a class="dropdown-item btn-oauth" href="#" data-toggle="modal" data-target="#modal-oauth">OAuth</a>
-              <a class="dropdown-item btn-oauth2" href="#" data-toggle="development">OAuth2</a>
+              <a class="dropdown-item btn-oauth" href="#" data-toggle="modal" data-target="#modal-oauth">OAuth 1.0</a>
+              <a class="dropdown-item btn-oauth2" href="#" data-toggle="development">OAuth 2.0</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -113,9 +113,9 @@
         <div class="col-12">
           <h5 id="request-title" class="text-muted title">
             <a class="btn-toggle-panel">[<span>-</span>] Request</a>
-            <div class="authentication-mode">
-              Basic Authentication
-              <a href="#"><span aria-hidden="true">&times;</span></a>
+            <div class="authentication-mode animated zoomIn">
+              <span class="name">Basic Authentication</span>
+              <a href="#" class="btn-close">&times;</a>
             </div>
           </h5>
         </div>
@@ -331,7 +331,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
+            <div class="form-group required">
               <label class="form-control-label" for="basic-auth-name">Username</label>
               <input type="text" class="form-control" id="basic-auth-name" placeholder="Username">
               <small class="form-text valid-info">Username cannot be empty.</small>
@@ -468,16 +468,18 @@
               <div class="tab-content">
                 <div class="tab-pane container active" id="oauth-signature" role="tabpanel">
                   <!-- oauth-signature -->
-                    <div class="form-group row m-t-md">
-                      <label for="oauth-consumer-key" class="col-sm-3 col-form-label">Consumer key</label>
+                    <div class="form-group row m-t-md required">
+                      <label for="oauth-consumer-key" class="col-sm-3 form-control-label">Consumer key</label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control" id="oauth-consumer-key" placeholder="rKGCVb7Z7b7Z8sVW">
+                        <small id="oauth-consumer-key-helper" class="form-text text-danger helper" style="display: none">Consumer key must be filled out</small>
                       </div>
                     </div>
-                    <div class="form-group row">
-                      <label for="oauth-shared-secret" class="col-sm-3 col-form-label">Shared secret</label>
+                    <div class="form-group row required">
+                      <label for="oauth-shared-secret" class="col-sm-3 form-control-label">Shared secret</label>
                       <div class="col-sm-9">
                         <input type="text" class="form-control" id="oauth-shared-secret" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
+                        <small id="oauth-shared-secret-helper" class="form-text text-danger helper" style="display: none">Shared secret must be filled out</small>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -605,7 +607,7 @@
             </div>
 
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-oauth-insert">Insert</button>
+            <button type="submit" class="btn btn-primary btn-oauth-okay">Okay</button>
           </div>
         </div>
       </div>
@@ -661,6 +663,7 @@
   <script src="scripts/cores/database.js"></script>
   <script src="scripts/cores/request.js"></script>
   <script src="scripts/cores/oauth.js"></script>
+  <script src="scripts/cores/auth.js"></script>
   <script src="scripts/data/headers.js"></script>
   <script src="scripts/index.js"></script>
 </body>

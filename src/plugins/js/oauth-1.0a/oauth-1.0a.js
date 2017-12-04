@@ -59,6 +59,7 @@ function OAuth(opts) {
  * @return {Object} OAuth Authorized data
  */
 OAuth.prototype.authorize = function(request, token) {
+    console.log('[oauth-1.0a.js] authorize', oauth_data);
     var oauth_data = {
         oauth_consumer_key: this.consumer.key,
         oauth_nonce: this.getNonce(),
@@ -66,7 +67,7 @@ OAuth.prototype.authorize = function(request, token) {
         oauth_timestamp: this.getTimeStamp(),
         oauth_version: this.version
     };
-
+    console.log('[oauth-1.0a.js] authorize', oauth_data);
     if(!token) {
         token = {};
     }
@@ -74,7 +75,7 @@ OAuth.prototype.authorize = function(request, token) {
     if(token.key !== undefined) {
         oauth_data.oauth_token = token.key;
     }
-
+    console.log('[oauth-1.0a.js] ', oauth_data);
     if(!request.data) {
         request.data = {};
     }
@@ -82,9 +83,9 @@ OAuth.prototype.authorize = function(request, token) {
     if(request.includeBodyHash) {
       oauth_data.oauth_body_hash = this.getBodyHash(request, token.secret)
     }
-
+    console.log('[oauth-1.0a.js] ', oauth_data);
     oauth_data.oauth_signature = this.getSignature(request, token.secret, oauth_data);
-
+    console.log('[oauth-1.0a.js] ', oauth_data);
     return oauth_data;
 };
 

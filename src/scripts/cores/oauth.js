@@ -238,33 +238,59 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth-preview', function (e) {
+    $(document).trigger('update-oauth-preview');
+  });
+
+  $(document).on('update-oauth-preview', function(){
     var params = $('.authentication-mode[data-mode="oauth10"]').data('params');
-    var oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
-    var url = $('#request-url').val();
-    var idx = url.indexOf('?');
-    if (idx >= 0)
+    result = oauthSign(params);
+    console.log('[oauth.js] OAuth result', result);
+    
+    $('#modal-oauth-preview tbody').empty();
+    if(result.parameters)
     {
-      var path = url.substr(0, idx);
-      var queryString = url.substr(idx + 1);
-      oauth.setURL(path);
-      oauth.setParameters(queryString);
-      console.log('[oauth.js] setUrl & parameters', path, queryString);
-    }
-    else
-    {
-      oauth.setURL(url);
-      console.log('[oauth.js] setUrl', url);
+      var template = $('<tr><td></td><td class="name"></td><td><code></code></td>');
+      var i = 1;
+      _.each(result.parameters, function(value, key){
+        tr = template.clone();
+        tr.find('td:first-child').text(i);
+        tr.find('td.name').text(key);
+        tr.find('code').text(value);
+        $('#modal-oauth-preview tbody').append(tr);
+        i++;
+      });
     }
     
-    oauth.setAction($('#request-method').val());
-    console.log('[oauth.js] setAction', $('#request-method').val());
-
-    var signed = oauth.sign();
-    console.log('[oauth.js] sign', signed);
-
-    if(params.parameter_transmission == 'query')
-    {
-      
-    }
   });
+
 });
+
+function oauthSign(params)
+{
+  var url = $('#request-url').val();
+  var method = $('#request-method').val();
+  var oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
+  oauth.reset();
+  if (url.indexOf('?') >= 0) {
+    var path = url.split('?')[0];
+    var queryString = url.split('?')[1];
+    oauth.setURL(path);
+    oauth.setQueryString(queryString);
+    console.log('[oauth.js] set pat and query string', path, queryString);
+  }
+  else {
+    oauth.setURL(url);
+  }
+
+  oauth.setAction(method);
+  oauth.setSignatureMethod(params.oauth_signature_method);
+
+  if (params.access_token && params.access_token != '') {
+    var token = { 'access_token': params.access_token, "oauth_token_secret": params.access_secret };
+    oauth.setTokensAndSecrets(token);
+    console.log('[oauth.js] set token', token);
+  }
+  console.log('[oauth.js] oauth', oauth);
+  var result = oauth.sign();
+  return result;
+}

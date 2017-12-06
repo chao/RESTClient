@@ -312,10 +312,12 @@ function oauthSign(params)
   var method = $('#request-method').val();
   window.oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
   oauth.reset();
+  url = (url.indexOf('#') >= 0) ? url.split('#')[0] : url;
   // if there is a hashtag in the url remove the hash tag part
-  if (url.indexOf('#') >= 0) {
+  if (url.indexOf('?') >= 0) {
     var path = url.split('?')[0];
     oauth.setURL(path);
+    oauth.setParameters(url.split('?')[1]);
   }
   else {
     oauth.setURL(url);
@@ -343,7 +345,7 @@ function oauthSign(params)
     console.log('[oauth.js] set token', token);
   }
   oauth.setParameters(oauthParameters);
-  
+
   console.log('[oauth.js] oauth', oauth);
   var result = oauth.sign();
   return result;

@@ -310,7 +310,8 @@ if (OAuthSimple === undefined) {
             }
             for (pName in this._parameters) {
                 if (this._parameters.hasOwnProperty(pName)) {
-                    if (pName.match(/^oauth/) === undefined) {
+                    console.log('[OAuthSimple.js] getHeaderString', pName, pName.match(/^oauth/));
+                    if (!pName.match(/^oauth/)) {
                         continue;
                     }
                     if ((this._parameters[pName]) instanceof Array) {

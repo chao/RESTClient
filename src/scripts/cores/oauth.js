@@ -105,8 +105,7 @@ $(function () {
       'oauth_version': '1.0',
       'oauth_signature_method': $('[name="oauth-signature-method"]:checked').val(),
       'oauth_nonce': $('#oauth-nonce-auto').is(':checked') ? true : $('#oauth-nonce').val(),
-      'oauth_timestamp': $('#oauth-timestamp-auto').is(':checked') ? true : $('#oauth-timestamp').val(),
-      'encode_signature': $('[name="oauth-encode-signature"][value="1"]').is(':checked')
+      'oauth_timestamp': $('#oauth-timestamp-auto').is(':checked') ? true : $('#oauth-timestamp').val()
     };
     if (!$('#oauth-realm-disabled').is(':checked'))
     {
@@ -132,12 +131,6 @@ $(function () {
     if ($('#save-oauth').is(':checked')) {
       storage.set({ ['oauth']: params }).then(() => {
         console.log('[oauth.js] storage saved!');
-      });
-    }
-    else
-    {
-      storage.remove('oauth').then(() => {
-        console.log('[oauth.js] storage removed!');
       });
     }
     console.log('[oauth.js] oauth-form submit', params);
@@ -319,11 +312,6 @@ function oauthSign(params)
   if (typeof params.oauth_realm !== 'undefined')
   {
     oauth.setRealm(params.oauth_realm);
-  }
-
-  if (params.encode_signature)
-  {
-    oauth.encodeSignature();
   }
 
   oauth.setParameters(oauthParameters);

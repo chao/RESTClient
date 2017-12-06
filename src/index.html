@@ -548,6 +548,13 @@
                           HMAC-SHA1
                         </label>
                       </div>
+                      <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                        <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-hmac-sha256" value="HMAC-SHA256"
+                          checked>
+                        <label class="form-check-label" for="oauth-signature-hmac-sha256">
+                          HMAC-SHA256
+                        </label>
+                      </div>
                     </div>
                   </div>
                   <div class="form-group row m-t-md">
@@ -590,7 +597,7 @@
                       </div>                    
                     </div>
                   </div>
-                  <div class="form-group row">
+                  <div class="form-group row m-b-xs">
                     <label for="oauth-access-token-secret" class="col-sm-3 col-form-label">OAuth timestamp</label>
                     <div class="col-sm-9">
                       <div class="input-group">
@@ -603,23 +610,6 @@
                         </span>
                       </div>
                       <small id="oauth-timestamp-help" class="form-text text-muted" style="display: none;"></small>
-                    </div>
-                  </div>
-                  <div class="form-group row m-t-md m-b-xs">
-                    <label for="oauth-encode-signature" class="col-sm-3 col-form-label">Encode OAuth signature</label>
-                    <div class="col-sm-9" style="line-height: 34px;">
-                      <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                        <input class="form-check-input" type="radio" name="oauth-encode-signature" id="oauth-encode-signature-yes" value="1">
-                        <label class="form-check-label" for="oauth-encode-signature-yes">
-                          Yes
-                        </label>
-                      </div>
-                      <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                        <input class="form-check-input" type="radio" name="oauth-encode-signature" id="oauth-encode-signature-no" value="0" checked>
-                        <label class="form-check-label" for="oauth-encode-signature-no">
-                          No
-                        </label>
-                      </div>
                     </div>
                   </div>
                   <!-- oauth-settings -->

@@ -110,10 +110,6 @@ if (OAuthSimple === undefined) {
             this._realm = realm;
         }
 
-        self.encodeSignature = function() 
-        {
-            this._encodeSignature = true;
-        }
 
         /** set the parameters either from a hash or a string
          *
@@ -151,32 +147,19 @@ if (OAuthSimple === undefined) {
             return this;
         };
 
-        /** convienence method for setParameters
-         *
-         * @param parameters {string,object} See .setParameters.
-         */
-        self.setQueryString = function (parameters) {
-            return this.setParameters(parameters);
-        };
-
         /** Set the target URL (does not include the parameters)
          *
          * @param path {string} the fully qualified URI (excluding query arguments) (e.g "http://example.org/foo").
          */
         self.setURL = function (path) {
+            // TODO: The scheme and host MUST be in lowercase.
+            // TODO: The port MUST be included if it is not the default port for the scheme, and MUST be excluded if it is the default. 
+
             if (path === '') {
                 throw ('No path specified for OAuthSimple.setURL');
             }
             this._path = path;
             return this;
-        };
-
-        /** convienence method for setURL
-         *
-         * @param path {string} see .setURL.
-         */
-        self.setPath = function (path) {
-            return this.setURL(path);
         };
 
         /** set the "action" for the url, (e.g. GET,POST, DELETE, etc.)
@@ -286,13 +269,10 @@ if (OAuthSimple === undefined) {
             this._parameters['oauth_signature'] = this._generateSignature(normParams);
             console.log('[OAuthSimple.js] sign', normParams, this._parameters['oauth_signature']);
             var signature = this._oauthEscape(this._parameters['oauth_signature']);
-            if(this._encodeSignature)
-            {
-                signature = this._oauthEscape(signature);
-            }
+
             return {
                 parameters: this._parameters,
-                signature: signature,
+                signature: this._parameters['oauth_signature'],
                 signed_url: this._path + '?' + normParams + '&oauth_signature=' + signature,
                 header: this.getHeaderString()
             };
@@ -311,7 +291,6 @@ if (OAuthSimple === undefined) {
                 this.sign(args);
             }
             
-            console.log('[OAuthSimple.js] encode signature', this._encodeSignature, this._parameters['oauth_signature']);
             var j, pName, pLength, prefix = 'OAuth ', result = '';
             if (typeof this._realm === 'string' || this._realm === true)
             {
@@ -332,17 +311,6 @@ if (OAuthSimple === undefined) {
             for (pName in this._parameters) {
                 if (this._parameters.hasOwnProperty(pName)) {
                     if (pName.match(/^oauth/) === undefined) {
-                        continue;
-                    }
-                    if (pName == 'oauth_signature')
-                    {
-                        if (this._encodeSignature) {
-                            result += pName + '="' + this._oauthEscape(this._oauthEscape(this._parameters[pName])) + '", ';
-                        }
-                        else
-                        {
-                            result += pName + '="' + this._oauthEscape(this._parameters[pName]) + '", ';
-                        }
                         continue;
                     }
                     if ((this._parameters[pName]) instanceof Array) {
@@ -505,14 +473,14 @@ if (OAuthSimple === undefined) {
                 normParams = this._normalizedParameters();
             }
             if (this._parameters['oauth_signature_method'] == 'HMAC-SHA1') {
-                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + normParams;
+                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + this._oauthEscape(normParams);
                 console.log('[OAuthSimple.js] _generateSignature', secretKey, sigString);
                 var result = this.b64_hmac_sha1(secretKey, sigString);
                 console.log('[OAuthSimple.js] b64_hmac_sha1', result);
                 return result;
             }
             if (this._parameters['oauth_signature_method'] == 'HMAC-SHA256') {
-                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + normParams;
+                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + this._oauthEscape(normParams);
                 console.log('[OAuthSimple.js] _generateSignature', secretKey, sigString);
                 var result = this.b64_hmac_sha256(secretKey, sigString);
                 console.log('[OAuthSimple.js] b64_hmac_sha256', result);

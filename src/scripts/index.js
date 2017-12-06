@@ -782,7 +782,7 @@ $(function () {
             'headers': headers,
             'body': $('#request-body').val()
         };
-        
+
         $('.current-request-basic').html($('#request-method').val() + ' ' + $('#request-url').val());
         ext.runtime.sendMessage({
                 action: "execute-http-request",
@@ -1037,7 +1037,7 @@ ext.runtime.onMessage.addListener(
         }
         if (request.action == "http-request-error") {
             $(document).trigger("hide-fullscreen");
-            toastr.error(request.detail || "Request error", request.title || "Error");
+            toastr.error(request.data.detail || "Request error", request.data.title || "Error");
             return false;
         }
         if (request.action == "http-request-load")

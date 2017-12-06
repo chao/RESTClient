@@ -231,10 +231,20 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth-preview', function (e) {
+    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    if (typeof validUrl == 'undefined') {
+      toastr.error('Please input a valid URL first!');
+      return true;
+    }
     $(document).trigger('update-oauth-preview');
   });
 
   $(document).on('click', '#modal-oauth-preview .btn-refresh', function (e) {
+    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    if (typeof validUrl == 'undefined') {
+      toastr.error('Please input a valid URL first!');
+      return true;
+    }
     $(document).trigger('update-oauth-preview');
     var params = $('.authentication-mode[data-mode="oauth10"]').data('params');
     $('#modal-oauth-preview .btn-refresh').addClass('animated tada');
@@ -249,6 +259,11 @@ $(function () {
   });
   
   $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-refresh', function (e) {
+    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    if (typeof validUrl == 'undefined') {
+      toastr.error('Please input a valid URL first!');
+      return true;
+    }
     $(document).trigger('update-oauth-preview');
     toastr.success('OAuth 1.0 signature refreshed!');
   });
@@ -271,7 +286,15 @@ $(function () {
         tr = template.clone();
         tr.find('td:first-child').text(i);
         tr.find('td.name').text(key);
-        tr.find('code').text(value);
+        var code = '';
+        if(_.isString(value))
+        {
+          code = value.replace(/(.{45})/g, "$1<br>");
+        }
+        if (_.isNumber(value)) {
+          code = value;
+        }
+        tr.find('code').html(code);
         $('#modal-oauth-preview tbody').append(tr);
         i++;
       });
@@ -313,14 +336,14 @@ function oauthSign(params)
   {
     oauth.setRealm(params.oauth_realm);
   }
-
-  oauth.setParameters(oauthParameters);
   console.log('[oauth.js] set oauth parameters', params, oauth, oauthParameters);
   if (params.access_token && params.access_token != '') {
     var token = { 'access_token': params.access_token, "oauth_token_secret": params.access_secret };
     oauth.setTokensAndSecrets(token);
     console.log('[oauth.js] set token', token);
   }
+  oauth.setParameters(oauthParameters);
+  
   console.log('[oauth.js] oauth', oauth);
   var result = oauth.sign();
   return result;

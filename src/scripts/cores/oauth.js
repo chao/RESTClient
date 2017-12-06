@@ -243,6 +243,16 @@ $(function () {
 
   $(document).on('click', '#modal-oauth-preview .btn-refresh', function (e) {
     $(document).trigger('update-oauth-preview');
+    var params = $('.authentication-mode[data-mode="oauth10"]').data('params');
+    $('#modal-oauth-preview .btn-refresh').addClass('animated tada');
+    setTimeout(() => {
+      $('#modal-oauth-preview .btn-refresh').removeClass('animated tada');
+    }, 600);
+
+    if (_.isString(params.oauth_nonce) && params.oauth_nonce != ''
+          && _.isString(params.oauth_timestamp) && params.oauth_timestamp != '') {
+      toastr.success('OAuth 1.0 signature refreshed!');
+    }
   });
   
   $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-refresh', function (e) {
@@ -284,22 +294,40 @@ function oauthSign(params)
 {
   var url = $('#request-url').val();
   var method = $('#request-method').val();
-  var oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
+  window.oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
   oauth.reset();
-  if (url.indexOf('?') >= 0) {
+  // if there is a hashtag in the url remove the hash tag part
+  if (url.indexOf('#') >= 0) {
     var path = url.split('?')[0];
-    var queryString = url.split('?')[1];
     oauth.setURL(path);
-    // oauth.setQueryString(queryString);
-    console.log('[oauth.js] set pat and query string', path, queryString);
   }
   else {
     oauth.setURL(url);
   }
 
   oauth.setAction(method);
-  oauth.setSignatureMethod(params.oauth_signature_method);
+  
+  var oauthParameters = { 'oauth_signature_method': params.oauth_signature_method};
+  if (_.isString(params.oauth_nonce) && params.oauth_nonce != '') {
+    oauthParameters['oauth_nonce'] = params.oauth_nonce;
+  }
 
+  if (_.isString(params.oauth_timestamp) && params.oauth_timestamp != '') {
+    oauthParameters['oauth_timestamp'] = params.oauth_timestamp;
+  }
+
+  if (typeof params.oauth_realm !== 'undefined')
+  {
+    oauth.setRealm(params.oauth_realm);
+  }
+
+  if (params.encode_signature)
+  {
+    oauth.encodeSignature();
+  }
+
+  oauth.setParameters(oauthParameters);
+  console.log('[oauth.js] set oauth parameters', params, oauth, oauthParameters);
   if (params.access_token && params.access_token != '') {
     var token = { 'access_token': params.access_token, "oauth_token_secret": params.access_secret };
     oauth.setTokensAndSecrets(token);

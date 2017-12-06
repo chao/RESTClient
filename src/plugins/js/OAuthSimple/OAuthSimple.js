@@ -81,7 +81,8 @@ if (OAuthSimple === undefined) {
             throw("Missing argument: api_key (oauth_consumer_key) for OAuthSimple. This is usually provided by the hosting site.");
         if (shared_secret == undefined)
             throw("Missing argument: shared_secret (shared secret) for OAuthSimple. This is usually provided by the hosting site.");
-*/ var self = {};
+*/  
+        var self = {};
         self._secrets = {};
 
 
@@ -104,6 +105,15 @@ if (OAuthSimple === undefined) {
             this.sbs = undefined;
             return this;
         };
+        self.setRealm = function(realm)
+        {
+            this._realm = realm;
+        }
+
+        self.encodeSignature = function() 
+        {
+            this._encodeSignature = true;
+        }
 
         /** set the parameters either from a hash or a string
          *
@@ -116,14 +126,16 @@ if (OAuthSimple === undefined) {
             if (typeof (parameters) == 'string') {
                 parameters = this._parseParameterString(parameters);
             }
-            this._parameters = this._merge(parameters, this._parameters);
+            console.log('[OAuthSimple.js] setParameters', parameters, this._parameters);
+            this._parameters = Object.assign(this._parameters, parameters);
+            console.log('[OAuthSimple.js] setParameters result', this._parameters);
             if (this._parameters['oauth_nonce'] === undefined) {
                 this._getNonce();
             }
             if (this._parameters['oauth_timestamp'] === undefined) {
                 this._getTimestamp();
             }
-            if (this._parameters['oauth_method'] === undefined) {
+            if (this._parameters['oauth_signature_method'] === undefined) {
                 this.setSignatureMethod();
             }
             if (this._parameters['oauth_consumer_key'] === undefined) {
@@ -259,16 +271,29 @@ if (OAuthSimple === undefined) {
             if (args['method'] !== undefined) {
                 this.setSignatureMethod(args['method']);
             }
-            this.signatures(args['signatures']);
-            this.setParameters(args['parameters']);
+
+            if (typeof args['signatures'] !== 'undefined') {
+                this.signatures(args['signatures']);
+            }
+            if (typeof args['parameters'] !== 'undefined')
+            {
+                this.setParameters(args['parameters']);
+            }
+            
             // check the parameters
             var normParams = this._normalizedParameters();
+            console.log('[OAuthSimple.js] sign', this._parameters, normParams);
             this._parameters['oauth_signature'] = this._generateSignature(normParams);
             console.log('[OAuthSimple.js] sign', normParams, this._parameters['oauth_signature']);
+            var signature = this._oauthEscape(this._parameters['oauth_signature']);
+            if(this._encodeSignature)
+            {
+                signature = this._oauthEscape(signature);
+            }
             return {
                 parameters: this._parameters,
-                signature: this._oauthEscape(this._parameters['oauth_signature']),
-                signed_url: this._path + '?' + normParams,
+                signature: signature,
+                signed_url: this._path + '?' + normParams + '&oauth_signature=' + signature,
                 header: this.getHeaderString()
             };
         };
@@ -285,11 +310,39 @@ if (OAuthSimple === undefined) {
             if (this._parameters['oauth_signature'] === undefined) {
                 this.sign(args);
             }
-
-            var j, pName, pLength, result = 'OAuth ';
+            
+            console.log('[OAuthSimple.js] encode signature', this._encodeSignature, this._parameters['oauth_signature']);
+            var j, pName, pLength, prefix = 'OAuth ', result = '';
+            if (typeof this._realm === 'string' || this._realm === true)
+            {
+                var realm = '';
+                if (typeof this._realm === 'boolean' && urlHelper.is_web_iri(this._path))
+                {
+                    var splits = urlHelper.splitUri(this._path);
+                    console.log('[OAuthSimple.js] get the path', this._path, splits);
+                    var realm = splits[1] + "://" + splits[2];
+                }
+                else
+                {
+                    realm = this._realm || '';
+                }
+                realm = realm.replace(/[\""]/g, '\\"');
+                prefix += 'realm="' + realm + '", ';
+            }
             for (pName in this._parameters) {
                 if (this._parameters.hasOwnProperty(pName)) {
                     if (pName.match(/^oauth/) === undefined) {
+                        continue;
+                    }
+                    if (pName == 'oauth_signature')
+                    {
+                        if (this._encodeSignature) {
+                            result += pName + '="' + this._oauthEscape(this._oauthEscape(this._parameters[pName])) + '", ';
+                        }
+                        else
+                        {
+                            result += pName + '="' + this._oauthEscape(this._parameters[pName]) + '", ';
+                        }
                         continue;
                     }
                     if ((this._parameters[pName]) instanceof Array) {
@@ -303,7 +356,7 @@ if (OAuthSimple === undefined) {
                     }
                 }
             }
-            return result.replace(/,\s+$/, '');
+            return prefix + result.replace(/,\s+$/, '');
         };
 
         // Start Private Methods.
@@ -349,7 +402,7 @@ if (OAuthSimple === undefined) {
                 replace(/\(/g, '%28').
                 replace(/\)/g, '%29');
         };
-
+        
         self._getNonce = function (length) {
             if (length === undefined) {
                 length = 5;
@@ -444,6 +497,7 @@ if (OAuthSimple === undefined) {
             }
             var secretKey = this._oauthEscape(this._secrets.shared_secret) + '&' +
                 this._oauthEscape(this._secrets.oauth_secret);
+            console.log('[OAuthSimple.js] self._generateSignature', this._parameters['oauth_signature_method'], secretKey);
             if (this._parameters['oauth_signature_method'] == 'PLAINTEXT') {
                 return secretKey;
             }

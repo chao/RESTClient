@@ -269,8 +269,14 @@ $(function () {
   });
 
   $(document).on('update-oauth-preview', function(){
-    var params = $('.authentication-mode[data-mode="oauth10"]').data('params');
-    result = oauthSign(params);
+    if ($('.authentication-mode.active').data('mode') != 'oauth10')
+    {
+      console.error('[oauth.js] update-oauth-preview error', $('.authentication-mode.active').data('mode'));
+      return false;
+    }
+
+    var request = Request.get();
+    result = oauthSign(request);
     console.log('[oauth.js] OAuth result', result);
     
     $('#modal-oauth-preview tbody').empty();
@@ -306,10 +312,12 @@ $(function () {
 
 });
 
-function oauthSign(params)
+function oauthSign(request)
 {
-  var url = $('#request-url').val();
-  var method = $('#request-method').val();
+  var method = request.method;
+  var url = request.url;
+  var params = request.authentication.data;
+
   window.oauth = new OAuthSimple(params.consumer_key, params.shared_secret);
   oauth.reset();
   url = (url.indexOf('#') >= 0) ? url.split('#')[0] : url;

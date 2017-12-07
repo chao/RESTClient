@@ -50,7 +50,7 @@ $(function () {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
-
+    
     /******************** Send Button ****************/
     $('.btn-send-request').prop('disabled', true);
     $(document).on('keyup input change paste', '#request-method, #request-url', function(){

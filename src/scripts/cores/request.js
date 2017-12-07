@@ -72,5 +72,9 @@ var Request = {
             }
             return request;
         }
+        if(request.authentication.mode == 'basic')
+        {
+            return basicAuthentication(request);
+        }
     }
 }

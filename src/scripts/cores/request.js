@@ -37,11 +37,40 @@ var Request = {
             'headers': headers,
             'body': $('#request-body').val()
         }
-        
+        if($('.authentication-mode.active').length > 0)
+        {
+            var authentication = {
+                'mode': $('.authentication-mode.active').data('mode'),
+                'data': $('.authentication-mode.active').data('params')
+            };
+            request.authentication = authentication;
+        }
         if ($('#request-body').data('form-data'))
         {
             request.form = $('#request-body').data('form-data');
         }
         return request;
+    },
+    getProcessed(request) {
+        if(typeof request == 'undefined')
+        {
+            request = this.get();
+        }
+        if(typeof request.authentication === 'undefined')
+        {
+            return request;
+        }
+        if(request.authentication.mode == 'oauth10')
+        {
+            var result = oauthSign(request);
+            if (_.isString(request.authentication.data.parameter_transmission) && request.authentication.data.parameter_transmission == 'header')
+            {
+                request.headers.push({ 'name': 'Authorization', 'value': result.header});               
+            }
+            if (_.isString(request.authentication.data.parameter_transmission) && request.authentication.data.parameter_transmission == 'query') {
+                request.url = result.signed_url;
+            }
+            return request;
+        }
     }
 }

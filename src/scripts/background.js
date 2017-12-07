@@ -73,7 +73,7 @@ xhr.ontimeout = function (e) {
     sendResponse({ action: "http-request-timeout" });
 }
 xhr.onerror = function (e) {
-    console.log('[background] error');
+    console.log('[background] error', e);
     sendResponse({ action: "http-request-error", data: { "title": "Error", "detail": "Could not connect to server"} });
 }
 xhr.onload = function(e) {

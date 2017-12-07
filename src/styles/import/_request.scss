@@ -1,4 +1,30 @@
 .request-container {
+    .authentication-mode {
+        display: none;
+        box-shadow: 0 0 0 2px hsla(8, 79%, 62%, .4);
+        z-index: 999;
+        button:first-child {
+            padding-left: 10px;
+        }
+        .btn-auth-mode, .btn-close {
+            background-image: none;
+            border: none;
+            font-size: 10px;
+            border-radius: 0;
+            outline: 0;
+            box-shadow: none;
+            background-color: #eb6651;
+            padding-bottom: 2px;
+        }
+        .dropdown-menu {
+            left: -2px !important;
+            border-radius: 0;
+        }
+    }
+    .authentication-mode.active {
+        display: inline-flex;
+    }
+
     .title {
         margin-left: 0.1rem;
         font-family: Consolas, Monaco, monospace;
@@ -11,6 +37,7 @@
     }
     .request-form {
         margin-top: 0.5rem;
+        
         .input-group-addon {
             border: none;
             outline: 0;
@@ -135,7 +162,6 @@
                 line-height: 22px;
                 font-family: monospace;
             }
-
         }
     }
 }

@@ -7,7 +7,9 @@ body {
     margin-right: 0rem;
     margin-left: 1rem;
 }
-
+.m-t-xs {
+    margin-top: 0.3rem;
+}
 .m-t-sm {
     margin-top: 0.6rem;
 }
@@ -19,6 +21,37 @@ body {
 }
 .m-t-xlg {
     margin-top: 1.8rem;
+}
+
+.m-b-xs {
+    margin-bottom: 0.3rem;
+}
+.m-b-sm {
+    margin-bottom: 0.6rem;
+}
+.m-b-md {
+    margin-bottom: 1rem;
+}
+.m-b-lg {
+    margin-bottom: 1.2rem;
+}
+.m-b-none {
+    margin-bottom: 0;
+}
+.m-r-xs {
+    margin-right: 0.3rem;
+}
+.m-r-sm {
+    margin-right: 0.6rem;
+}
+.m-r-md {
+    margin-right: 1rem;
+}
+.m-r-lg {
+    margin-right: 1.2rem;
+}
+.m-r-none {
+    margin-right: 0;
 }
 button {
     cursor: pointer;

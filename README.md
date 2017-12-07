@@ -11,6 +11,8 @@
   * Added authentication label for all the authentication mode.
 * Version 3.0.4
   * Added preview for JSON, XML response body
+  * Added data migration for migrating data from RESTClient 2
+  * Allow to import RESTClient 1 request file
 * Version 3.0.0
   * Rewrite RESTClient by as a WebExtensions
   * Use Bootstrap 4.0 alpha 4

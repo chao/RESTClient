@@ -109,11 +109,25 @@
                     max-width: 400px;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    position: relative;
+                    padding-right: 2rem !important; 
                     .btn-remove-header {
-                        color: #000 !important;
-                        margin-right: 0.2rem;
-                        margin-left: 0.2rem;
                         text-decoration: none !important;
+                        display: inline-block;
+                        width: 1rem;
+                        height: 1rem;
+                        background-color: #999;
+                        color: #FFF !important;
+                        border-radius: 10px;
+                        line-height: 1rem;
+                        font-size: 0.75rem;
+                        margin-left: 0.5rem;
+                        position: absolute;
+                        left: auto;
+                        right: 0.5rem;
+                    }
+                    .btn-remove-header:hover {
+                        background-color: #D9230F;
                     }
                 }
             }

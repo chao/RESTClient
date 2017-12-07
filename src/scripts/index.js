@@ -22,8 +22,9 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
-window.ext = require("./utils/ext");
-window.storage = require("./utils/storage");
+
+window.ext = require( "./utils/ext" );
+window.storage = require( "./utils/storage" );
 
 $(function () {
     window.favoriteHeaders = [];
@@ -85,7 +86,7 @@ $(function () {
     $('.response-container a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if ($(e.target).attr('href') == '#tab-response-body')
         {
-            cmResponseBody.refresh();  
+            cmResponseBody.refresh();
         }
         if ($(e.target).attr('href') == '#tab-response-preview') {
             cmResponseBodyPreview.refresh();
@@ -145,7 +146,7 @@ $(function () {
             $('.response-container a.preview[data-toggle="tab"]').show();
             $('#tab-response-preview .CodeMirror').show();
             $('#iframe-response').hide();
-            
+
             var xml = html_beautify(body, { "indent_size": 2, "unescape_strings": true });
             cmResponseBodyPreview.setOption('mode', mode);
             CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
@@ -191,7 +192,7 @@ $(function () {
         {
             cmResponseBody.setOption('mode', null);
         }
-        
+
         cmResponseBody.getDoc().setValue(body);
     });
 
@@ -294,7 +295,7 @@ $(function () {
         }
         $('#request-url').val(url).trigger('change');
     });
-    
+
     $(document).on('click', '#nav-download-favorite-request', function(e) {
         e.stopPropagation();
         e.preventDefault();
@@ -563,7 +564,7 @@ $(function () {
         });
     });
     /********************** Init Request Body **************************/
-    
+
     $(document).on('modal-form-data-row-changed', function(){
         if ($('#modal-form-data .btn-minus').length == 1)
         {
@@ -583,7 +584,7 @@ $(function () {
         $(this).parents('.row').remove();
         $(document).trigger('modal-form-data-row-changed');
     });
-    
+
     $(document).on('click', '#modal-form-data .btn-plus', function () {
         var row = $(this).parents('.row').clone();
         row.find('input[name="name"]').val($(this).parents('.row').find('input[name="name"]').val());
@@ -601,7 +602,7 @@ $(function () {
             console.log(item);
             params.push({name: name, value: value});
         });
-        
+
         $('#modal-form-data').modal('hide');
         if (params.length > 0)
         {
@@ -637,7 +638,7 @@ $(function () {
         }
         $(document).trigger('modal-form-data-row-changed');
     });
-    
+
     $(document).on('change', '#request-body', function(e){
         $('#request-body').removeData('form-data');
         $('.btn-form-data').removeClass('active');
@@ -675,7 +676,7 @@ $(function () {
         }
     });
 
-    
+
     /******************** Send Button ****************/
     $('.btn-send-request').prop('disabled', true);
     $(document).on('keyup input change paste', '#request-method, #request-url', function(){
@@ -775,7 +776,7 @@ $(function () {
             var value = $(item).data('value');
             headers.push( {'name': name, 'value': value} );
         });
-        
+
         var data = {
             'method': $('#request-method').val(),
             'url': $('#request-url').val(),
@@ -823,7 +824,7 @@ $(function () {
     $('#modal-form-data').on('show.bs.modal', function (e) {
         $('.has-danger').removeClass('has-danger');
     });
-    
+
     $(document).on('click', '.btn-save-favorite', function (e, tags) {
         var name = $('#favorite-name').val();
         if(name.length == 0)
@@ -841,8 +842,8 @@ $(function () {
         $('#modal-favorite-save').modal('hide');
         if(typeof Database.requests[name] !== 'undefined')
         {
-            bootbox.confirm(`You already have a favorite request named: ${name}, Would you like to replace it?`, 
-                function (result) { 
+            bootbox.confirm(`You already have a favorite request named: ${name}, Would you like to replace it?`,
+                function (result) {
                     if(result)
                     {
                         Database.saveRequest(name, request).then(function () {
@@ -850,7 +851,7 @@ $(function () {
                             toastr.success('Request replaced.', name);
                         });
                     }
-                    console.log('This was logged in the callback: ', result); 
+                    console.log('This was logged in the callback: ', result);
                 });
         }
         else
@@ -914,7 +915,7 @@ $(function () {
     $(document).on('click', '.btn-remove-favorite-request', function (e) {
         var card = $(this).parents('.card');
         var name = card.find('.name').text();
-        
+
         console.log('[RESTClient][index.js] try to remove favorite request', name);
         Database.removeRequest(name).then(function(){
             $(document).trigger('favorite-tags-changed', [Database.tags]);
@@ -936,6 +937,7 @@ $(function () {
             // TODO authentication
         });
         slideout.toggle();
+        $('#request-url').trigger('input');
     });
 
     $(document).on('click', '#favorite-requests-list .tags-list .badge', function(e){
@@ -957,7 +959,7 @@ $(function () {
                 $(item).removeClass('active');
             }
         });
-        
+
         $(document).trigger('selected-tags-changed');
     });
 

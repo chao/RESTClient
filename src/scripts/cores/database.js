@@ -186,7 +186,7 @@ var Database = {
         await Database._transactionPromise(tx);
     },
 
-    async importRequests(data, filename) {
+    async importRequests(data, filename, tags) {
         if (this._db === null) {
             return;
         }
@@ -196,6 +196,7 @@ var Database = {
         console.log(`[RESTClient][database.js]: start to import favorite requests.`);
         if(!data.version)
         {
+            tags = _.isArray(tags) ? tags : [];
             if (_.isObject(data) && typeof data['requestUrl'] == 'string' && typeof data['requestMethod'] == 'string' && typeof data['requestBody'] == 'string')
             {
                 console.log(`[RESTClient][database.js]: saved request from old RESTClient.`, data);
@@ -203,7 +204,7 @@ var Database = {
                     "method":  data.requestMethod,
                     "url": data.requestUrl,
                     "body": data.requestBody,
-                    "tags": ["file"],
+                    "tags": tags,
                     "created_at": new Date(),
                     "updated_at": new Date(),
                 };
@@ -233,7 +234,7 @@ var Database = {
                 for (let name in data) {
                     let item = data[name];
                     // item.name = name;
-                    item.tags = [];
+                    item.tags = tags;
                     if (typeof item.overrideMimeType != 'undefined') {
                         delete item.overrideMimeType;
                     }

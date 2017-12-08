@@ -55,8 +55,8 @@
               <a class="dropdown-item" href="#" data-target="#modal-basic-auth" data-toggle="modal">Basic Authentication</a>
               <div class="dropdown-divider"></div>
               <div class="dropdown-header">OAuth Protocol</div>
-              <a class="dropdown-item btn-oauth" href="#" data-toggle="modal" data-target="#modal-oauth">OAuth 1.0</a>
-              <a class="dropdown-item btn-oauth2" href="#" data-toggle="development">OAuth 2.0</a>
+              <a class="dropdown-item btn-oauth"  href="#" data-toggle="modal" data-target="#modal-oauth">OAuth 1.0</a>
+              <a class="dropdown-item btn-oauth2" href="#" data-toggle="modal" data-target="#modal-oauth2">OAuth 2.0</a>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -464,7 +464,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">OAuth</h5>
+            <h5 class="modal-title">OAuth 1.0</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -646,36 +646,6 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>oauth_consumer_key</td>
-                  <td><code>qkunBw2ePWNqtSjfkSqgFg</code></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>oauth_nonce</td>
-                  <td><code>NmtFS</code></td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>oauth_signature</td>
-                  <td><code>MttX2cmkfM1TYQqk4GNX1FTUwO0=</code></td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>oauth_signature_method</td>
-                  <td><code>HMAC-SHA1</code></td>
-                </tr>
-                <tr>
-                  <td>5</td>
-                  <td>oauth_timestamp</td>
-                  <td><code>1512363773</code></td>
-                </tr>
-                <tr>
-                  <td>6</td>
-                  <td>oauth_version</td>
-                  <td><code>1.0</code></td>
-                </tr>
               </tbody>
             </table>
             <h5 class="m-t-lg">OAuth header</h5>
@@ -703,7 +673,167 @@
       </form>
     </div>
   </div>
-
+  <div class="modal fade" id="modal-oauth2" tabindex="-1" role="dialog" aria-labelledby="modal-oauth2" aria-hidden="true">
+    <form id="form-oauth">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">OAuth 2.0</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+  
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#oauth2-authorization" role="tab">Obtaining authorization</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#oauth2-refresh" role="tab">Refreshing an access token</a>
+              </li>
+            </ul>
+  
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div class="tab-pane container active" id="oauth2-authorization" role="tabpanel">
+                <!-- oauth2-authorization -->
+                <div class="form-group row m-t-md">
+                  <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Grant type</label>
+                  <div class="col-sm-9" style="line-height: 34px;">
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth2-grant-type" id="oauth2-grant-type-code"
+                        value="code" checked>
+                      <label class="form-check-label" for="oauth2-grant-type-code">
+                        Authorization code
+                      </label>
+                    </div>
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth2-grant-type" id="oauth2-grant-type-client"
+                        value="client">
+                      <label class="form-check-label" for="oauth2-grant-type-client">
+                        Client credentials
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label for="oauth2-client-id" class="col-sm-3 form-control-label">Client id</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="oauth2-client-id" placeholder="rKGCVb7Z7b7Z8sVW">
+                    <small id="oauth2-client-id-helper" class="form-text text-danger helper" style="display: none">Client id must be filled out</small>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label for="oauth2-client-secret" class="col-sm-3 form-control-label">Client secret</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="oauth2-client-secret" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
+                    <small id="oauth2-client-secret-helper" class="form-text text-danger helper" style="display: none">Client secret must be filled out</small>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="oauth2-scope" class="col-sm-3 form-control-label">Scope</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="oauth2-scope" placeholder="Scope">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="oauth2-state" class="col-sm-3 form-control-label">State</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="oauth2-state" placeholder="OAuth state" readonly>
+                      <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                        <input type="checkbox" id="oauth2-state-auto" checked="true" aria-label="Checkbox for following text input">
+                        <label for="oauth2-state-auto">
+                          Auto
+                        </label>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label for="oauth2-authorization-uri" class="col-sm-3 form-control-label">Authorization uri</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="oauth2-authorization-uri" placeholder="https://github.com/login/oauth/authorize">
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label for="oauth2-access-token-uri" class="col-sm-3 form-control-label">Access token uri</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="oauth2-access-token-uri" placeholder="https://github.com/login/oauth/access_token">
+                  </div>
+                </div>
+                <div class="form-group row m-b-xs">
+                  <label for="oauth2-redirect-uri" class="col-sm-3 form-control-label">Redirect uri</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" id="oauth2-redirect-uri" placeholder="http://restclient.net/auth/github/callback">
+                  </div>
+                </div>
+                <!-- oauth2-authorization -->
+              </div>
+              <div class="tab-pane container" id="oauth2-refresh" role="tabpanel">
+                <!-- oauth2-refresh -->
+                <div class="form-group row m-t-md">
+                  <label for="oauth-signature-method" class="col-sm-3 col-form-label">Signature method</label>
+                  <div class="col-sm-9" style="line-height: 34px;">
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-plaintext" value="PLAINTEXT">
+                      <label class="form-check-label" for="oauth-signature-plaintext">
+                        PLAINTEXT
+                      </label>
+                    </div>
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-hmac-sha1" value="HMAC-SHA1"
+                        checked>
+                      <label class="form-check-label" for="oauth-signature-hmac-sha1">
+                        HMAC-SHA1
+                      </label>
+                    </div>
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-hmac-sha256" value="HMAC-SHA256"
+                        checked>
+                      <label class="form-check-label" for="oauth-signature-hmac-sha256">
+                        HMAC-SHA256
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group row m-b-xs">
+                  <label for="oauth-access-token-secret" class="col-sm-3 col-form-label">OAuth timestamp</label>
+                  <div class="col-sm-9">
+                    <div class="input-group">
+                      <input type="number" step="1" class="form-control" id="oauth-timestamp" placeholder="OAuth timestamp" readonly>
+                      <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                        <input type="checkbox" id="oauth-timestamp-auto" checked="true" aria-label="Checkbox for following text input">
+                        <label for="oauth-timestamp-auto">
+                          Auto
+                        </label>
+                      </span>
+                    </div>
+                    <small id="oauth-timestamp-help" class="form-text text-muted" style="display: none;"></small>
+                  </div>
+                </div>
+                <!-- oauth2-refresh -->
+              </div>
+            </div>
+  
+          </div>
+          <div class="modal-footer">
+            <div class="form-check abc-checkbox abc-checkbox-danger">
+              <input class="form-check-input" id="save-oauth2" type="checkbox">
+              <label class="form-check-label" for="save-oauth2">
+                Remember this setting
+              </label>
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary btn-oauth-okay">Okay</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
   <div class="modal fade" id="modal-migrate-204" tabindex="-1" role="dialog" aria-labelledby="modal-migrate-204" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">

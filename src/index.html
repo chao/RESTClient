@@ -674,7 +674,7 @@
     </div>
   </div>
   <div class="modal fade" id="modal-oauth2" tabindex="-1" role="dialog" aria-labelledby="modal-oauth2" aria-hidden="true">
-    <form id="form-oauth">
+    <form id="form-oauth2">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -688,10 +688,10 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#oauth2-authorization" role="tab">Obtaining authorization</a>
+                <a class="nav-link active" data-toggle="tab" href="#oauth2-authorization" role="tab">Get new access token</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#oauth2-refresh" role="tab">Refreshing an access token</a>
+                <a class="nav-link" data-toggle="tab" href="#oauth2-refresh" role="tab">Refresh access token</a>
               </li>
             </ul>
   
@@ -699,7 +699,7 @@
             <div class="tab-content">
               <div class="tab-pane container active" id="oauth2-authorization" role="tabpanel">
                 <!-- oauth2-authorization -->
-                <div class="form-group row m-t-md" data-code data-credentials>
+                <div class="form-group row m-t-md required" data-code data-credentials>
                   <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Grant type</label>
                   <div class="col-sm-9" style="line-height: 34px;">
                     <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
@@ -718,6 +718,7 @@
                     </div>
                   </div>
                 </div>
+                
                 <div class="form-group row required" data-code data-credentials>
                   <label for="oauth2-client-id" class="col-sm-3 form-control-label">Client id</label>
                   <div class="col-sm-9">
@@ -732,7 +733,7 @@
                     <small id="oauth2-client-secret-helper" class="form-text text-danger helper" style="display: none">Client secret must be filled out</small>
                   </div>
                 </div>
-                <div class="form-group row" data-code>
+                <div class="form-group row" data-code data-credentials>
                   <label for="oauth2-scope" class="col-sm-3 form-control-label">Scope</label>
                   <div class="col-sm-9">
                     <input type="text" class="form-control" id="oauth2-scope" placeholder="Scope">
@@ -749,6 +750,23 @@
                           Auto
                         </label>
                       </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row required" data-code data-credentials>
+                  <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Request Method</label>
+                  <div class="col-sm-9" style="line-height: 34px;">
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth2-request-method" id="oauth2-request-method-post" value="post" checked>
+                      <label class="form-check-label" for="oauth2-request-method-post">
+                        POST
+                      </label>
+                    </div>
+                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                      <input class="form-check-input" type="radio" name="oauth2-request-method" id="oauth2-request-method-get" value="get">
+                      <label class="form-check-label" for="oauth2-request-method-get">
+                        GET
+                      </label>
                     </div>
                   </div>
                 </div>
@@ -796,6 +814,10 @@
                 <!-- oauth2-refresh -->
               </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-oauth2-request">Request Token</button>
           </div>
         </div>
       </div>
@@ -951,6 +973,7 @@
   <script src="scripts/plugins/CryptoJS/hmac-sha1.js"></script>
   <script src="scripts/plugins/CryptoJS/hmac-sha256.js"></script>
   <script src="scripts/plugins/CryptoJS/enc-base64.js"></script>
+  <script src="scripts/plugins/mustache/mustache.js"></script>
 
   <!-- main javascript libraries -->
   <script src="scripts/index.js"></script>

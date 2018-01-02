@@ -1,5 +1,7 @@
 .modal {
-    .form-group.required .form-control-label:after {
+    .form-group.required .form-control-label:after,
+    .form-group.required .col-form-label:after
+     {
         content:"*";
         color:red;
         margin-left: 4px;

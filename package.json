@@ -41,7 +41,6 @@
     "gulp-merge-json": "^1.0.0",
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
-    "gulp-run-sequence": "*",
     "gulp-sass": "^2.2.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.4",
@@ -57,7 +56,8 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "path": "^0.12.7",
-    "popper.js": "^1.12.5"
+    "popper.js": "^1.12.5",
+    "run-sequence": "^2.2.0"
   },
   "browser": {
     "jquery": "./node_modules/jquery/dist/jquery.js",

@@ -33,8 +33,15 @@
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item btn-edit" href="#">Edit</a>
-                        <a class="dropdown-item btn-preview" data-target="#modal-oauth2-preview" data-toggle="modal" href="#">Preview</a>
-                        <a class="dropdown-item btn-refresh" href="#">Refresh</a>
+                        <a class="dropdown-item btn-preview" href="#">Preview</a>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-header">Refresh</div>
+                        <a class="dropdown-item btn-refresh" href="#">Refresh now</a>
+                        <a class="dropdown-item btn-refresh-setup" href="#">Setting</a>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-header">Token transmission</div>
+                        <a class="dropdown-item dropdown-item-checked btn-oauth2-transmission" data-type="header" href="#">As header</a>
+                        <a class="dropdown-item btn-oauth2-transmission" data-type="querystring" href="#">As query string</a>
                     </div>
                     <button type="button" class="btn btn-primary btn-sm btn-close">
                         <i class="fa fa-close"></i>

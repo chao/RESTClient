@@ -26,7 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 $(function () {
   Ladda.bind('.btn-oauth2-request');
   $(document).on('oauth2-grant-type-changed', function(){
-    var type = $('[name="oauth2-grant-type"]:checked').val();
+    var type = $('[name="oauth2-grant-type"]:checked').data('type');
     console.log('[oauth2.js] grant type changed', type);
     $('#form-oauth2 .form-group:not([data-' + type + '])').hide();
     $('#form-oauth2 .form-group[data-' + type + ']').show();
@@ -45,6 +45,42 @@ $(function () {
     else {
       $('#oauth2-state').val(Misc.random(16)).removeAttr('readonly');
     }
+  });
+
+  $(document).on('click', '.authentication-mode[data-mode="oauth20"] .btn-edit', function (e) {
+    var params = $(this).parents('.authentication-mode').data('params');
+    $('#modal-oauth2').data('params', params).modal('show');
+  });
+
+  $(document).on('click', '.authentication-mode[data-mode="oauth20"] .btn-preview', function (e) {
+    var params = $(this).parents('.authentication-mode').data('params');
+    $('#modal-oauth2-preview').data('params', params).modal('show');
+  });
+
+  $(document).on('show.bs.modal', '#modal-oauth2-preview', function (e) {
+    var params = $('#modal-oauth2-preview').data('params');
+    if (!params.refresh_endpoint || (!params.refresh_token && !params.result.refresh_token))
+    {
+      $('#modal-oauth2-preview .btn-oauth2-refresh').prop('disabled', true);
+    }
+    else
+    {
+      $('#modal-oauth2-preview .btn-oauth2-refresh').prop('disabled', false);
+    }
+
+    $(document).trigger('update-oauth-preview');
+  });
+
+  $(document).on('click', '.btn-oauth2-transmission', function(){
+    if ($(this).hasClass('dropdown-item-checked'))
+    {
+      return false;
+    }
+    var params = $(this).parents('.authentication-mode').data('params');
+    params.transmission = $(this).data('type');
+    $(this).parents('.authentication-mode').data('params', params);
+    $('.btn-oauth2-transmission').removeClass('dropdown-item-checked');
+    $(this).addClass('dropdown-item-checked');
   });
 
   $(document).on('submit', '#form-oauth2', function (e) {
@@ -102,6 +138,7 @@ $(function () {
         $('#modal-oauth2').modal('hide');
       }]);
     }
+    return false;
   });
 
   // update oauth 2.0 form
@@ -150,10 +187,12 @@ $(function () {
         $(document).trigger('oauth2-grant-type-changed');
       });
     }
+    Ladda.stopAll();
   });
 
 
-  $(document).on('obtain-access-token', function(params, callback) {
+  $(document).on('obtain-access-token', function(e, params, callback) {
+    console.log(`[oauth2.js] obtain-access-token`, params, callback);
     var l = Ladda.create(document.querySelector('.btn-oauth2-request'));
     l.start();
     var url = params.token_endpoint
@@ -196,9 +235,11 @@ $(function () {
     $.ajax(ajaxOption)
       .done(function (data) {
         var result = { timestamp: Date.now() / 1000 | 0 };
-        result.access_token = data.access_token;
+        result.access_token = data.access_token || '';
+        var expiretime = false;
         if (data.expires_in) {
           result.expires_in = data.expires_in;
+          expiretime = new Date((result.timestamp + data.expires_in)*1000);
         }
         if (data.token_type) {
           result.token_type = data.token_type;
@@ -207,11 +248,21 @@ $(function () {
           result.refresh_token = data.refresh_token;
         }
         params.result = result;
-
+        $('.oauth2-access-token code').text(result.access_token);
+        console.log(`expiretime`, expiretime);
+        if(expiretime)
+        {
+          $('.oauth2-access-token-preview-helper').show().find('span').text(expiretime);
+        }
+        else
+        {
+          $('.oauth2-access-token-preview-helper').hide();
+        }
         if(typeof callback == 'function')
         {
           callback.apply();
         }
+        toastr.success('Access token obtained!');
       })
       .fail(function (xhr) {
         toastr.error(xhr.responseText);

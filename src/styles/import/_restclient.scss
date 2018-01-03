@@ -98,3 +98,9 @@ button {
 #wrapper {
     background-color: #F1F1F1;
 }
+.dropdown-item-checked::before {
+  position: absolute;
+  left: .4rem;
+  content: '✓';
+  font-weight: 600;
+}

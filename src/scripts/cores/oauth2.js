@@ -24,7 +24,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 
 $(function () {
-  
+  Ladda.bind('.btn-oauth2-request');
   $(document).on('oauth2-grant-type-changed', function(){
     var type = $('[name="oauth2-grant-type"]:checked').val();
     console.log('[oauth2.js] grant type changed', type);
@@ -84,17 +84,24 @@ $(function () {
       return false;
     }
 
-    if ($('#save-oauth2').is(':checked')) {
-      storage.set({ ['oauth2']: params }).then(() => {
-        console.log('[oauth2.js] storage saved!', params);
-      });
+    if(params.grant_type == 'client_credentials')
+    {
+      console.log('[oauth2.js] client credentials', params);
+      $(document).trigger('obtain-access-token', [params, function(){
+        if ($('#save-oauth2').is(':checked')) {
+          storage.set({ ['oauth2']: params }).then(() => {
+            console.log('[oauth2.js] storage saved!', params);
+          });
+        }
+        console.log('[oauth2.js] oauth2-form submit', params);
+        $('.authentication-mode').removeClass('active');
+        $('.authentication-mode[data-mode="oauth20"]')
+          .addClass('active')
+          .data('params', params);
+
+        $('#modal-oauth2').modal('hide');
+      }]);
     }
-    console.log('[oauth2.js] oauth2-form submit', params);
-    $('.authentication-mode').removeClass('active');
-    $('.authentication-mode[data-mode="oauth20"]')
-      .addClass('active')
-      .data('params', params);
-    $('#modal-oauth2').modal('hide');
   });
 
   // update oauth 2.0 form
@@ -143,5 +150,75 @@ $(function () {
         $(document).trigger('oauth2-grant-type-changed');
       });
     }
+  });
+
+
+  $(document).on('obtain-access-token', function(params, callback) {
+    var l = Ladda.create(document.querySelector('.btn-oauth2-request'));
+    l.start();
+    var url = params.token_endpoint
+    if (url.indexOf('{{') >= 0 && url.indexOf('}}') >= 0) {
+      url = Mustache.to_html(url, params);
+    }
+
+    var ajaxOption = {
+      url: url,
+      dataType: 'json',
+      method: params.request_method,
+      processData: false,
+    };
+    if (params.request_method == 'GET') {
+      var data = {};
+      if (url.indexOf('grant_type=') === -1) {
+        data['grant_type'] = 'client_credentials';
+      }
+      if (url.indexOf('grant_type=') === -1 && params.scope && params.scope != '') {
+        data['scope'] = params.scope;
+      }
+      ajaxOption['data'] = data;
+    }
+    if (params.request_method == 'POST') {
+      var data = {
+        'grant_type': 'client_credentials'
+      }
+      if (params.client_id && params.client_id != '') {
+        data['client_id'] = params.client_id;
+      }
+      if (params.client_secret && params.client_secret != '') {
+        data['client_secret'] = params.client_secret;
+      }
+      if (params.scope && params.scope != '') {
+        data['scope'] = params.scope;
+      }
+      ajaxOption['data'] = data;
+    }
+
+    $.ajax(ajaxOption)
+      .done(function (data) {
+        var result = { timestamp: Date.now() / 1000 | 0 };
+        result.access_token = data.access_token;
+        if (data.expires_in) {
+          result.expires_in = data.expires_in;
+        }
+        if (data.token_type) {
+          result.token_type = data.token_type;
+        }
+        if (data.refresh_token) {
+          result.refresh_token = data.refresh_token;
+        }
+        params.result = result;
+
+        if(typeof callback == 'function')
+        {
+          callback.apply();
+        }
+      })
+      .fail(function (xhr) {
+        toastr.error(xhr.responseText);
+      })
+      .always(function () {
+        l.stop();
+        l.remove();
+      });
   });
 });

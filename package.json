@@ -47,7 +47,9 @@
     "gulp-zip": "^2.0.3",
     "preprocessify": "^1.0.1",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "gulp-file-include": "^2.0.0",
+    "run-sequence": "^2.2.0"
   },
   "dependencies": {
     "bootstrap": "4.0.0-beta",
@@ -56,8 +58,7 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "path": "^0.12.7",
-    "popper.js": "^1.12.5",
-    "run-sequence": "^2.2.0"
+    "popper.js": "^1.12.5"
   },
   "browser": {
     "jquery": "./node_modules/jquery/dist/jquery.js",

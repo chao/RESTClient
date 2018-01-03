@@ -6,8 +6,17 @@
         color:red;
         margin-left: 4px;
     }
+    .form-group {
+        .form-text {
+            display: none;
+        }
+    }
+    .form-group.has-danger {
+        .form-text {
+            display: inline-block !important;
+        }
+    }
 }
-
 #modal-header {
     label {
         color: #AAA;
@@ -47,13 +56,7 @@
         }
     }
 }
-#modal-favorite-save {
-    .has-danger {
-        .form-text {
-            display: inline-block !important;
-        }
-    }
-}
+
 #modal-oauth, #modal-oauth2 {
     .input-group-addon.abc-checkbox {
         input[type="checkbox"] {
@@ -113,4 +116,7 @@
         word-spacing: initial;
         word-break: break-all;
     }
+}
+#modal-oauth2 {
+
 }

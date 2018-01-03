@@ -28,8 +28,8 @@ $(function () {
   $(document).on('oauth2-grant-type-changed', function(){
     var type = $('[name="oauth2-grant-type"]:checked').val();
     console.log('[oauth2.js] grant type changed', type);
-    $('#oauth2-authorization .form-group:not([data-' + type + '])').hide();
-    $('#oauth2-authorization .form-group[data-' + type + ']').show();
+    $('#form-oauth2 .form-group:not([data-' + type + '])').hide();
+    $('#form-oauth2 .form-group[data-' + type + ']').show();
   });
   // When toggle oauth2 grant type
   $(document).on('input change click', '[name="oauth2-grant-type"]', function () {
@@ -65,19 +65,19 @@ $(function () {
 
     var error = false;
     if (params.client_id == '') {
-      $('#oauth2-client-id').parents('.form-group').addClass('has-danger').find('.helper').show();
+      $('#oauth2-client-id').parents('.form-group').addClass('has-danger');
       error = true;
     }
     if (params.client_secret == '') {
-      $('#oauth2-client-secret').parents('.form-group').addClass('has-danger').find('.helper').show();
+      $('#oauth2-client-secret').parents('.form-group').addClass('has-danger');
       error = true;
     }
     if ($('#oauth2-authorization-endpoint').is(':visible') && params.authorization_endpoint == '') {
-      $('#oauth2-authorization-endpoint').parents('.form-group').addClass('has-danger').find('.helper').show();
+      $('#oauth2-authorization-endpoint').parents('.form-group').addClass('has-danger');
       error = true;
     }
     if (params.token_endpoint == '') {
-      $('#oauth2-token-endpoint').parents('.form-group').addClass('has-danger').find('.helper').show();
+      $('#oauth2-token-endpoint').parents('.form-group').addClass('has-danger');
       error = true;
     }
     if (error) {
@@ -86,7 +86,7 @@ $(function () {
 
     if ($('#save-oauth2').is(':checked')) {
       storage.set({ ['oauth2']: params }).then(() => {
-        console.log('[oauth2.js] storage saved!');
+        console.log('[oauth2.js] storage saved!', params);
       });
     }
     console.log('[oauth2.js] oauth2-form submit', params);
@@ -97,11 +97,51 @@ $(function () {
     $('#modal-oauth2').modal('hide');
   });
 
+  // update oauth 2.0 form
+  var initOauth2Form = function (oauth2) {
+    $('#oauth2-client-id').val(oauth2.client_id);
+    $('#oauth2-client-secret').val(oauth2.client_secret);
+    $('#oauth2-scope').val(oauth2.scope);
+    $('#oauth2-authorization-endpoint').val(oauth2.authorization_endpoint);
+    $('#oauth2-token-endpoint').val(oauth2.token_endpoint);
+    $('#oauth2-redirect-endpoint').val(oauth2.redirect_endpoint);
+    $(`[name="oauth2-grant-type"][value="${oauth2.grant_type}"]`).prop('checked', true);
+    $(`[name="oauth2-request-method"][value="${oauth2.request_method}"]`).prop('checked', true);
+    if (oauth2.state === true) {
+      $('#oauth2-state-auto').prop('checked', true);
+      $('#oauth2-state').val('').prop('readonly', true);
+    }
+    else {
+      $('#oauth-state-auto').prop('checked', false);
+      $('#oauth2-state').val(oauth2.state).prop('readonly', false);
+    }
+  };
+
   // When OAuth2 modal is opened
   $(document).on('show.bs.modal', '#modal-oauth2', function(){
-    $('#modal-oauth2 .has-error').removeClass('has-error');
+    $('#modal-oauth2 .has-danger').removeClass('has-danger');
     $('#form-oauth2')[0].reset();
 
-    $(document).trigger('oauth2-grant-type-changed');
+    // if it is called for updating oauth parameters
+    if ($('#modal-oauth2').data('params')) {
+      var params = $('#modal-oauth2').data('params');
+      console.log('[oauth2.js] update oauth parameters', params);
+      $('#modal-oauth2').removeData('params');
+      initOauth2Form(params);
+      $(document).trigger('oauth2-grant-type-changed');
+    }
+    else {
+      // checked if there is saved parameters in storage
+      storage.get('oauth2').then((data) => {
+        console.log('[oauth2.js] storage loaded!', data);
+        if (!data || !data.oauth2) {
+          return false;
+        }
+
+        initOauth2Form(data.oauth2);
+        $('#save-oauth2').prop('checked', true);
+        $(document).trigger('oauth2-grant-type-changed');
+      });
+    }
   });
 });

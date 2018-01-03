@@ -678,146 +678,161 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">OAuth 2.0</h5>
+            <h5 class="modal-title">OAuth 2.0 <small class="text-muted m-l-sm">Get new access token</small></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-  
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#oauth2-authorization" role="tab">Get new access token</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#oauth2-refresh" role="tab">Refresh access token</a>
-              </li>
-            </ul>
-  
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div class="tab-pane container active" id="oauth2-authorization" role="tabpanel">
-                <!-- oauth2-authorization -->
-                <div class="form-group row m-t-md required" data-code data-credentials>
-                  <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Grant type</label>
-                  <div class="col-sm-9" style="line-height: 34px;">
-                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                      <input class="form-check-input" type="radio" name="oauth2-grant-type" id="oauth2-grant-type-code"
-                        value="code" checked>
-                      <label class="form-check-label" for="oauth2-grant-type-code">
-                        Authorization code
-                      </label>
-                    </div>
-                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                      <input class="form-check-input" type="radio" name="oauth2-grant-type" id="oauth2-grant-type-credentials"
-                        value="credentials">
-                      <label class="form-check-label" for="oauth2-grant-type-credentials">
-                        Client credentials
-                      </label>
-                    </div>
+            <div class="container">
+              <!-- oauth2-authorization -->
+              <div class="form-group row required" data-code data-credentials>
+                <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Grant type</label>
+                <div class="col-sm-9" style="line-height: 34px;">
+                  <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                    <input class="form-check-input" type="radio" name="oauth2-grant-type" id="oauth2-grant-type-code"
+                      value="code" checked>
+                    <label class="form-check-label" for="oauth2-grant-type-code">
+                      Authorization code
+                    </label>
+                  </div>
+                  <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                    <input class="form-check-input" type="radio" name="oauth2-grant-type" id="oauth2-grant-type-credentials"
+                      value="credentials">
+                    <label class="form-check-label" for="oauth2-grant-type-credentials">
+                      Client credentials
+                    </label>
                   </div>
                 </div>
-                
-                <div class="form-group row required" data-code data-credentials>
-                  <label for="oauth2-client-id" class="col-sm-3 form-control-label">Client id</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-client-id" placeholder="rKGCVb7Z7b7Z8sVW">
-                    <small id="oauth2-client-id-helper" class="form-text text-danger helper" style="display: none">Client id must be filled out</small>
-                  </div>
-                </div>
-                <div class="form-group row required" data-code data-credentials>
-                  <label for="oauth2-client-secret" class="col-sm-3 form-control-label">Client secret</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-client-secret" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
-                    <small id="oauth2-client-secret-helper" class="form-text text-danger helper" style="display: none">Client secret must be filled out</small>
-                  </div>
-                </div>
-                <div class="form-group row" data-code data-credentials>
-                  <label for="oauth2-scope" class="col-sm-3 form-control-label">Scope</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-scope" placeholder="Scope">
-                  </div>
-                </div>
-                <div class="form-group row" data-code>
-                  <label for="oauth2-state" class="col-sm-3 form-control-label" data-code>State</label>
-                  <div class="col-sm-9">
-                    <div class="input-group">
-                      <input type="text" class="form-control" id="oauth2-state" placeholder="OAuth state" readonly>
-                      <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
-                        <input type="checkbox" id="oauth2-state-auto" checked="true" aria-label="Checkbox for following text input">
-                        <label for="oauth2-state-auto">
-                          Auto
-                        </label>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group row required" data-code data-credentials>
-                  <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Request Method</label>
-                  <div class="col-sm-9" style="line-height: 34px;">
-                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                      <input class="form-check-input" type="radio" name="oauth2-request-method" id="oauth2-request-method-post" value="post" checked>
-                      <label class="form-check-label" for="oauth2-request-method-post">
-                        POST
-                      </label>
-                    </div>
-                    <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
-                      <input class="form-check-input" type="radio" name="oauth2-request-method" id="oauth2-request-method-get" value="get">
-                      <label class="form-check-label" for="oauth2-request-method-get">
-                        GET
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group row required" data-code>
-                  <label for="oauth2-authorization-endpoint" class="col-sm-3 form-control-label">Authorization endpoint</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-authorization-endpoint" placeholder="https://github.com/login/oauth/authorize">
-                  </div>
-                </div>
-                <div class="form-group row required" data-code data-credentials>
-                  <label for="oauth2-token-endpoint" class="col-sm-3 form-control-label">Token endpoint</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-token-endpoint" placeholder="https://github.com/login/oauth/access_token">
-                  </div>
-                </div>
-                <div class="form-group row" data-code>
-                  <label for="oauth2-redirect-endpoint" class="col-sm-3 form-control-label">Redirect endpoint</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-redirect-endpoint" placeholder="http://restclient.net/auth/github/callback">
-                  </div>
-                </div>
-                <!-- oauth2-authorization -->
               </div>
-              <div class="tab-pane container" id="oauth2-refresh" role="tabpanel">
-                <!-- oauth2-refresh -->
-                <div class="form-group row required m-t-md">
-                  <label for="oauth2-access-token" class="col-sm-3 form-control-label">Access token</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-access-token" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
-                    <small id="oauth2-access-token-helper" class="form-text text-danger helper" style="display: none">Access token must be filled out for refreshing</small>
-                  </div>
+              <div class="form-group row required" data-code data-credentials>
+                <label for="oauth2-client-id" class="col-sm-3 form-control-label">Client id</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="oauth2-client-id" placeholder="rKGCVb7Z7b7Z8sVW">
+                  <small id="oauth2-client-id-helper" class="form-text text-danger helper" style="display: none">Client id must be filled out</small>
                 </div>
-                <div class="form-group row">
-                  <label for="oauth2-refresh-endpoint" class="col-sm-3 form-control-label">Refreshing endpoint</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-refresh-endpoint" placeholder="https://github.com/login/oauth/access_token">
-                  </div>
-                </div>
-                <div class="form-group row m-b-xs">
-                  <label for="oauth2-refresh-scope" class="col-sm-3 form-control-label">Scope</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="oauth2-refresh-scope" placeholder="Scope">
-                  </div>
-                </div>
-                <!-- oauth2-refresh -->
               </div>
+              <div class="form-group row required" data-code data-credentials>
+                <label for="oauth2-client-secret" class="col-sm-3 form-control-label">Client secret</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="oauth2-client-secret" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
+                  <small id="oauth2-client-secret-helper" class="form-text text-danger helper" style="display: none">Client secret must be filled out</small>
+                </div>
+              </div>
+              <div class="form-group row" data-code data-credentials>
+                <label for="oauth2-scope" class="col-sm-3 form-control-label">Scope</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="oauth2-scope" placeholder="Scope">
+                </div>
+              </div>
+              <div class="form-group row" data-code>
+                <label for="oauth2-state" class="col-sm-3 form-control-label" data-code>State</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="oauth2-state" placeholder="OAuth state" readonly>
+                    <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                      <input type="checkbox" id="oauth2-state-auto" checked="true" aria-label="Checkbox for following text input">
+                      <label for="oauth2-state-auto">
+                        Auto
+                      </label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row required" data-code data-credentials>
+                <label for="oauth2-grant-type" class="col-sm-3 col-form-label">Request Method</label>
+                <div class="col-sm-9" style="line-height: 34px;">
+                  <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                    <input class="form-check-input" type="radio" name="oauth2-request-method" id="oauth2-request-method-post" value="post" checked>
+                    <label class="form-check-label" for="oauth2-request-method-post">
+                      POST
+                    </label>
+                  </div>
+                  <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                    <input class="form-check-input" type="radio" name="oauth2-request-method" id="oauth2-request-method-get" value="get">
+                    <label class="form-check-label" for="oauth2-request-method-get">
+                      GET
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row required" data-code>
+                <label for="oauth2-authorization-endpoint" class="col-sm-3 form-control-label">Authorization endpoint</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="oauth2-authorization-endpoint" placeholder="https://github.com/login/oauth/authorize">
+                  <small id="oauth2-authorization-endpoint-helper" class="form-text text-danger helper" style="display: none">Authorization endpoint must be filled out</small>
+                </div>
+              </div>
+              <div class="form-group row required" data-code data-credentials>
+                <label for="oauth2-token-endpoint" class="col-sm-3 form-control-label">Token endpoint</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="oauth2-token-endpoint" placeholder="https://github.com/login/oauth/access_token">
+                  <small id="oauth2-token-endpoint-helper" class="form-text text-danger helper" style="display: none">Token endpoint must be filled out</small>
+                </div>
+              </div>
+              <div class="form-group row" data-code>
+                <label for="oauth2-redirect-endpoint" class="col-sm-3 form-control-label">Redirect endpoint</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="oauth2-redirect-endpoint" placeholder="http://restclient.net/auth/github/callback">
+                </div>
+              </div>
+              <!-- oauth2-authorization -->
             </div>
           </div>
           <div class="modal-footer">
+            <div class="form-check abc-checkbox abc-checkbox-danger">
+              <input class="form-check-input" id="save-oauth2" type="checkbox">
+              <label class="form-check-label" for="save-oauth2">
+                Remember this setting
+              </label>
+            </div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary btn-oauth2-request">Request Token</button>
+            <button type="submit" class="btn btn-primary btn-oauth2-request">Request token</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal fade" id="modal-oauth2-refresh" tabindex="-1" role="dialog" aria-labelledby="modal-oauth2-refresh" aria-hidden="true">
+    <form id="form-oauth2-refresh">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">OAuth 2.0
+              <small class="text-muted">Refresh access token</small>
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body container">
+            
+            <!-- oauth2-refresh -->
+            <div class="form-group row required">
+              <label for="oauth2-access-token" class="col-sm-3 form-control-label">Access token</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="oauth2-access-token" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
+                <small id="oauth2-access-token-helper" class="form-text text-danger helper" style="display: none">Access token must be filled out for refreshing</small>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="oauth2-refresh-endpoint" class="col-sm-3 form-control-label">Refreshing endpoint</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="oauth2-refresh-endpoint" placeholder="https://github.com/login/oauth/access_token">
+              </div>
+            </div>
+            <div class="form-group row m-b-xs">
+              <label for="oauth2-refresh-scope" class="col-sm-3 form-control-label">Scope</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="oauth2-refresh-scope" placeholder="Scope">
+              </div>
+            </div>
+            <!-- oauth2-refresh -->
+  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary btn-oauth2-refresh">Refresh token</button>
           </div>
         </div>
       </div>

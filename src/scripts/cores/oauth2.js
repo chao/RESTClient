@@ -59,7 +59,7 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth2-preview', function (e) {
-    var params = $('#modal-oauth2-preview').data('params');
+    var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
     if (!params.refresh_endpoint || (!params.refresh_token && !params.result.refresh_token))
     {
       $('#modal-oauth2-preview .btn-oauth2-refresh').prop('disabled', true);
@@ -303,12 +303,16 @@ $(function () {
 
   $(document).on('submit', '#form-oauth2-refresh', function (e) {
     e.preventDefault();
+    var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
+    var l = Ladda.create(document.querySelector('.btn-oauth2-refresh'));
     $('#modal-oauth2-refresh .has-error').removeClass('has-error');
     var refresh_endpoint = $('#oauth2-refresh-endpoint').val();
 
     var req = {
       'refresh_token': $('#oauth2-refresh-token').val(),
       'scope': $('#oauth2-scope').val(),
+      'client_id': params.client_id,
+      'client_secret': params.client_secret,
       'grant_type': 'refresh_token'
     };
 
@@ -322,19 +326,27 @@ $(function () {
       error = true;
     }
     if (error) {
+      l.stop();
+      l.remove();
       return false;
     }
-    var l = Ladda.create(document.querySelector('.btn-oauth2-refresh'));
-    l.start();
+    
     $.ajax({
       url: refresh_endpoint,
       method: 'POST',
-      contentType: 'Content-Type: application/x-www-form-urlencoded',
+      contentType: 'application/x-www-form-urlencoded',
       data: req
     })
-    .done(function (data) {
-
+    .done(function (response) {
+      var result = parseAccessToken(response);
+      params.scope = req.scope;
+      params.refresh_endpoint = refresh_endpoint;
+      result.refresh_token = _.isString(result.refresh_token) ? result.refresh_token : req.refresh_token;
+      params.result = result;
+      console.log(`[oauth2.js] update params`, params);
+      $('.authentication-mode[data-mode="oauth20"]').data('params', params);
       toastr.success('Access token refreshed!');
+      $('#modal-oauth2-refresh').modal('hide');
     })
     .fail(function (xhr) {
       toastr.error(xhr.responseText);
@@ -386,34 +398,22 @@ $(function () {
     }
 
     $.ajax(ajaxOption)
-      .done(function (data) {
-        var result = { timestamp: Date.now() / 1000 | 0 };
-        result.access_token = data.access_token || '';
-        
-        if (data.expires_in) {
-          result.expires_in = data.expires_in;
-        }
-        if (data.token_type) {
-          result.token_type = data.token_type;
-        }
-        if (data.refresh_token) {
-          result.refresh_token = data.refresh_token;
-        }
-        params.result = result;
+    .done(function (response) {
+      params.result = parseAccessToken(response);
 
-        if(typeof callback == 'function')
-        {
-          callback(params);
-        }
-        toastr.success('Access token obtained!');
-      })
-      .fail(function (xhr) {
-        toastr.error(xhr.responseText);
-      })
-      .always(function () {
-        l.stop();
-        l.remove();
-      });
+      if(typeof callback == 'function')
+      {
+        callback(params);
+      }
+      toastr.success('Access token obtained!');
+    })
+    .fail(function (xhr) {
+      toastr.error(xhr.responseText);
+    })
+    .always(function () {
+      l.stop();
+      l.remove();
+    });
   });
 
   $(document).on('get-access-token', function(e, tabId, url) {
@@ -477,26 +477,7 @@ $(function () {
       { opts: opts }
     ).then(function (response){
       console.log(`[oauth2.js] get access token from tab`, response);
-      var result = {};
-      result.timestamp = Date.now() / 1000 | 0;
-      try {
-        var parsedResponse = _.isString(response) ? JSON.parse(response) : response;
-        console.log(`[content.js] get result from server`, parsedResponse);
-        if (typeof parsedResponse.access_token === 'string')
-            result.access_token = parsedResponse.access_token;
-        if (typeof parsedResponse.refresh_token === 'string')
-            result.refresh_token = parsedResponse.refresh_token;
-        if (typeof parsedResponse.expires_in !== 'undefined')
-            result.expires_in = parsedResponse.expires_in;
-        if (typeof parsedResponse.token_type !== 'undefined')
-            result.token_type = parsedResponse.token_type;
-      } catch (e) {
-        console.error(`[oauth2.js] cannot parse json`, e);
-        result.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
-        result.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
-        result.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
-        result.token_type = response.match(/token_type=([^&]*)/) ? response.match(/token_type=([^&]*)/)[1] : false;
-      }
+      var result = parseAccessToken(response);
       console.log(`[oauth2.js] access token`, result);
       params.result = result;
       updateOauth2Modal(params);
@@ -515,11 +496,31 @@ $(function () {
       );
     });
   });
-
-
-  
 });
 
+function parseAccessToken(response)
+{
+  var result = { timestamp: Date.now() / 1000 | 0 };
+  try {
+    var parsedResponse = _.isString(response) ? JSON.parse(response) : response;
+    console.log(`[content.js] get result from server`, parsedResponse);
+    if (typeof parsedResponse.access_token === 'string')
+      result.access_token = parsedResponse.access_token;
+    if (typeof parsedResponse.refresh_token === 'string')
+      result.refresh_token = parsedResponse.refresh_token;
+    if (typeof parsedResponse.expires_in !== 'undefined')
+      result.expires_in = parsedResponse.expires_in;
+    if (typeof parsedResponse.token_type !== 'undefined')
+      result.token_type = parsedResponse.token_type;
+  } catch (e) {
+    console.error(`[oauth2.js] cannot parse json`, e);
+    result.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
+    result.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
+    result.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
+    result.token_type = response.match(/token_type=([^&]*)/) ? response.match(/token_type=([^&]*)/)[1] : false;
+  }
+  return result;
+}
 function updateOauth2Modal(params)
 {
   if ($('#save-oauth2').is(':checked')) {

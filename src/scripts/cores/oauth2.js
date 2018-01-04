@@ -67,8 +67,6 @@ $(function () {
     {
       $('#modal-oauth2-preview .btn-oauth2-refresh').prop('disabled', false);
     }
-
-    $(document).trigger('update-oauth-preview');
   });
 
   $(document).on('click', '.btn-oauth2-transmission', function(){
@@ -128,19 +126,7 @@ $(function () {
     if(params.grant_type == 'client_credentials')
     {
       console.log('[oauth2.js] client credentials', params);
-      $(document).trigger('obtain-access-token', [params, function(){
-        if ($('#save-oauth2').is(':checked')) {
-          storage.set({ ['oauth2']: params }).then(() => {
-            console.log('[oauth2.js] storage saved!', params);
-          });
-        }
-        $('.authentication-mode').removeClass('active');
-        $('.authentication-mode[data-mode="oauth20"]')
-          .addClass('active')
-          .data('params', params);
-
-        $('#modal-oauth2').modal('hide');
-      }]);
+      $(document).trigger('obtain-access-token', [params, updateOauth2Modal]);
     }
     if (params.grant_type == 'authorization_code') {
       if ($('#save-oauth2').is(':checked')) {
@@ -322,10 +308,9 @@ $(function () {
       .done(function (data) {
         var result = { timestamp: Date.now() / 1000 | 0 };
         result.access_token = data.access_token || '';
-        var expiretime = false;
+        
         if (data.expires_in) {
           result.expires_in = data.expires_in;
-          expiretime = new Date((result.timestamp + data.expires_in)*1000);
         }
         if (data.token_type) {
           result.token_type = data.token_type;
@@ -334,19 +319,10 @@ $(function () {
           result.refresh_token = data.refresh_token;
         }
         params.result = result;
-        $('.oauth2-access-token code').text(result.access_token);
-        console.log(`expiretime`, expiretime);
-        if(expiretime)
-        {
-          $('.oauth2-access-token-preview-helper').show().find('span').text(expiretime);
-        }
-        else
-        {
-          $('.oauth2-access-token-preview-helper').hide();
-        }
+
         if(typeof callback == 'function')
         {
-          callback.apply();
+          callback(params);
         }
         toastr.success('Access token obtained!');
       })
@@ -418,15 +394,65 @@ $(function () {
     browser.tabs.sendMessage(
       tabId,
       { opts: opts }
-    ).then(function (data){
-      console.log(data);
+    ).then(function (response){
+      console.log(`[oauth2.js] get access token from tab`);
+      var result = {};
+      result.timestamp = Date.now() / 1000 | 0;
+      try {
+          var parsedResponse = JSON.parse(response);
+          console.log.log(`[content.js] get result from server`, parsedResponse);
+          if (typeof parsedResponse.access_token === 'string')
+              result.access_token = parsedResponse.access_token;
+          if (typeof parsedResponse.refresh_token === 'string')
+              result.refresh_token = parsedResponse.refresh_token;
+          if (typeof parsedResponse.expires_in !== 'undefined')
+              result.expires_in = parsedResponse.expires_in;
+          if (typeof parsedResponse.token_type !== 'undefined')
+              result.token_type = parsedResponse.token_type;
+      } catch (e) {
+          result.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
+          result.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
+          result.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
+          result.token_type = response.match(/token_type=([^&]*)/) ? response.match(/token_type=([^&]*)/)[1] : false;
+      }
+      console.log(`[oauth2.js] access token`, result);
+      params.result = result;
+      updateOauth2Modal(params);
+      toastr.success("Access token obtained!");
+      console.log(`[oauth2.js] close modal`);
+      browser.tabs.remove(
+        tabId
+      );
     }).catch(function(error) {
       console.error(`Error: ${error}`);
     });
   });
-
-
 });
+
+function updateOauth2Modal(params)
+{
+  if ($('#save-oauth2').is(':checked')) {
+    storage.set({ ['oauth2']: params }).then(() => {
+      console.log('[oauth2.js] storage saved!', params);
+    });
+  }
+  $('.authentication-mode').removeClass('active');
+  $('.authentication-mode[data-mode="oauth20"]')
+    .addClass('active')
+    .data('params', params);
+
+  $('#modal-oauth2').modal('hide');
+
+  $('.oauth2-access-token code').text(params.result.access_token);
+  console.log(`expiretime`, params);
+  if (params.result && params.result.timestamp && params.result.expires_in) {
+    var expiretime = new Date((params.result.timestamp + params.result.expires_in) * 1000);
+    $('.oauth2-access-token-preview-helper').show().find('span').text(expiretime);
+  }
+  else {
+    $('.oauth2-access-token-preview-helper').hide();
+  }
+}
 
 function handleTabUpdated(tabId, changeInfo, tabInfo) {
   console.log(`TabId: ${tabId}, Url: ${changeInfo.url}`);

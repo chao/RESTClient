@@ -93,7 +93,6 @@ $(function () {
         cmResponseBodyPreview.getDoc().setValue('');
         $('#tab-response-preview .CodeMirror').hide();
         $('#iframe-response').show();
-        $('.response-container a[data-toggle="tab"]:first').tab('show');
         $('.response-container a.preview[data-toggle="tab"]').hide();
 
         $(document).trigger("show-fullscreen");

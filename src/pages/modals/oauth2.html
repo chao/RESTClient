@@ -134,16 +134,17 @@
 
           <!-- oauth2-refresh -->
           <div class="form-group row required">
-            <label for="oauth2-access-token" class="col-sm-3 form-control-label">Access token</label>
+            <label for="oauth2-refresh-token" class="col-sm-3 form-control-label">Refresh token</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="oauth2-access-token" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
-              <small id="oauth2-access-token-helper" class="form-text text-danger helper" style="display: none">Access token must be filled out for refreshing</small>
+              <input type="text" class="form-control" id="oauth2-refresh-token" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
+              <small id="oauth2-refresh-token-helper" class="form-text text-danger helper" style="display: none">Refresh token must be filled out for refreshing</small>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row required">
             <label for="oauth2-refresh-endpoint" class="col-sm-3 form-control-label">Refreshing endpoint</label>
             <div class="col-sm-9">
               <input type="text" class="form-control" id="oauth2-refresh-endpoint" placeholder="https://github.com/login/oauth/access_token">
+              <small id="oauth2-refresh-endpoint-helper" class="form-text text-danger helper" style="display: none">Refresh endpoint must be filled out for refreshing</small>
             </div>
           </div>
           <div class="form-group row m-b-xs">

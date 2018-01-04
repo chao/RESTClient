@@ -83,6 +83,11 @@ $(function () {
     $(this).addClass('dropdown-item-checked');
   });
 
+  $(document).on('click', '.btn-oauth2-refresh-setting', function () {
+    var params = $(this).parents('.authentication-mode').data('params');
+    $('#modal-oauth2-refresh').data('params', params).modal('show');
+  });
+
   $(document).on('submit', '#form-oauth2', function (e) {
     e.preventDefault();
     $('#modal-oauth2 .has-error').removeClass('has-error');
@@ -129,7 +134,6 @@ $(function () {
             console.log('[oauth2.js] storage saved!', params);
           });
         }
-        console.log('[oauth2.js] oauth2-form submit', params);
         $('.authentication-mode').removeClass('active');
         $('.authentication-mode[data-mode="oauth20"]')
           .addClass('active')
@@ -137,6 +141,63 @@ $(function () {
 
         $('#modal-oauth2').modal('hide');
       }]);
+    }
+    if (params.grant_type == 'authorization_code') {
+      if ($('#save-oauth2').is(':checked')) {
+        storage.set({ ['oauth2']: params }).then(() => {
+          console.log('[oauth2.js] storage saved!', params);
+        });
+      }
+      
+      var url = params.authorization_endpoint;
+      if(url.indexOf('?') === -1)
+      {
+        url += '?';
+      }
+      var querystrings = {
+        "response_type": "code",
+        "client_id": params.client_id
+      };
+      if (params.scope)
+      {
+        querystrings["scope"] = params.scope;
+      }
+      if (params.state === true || params.state == '') 
+      {
+        params['result'] = params['result'] || {};
+        params['result']['state'] = Misc.random(16);
+        querystrings["state"] = params['result']['state'];
+      }
+      else
+      {
+        querystrings["state"] = params.scope;
+      }
+      if (params.redirect_endpoint) {
+        querystrings["redirect_uri"] = params.redirect_endpoint;
+      }
+      url += $.param(querystrings);
+
+      $('#modal-oauth2').data('params', params);
+
+      if (browser.tabs.onUpdated.hasListener(handleTabUpdated))
+      {
+        console.log(`[oauth2.js] remove old listener`);
+        browser.tabs.onUpdated.removeListener(handleTabUpdated);
+      }
+      browser.tabs.onUpdated.addListener(handleTabUpdated);
+      
+      // open a tab for authorization
+      var oauth2Tab = browser.tabs.create({
+        "url": url
+      });
+      console.log(`open a new tab`, oauth2Tab);
+      oauth2Tab.then(function(tab){
+        console.log(`Created new tab: ${tab.id}`);
+        window.oauth2TabId = tab.id;
+        toastr.success('A new tab is opened, please wait for OAuth server for processing');
+      }, function(){
+        toastr.error('Cannot open new tab for obtaining access token.');
+      });
     }
     return false;
   });
@@ -190,6 +251,31 @@ $(function () {
     Ladda.stopAll();
   });
 
+  $(document).on('show.bs.modal', '#modal-oauth2-refresh', function () {
+    $('#modal-oauth2-refresh .has-danger').removeClass('has-danger');
+    $('#form-oauth2-refresh')[0].reset();
+    var params = $('#modal-oauth2-refresh').data('params');
+    var refresh_token = '';
+    if (params.result && params.result.refresh_token && params.result.refresh_token != '')
+    {
+      refresh_token = params.result.refresh_token;
+    }
+    if (params.refresh_token && params.refresh_token != '')
+    {
+      refresh_token = params.refresh_token;
+    }
+    var scope = '';
+    if (params.result && params.result.scope && params.result.scope != '') {
+      scope = params.result.scope;
+    }
+    if (params.scope && params.scope != '') {
+      scope = params.scope;
+    }
+    $('#oauth2-refresh-token').val(refresh_token);
+    $('#oauth2-refresh-endpoint').val(params.refresh_endpoint || '');
+    $('#oauth2-refresh-scope').val(scope);
+    Ladda.stopAll();
+  });
 
   $(document).on('obtain-access-token', function(e, params, callback) {
     console.log(`[oauth2.js] obtain-access-token`, params, callback);
@@ -203,8 +289,7 @@ $(function () {
     var ajaxOption = {
       url: url,
       dataType: 'json',
-      method: params.request_method,
-      processData: false,
+      method: params.request_method
     };
     if (params.request_method == 'GET') {
       var data = {};
@@ -230,6 +315,7 @@ $(function () {
         data['scope'] = params.scope;
       }
       ajaxOption['data'] = data;
+      ajaxOption['contentType'] = 'Content-Type: application/x-www-form-urlencoded';
     }
 
     $.ajax(ajaxOption)
@@ -272,4 +358,113 @@ $(function () {
         l.remove();
       });
   });
+
+  $(document).on('get-access-token', function(e, tabId, url) {
+    var params = $('#modal-oauth2').data('params');
+    console.log(`[oauth2.js] start to get access token`, tabId, url, params);
+    if(typeof url == 'string' && url.indexOf(params.authorization_endpoint) >= 0)
+    {
+      return false;
+    }
+
+    var req = {
+      'client_id': params.client_id,
+      'client_secret': params.client_secret,
+      'grant_type': 'authorization_code'
+    };
+    var code = url.match(/[&\?]code=([^&]+)/)[1];
+    console.log(`[oauth2.js][get-access-token] Get code ${code}`);
+    if (typeof code !== 'string') {
+      alert('Cannot get code from url:' + url);
+      return false;
+    }
+    req['code'] = code;
+    var state = url.match(/[&\?]state=([^&]+)/)[1];
+    console.log(`[oauth2.js][get-access-token] Get state ${state}`);
+    if (typeof state !== 'string') {
+      if (typeof params.result.state == 'string') {
+        state = params.result.state;
+      }
+      else {
+        if (typeof params.state == 'string') {
+          state = params.state;
+        }
+        else {
+          state = false;
+        }
+      }
+    }
+
+    if (state !== false) {
+      req['state'] = state;
+    }
+
+    if (params.redirection_endpoint) {
+      req['redirect_uri'] = params.redirection_endpoint;
+    }
+    console.log(`[oauth2.js][get-access-token] ready to get access token`, req);
+    var opts = {
+      'url': params.token_endpoint,
+      'params': req
+    };
+
+    if (params.request_method == 'post') {
+      opts.method = 'POST';
+      opts.headers = { "Content-Type": 'application/x-www-form-urlencoded;charset=UTF-8'};
+    } else {
+      opts.method = 'GET';
+    }
+
+    browser.tabs.sendMessage(
+      tabId,
+      { opts: opts }
+    ).then(function (data){
+      console.log(data);
+    }).catch(function(error) {
+      console.error(`Error: ${error}`);
+    });
+  });
+
+
 });
+
+function handleTabUpdated(tabId, changeInfo, tabInfo) {
+  console.log(`TabId: ${tabId}, Url: ${changeInfo.url}`);
+  if (typeof changeInfo.url != 'undefined' && typeof oauth2TabId != 'undefined' && tabId == oauth2TabId) {
+    console.log(`[oauth2.js] handleTabUpdated Url: ${changeInfo.url} opened!`);
+    var makeItGreen = 'document.body.style.border = "5px solid green"';
+    var executing = browser.tabs.executeScript(tabId, {
+      file: "/scripts/pages/content.js"
+    });
+    executing.then(function onExecuted(result) {
+      console.log(`[oauth2.js] content script is running at ${changeInfo.url}`);
+      $(document).trigger('get-access-token', [tabId, changeInfo.url]);
+    }, function onError(error) {
+      console.log(`[oauth2.js] execute script error: ${error}`);
+    });
+  }
+}
+function handleTabRemoved(tabId, removeInfo) {
+  console.log(`[handleRemoved] TabId: ${tabId}`);
+  if (typeof oauth2TabId != 'undefined' && tabId == oauth2TabId) {
+    console.log(`TabId: ${tabId} closed`);
+    Ladda.stopAll();
+    window.oauth2TabId = false;
+  }
+}
+
+browser.tabs.onRemoved.addListener(handleTabRemoved);
+
+// function listenerForOAuth2(responseDetails)
+// {
+//   console.log(`[listenerForOAuth2] tab id: ${responseDetails.tabId}`);
+//   console.log(responseDetails.url);
+//   console.log(responseDetails.statusCode);
+// }
+// if (browser.webRequest.onCompleted.hasListener(listenerForOAuth2)) {
+//   browser.webRequest.onCompleted.removeListener(listenerForOAuth2)
+// }
+// browser.webRequest.onCompleted.addListener(
+//   listenerForOAuth2,
+//   { urls: ['<all_Urls>'] }
+// );

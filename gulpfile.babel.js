@@ -138,6 +138,7 @@ function mergeAll(dest) {
     pipe(['./src/scripts/helpers/**/*'], `./build/${dest}/scripts/helpers`),
     pipe(['./src/scripts/cores/**/*'], `./build/${dest}/scripts/cores`),
     pipe(['./src/scripts/uis/**/*'], `./build/${dest}/scripts/uis`),
+    pipe(['./src/scripts/pages/**/*'], `./build/${dest}/scripts/pages`),
     pipe(['./src/scripts/migrates/**/*'], `./build/${dest}/scripts/migrates`)
   )
 }

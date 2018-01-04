@@ -16,9 +16,10 @@
   "permissions": [
     "tabs",
     "storage",
-    "*://*/*",
+    "<all_urls>",
     "downloads",
     "unlimitedStorage",
+    "webRequest",
     "clipboardWrite"
   ],
   "browser_action": {

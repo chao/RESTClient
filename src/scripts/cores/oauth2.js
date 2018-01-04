@@ -59,6 +59,7 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth2-preview', function (e) {
+    Ladda.stopAll();
     var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
     if (!params.refresh_endpoint || (!params.refresh_token && !params.result.refresh_token))
     {
@@ -109,10 +110,61 @@ $(function () {
     $('.btn-oauth2-transmission').removeClass('dropdown-item-checked');
     $(this).addClass('dropdown-item-checked');
   });
+  
+  $(document).on('click', '.btn-oauth2-refresh', function () {
+    var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
+    var btn = $(this);
+    
+    
+    if (!params.refresh_endpoint || params.refresh_endpoint == '' || !_.isString(params.result.refresh_token))
+    {
+      $('#modal-oauth2-refresh').modal('show');
+    }
+    else
+    {
+      var l;
+      if (btn.hasClass('ladda-button')) {
+        l = Ladda.create(document.querySelector('.btn-oauth2-refresh'));
+        l.start();
+      }
+      var req = {
+        'refresh_token': params.result.refresh_token,
+        'scope': params.scope,
+        'client_id': params.client_id,
+        'client_secret': params.client_secret,
+        'grant_type': 'refresh_token'
+      };
+
+      $.ajax({
+        url: params.refresh_endpoint,
+        method: 'POST',
+        contentType: 'application/x-www-form-urlencoded',
+        data: req
+      })
+      .done(function (response) {
+        var result = parseAccessToken(response);
+        result.refresh_token = _.isString(result.refresh_token) ? result.refresh_token : req.refresh_token;
+        params.result = result;
+        console.log(`[oauth2.js] update params from menu`, params);
+        $('.authentication-mode[data-mode="oauth20"]').data('params', params);
+        toastr.success('Access token refreshed!');
+        if ($('#modal-oauth2-preview').is(':visible'))
+        {
+          $('#modal-oauth2-preview').trigger('show.bs.modal');
+        }
+      })
+      .fail(function (xhr) {
+        toastr.error(xhr.responseText);
+      })
+      .always(function(){
+        Ladda.stopAll();
+      })
+    }
+  });
+
 
   $(document).on('click', '.btn-oauth2-refresh-setting', function () {
-    var params = $(this).parents('.authentication-mode').data('params');
-    $('#modal-oauth2-refresh').data('params', params).modal('show');
+    $('#modal-oauth2-refresh').modal('show');
   });
 
   $(document).on('submit', '#form-oauth2', function (e) {
@@ -278,7 +330,7 @@ $(function () {
   $(document).on('show.bs.modal', '#modal-oauth2-refresh', function () {
     $('#modal-oauth2-refresh .has-danger').removeClass('has-danger');
     $('#form-oauth2-refresh')[0].reset();
-    var params = $('#modal-oauth2-refresh').data('params');
+    var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
     var refresh_token = '';
     if (params.result && params.result.refresh_token && params.result.refresh_token != '')
     {

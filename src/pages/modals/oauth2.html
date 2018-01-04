@@ -176,14 +176,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="card card-outline-primary text-xs-center m-t-md">
-            <div class="card-block">
-              <blockquote class="card-blockquote oauth2-access-token">
-                <code></code>
-              </blockquote>
-              <small id="oauth2-access-token-preview-helper" class="form-text text-danger" style="display: none">Expire time: <span class="span-expire"></span></small>
-            </div>
-          </div>
+          <table class="table table-hover table-bordered" style="margin: 0;">
+            <thead class="thead-inverse">
+              <tr>
+                <th style="min-width: 20px;">#</th>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

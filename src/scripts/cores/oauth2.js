@@ -25,6 +25,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 $(function () {
   Ladda.bind('.btn-oauth2-request');
+  Ladda.bind('.btn-oauth2-refresh');
   $(document).on('oauth2-grant-type-changed', function(){
     var type = $('[name="oauth2-grant-type"]:checked').data('type');
     console.log('[oauth2.js] grant type changed', type);
@@ -67,6 +68,34 @@ $(function () {
     {
       $('#modal-oauth2-preview .btn-oauth2-refresh').prop('disabled', false);
     }
+    if(!params.result)
+    {
+      params.result = {};
+    }
+    params.result.transmission_type = $('.authentication-mode[data-mode="oauth20"] .dropdown-item-checked').data('type');
+    $('#modal-oauth2-preview tbody').empty();
+    var template = '<tr><td>{{no}}</td><td class="name">{{name}}</td><td><code>{{value}}</code></td>';
+    var no = 0;
+    _.each(params.result, function (value, key) {
+      if(key == 'timestamp')
+      {
+        if (params.result && params.result.timestamp && params.result.expires_in) {
+          key = 'Expiration';
+          value = new Date((params.result.timestamp + params.result.expires_in) * 1000);
+        }
+        else
+        {
+          value = false;
+        }
+      }
+      console.log(`${no}, ${key}, ${value}`);
+      if(value != false)
+      {
+        no++;
+        key = _.startCase(key);
+        $('#modal-oauth2-preview tbody').append(Mustache.to_html(template, { 'no': no, 'name': key, 'value': value }));
+      }
+    });
   });
 
   $(document).on('click', '.btn-oauth2-transmission', function(){
@@ -140,6 +169,10 @@ $(function () {
       {
         url += '?';
       }
+      else
+      {
+        url += '&';
+      }
       var querystrings = {
         "response_type": "code",
         "client_id": params.client_id
@@ -147,6 +180,10 @@ $(function () {
       if (params.scope)
       {
         querystrings["scope"] = params.scope;
+      }
+      else
+      {
+        querystrings["scope"] = '';
       }
       if (params.state === true || params.state == '') 
       {
@@ -237,6 +274,7 @@ $(function () {
     Ladda.stopAll();
   });
 
+  // Refresh token
   $(document).on('show.bs.modal', '#modal-oauth2-refresh', function () {
     $('#modal-oauth2-refresh .has-danger').removeClass('has-danger');
     $('#form-oauth2-refresh')[0].reset();
@@ -263,6 +301,50 @@ $(function () {
     Ladda.stopAll();
   });
 
+  $(document).on('submit', '#form-oauth2-refresh', function (e) {
+    e.preventDefault();
+    $('#modal-oauth2-refresh .has-error').removeClass('has-error');
+    var refresh_endpoint = $('#oauth2-refresh-endpoint').val();
+
+    var req = {
+      'refresh_token': $('#oauth2-refresh-token').val(),
+      'scope': $('#oauth2-scope').val(),
+      'grant_type': 'refresh_token'
+    };
+
+    var error = false;
+    if (req.refresh_token == '') {
+      $('#oauth2-refresh-token').parents('.form-group').addClass('has-danger');
+      error = true;
+    }
+    if (refresh_endpoint == '') {
+      $('#oauth2-refresh-endpoint').parents('.form-group').addClass('has-danger');
+      error = true;
+    }
+    if (error) {
+      return false;
+    }
+    var l = Ladda.create(document.querySelector('.btn-oauth2-refresh'));
+    l.start();
+    $.ajax({
+      url: refresh_endpoint,
+      method: 'POST',
+      contentType: 'Content-Type: application/x-www-form-urlencoded',
+      data: req
+    })
+    .done(function (data) {
+
+      toastr.success('Access token refreshed!');
+    })
+    .fail(function (xhr) {
+      toastr.error(xhr.responseText);
+    })
+    .always(function () {
+      l.stop();
+      l.remove();
+    });
+  });
+
   $(document).on('obtain-access-token', function(e, params, callback) {
     console.log(`[oauth2.js] obtain-access-token`, params, callback);
     var l = Ladda.create(document.querySelector('.btn-oauth2-request'));
@@ -274,7 +356,6 @@ $(function () {
 
     var ajaxOption = {
       url: url,
-      dataType: 'json',
       method: params.request_method
     };
     if (params.request_method == 'GET') {
@@ -375,8 +456,8 @@ $(function () {
       req['state'] = state;
     }
 
-    if (params.redirection_endpoint) {
-      req['redirect_uri'] = params.redirection_endpoint;
+    if (params.redirect_endpoint) {
+      req['redirect_uri'] = params.redirect_endpoint;
     }
     console.log(`[oauth2.js][get-access-token] ready to get access token`, req);
     var opts = {
@@ -395,25 +476,26 @@ $(function () {
       tabId,
       { opts: opts }
     ).then(function (response){
-      console.log(`[oauth2.js] get access token from tab`);
+      console.log(`[oauth2.js] get access token from tab`, response);
       var result = {};
       result.timestamp = Date.now() / 1000 | 0;
       try {
-          var parsedResponse = JSON.parse(response);
-          console.log.log(`[content.js] get result from server`, parsedResponse);
-          if (typeof parsedResponse.access_token === 'string')
-              result.access_token = parsedResponse.access_token;
-          if (typeof parsedResponse.refresh_token === 'string')
-              result.refresh_token = parsedResponse.refresh_token;
-          if (typeof parsedResponse.expires_in !== 'undefined')
-              result.expires_in = parsedResponse.expires_in;
-          if (typeof parsedResponse.token_type !== 'undefined')
-              result.token_type = parsedResponse.token_type;
+        var parsedResponse = _.isString(response) ? JSON.parse(response) : response;
+        console.log(`[content.js] get result from server`, parsedResponse);
+        if (typeof parsedResponse.access_token === 'string')
+            result.access_token = parsedResponse.access_token;
+        if (typeof parsedResponse.refresh_token === 'string')
+            result.refresh_token = parsedResponse.refresh_token;
+        if (typeof parsedResponse.expires_in !== 'undefined')
+            result.expires_in = parsedResponse.expires_in;
+        if (typeof parsedResponse.token_type !== 'undefined')
+            result.token_type = parsedResponse.token_type;
       } catch (e) {
-          result.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
-          result.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
-          result.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
-          result.token_type = response.match(/token_type=([^&]*)/) ? response.match(/token_type=([^&]*)/)[1] : false;
+        console.error(`[oauth2.js] cannot parse json`, e);
+        result.access_token = response.match(/access_token=([^&]*)/) ? response.match(/access_token=([^&]*)/)[1] : false;
+        result.refresh_token = response.match(/refresh_token=([^&]*)/) ? response.match(/refresh_token=([^&]*)/)[1] : false;
+        result.expires_in = response.match(/expires_in=([^&]*)/) ? response.match(/expires_in=([^&]*)/)[1] : false;
+        result.token_type = response.match(/token_type=([^&]*)/) ? response.match(/token_type=([^&]*)/)[1] : false;
       }
       console.log(`[oauth2.js] access token`, result);
       params.result = result;
@@ -424,9 +506,18 @@ $(function () {
         tabId
       );
     }).catch(function(error) {
+      console.log(error);
+      toastr.error(error, 'Cannot get access token!', { "timeOut": "10000"});
+      Ladda.stopAll();
       console.error(`Error: ${error}`);
+      browser.tabs.remove(
+        tabId
+      );
     });
   });
+
+
+  
 });
 
 function updateOauth2Modal(params)
@@ -442,16 +533,6 @@ function updateOauth2Modal(params)
     .data('params', params);
 
   $('#modal-oauth2').modal('hide');
-
-  $('.oauth2-access-token code').text(params.result.access_token);
-  console.log(`expiretime`, params);
-  if (params.result && params.result.timestamp && params.result.expires_in) {
-    var expiretime = new Date((params.result.timestamp + params.result.expires_in) * 1000);
-    $('.oauth2-access-token-preview-helper').show().find('span').text(expiretime);
-  }
-  else {
-    $('.oauth2-access-token-preview-helper').hide();
-  }
 }
 
 function handleTabUpdated(tabId, changeInfo, tabInfo) {

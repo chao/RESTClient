@@ -22,6 +22,36 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
+$(function () {
+
+  $(document).on('request-updated', function(e, request){
+    if ($('.curl-container').is(':visible')) {
+      var curl = toCurl(request);
+      console.log(`[index.js] request execution, curl: ${curl}`);
+      $('#p-curl').text(curl);
+    }
+    else {
+      $('#p-curl').html('');
+    }
+  });
+
+  var clipboard = new Clipboard('#btn-curl-copy');
+
+  clipboard.on('success', function (e) {
+    toastr.success('CURL command copied!');
+    e.clearSelection();
+  });
+
+  function paste() {
+    console.log('[curl.js] paste!!!!!!!!!!');
+    var pasteText = document.querySelector("#p-curl");
+    pasteText.focus();
+    document.execCommand("paste");
+    console.log(pasteText.textContent);
+  }
+
+  document.querySelector("#btn-curl-paste").addEventListener("click", paste);
+});
 
 function toCurl(request) {
     if(typeof request !== 'object')
@@ -32,7 +62,7 @@ function toCurl(request) {
     // default is a GET request
     var cmd = ['curl', '-X', request.method || 'GET'];
 
-    if(request.url.indexOf('https'))
+    if(request.url.indexOf('https') == 0)
     {
         cmd.push('-k');
     }
@@ -59,11 +89,11 @@ function toCurl(request) {
     // append request url
     cmd.push(request.url);
 
-    if(request.data && request.data.length > 0)
+    if(request.body && request.body.length > 0)
     {
-        data.push('--data');
-        // TODO support --data-binary
-        cmd.push(request.data);
+      cmd.push('--data');
+      // TODO support --data-binary
+      cmd.push(request.body);
     }
     return Misc.shellescape(cmd);
 }

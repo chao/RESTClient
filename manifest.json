@@ -17,9 +17,8 @@
     "tabs",
     "storage",
     "<all_urls>",
-    "downloads",
     "unlimitedStorage",
-    "webRequest",
+    "clipboardRead",
     "clipboardWrite"
   ],
   "browser_action": {

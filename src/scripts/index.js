@@ -105,8 +105,7 @@ $(function () {
             }
         );
 
-        var curl =toCurl(request);
-        console.log(`[index.js] request execution, curl: ${curl}`);
+        $(document).trigger('request-updated', [request]);
     });
 
     

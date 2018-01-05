@@ -615,16 +615,22 @@ function handleTabRemoved(tabId, removeInfo) {
 
 browser.tabs.onRemoved.addListener(handleTabRemoved);
 
-// function listenerForOAuth2(responseDetails)
-// {
-//   console.log(`[listenerForOAuth2] tab id: ${responseDetails.tabId}`);
-//   console.log(responseDetails.url);
-//   console.log(responseDetails.statusCode);
-// }
-// if (browser.webRequest.onCompleted.hasListener(listenerForOAuth2)) {
-//   browser.webRequest.onCompleted.removeListener(listenerForOAuth2)
-// }
-// browser.webRequest.onCompleted.addListener(
-//   listenerForOAuth2,
-//   { urls: ['<all_Urls>'] }
-// );
+function oauth2Sign(request) {
+  if (_.isString(request.authentication.data.transmission) && request.authentication.data.transmission == 'header') {
+    if (_.isString(request.authentication.data.result.token_type)) {
+      value = _.upperFirst(request.authentication.data.result.token_type);
+    }
+    else {
+      value = 'Bearer';
+    }
+    if (value == 'Mac') {
+      throw "MAC Token for OAuth 2.0 is not supported yet.";
+    }
+    value += ' ' + request.authentication.data.result.access_token;
+    request.headers.push({ 'name': 'Authorization', 'value': value });
+  }
+  else {
+    request.url = Misc.insertParam(request.url, { 'access_token': request.authentication.data.result.access_token });
+  }
+  return request;
+}

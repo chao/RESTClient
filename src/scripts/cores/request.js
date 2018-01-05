@@ -64,28 +64,7 @@ var Request = {
         }
         if (request.authentication.mode == 'oauth20') 
         {
-            if (!request.authentication.data.transmission || request.authentication.data.transmission == 'header')
-            {
-                if (_.isString(request.authentication.data.result.token_type))
-                {
-                    value = _.upperFirst(request.authentication.data.result.token_type);
-                }
-                else
-                {
-                    value = 'Bearer';
-                }
-                if( value == 'Mac')
-                {
-                    throw "MAC Token for OAuth 2.0 is not supported yet.";
-                }
-                value += ' ' + request.authentication.data.result.access_token;
-                request.headers.push({ 'name': 'Authorization', 'value': value });
-            }
-            else
-            {
-                request.url = Misc.insertParam(request.url, { 'access_token': request.authentication.data.result.access_token});
-            }
-            return request;
+            return oauth2Sign(request);
         }
         if(request.authentication.mode == 'oauth10')
         {

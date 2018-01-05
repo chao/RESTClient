@@ -53,6 +53,21 @@ body {
 .m-r-none {
     margin-right: 0;
 }
+.m-l-xs {
+    margin-left: 0.3rem;
+}
+.m-l-sm {
+    margin-left: 0.6rem;
+}
+.m-l-md {
+    margin-left: 1rem;
+}
+.m-l-lg {
+    margin-left: 1.2rem;
+}
+.m-l-none {
+    margin-left: 0;
+}
 button {
     cursor: pointer;
 }
@@ -82,4 +97,10 @@ button {
 }
 #wrapper {
     background-color: #F1F1F1;
+}
+.dropdown-item-checked::before {
+  position: absolute;
+  left: .4rem;
+  content: '✓';
+  font-weight: 600;
 }

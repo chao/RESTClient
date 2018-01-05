@@ -78,27 +78,30 @@ $(function () {
         {
             return false;
         }
-
-        var method = $('#request-method').val();
-        var url = $('#request-url').val();
+        var request;
+        try{
+            request = Request.getProcessed();
+        }
+        catch(e)
+        {
+            toastr.error(e);
+            return false;
+        }
 
         $('#response-headers ol').empty();
         cmResponseBody.getDoc().setValue('');
         cmResponseBodyPreview.getDoc().setValue('');
         $('#tab-response-preview .CodeMirror').hide();
         $('#iframe-response').show();
-        $('.response-container a[data-toggle="tab"]:first').tab('show');
         $('.response-container a.preview[data-toggle="tab"]').hide();
 
         $(document).trigger("show-fullscreen");
 
-        var data = Request.getProcessed();
-
-        $('.current-request-basic').html(method + ' ' + url);
+        $('.current-request-basic').html(request.method + ' ' + request.url);
         ext.runtime.sendMessage({
                 action: "execute-http-request",
                 target: "background",
-                data: data
+                data: request
             }
         );
     });

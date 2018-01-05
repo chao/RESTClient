@@ -39,4 +39,14 @@ var Misc = {
     getDateFromTimestamp(unix_timestamp) {
         return new Date(unix_timestamp * 1000);
     },
+    insertParam(url, queryVars)
+    {
+        var firstSeperator = (url.indexOf('?') == -1 ? '?' : '&');
+        var queryStringParts = new Array();
+        for (var key in queryVars) {
+            queryStringParts.push(key + '=' + queryVars[key]);
+        }
+        var queryString = queryStringParts.join('&');
+        return url + firstSeperator + queryString;
+    },
 };

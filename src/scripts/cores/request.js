@@ -37,6 +37,8 @@ var Request = {
             'headers': headers,
             'body': $('#request-body').val()
         }
+
+        // Get authentication parameters
         if($('.authentication-mode.active').length > 0)
         {
             var authentication = {
@@ -59,6 +61,10 @@ var Request = {
         if(typeof request.authentication === 'undefined')
         {
             return request;
+        }
+        if (request.authentication.mode == 'oauth20') 
+        {
+            return oauth2Sign(request);
         }
         if(request.authentication.mode == 'oauth10')
         {

@@ -1,0 +1,48 @@
+<!-- Response -->
+<div class="response-container container-fluid m-t-lg panel">
+    <div class="row">
+        <div class="col-12">
+            <h5 id="response-title" class="text-muted title">
+                <a class="btn-toggle-panel">[<span>-</span>] Response</a>
+            </h5>
+        </div>
+    </div>
+
+    <div class="row div-response m-t-md">
+        <div class="col-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#tab-response-headers" role="tab">Headers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#tab-response-body" role="tab">Response</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link preview" data-toggle="tab" href="#tab-response-preview" role="tab" style="display: none;">Preview</a>
+                </li>
+            </ul>
+            <div class="tab-content m-t-sm">
+                <!-- response-headers -->
+                <div class="tab-pane active" id="tab-response-headers" role="tabpanel">
+                    <div id="response-headers" class=" card ">
+                        <div class="card-block">
+                            <ol class="linenums">
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- response-headers end -->
+
+                <div class="tab-pane" id="tab-response-body" role="tabpanel">
+                    <textarea id="response-body" class="form-control" placeholder="Response Body"></textarea>
+                </div>
+                <div class="tab-pane" id="tab-response-preview" role="tabpanel">
+                    <iframe id="iframe-response" src="blank.html" class="card" width="100%" height="500" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-forms">
+                    </iframe>
+                    <textarea id="response-body-preview" class="form-control" placeholder="Response Preview" style="blank"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Response End -->

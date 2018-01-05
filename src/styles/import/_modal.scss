@@ -1,11 +1,22 @@
 .modal {
-    .form-group.required .form-control-label:after {
+    .form-group.required .form-control-label:after,
+    .form-group.required .col-form-label:after
+     {
         content:"*";
         color:red;
         margin-left: 4px;
     }
+    .form-group {
+        .form-text {
+            display: none;
+        }
+    }
+    .form-group.has-danger {
+        .form-text {
+            display: inline-block !important;
+        }
+    }
 }
-
 #modal-header {
     label {
         color: #AAA;
@@ -45,14 +56,8 @@
         }
     }
 }
-#modal-favorite-save {
-    .has-danger {
-        .form-text {
-            display: inline-block !important;
-        }
-    }
-}
-#modal-oauth {
+
+#modal-oauth, #modal-oauth2 {
     .input-group-addon.abc-checkbox {
         input[type="checkbox"] {
             margin-left: 10px;
@@ -74,7 +79,8 @@
         border: 1px solid rgba(0, 0, 0, 0.25);
     }
 }
-#modal-oauth-preview {
+#modal-oauth-preview,
+#modal-oauth2-preview {
     table {
         font-size: 12px;
         th {
@@ -91,8 +97,9 @@
         td:first-child {
             text-align: center;
         }
-    
     }
+}
+#modal-oauth-preview {
     .oauth-preview-header {
         code {
             display: inline-block
@@ -107,6 +114,14 @@
         }
     }
     .oauth-preview-url {
+        word-wrap: break-word;
+        word-spacing: initial;
+        word-break: break-all;
+    }
+}
+#modal-oauth2-preview {
+    code {
+        display: inline-block;
         word-wrap: break-word;
         word-spacing: initial;
         word-break: break-all;

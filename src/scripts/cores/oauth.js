@@ -27,7 +27,7 @@ $(function () {
 
   // When toggle oauth timestamp auto mode
   $(document).on('click', '#oauth-timestamp-auto', function () {
-    $(this).parents('.form-group').removeClass('has-error');
+    $(this).parents('.form-group').removeClass('has-danger');
     var checked = $(this).is(':checked');
     if(checked)
     {
@@ -50,11 +50,11 @@ $(function () {
     console.log(typeof ts );
     if( _.isNaN(ts) )
     {
-      $(this).parents('.form-group').addClass('has-error');
+      $(this).parents('.form-group').addClass('has-danger');
       $('#oauth-timestamp-help').text('Invalid timestamp').show();
       return false;
     }
-    $(this).parents('.form-group').removeClass('has-error');
+    $(this).parents('.form-group').removeClass('has-danger');
     $('#oauth-timestamp-help').text(Misc.getDateFromTimestamp(ts)).show();
   });
   
@@ -94,7 +94,7 @@ $(function () {
 
   $(document).on('submit', '#form-oauth', function(e){
     e.preventDefault();
-    $('#modal-oauth .has-error').removeClass('has-error');
+    $('#modal-oauth .has-danger').removeClass('has-danger');
 
     var params = {
       'consumer_key': $('#oauth-consumer-key').val(),
@@ -115,11 +115,11 @@ $(function () {
     var error = false;
     if(params.consumer_key == '')
     {
-      $('#oauth-consumer-key').parents('.form-group').addClass('has-danger').find('.helper').show();
+      $('#oauth-consumer-key').parents('.form-group').addClass('has-danger');
       error = true;
     }
     if (params.shared_secret == '') {
-      $('#oauth-shared-secret').parents('.form-group').addClass('has-danger').find('.helper').show();
+      $('#oauth-shared-secret').parents('.form-group').addClass('has-danger');
       error = true;
     }
 
@@ -142,7 +142,7 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth', function (e) {
-    $('#modal-oauth .has-error').removeClass('has-error');
+    $('#modal-oauth .has-danger').removeClass('has-danger');
     $('#form-oauth')[0].reset();
     $('#oauth-realm').prop('readonly', true);
     $('#oauth-nonce').prop('readonly', true);

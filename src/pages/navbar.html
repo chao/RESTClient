@@ -1,0 +1,72 @@
+<!-- Navbar start -->
+<div class="navbar navbar-toggleable-md flex-column flex-md-row navbar-light bg-primary">
+    <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="sidebar">
+        <span class="hamb-top"></span>
+        <span class="hamb-middle"></span>
+        <span class="hamb-bottom"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+
+        <!-- menu at the left -->
+        <ul class="navbar-nav navbar-left">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-authentication">Authentication
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="nav-item-authentication">
+                    <div class="dropdown-header">HTTP authentication</div>
+                    <a class="dropdown-item" href="#" data-target="#modal-basic-auth" data-toggle="modal">Basic Authentication</a>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-header">OAuth Protocol</div>
+                    <a class="dropdown-item btn-oauth" href="#" data-toggle="modal" data-target="#modal-oauth">OAuth 1.0</a>
+                    <a class="dropdown-item btn-oauth2" href="#" data-toggle="modal" data-target="#modal-oauth2">OAuth 2.0</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-headers">Headers
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu dd-favorite-headers" aria-labelledby="nav-item-headers">
+                    <a class="dropdown-item default-menu nav-custom-header" href="#">Custom Header</a>
+                    <div class="dropdown-divider default-menu"></div>
+                    <a class="dropdown-item default-menu nav-custom-header-clear" href="#">Clear Favorites</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-view">View
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="nav-item-view">
+                    <a class="dropdown-item" href="#request-title" data-action="toggle" data-target="request-container">Request</a>
+                    <a class="dropdown-item" href="#response-title" data-action="toggle" data-target="response-container">Response</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#request-title" data-action="toggle" data-target="">Show All</a>
+                </div>
+            </li>
+        </ul>
+
+        <!-- menu at the right -->
+        <ul class="nav navbar-nav navbar-right ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-favorite">Favorites
+                    <span class="caret"></span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="nav-item-favorite">
+
+                    <a class="dropdown-item" href="#" data-target="#modal-file-import" data-toggle="modal">Import Favorite Request</a>
+                    <a id="nav-download-favorite-request" class="dropdown-item" href="#">Export Favorite Request</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item btn-manage-favorite-request" href="#">Manage Favorite Request</a>
+                    <a class="dropdown-item" href="#" data-target="#modal-favorite-save" data-toggle="modal">Save Current Request</a>
+                </div>
+            </li>
+            <li class="nav-item" id="nav-migration" style="display: none;">
+                <a class="nav-link" href="#" data-target="#modal-migrate-204" data-toggle="modal">Data migration</a>
+            </li>
+        </ul>
+
+        <a href="../" class="navbar-brand">RESTClient</a>
+    </div>
+</div>
+<!-- Navbar end -->

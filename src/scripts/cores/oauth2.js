@@ -49,13 +49,12 @@ $(function () {
   });
 
   $(document).on('click', '.authentication-mode[data-mode="oauth20"] .btn-edit', function (e) {
-    var params = $(this).parents('.authentication-mode').data('params');
+    var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
     $('#modal-oauth2').data('params', params).modal('show');
   });
 
   $(document).on('click', '.authentication-mode[data-mode="oauth20"] .btn-preview', function (e) {
-    var params = $(this).parents('.authentication-mode').data('params');
-    $('#modal-oauth2-preview').data('params', params).modal('show');
+    $('#modal-oauth2-preview').modal('show');
   });
 
   $(document).on('show.bs.modal', '#modal-oauth2-preview', function (e) {
@@ -616,7 +615,7 @@ function handleTabRemoved(tabId, removeInfo) {
 browser.tabs.onRemoved.addListener(handleTabRemoved);
 
 function oauth2Sign(request) {
-  if (_.isString(request.authentication.data.transmission) && request.authentication.data.transmission == 'header') {
+  if (!request.authentication.data.transmission || request.authentication.data.transmission == 'header') {
     if (_.isString(request.authentication.data.result.token_type)) {
       value = _.upperFirst(request.authentication.data.result.token_type);
     }

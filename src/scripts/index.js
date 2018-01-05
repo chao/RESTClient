@@ -104,6 +104,9 @@ $(function () {
                 data: request
             }
         );
+
+        var curl =toCurl(request);
+        console.log(`[index.js] request execution, curl: ${curl}`);
     });
 
     

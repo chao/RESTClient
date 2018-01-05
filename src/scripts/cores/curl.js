@@ -22,46 +22,48 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
-var Misc = {
-    random(size, range) {
-        var size = size || 5;
-        var result = "";
-        var range = range || "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for (var i = 0; i < size; i++)
-            result += range.charAt(Math.floor(Math.random() * range.length));
-
-        return result;
-    },
-    timestamp() {
-        return Math.floor((new Date()).getTime() / 1000);
-    },
-    getDateFromTimestamp(unix_timestamp) {
-        return new Date(unix_timestamp * 1000);
-    },
-    insertParam(url, queryVars)
+function toCurl(request) {
+    if(typeof request !== 'object')
     {
-        var firstSeperator = (url.indexOf('?') == -1 ? '?' : '&');
-        var queryStringParts = new Array();
-        for (var key in queryVars) {
-            queryStringParts.push(key + '=' + queryVars[key]);
-        }
-        var queryString = queryStringParts.join('&');
-        return url + firstSeperator + queryString;
-    },
-    shellescape(a) {
-        // function from https://github.com/xxorax/node-shell-escape
-        var ret = [];
+        throw "Request is not an object";
+    }
 
-        a.forEach(function (s) {
-            if (/[^A-Za-z0-9_\/:=-]/.test(s)) {
-                s = "'" + s.replace(/'/g, "'\\''") + "'";
-                s = s.replace(/^(?:'')+/g, '') // unduplicate single-quote at the beginning
-                    .replace(/\\'''/g, "\\'"); // remove non-escaped single-quote if there are enclosed between 2 escaped
+    // default is a GET request
+    var cmd = ['curl', '-X', request.method || 'GET'];
+
+    if(request.url.indexOf('https'))
+    {
+        cmd.push('-k');
+    }
+
+    // append request headers
+    if(typeof request.headers == 'object')
+    {
+        request.headers.forEach(function(header){
+            cmd.push('-H');
+            if(header.value == '')
+            {
+                cmd.push(`${header.name};`);
             }
-            ret.push(s);
+            else
+            {
+                cmd.push(`${header.name}: ${header.value};`);
+            }
         });
+    }
 
-        return ret.join(' ');
-    },
-};
+    // display the response headers
+    cmd.push('-i');
+
+    // append request url
+    cmd.push(request.url);
+
+    if(request.data && request.data.length > 0)
+    {
+        data.push('--data');
+        // TODO support --data-binary
+        cmd.push(request.data);
+    }
+    return Misc.shellescape(cmd);
+}

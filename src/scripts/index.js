@@ -25,7 +25,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 window.ext = require( "./utils/ext" );
 window.storage = require( "./utils/storage" );
-
+window.curlconverter = require('curlconverter');
 $(function () {
     window.favoriteHeaders = [];
     window.favoriteUrls = [];

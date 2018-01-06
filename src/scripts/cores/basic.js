@@ -46,6 +46,17 @@ $(function () {
             return false;
         }
         console.log('[RESTClient][basic.js] Basic Authentication', username, password);
+        $(document).trigger('append-basic-auth', [username, password]);
+    });
+
+    $(document).on('click', '.authentication-mode .btn-basic', function () {
+        var params = $('.authentication-mode[data-mode="basic"]').data('params');
+        $('#basic-auth-name').val(params['username']);
+        $('#basic-auth-password').val(params['password']);
+        $('#modal-basic-auth').modal('show');
+    });
+
+    $(document).on('append-basic-auth', function(e, username, password){
         $('.authentication-mode:not([data-mode="basic"])').removeClass('active');
 
         if ($('.authentication-mode[data-mode="basic"]').hasClass('active')) {
@@ -57,17 +68,9 @@ $(function () {
 
         $('.authentication-mode[data-mode="basic"]')
             .addClass('active')
-            .data('params', {'username': username, 'password': password});
+            .data('params', { 'username': username, 'password': password });
         $('#modal-basic-auth').modal('hide');
     });
-
-    $(document).on('click', '.authentication-mode .btn-basic', function () {
-        var params = $('.authentication-mode[data-mode="basic"]').data('params');
-        $('#basic-auth-name').val(params['username']);
-        $('#basic-auth-password').val(params['password']);
-        $('#modal-basic-auth').modal('show');
-    });
-
 });
 
 function basicAuthentication(request)

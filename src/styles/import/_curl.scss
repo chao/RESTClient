@@ -40,4 +40,13 @@
         border: #CCC3 solid 1px;
         width: 100%;
     }
+    #curl-paste {
+        width: 400px;
+        height: 100px;
+        position: fixed;
+        top: -100px;
+        left: 0;
+        outline: 0;
+        border: none;
+    }
 }

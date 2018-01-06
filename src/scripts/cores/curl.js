@@ -42,58 +42,72 @@ $(function () {
     e.clearSelection();
   });
 
-  function paste() {
-    console.log('[curl.js] paste!!!!!!!!!!');
-    var pasteText = document.querySelector("#p-curl");
+  function paste() 
+  {
+    var pasteText = document.querySelector("#curl-paste");
     pasteText.focus();
     document.execCommand("paste");
-    console.log(pasteText.textContent);
+    console.log('[curl.js] pasted', pasteText.textContent);
+    $(document).trigger('curl-command-pasted', [pasteText.textContent]);
   }
 
   document.querySelector("#btn-curl-paste").addEventListener("click", paste);
+
+  $(document).on('curl-command-pasted', function (e, curlCmd) {
+    console.log(`[curl.js] curl command pasted`, curlCmd);
+    var pasteText = document.querySelector("#curl-paste");
+    pasteText.textContent = '';
+    
+    var request = {};
+    try {
+      request = parseCurlCommand(curlCmd);
+    }
+    catch(e)
+    {
+      $('#p-curl').val('');
+      toastr.error(e.message, 'Cannot parse your pasted CURL command.');
+      console.error(`[curl.js] parse curl command error`, e);
+    }
+    console.log(`[curl.js] curl command parsed`, request);
+    $('.authentication-mode').removeClass('active');
+    $('#request-method').val(_.upperCase(request.method || 'GET'));
+    $('#request-url').val(request.url);
+    $('#request-body').val('');
+    $('.list-request-headers').empty();
+    $('.div-request-headers').hide();
+
+    // append headers
+    for (var headerName in request.headers) {
+      $(document).trigger('append-request-header', [headerName, request.headers[headerName]]);
+    }
+    if (request.cookies) {
+      var cookieString = serializeCookies(request.cookies);
+      $(document).trigger('append-request-header', ['Cookie', cookieString]);
+    }
+    if (request.data) {
+
+      if (_.isString(request.data) && request.data.indexOf("'") > -1) {
+        request.data = jsesc(request.data)
+      }
+      $('#request-body').val(request.data);
+    }
+
+    if(request.auth)
+    {
+      var username = '', password = '';
+      if(request.auth.indexOf(':') >= 0)
+      {
+        var credentials = request.auth.split(':');
+        username = credentials[0];
+        password = credentials[1];
+      }
+      else
+      {
+        username = request.auth;
+      }
+      $(document).trigger('append-basic-auth', [username, password]);
+    }
+    $('#p-curl').val(curlCmd);
+  });
 });
 
-function toCurl(request) {
-    if(typeof request !== 'object')
-    {
-        throw "Request is not an object";
-    }
-
-    // default is a GET request
-    var cmd = ['curl', '-X', request.method || 'GET'];
-
-    if(request.url.indexOf('https') == 0)
-    {
-        cmd.push('-k');
-    }
-
-    // append request headers
-    if(typeof request.headers == 'object')
-    {
-        request.headers.forEach(function(header){
-            cmd.push('-H');
-            if(header.value == '')
-            {
-                cmd.push(`${header.name};`);
-            }
-            else
-            {
-                cmd.push(`${header.name}: ${header.value};`);
-            }
-        });
-    }
-
-    // display the response headers
-    cmd.push('-i');
-
-    // append request url
-    cmd.push(request.url);
-
-    if(request.body && request.body.length > 0)
-    {
-      cmd.push('--data');
-      // TODO support --data-binary
-      cmd.push(request.body);
-    }
-    return Misc.shellescape(cmd);
-}

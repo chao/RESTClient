@@ -74,6 +74,7 @@ $(function () {
         console.error(e);
       }
     }
+
     if (mode === false && (mime.indexOf('/json') >= 0 || mime.indexOf('+json') > 0)) {
       mode = { name: "javascript", json: true };
       $('.response-container a.preview[data-toggle="tab"]').show();
@@ -126,11 +127,16 @@ $(function () {
         console.error(e);
       }
     }
+    // other text/* mime type
+    if (mode === false && mime.indexOf('text/') >= 0) {
+      mode = null;
+    }
+
     if (mode === false) {
       var info = CodeMirror.findModeByMIME(mime);
       mode = info.mode || null;
     }
-    console.log(mode);
+    console.log(`[response.js] response result`, mode, body);
     if (mode) {
       cmResponseBody.setOption('mode', mode);
       CodeMirror.autoLoadMode(cmResponseBody, mode.name || mode);

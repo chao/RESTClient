@@ -49,4 +49,19 @@ var Misc = {
         var queryString = queryStringParts.join('&');
         return url + firstSeperator + queryString;
     },
+    shellescape(a) {
+        // function from https://github.com/xxorax/node-shell-escape
+        var ret = [];
+
+        a.forEach(function (s) {
+            if (/[^A-Za-z0-9_\/:=-]/.test(s)) {
+                s = "'" + s.replace(/'/g, "'\\''") + "'";
+                s = s.replace(/^(?:'')+/g, '') // unduplicate single-quote at the beginning
+                    .replace(/\\'''/g, "\\'"); // remove non-escaped single-quote if there are enclosed between 2 escaped
+            }
+            ret.push(s);
+        });
+
+        return ret.join(' ');
+    },
 };

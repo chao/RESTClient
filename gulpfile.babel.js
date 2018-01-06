@@ -148,7 +148,8 @@ function buildJS(target) {
     'background.js',
     'options.js',
     'livereload.js',
-    'index.js'
+    'index.js',
+    'curl/index.js'
   ]
 
   let tasks = files.map( file => {

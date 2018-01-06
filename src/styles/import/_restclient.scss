@@ -22,7 +22,9 @@ body {
 .m-t-xlg {
     margin-top: 1.8rem;
 }
-
+.m-t-none {
+    margin-top: 0;
+}
 .m-b-xs {
     margin-bottom: 0.3rem;
 }
@@ -35,8 +37,11 @@ body {
 .m-b-lg {
     margin-bottom: 1.2rem;
 }
+.m-b-xlg {
+    margin-top: 1.8rem;
+}
 .m-b-none {
-    margin-bottom: 0;
+    margin-top: 0;
 }
 .m-r-xs {
     margin-right: 0.3rem;

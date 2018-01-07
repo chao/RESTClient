@@ -51,7 +51,6 @@ var requestHeaders = {
   "Pragma": ["no-cache"],
   "Proxy-Authorization": [],
   "Range": [],
-  "Referer": [],
   "TE": [],
   "User-Agent": [
             "Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7",
@@ -75,4 +74,6 @@ var requestHeaders = {
   "X-CSRFToken": [],
   "X-Request-ID": [],
   "X-Correlation-ID": []
-}
+};
+
+var bannedHeaders = ['referer'];

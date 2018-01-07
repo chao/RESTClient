@@ -176,14 +176,31 @@ $(function () {
     $('#request-header-name').focus().select();
   });
   $('#modal-header').on('hide.bs.modal', function () {
+    $('#modal-header .has-danger').removeClass('has-danger');
     $('#modal-header').removeData('source');
     $('#save-request-header-favorite').removeAttr('checked').prop('checked', false);
   });
 
   $(document).on('submit', '.form-request-header', function (e) {
     e.preventDefault();
+    $('#modal-request-header .has-danger').removeClass('has-danger');
     var requestName = $('#request-header-name').typeahead('val');
     var requestValue = $('#request-header-value').typeahead('val');
+    if (requestValue == '' && requestName == '')
+    {
+      $('#request-header-name').parents('.form-group').find('.form-text').text('Request header name must be fill out.');
+      $('#request-header-value').parents('.form-group').find('.form-text').text('Request header name and value cannot be empty at the same time.');
+      $('#request-header-name').parents('.form-group').addClass('has-danger');
+      $('#request-header-value').parents('.form-group').addClass('has-danger');
+      toastr.error(`Request header name and value cannot be empty at the same time.`);
+      return false;
+    }
+    if (bannedHeaders.indexOf(requestName.toLowerCase()) >= 0)
+    {
+      $('#request-header-name').parents('.form-group').find('.form-text').text(`Request header "${requestName}" is blocked by XMLHttpRequest for security reasons.`);
+      $('#request-header-name').parents('.form-group').addClass('has-danger');
+      return false;
+    }
     var favorite = ($('#save-request-header-favorite:checked').length == 1);
     var source = $('#modal-header').data('source');
     $(document).trigger('append-request-header', [requestName, requestValue, favorite, source]);
@@ -304,7 +321,7 @@ $(function () {
     }
     $('#modal-header').data('source', $(this)).modal('show');
   });
-
+  
   var requestHeaderNames = _.keys(requestHeaders);
   console.log(requestHeaderNames);
   var thNames = new Bloodhound({

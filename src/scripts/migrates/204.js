@@ -8,17 +8,27 @@ $(function () {
             if (typeof data == 'undefined' || typeof data['migration-2.0.4'] == 'undefined')
             {
                 $('#modal-migrate-204').modal('show');
-                $('#nav-migration').show();
+                $(document).trigger('show-migration-menu');
                 return false;
             }
             if (data['migration-2.0.4'] == 'ignore')
             {
                 return false;
             }
-            $('#nav-migration').show();
             
+            $(document).trigger('show-migration-menu');
         }
     );
+
+    $(document).on('show-migration-menu', function(){
+        ext.tabs.getCurrent().then(function (tabInfo) {
+            if (!tabInfo.incognito) {
+                $('#nav-migration').show();
+            }
+        }, function (error) {
+            console.log(`[204.js] Error: ${error}`);
+        });
+    });
 
     $(document).on('click', '#modal-migrate-204 .btn-ignore', function(e){
         $('#modal-migrate-204').modal('hide');

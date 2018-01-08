@@ -38,6 +38,7 @@ ext.tabs.getCurrent().then(function (tabInfo) {
       "timeOut": 0,
       "extendedTimeOut": 0
     });
+    $('[data-invisible-incognito]').hide();
   }
 }, function (error) {
   console.log(`[index.js] Error: ${error}`);

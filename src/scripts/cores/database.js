@@ -280,7 +280,14 @@ var Database = {
         }
     },
 }
-Database.init().then(function(){
-    console.log('database inited');
-    $(document).trigger('favorite-requests-loaded');
+
+ext.tabs.getCurrent().then(function (tabInfo) {
+    if (!tabInfo.incognito) {
+        Database.init().then(function () {
+            console.log('[database.js] database inited');
+            $(document).trigger('favorite-requests-loaded');
+        });
+    }
+}, function (error) {
+    console.log(`[database.js] Error: ${error}`);
 });

@@ -1,6 +1,6 @@
 <!-- Navbar start -->
 <div class="navbar navbar-toggleable-md flex-column flex-md-row navbar-light bg-primary">
-    <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="sidebar">
+    <button type="button" class="hamburger is-closed animated fadeInLeft" data-toggle="sidebar" data-invisible-incognito="true">
         <span class="hamb-top"></span>
         <span class="hamb-middle"></span>
         <span class="hamb-bottom"></span>
@@ -49,7 +49,7 @@
 
         <!-- menu at the right -->
         <ul class="nav navbar-nav navbar-right ml-auto">
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" data-invisible-incognito="true">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-item-favorite">Favorites
                     <span class="caret"></span>
                 </a>
@@ -62,12 +62,15 @@
                     <a class="dropdown-item" href="#" data-target="#modal-favorite-save" data-toggle="modal">Save Current Request</a>
                 </div>
             </li>
-            <li class="nav-item" id="nav-migration" style="display: none;">
+            <li class="nav-item" id="nav-migration" style="display: none;" data-invisible-incognito="true">
                 <a class="nav-link" href="#" data-target="#modal-migrate-204" data-toggle="modal">Data migration</a>
+            </li>
+            <li class="nav-item">
+                <a href="../" class="navbar-right navbar-brand">RESTClient</a>
             </li>
         </ul>
 
-        <a href="../" class="navbar-brand">RESTClient</a>
+        
     </div>
 </div>
 <!-- Navbar end -->

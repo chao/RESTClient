@@ -95,15 +95,23 @@ $(function () {
         $('#iframe-response').show();
         $('.response-container a.preview[data-toggle="tab"]').hide();
 
-        $(document).trigger("show-fullscreen");
+        ext.tabs.getCurrent().then(function (tabInfo) {
+            console.log(`[index.js][request-form submit] getCurrent`, tabInfo);
+        }, function(error){
+            console.log(`[index.js][request-form submit] Error: ${error}`);
+        });
+
+        ext.runtime.sendMessage({
+            action: "execute-http-request",
+            target: "background",
+            data: request
+        });
 
         $('.current-request-basic').html(request.method + ' ' + request.url);
-        ext.runtime.sendMessage({
-                action: "execute-http-request",
-                target: "background",
-                data: request
-            }
-        );
+        $(document).trigger("show-fullscreen");
+
+        
+        
 
         $(document).trigger('request-updated', [request]);
     });

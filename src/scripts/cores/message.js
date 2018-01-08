@@ -27,7 +27,7 @@ ext.runtime.onMessage.addListener(
   function (request, sender) {
 
     console.log(`[message.js] target ${request.target}, tab: ${request.senderTabId}, action: ${request.action}`, request, sender);
-    if (request.target !== 'index') {
+    if (request.target !== 'index' || request.senderTabId != currentTabInfo.id) {
       return false;
     }
 
@@ -80,7 +80,7 @@ ext.runtime.onMessage.addListener(
       toastr.error(request.data.detail || "Request error", request.data.title || "Error");
       return false;
     }
-    
+
     if (request.action == "http-request-load") {
       var mime = false;
       $(document).trigger("hide-fullscreen");

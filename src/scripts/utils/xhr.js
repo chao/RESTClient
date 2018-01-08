@@ -101,8 +101,13 @@ var XHR = {
     this.sendResponse(senderTabId, { action: "start-counting" });
     console.log('[background.js] Initiating XMLHttpRequest...');
     this.sendResponse(senderTabId, { action: "update-progress-label", data: 'Initiating XMLHttpRequest...' });
-    xhr.setRequestHeader("Accept-Language", null);
-    // TODO need to clear content-length / content-type?
+    
+    // if(req.method.toLowerCase() != 'delete')
+    // {
+    //   console.log('[background.js] set Accept-Language to null');
+    //   xhr.setRequestHeader('Accept-Language', null);
+    // }
+
     for (var i = 0, header; header = req.headers[i]; i++) {
       xhr.setRequestHeader(header['name'], header['value']);
 
@@ -111,6 +116,7 @@ var XHR = {
         xhr.overrideMimeType(header['value']);
       }
     }
+
     var startedAt = new Date().getTime();
     var self = this;
     xhr.upload.addEventListener('onprogress', function (evt) {
@@ -137,7 +143,14 @@ var XHR = {
       self.onError(evt, senderTabId);
     }, false);
 
-    xhr.send(req.body);
+    if (typeof req.body != 'undefined' && req.body.length > 0)
+    {
+      xhr.send(req.body);
+    }
+    else
+    {
+      xhr.send();
+    }
     return xhr;
   }
 }

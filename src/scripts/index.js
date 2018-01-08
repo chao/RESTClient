@@ -71,10 +71,11 @@ $(function () {
   /******************** Send Button ****************/
   $('.btn-send-request').prop('disabled', true);
   $(document).on('keyup input change paste', '#request-method, #request-url', function () {
-    console.log('url changed');
+    
     var method = $('#request-method').val();
     var url = $('#request-url').val();
     var isUrl = urlHelper.is_web_iri(url);
+    console.log('[index.js] request url changed, decide request SEND button status.', method, url, isUrl);
     // console.log(isUrl);
     // console.log(method != '' && typeof isUrl != 'undefined');
     if (method != '' && typeof isUrl != 'undefined') {

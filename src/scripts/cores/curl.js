@@ -83,7 +83,7 @@ $(function () {
     console.log(`[curl.js] curl command parsed`, request);
     $('.authentication-mode').removeClass('active');
     $('#request-method').val(_.upperCase(request.method || 'GET'));
-    $('#request-url').val(request.url);
+    $('#request-url').val(request.url).trigger('change');
     $('#request-body').val('');
     $('.list-request-headers').empty();
     $('.div-request-headers').hide();

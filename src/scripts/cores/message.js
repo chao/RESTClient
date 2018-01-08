@@ -27,7 +27,7 @@ ext.runtime.onMessage.addListener(
   function (request, sender) {
 
     console.log(`[message.js] target ${request.target}, tab: ${request.senderTabId}, action: ${request.action}`, request, sender);
-    if (request.target !== 'index' || request.senderTabId != currentTabInfo.id) {
+    if (request.target !== 'index' || (request.senderTabId != currentTabInfo.id && request.type != 'boardcast')) {
       return false;
     }
 
@@ -106,6 +106,15 @@ ext.runtime.onMessage.addListener(
       $(document).trigger('update-response-body', [mime, body]);
 
       return false;
+    }
+
+    if(request.action == 'http-oauth2-tab-closed')
+    {
+      console.log(`[message.js][http-oauth2-tab-closed] closed tab: ${request.tabId}, oauth2TabId: ${oauth2TabId}`);
+      if (typeof oauth2TabId != 'undefined' && request.tabId == oauth2TabId) {
+        Ladda.stopAll();
+        window.oauth2TabId = false;
+      }
     }
   }
 );

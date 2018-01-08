@@ -53,3 +53,14 @@ browser.runtime.onMessage.addListener(
     }
   }
 );
+
+// when a tab is removed
+browser.tabs.onRemoved.addListener(function (tabId, removeInfo){
+  console.log(`[background.js][handleRemoved] TabId: ${tabId}`, removeInfo);
+  browser.runtime.sendMessage({ 
+    target: "index",
+    action: "http-oauth2-tab-closed", 
+    type: "boardcast",
+    tabId: tabId
+  });
+});

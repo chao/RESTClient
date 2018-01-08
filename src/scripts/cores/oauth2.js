@@ -603,16 +603,6 @@ function handleTabUpdated(tabId, changeInfo, tabInfo) {
     });
   }
 }
-function handleTabRemoved(tabId, removeInfo) {
-  console.log(`[handleRemoved] TabId: ${tabId}`);
-  if (typeof oauth2TabId != 'undefined' && tabId == oauth2TabId) {
-    console.log(`TabId: ${tabId} closed`);
-    Ladda.stopAll();
-    window.oauth2TabId = false;
-  }
-}
-
-browser.tabs.onRemoved.addListener(handleTabRemoved);
 
 function oauth2Sign(request) {
   if (!request.authentication.data.transmission || request.authentication.data.transmission == 'header') {

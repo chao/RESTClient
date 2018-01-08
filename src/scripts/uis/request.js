@@ -65,8 +65,8 @@ $(function () {
     $('.btn-toggle-favorite-url i').toggleClass('fa-star');
   });
 
-  $(document).on('change', '#request-url', function () {
-    // console.log('request url changed');
+  $(document).on('change input', '#request-url', function () {
+    console.log('[request.js] request url changed');
     var url = $('#request-url').val();
     // console.log(url);
     if (url == '') {

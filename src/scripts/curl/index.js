@@ -21,17 +21,23 @@ var joinDataArguments = function (dataArguments) {
 }
 
 window.parseCurlCommand = function (curlCommand) {
+
+  
   var newlineFound = /\r|\n/.exec(curlCommand)
   if (newlineFound) {
     // remove newlines
     curlCommand = curlCommand.replace(/\\\r|\\\n/g, '')
   }
   
+
   // yargs parses -XPOST as separate arguments. just prescreen for it.
   curlCommand = curlCommand.replace(/ -XPOST/, ' -X POST')
   curlCommand = curlCommand.replace(/ -XGET/, ' -X GET')
-  curlCommand = curlCommand.trim()
-  console.log(curlCommand)
+  curlCommand = curlCommand.trim();
+
+  if (curlCommand.toLowerCase().indexOf('curl') != 0) {
+    throw Error("CURL command must starts with 'curl'.");
+  }
   var yargObject = yargs(curlCommand)
   var parsedArguments = yargObject.argv
   var cookieString

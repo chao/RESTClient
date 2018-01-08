@@ -33,6 +33,7 @@ $(function () {
     else {
       $('#p-curl').html('');
     }
+    $('#p-curl').trigger('change-curl-command');
   });
 
   var clipboard = new Clipboard('#btn-curl-copy');
@@ -53,6 +54,13 @@ $(function () {
 
   document.querySelector("#btn-curl-paste").addEventListener("click", paste);
 
+  $(document).on('change-curl-command', '#p-curl', function (e) {
+    $('#p-curl').css('height', '1px');
+    var height = (10 + $('#p-curl').prop("scrollHeight"));
+    height = (height < 40) ? 40 : height;
+    $('#p-curl').css('height', height + 'px');
+  });
+
   $(document).on('curl-command-pasted', function (e, curlCmd) {
     console.log(`[curl.js] curl command pasted`, curlCmd);
     var pasteText = document.querySelector("#curl-paste");
@@ -65,9 +73,13 @@ $(function () {
     catch(e)
     {
       $('#p-curl').val('');
-      toastr.error(e.message, 'Cannot parse your pasted CURL command.');
+      toastr.error(e.message, 'Cannot parse your pasted CURL command.', {"timeOut": 15000});
       console.error(`[curl.js] parse curl command error`, e);
+      $('#p-curl').trigger('change-curl-command');
+      return false;
     }
+    
+
     console.log(`[curl.js] curl command parsed`, request);
     $('.authentication-mode').removeClass('active');
     $('#request-method').val(_.upperCase(request.method || 'GET'));
@@ -108,6 +120,7 @@ $(function () {
       $(document).trigger('append-basic-auth', [username, password]);
     }
     $('#p-curl').val(curlCmd);
+    $('#p-curl').trigger('change-curl-command');
   });
 });
 

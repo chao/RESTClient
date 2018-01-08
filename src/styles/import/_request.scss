@@ -1,167 +1,171 @@
 .request-container {
-    .authentication-mode {
-        display: none;
-        box-shadow: 0 0 0 2px hsla(8, 79%, 62%, .4);
-        z-index: 999;
-        button:first-child {
-            padding-left: 10px;
-        }
-        .btn-auth-mode, .btn-close {
-            background-image: none;
-            border: none;
-            font-size: 10px;
-            border-radius: 0;
-            outline: 0;
-            box-shadow: none;
-            background-color: #eb6651;
-            padding-bottom: 2px;
-        }
-        .dropdown-menu {
-            left: -2px !important;
-            border-radius: 0;
-        }
+  .authentication-mode {
+    display: none;
+    box-shadow: 0 0 0 2px hsla(8, 79%, 62%, 0.4);
+    z-index: 999;
+    button:first-child {
+      padding-left: 10px;
     }
-    .authentication-mode.active {
-        display: inline-flex;
+    .btn-auth-mode,
+    .btn-close {
+      background-image: none;
+      border: none;
+      font-size: 10px;
+      border-radius: 0;
+      outline: 0;
+      box-shadow: none;
+      background-color: #eb6651;
+      padding-bottom: 2px;
+    }
+    .dropdown-menu {
+      left: -2px !important;
+      border-radius: 0;
+    }
+  }
+  .authentication-mode.active {
+    display: inline-flex;
+  }
+
+  .title {
+    margin-left: 0.1rem;
+    font-family: Consolas, Monaco, monospace;
+  }
+  .card-block {
+    padding: 0.5rem;
+  }
+  .card-title {
+    color: #aaa;
+  }
+  .request-form {
+    margin-top: 0.5rem;
+
+    .input-group-addon {
+      border: none;
+      outline: 0;
+    }
+    input:focus {
+      outline: 0;
+    }
+    .input-group-addon:hover {
+      text-decoration: none;
+      color: #fff;
+      background-color: #555;
+    }
+    label {
+      padding-right: 0.5rem;
+      color: #aaa;
+    }
+    input {
+      color: #000;
+    }
+    .ig-request-method {
+      width: 8rem;
+      margin-right: 0.5rem;
+      .input-group-addon {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+      }
+    }
+    .ig-request-method:focus-within,
+    .ig-request-url:focus-within {
+      input {
+        border: #d9230f solid 1px;
+      }
+      .input-group-addon {
+        background-color: #d9230f;
+        text-decoration: none;
+        color: #fff;
+      }
+    }
+    .ig-request-url {
+      flex: 1;
+      margin-right: 0.5rem;
+      display: flex;
+      #dd-request-urls {
+        border-top-right-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;
+      }
+      #request-urls-dropdown {
+        transform: translate3d(-1px, 34px, 0px) !important;
+        .dropdown-item {
+          white-space: nowrap !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+        }
+      }
+    }
+    button[type="submit"] {
+      width: 5rem;
+    }
+    .div-request-headers {
+      .card-block {
+        padding-bottom: 0;
+      }
+      .list-request-headers {
+        line-height: 1.5;
+        .badge {
+          background-color: #eee;
+          color: #555;
+          font-weight: 500;
+          margin-right: 0.5rem;
+          line-height: 1rem;
+          margin-bottom: 0.5rem;
+          cursor: pointer;
+          max-width: 400px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+          padding-right: 2rem !important;
+          .btn-remove-header {
+            text-decoration: none !important;
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            background-color: #999;
+            color: #fff !important;
+            border-radius: 10px;
+            line-height: 1.15;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+            position: absolute;
+            left: auto;
+            right: 0.5rem;
+          }
+          .btn-remove-header:hover {
+            background-color: #d9230f;
+          }
+        }
+      }
+
+      .btn-remove-all-headers {
+        float: right;
+        font-size: 0.7rem;
+        color: #aaa;
+        border-color: #fff;
+        border-radius: 0.25rem;
+      }
+      .btn-remove-all-headers:hover,
+      .btn-remove-all-headers:focus {
+        color: #333;
+      }
     }
 
-    .title {
-        margin-left: 0.1rem;
-        font-family: Consolas, Monaco, monospace;
+    .div-request-body {
+      .btn-form-data {
+        padding: 0;
+        color: #ccc;
+        outline: 0 !important;
+        border: none !important;
+      }
+      .btn-form-data.active {
+        color: #f00;
+      }
+      #request-body {
+        flex: 1;
+        height: 140px;
+        line-height: 22px;
+        font-family: monospace;
+      }
     }
-    .card-block {
-        padding: 0.5rem;
-    }
-    .card-title {
-        color: #AAA;
-    }
-    .request-form {
-        margin-top: 0.5rem;
-        
-        .input-group-addon {
-            border: none;
-            outline: 0;
-        }
-        input:focus {
-            outline:0;
-        }
-        .input-group-addon:hover{
-            text-decoration: none;
-            color: #FFF;
-            background-color: #555;
-        }
-        label {
-            padding-right: 0.5rem;
-            color: #AAA;
-        }
-        input {
-            color: #000;
-        }
-        .ig-request-method {
-            width: 8rem;
-            margin-right: 0.5rem;
-            .input-group-addon {
-                border-top-right-radius: 0.25rem;
-                border-bottom-right-radius: 0.25rem;
-            }
-        }
-        .ig-request-method:focus-within,
-        .ig-request-url:focus-within {
-            input {
-                border: #D9230F solid 1px;
-            }
-            .input-group-addon {
-                background-color: #D9230F;
-                text-decoration: none;
-                color: #FFF;
-            }
-        }
-        .ig-request-url {
-            flex: 1;
-            margin-right: 0.5rem;
-            display: flex;
-            #dd-request-urls {
-                border-top-right-radius: 0.25rem;
-                border-bottom-right-radius: 0.25rem;
-            }
-            #request-urls-dropdown {
-                transform: translate3d(-1px, 34px, 0px) !important;
-            }
-            
-        }
-        button[type="submit"] {
-            width: 5rem;
-        }
-        .div-request-headers {
-            .card-block {
-                padding-bottom: 0;
-            }
-            .list-request-headers {
-                line-height: 1.5;
-                .badge {
-                    background-color: #EEE;
-                    color: #555;
-                    font-weight: 500;
-                    margin-right: 0.5rem;
-                    line-height: 1rem;
-                    margin-bottom: 0.5rem;
-                    cursor: pointer;
-                    max-width: 400px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    position: relative;
-                    padding-right: 2rem !important; 
-                    .btn-remove-header {
-                        text-decoration: none !important;
-                        display: inline-block;
-                        width: 1rem;
-                        height: 1rem;
-                        background-color: #999;
-                        color: #FFF !important;
-                        border-radius: 10px;
-                        line-height: 1.15;
-                        font-size: 0.75rem;
-                        margin-left: 0.5rem;
-                        position: absolute;
-                        left: auto;
-                        right: 0.5rem;
-                    }
-                    .btn-remove-header:hover {
-                        background-color: #D9230F;
-                    }
-                }
-            }
-
-            .btn-remove-all-headers {
-                float: right;
-                font-size: 0.7rem;
-                color: #AAA;
-                border-color: #FFF;
-                border-radius: 0.25rem;
-            }
-            .btn-remove-all-headers:hover,
-            .btn-remove-all-headers:focus {
-                color: #333;
-            }
-
-        }
-
-        .div-request-body {
-            .btn-form-data {
-                padding: 0;
-                color: #CCC;
-                outline: 0 !important;
-                border: none !important;
-            }
-            .btn-form-data.active {
-                color: #F00;
-            }
-            #request-body {
-                flex: 1;
-                height: 140px;
-                line-height: 22px;
-                font-family: monospace;
-            }
-        }
-    }
+  }
 }

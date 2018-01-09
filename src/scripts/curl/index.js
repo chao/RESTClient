@@ -217,7 +217,7 @@ window.toCurl = function(request) {
         cmd.push(`${header.name};`);
       }
       else {
-        cmd.push(`${header.name}: ${header.value};`);
+        cmd.push(`${header.name}: ${header.value}`);
       }
     });
   }

@@ -17,8 +17,8 @@
   "permissions": [
     "tabs",
     "storage",
-    "<all_urls>",
     "unlimitedStorage",
+    "<all_urls>",
     "clipboardRead",
     "clipboardWrite"
   ],

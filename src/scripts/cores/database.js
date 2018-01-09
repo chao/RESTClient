@@ -61,7 +61,10 @@ var Database = {
         return this._requests;
     },
     
-    async saveRequest(name, request) {
+    async saveRequest(name, request, skipBackup) {
+        if (this._db === null) {
+            return;
+        }
         if (this._requests[name] && this._requests[name].created_at)
         {
             request.created_at = this._requests[name].created_at;
@@ -89,9 +92,17 @@ var Database = {
             console.log(`[RESTClient][Database.js][saveRequest] cache updated`, Database.requests, Database.tags);
         }
         await this._transactionPromise(tx);
+        console.log(`[Database.js][saveRequest] new requests loaded`, this._requests);
+        if (typeof skipBackup == 'undefined')
+        {
+            await this._backup(this._requests);
+        }
     },
 
     async removeRequest(name) {
+        if (this._db === null) {
+            return;
+        }
         if(!Database.requests[name])
         {
             return true;
@@ -110,25 +121,31 @@ var Database = {
         let store = tx.objectStore('requests');
         store.delete(name);
         await this._transactionPromise(tx);
+        console.log(`[Database.js][removeRequest] new requests loaded`, this._requests);
+        await this._backup(this._requests);
     },
 
     async init() {
-        console.log(`[RESTClient][database.js]: initing database...`);
+        console.log(`[database.js][init]: initing database...`);
         if (this._db)
             return;
         let { storage } = await browser.storage.local.get({ storage: 'persistent' });
-        console.log(`[RESTClient][database.js]: opening database in ${storage} storage`);
+        console.log(`[database.js][init]: opening database in ${storage} storage`);
         let options = { version: this.DB_VERSION };
         if (storage === 'persistent') {
             options.storage = 'persistent';
         }
-        console.log(`[RESTClient][database.js]: opening database ${this.DB_NAME}.`, options);
+        console.log(`[database.js][init]: opening database ${this.DB_NAME}.`, options);
         let opener = indexedDB.open(this.DB_NAME, options);
 
         opener.onupgradeneeded = (event) => this._upgradeSchema(event);
         this._db = await this._requestPromise(opener);
         await this.loadRequests();
-        console.log(`[RESTClient][database.js]: opened database with ${this._requests.length} requests`);
+        await this._restore();
+
+        var num = (typeof this._requests == 'object') ? Object.getOwnPropertyNames(this._requests).length : 0;
+        console.log(`[database.js][init]: opened database with ${num} requests`);
+        return this._requests;
     },
 
     _upgradeSchema(event) {
@@ -161,6 +178,9 @@ var Database = {
     },
 
     async loadRequests() {
+        if (this._db === null) {
+            return;
+        }
         this._requests = {};
         let tx = this._db.transaction(['requests'], 'readonly');
         let store = tx.objectStore('requests');
@@ -181,7 +201,7 @@ var Database = {
             }
         };
         request.onerror = function (event) {
-            console.error(`[RESTClient][database.js]: cannot read request objectstore`, event);
+            console.error(`[database.js][loadRequests]: cannot read request objectstore`, event);
         };
         await Database._transactionPromise(tx);
     },
@@ -197,8 +217,10 @@ var Database = {
         if(!data.version)
         {
             tags = _.isArray(tags) ? tags : [];
+
             if (_.isObject(data) && typeof data['requestUrl'] == 'string' && typeof data['requestMethod'] == 'string' && typeof data['requestBody'] == 'string')
             {
+                // import from RESTClient 1
                 console.log(`[RESTClient][database.js]: saved request from old RESTClient.`, data);
                 var request = {
                     "method":  data.requestMethod,
@@ -230,6 +252,7 @@ var Database = {
             }
             else
             {
+                // import from RESTClient 2
                 console.log(`[RESTClient][database.js]: favorite requests from old RESTClient.`);
                 for (let name in data) {
                     let item = data[name];
@@ -261,6 +284,7 @@ var Database = {
                     }
                 }
             }
+
         }
         
         if(data.version && data.version == 1 && data.data)
@@ -278,7 +302,41 @@ var Database = {
         {
             await this.loadRequests();
         }
+
+        console.log(`[Database.js][importRequests] new requests loaded`, this._requests);
+        await this._backup(this._requests);
     },
+
+    async _backup(requests) {
+        if (typeof requests != 'object')
+        {
+            console.error('[database.js] Cannot backup database.', requests);
+            return false;
+        }
+        console.debug('[database.js] Backup database now.', requests);
+        await browser.storage.local.set({ 'backup': requests });
+    },
+
+    async _restore()
+    {
+        if (typeof this._requests == 'object' && Object.getOwnPropertyNames(this._requests).length > 0) 
+        {
+            return false;
+        }
+        console.log(`[database.js][_restore] the database looks empty, testing backups`);
+        var result = await browser.storage.local.get({ "backup": [] });
+        if (result && result.backup) {
+            var keys = Object.getOwnPropertyNames(result.backup);
+            console.log(`[database.js][_restore]: ${keys.length} requests found in local storage`);
+            for (let key in result.backup)
+            {
+                if (!result.backup.hasOwnProperty(key)) {
+                    continue;
+                }
+                await this.saveRequest(key, result.backup[key], true);
+            }
+        }
+    }
 }
 
 ext.tabs.getCurrent().then(function (tabInfo) {

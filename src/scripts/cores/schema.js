@@ -27,16 +27,16 @@ var Schema = {
     
   },
   _version: function(request) {
-    console.log(`[schema.js][_version] parameter:`, request);
+    // console.log(`[schema.js][_version] parameter:`, request);
     if (typeof request['requestUrl'] == 'string'
       && typeof request['requestMethod'] == 'string'
       && typeof request['requestBody'] == 'string') 
     {
-      return "v0001";
+      return "v1001";
     }
     if (request.version && request.version == 1 && request.data)
     {
-      return 'v3' + ('' + request.version).padStart(2, "0");
+      return 'v3' + ('' + request.version).padStart(3, "0");
     }
     if(typeof request == 'object' && !request.version)
     {
@@ -50,9 +50,129 @@ var Schema = {
     }
     return "unkown";
   },
-  _fromV1: function(request) {
+  _v1001: function(data) {
+    var request = {
+      "method": data.requestMethod,
+      "url": data.requestUrl,
+      "body": data.requestBody,
+      "tags": [],
+      "created_at": new Date(),
+      "updated_at": new Date(),
+    };
 
+    if (Array.isArray(data.headers)) 
+    {
+      var headers = [];
+      for (var i = 0; i < data.headers.length; i = i + 2) {
+        headers.push({ "name": data.headers[i], "value": data.headers[i + 1] });
+      }
+      request.headers = headers;
+    }
+    return request;
   },
+  _v2001: function(request) {
+    request.tags = [];
+    if (typeof request.overrideMimeType != 'undefined') {
+      delete request.overrideMimeType;
+    }
+    // console.log(`[schema.js][_v2001]: processing request.`, request);
+    if (request.headers) {
+      if (request.headers.length > 0) {
+        var headers = [];
+        for(let i = 0; i < request.headers.length; i++)
+        {
+          var header  = request.headers[i];
+          headers.push({ name: header[0], value: header[1] });
+          // basic authentication
+          if(header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('basic ') == 0)
+          {
+            var credentials = header[1].substr(6);
+            // console.log(`[schema.js][_v2001]: credentials.`, credentials);
+            credentials = Base64.decode(credentials);
+            // console.log(`[schema.js][_v2001]: credentials.`, credentials);
+            var username = credentials.substr(0, credentials.indexOf(':'));
+            var password = credentials.substr(credentials.indexOf(':') + 1);
+            request.authentication = {
+              'mode': 'basic',
+              'data': {
+                'username': username,
+                'password': password
+              }
+            };
+            // console.log(`[schema.js][_v2001]: authentication.`, request);
+          }
+        }
+        request.headers = headers;
+      }
+      else {
+        delete request.headers;
+      }
+    }
+
+    // if the request uses OAuth 1.0 authentication
+    if(request.oauth)
+    {
+      var authentication = {'mode': 'oauth10'};
+      var secrets = request.oauth.oauth_secrets;
+      secrets = JSON.parse(secrets);
+      var data = {};
+      data['consumer_key'] = secrets.consumer_key;
+      data['shared_secret'] = secrets.consumer_secret;
+      data['access_token'] = secrets.access_token;
+      data['access_secret'] = secrets.access_secret;
+      var params = request.oauth.oauth_parameters;
+      params = JSON.parse(params);
+      data['oauth_version'] = params.oauth_version;
+      data['oauth_signature_method'] = params.params;
+      data['oauth_nonce'] = true;
+      data['oauth_timestamp'] = true;
+      data['parameter_transmission'] = "header";
+      data['auto_refresh'] = request.oauth.auto_refresh == 'no' ? false : true;
+      authentication.data = data;
+      request.authentication = authentication;
+      delete request.oauth;
+      // TODO remove authorization header
+    }
+
+    // if the request uses OAuth 2.0 authentication
+    if (request.oauth2) {
+      var authentication = { 'mode': 'oauth20' };
+      var authorize = request.oauth2.authorize;
+      var data = {};
+      data['client_id'] = authorize.client_id;
+      data['client_secret'] = authorize.client_secret;
+      data['grant_type'] = authorize.response_type == 'code' ? 'authorization_code' : 'client_credentials';
+      data['request_method'] = authorize.token_method;
+      data['authorization_endpoint'] = authorize.authorization_endpoint;
+      data['redirect_endpoint'] = authorize.redirection_endpoint;
+      data['token_endpoint'] = authorize.token_endpoint;
+      data['scope'] = authorize.scope;
+      data['state'] = authorize.state == '' ? true : '';
+
+      if (request.oauth2.tokens)
+      {
+        var tokens = request.oauth2.tokens;
+        data.result = {};
+        data.result['access_token'] = tokens.access_token;
+        data.result['refresh_token'] = tokens.refresh_token;
+      }
+      var params = request.oauth.oauth_parameters;
+      params = JSON.parse(params);
+      data['oauth_version'] = params.oauth_version;
+      data['oauth_signature_method'] = params.params;
+      data['oauth_nonce'] = true;
+      data['oauth_timestamp'] = true;
+      data['parameter_transmission'] = "header";
+      data['auto_refresh'] = request.oauth.auto_refresh == 'no' ? false : true;
+      authentication.data = data;
+      request.authentication = authentication;
+      delete request.oauth;
+      // TODO remove authorization header
+    }
+    request.created_at = new Date();
+    request.updated_at = new Date();
+    return request;
+  }
 }
 
 module.exports = Schema;

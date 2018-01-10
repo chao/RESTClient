@@ -60,6 +60,7 @@ describe('Request migration', function () {
       expect(result).to.nested.include({'authentication.data.parameter_transmission': 'header'});
       expect(result).to.have.nested.property('authentication.data.consumer_key');
       expect(result['tags']).to.be.an('array').that.includes("v2001");
+      expect(result['headers']).to.be.an('array').that.is.empty;
     });
 
     it('upgrade a oauth 2.0 authentication request', function () {
@@ -71,6 +72,7 @@ describe('Request migration', function () {
       expect(result['body']).to.be.equal(request['body']);
       expect(result).to.nested.include({ 'authentication.mode': 'oauth20' });
       expect(result).to.nested.include({ 'authentication.data.result.token_type': 'Bearer' });
+      expect(result['headers']).to.be.an('array').that.is.empty;
     });
 
   });
@@ -84,7 +86,7 @@ describe('Request migration', function () {
     });
     var requests = payload.data;
     it('upgrade a oauth 1.0 authentication request', function () {
-      var request = requests['oauth'];
+      var request = requests['3oauth'];
       var result = schema._v3001(request, ['v3001']);
       expect(result).to.include.keys('method', 'url', 'body', 'tags', 'created_at', 'updated_at', 'authentication');
       expect(result['method']).to.be.equal(request['method']);
@@ -97,7 +99,7 @@ describe('Request migration', function () {
     });
 
     it('upgrade a oauth 2.0 authentication request', function () {
-      var request = requests['oauth2'];
+      var request = requests['3oauth2'];
       var result = schema._v3001(request, ['v3001']);
       expect(result).to.include.keys('method', 'url', 'body', 'tags', 'created_at', 'updated_at', 'authentication');
       expect(result['method']).to.be.equal(request['method']);

@@ -115,13 +115,13 @@ var Schema = {
           }
 
           // oauth authentication
-          if (request.oauth && name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('oAuth ') == 0)
+          if (request.oauth && name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('oauth ') == 0)
           {
             continue;
           }
 
           // oauth2 authentication
-          if (request.oauth2 && name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('oAuth2 ') == 0) {
+          if (request.oauth2 && name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('oauth2 ') == 0) {
             continue;
           }
 
@@ -197,4 +197,17 @@ var Schema = {
   }
 }
 
-module.exports = Schema;
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  module.exports = Schema;
+}
+else {
+  if (typeof define === 'function' && define.amd) {
+    define([], function () {
+      return Schema;
+    });
+  }
+  else {
+    window.Schema = Schema;
+  }
+}

@@ -23,12 +23,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 var Database = {
-    DB_VERSION: 1,
+    DB_VERSION: 2,
     DB_NAME: 'restclient',
 
     _db: null,
     _requests: {},
     _tags: {},
+    _migrationNeeded: false,
+
     db() {
         return this._db;
     },
@@ -137,14 +139,18 @@ var Database = {
         }
         console.log(`[database.js][init]: opening database ${this.DB_NAME}.`, options);
         let opener = indexedDB.open(this.DB_NAME, options);
-
         opener.onupgradeneeded = (event) => this._upgradeSchema(event);
         this._db = await this._requestPromise(opener);
+        
         await this.loadRequests();
         await this._restore();
-
+        
         var num = (typeof this._requests == 'object') ? Object.getOwnPropertyNames(this._requests).length : 0;
         console.log(`[database.js][init]: opened database with ${num} requests`);
+        if (this._migrationNeeded)
+        {
+            this._requests = await this._migration(this._requests);
+        }
         return this._requests;
     },
 
@@ -157,9 +163,32 @@ var Database = {
                 requests = db.createObjectStore("requests");
                 requests.createIndex("idxTagName", "tags", { multiEntry: true });
                 break;
-            case 1:
-                console.log(`[database.js][_upgradeSchema]: upgrade from version ${event.oldVersion}`);
+            default:
+                Database._migrationNeeded = true;
+                console.log(`[database.js][_upgradeSchema]: set data migration to true`);
         }
+    },
+
+    async _migration(result)
+    {
+        console.log(`[database.js][_migration] Start to migration`, result);
+        var requests = {};
+        for (let name in result) {
+            console.log(`[database.js][_migration] Start to migration: ${name}`, result[name]);
+            var request = Schema._v3001(result[name]);
+            console.log(`[database.js][_migration] transformed`, request);
+            requests[name] = request;
+        }
+        console.log(`[database.js][_migration] all migrated`, requests);
+        let tx = Database._db.transaction(['requests'], 'readwrite');
+        var store = tx.objectStore('requests');
+        for (let name in requests) {
+            console.log(`[database.js][_migration] updating`, name, requests[name]);
+            store.put(requests[name], name);
+        }
+        await this._transactionPromise(tx);
+        // Database._backup(requests);
+        return requests;
     },
 
     // Note: this is resolved after the transaction is finished(!!!) mb1193394
@@ -218,6 +247,7 @@ var Database = {
         let imported = 0;
         console.log(`[database.js][importRequests]: start to import favorite requests.`, data, filename, tags);
 
+        var requests, func;
         switch (Schema._version(data)) {
             case 'v1001':
                 var request = Schema._v1001(data, tags);
@@ -233,19 +263,20 @@ var Database = {
                 }
                 break;
             case 'v2001':
-                var requests = data;
-                var func = '_v2001';
+                requests = data;
+                func = '_v2001';
             case 'v3001':
-                var requests = data.data;
-                var func = '_v3001';
-                for (let name in data) {
-                    var request = Schema[func](data[name], tags);
-                    console.log(`[database.js][importRequests]: from version v2001`, request);
+                requests = requests || data.data;
+                func = func || '_v3001';
+                console.trace(`[database.js][importRequests]: from version ${func}`, requests, data);
+                for (let name in requests) {
+                    var request = Schema[func](requests[name], tags);
+                    console.log(`[database.js][importRequests]: from version ${func}`, request);
                     try {
                         store.put(request, name);
                         imported++;
                     } catch (e) {
-                        console.error(`[database.js][importRequests] from v2001`, e);
+                        console.error(`[database.js][importRequests] ${func}`, e);
                     }
                 }
                 break;

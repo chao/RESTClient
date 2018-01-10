@@ -35,6 +35,11 @@ $(function () {
         storage.set({['migration-2.0.4']: 'ignore'}).then( () => { console.log('[RESTClient][204.js] migration 204 done'); } );
     });
 
+    $(document).on('click', '.btn-switch-migrate-tab', function (e) {
+        e.preventDefault();
+        $('#modal-migrate-204 a[href="#204-migrate"]').tab('show');
+    });
+
     $(document).on('click', '#modal-migrate-204 .btn-migrate', function (e) {
         var headers = $('#204-migrate-headers').val();
         var urls = $('#204-migrate-urls').val();

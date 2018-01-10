@@ -19,6 +19,7 @@
     "storage",
     "unlimitedStorage",
     "<all_urls>",
+    "downloads",
     "clipboardRead",
     "clipboardWrite"
   ],

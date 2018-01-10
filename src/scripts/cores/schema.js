@@ -82,7 +82,7 @@ var Schema = {
         for(let i = 0; i < request.headers.length; i++)
         {
           var header  = request.headers[i];
-          headers.push({ name: header[0], value: header[1] });
+          
           // basic authentication
           if(header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('basic ') == 0)
           {
@@ -99,8 +99,22 @@ var Schema = {
                 'password': password
               }
             };
+            continue;
             // console.log(`[schema.js][_v2001]: authentication.`, request);
           }
+
+          // oauth authentication
+          if (request.oauth && header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('oAuth ') == 0)
+          {
+            continue;
+          }
+
+          // oauth2 authentication
+          if (request.oauth2 && header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('oAuth2 ') == 0) {
+            continue;
+          }
+
+          headers.push({ name: header[0], value: header[1] });
         }
         request.headers = headers;
       }
@@ -142,32 +156,25 @@ var Schema = {
       data['client_id'] = authorize.client_id;
       data['client_secret'] = authorize.client_secret;
       data['grant_type'] = authorize.response_type == 'code' ? 'authorization_code' : 'client_credentials';
-      data['request_method'] = authorize.token_method;
+      data['request_method'] = authorize.token_method ? authorize.token_method.toLowerCase() : 'post';
       data['authorization_endpoint'] = authorize.authorization_endpoint;
       data['redirect_endpoint'] = authorize.redirection_endpoint;
       data['token_endpoint'] = authorize.token_endpoint;
       data['scope'] = authorize.scope;
       data['state'] = authorize.state == '' ? true : '';
-
       if (request.oauth2.tokens)
       {
         var tokens = request.oauth2.tokens;
         data.result = {};
         data.result['access_token'] = tokens.access_token;
         data.result['refresh_token'] = tokens.refresh_token;
+        data.result['expires_in'] = 3600;
+        data.result['timestamp'] = 1515554247;
+        data.result['token_type'] = 'Bearer';
       }
-      var params = request.oauth.oauth_parameters;
-      params = JSON.parse(params);
-      data['oauth_version'] = params.oauth_version;
-      data['oauth_signature_method'] = params.params;
-      data['oauth_nonce'] = true;
-      data['oauth_timestamp'] = true;
-      data['parameter_transmission'] = "header";
-      data['auto_refresh'] = request.oauth.auto_refresh == 'no' ? false : true;
       authentication.data = data;
       request.authentication = authentication;
-      delete request.oauth;
-      // TODO remove authorization header
+      delete request.oauth2;
     }
     request.created_at = new Date();
     request.updated_at = new Date();

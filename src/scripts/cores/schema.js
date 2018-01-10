@@ -50,12 +50,12 @@ var Schema = {
     }
     return "unkown";
   },
-  _v1001: function(data) {
+  _v1001: function(data, tags) {
     var request = {
       "method": data.requestMethod,
       "url": data.requestUrl,
       "body": data.requestBody,
-      "tags": [],
+      "tags": Array.isArray(tags) ? tags : [],
       "created_at": new Date(),
       "updated_at": new Date(),
     };
@@ -70,8 +70,9 @@ var Schema = {
     }
     return request;
   },
-  _v2001: function(request) {
-    request.tags = [];
+  _v2001: function(request, tags) {
+    var tags = Array.isArray(tags) ? tags : [];
+    request.tags = Array.isArray(request.tags) ? [...new Set([...request.tags, ...tags])] : tags;
     if (typeof request.overrideMimeType != 'undefined') {
       delete request.overrideMimeType;
     }
@@ -82,9 +83,19 @@ var Schema = {
         for(let i = 0; i < request.headers.length; i++)
         {
           var header  = request.headers[i];
-          
+          var name = value = '';
+          if (Array.isArray(header))
+          {
+            name = header[0];
+            value = header[1];
+          }
+          else
+          {
+            name = header['name'];
+            value = header['value'];
+          }
           // basic authentication
-          if(header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('basic ') == 0)
+          if(name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('basic ') == 0)
           {
             var credentials = header[1].substr(6);
             // console.log(`[schema.js][_v2001]: credentials.`, credentials);
@@ -104,17 +115,17 @@ var Schema = {
           }
 
           // oauth authentication
-          if (request.oauth && header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('oAuth ') == 0)
+          if (request.oauth && name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('oAuth ') == 0)
           {
             continue;
           }
 
           // oauth2 authentication
-          if (request.oauth2 && header[0].toLowerCase() == 'authorization' && header[1].toLowerCase().indexOf('oAuth2 ') == 0) {
+          if (request.oauth2 && name.toLowerCase() == 'authorization' && value.toLowerCase().indexOf('oAuth2 ') == 0) {
             continue;
           }
 
-          headers.push({ name: header[0], value: header[1] });
+          headers.push({ "name": name, "value": value });
         }
         request.headers = headers;
       }
@@ -179,6 +190,10 @@ var Schema = {
     request.created_at = new Date();
     request.updated_at = new Date();
     return request;
+  },
+  _v3001: function(request, tags)
+  {
+    return this._v2001(request, tags);
   }
 }
 

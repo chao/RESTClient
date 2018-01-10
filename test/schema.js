@@ -51,7 +51,7 @@ describe('Request migration', function () {
 
     it('upgrade a oauth 1.0 authentication request', function () {
       var request = requests['oauth'];
-      var result = schema._v2001(request);
+      var result = schema._v2001(request, ['v2001']);
       expect(result).to.include.keys('method', 'url', 'body', 'tags', 'created_at', 'updated_at', 'authentication');
       expect(result['method']).to.be.equal(request['method']);
       expect(result['url']).to.be.equal(request['url']);
@@ -59,25 +59,56 @@ describe('Request migration', function () {
       expect(result).to.nested.include({ 'authentication.mode': 'oauth10' });
       expect(result).to.nested.include({'authentication.data.parameter_transmission': 'header'});
       expect(result).to.have.nested.property('authentication.data.consumer_key');
+      expect(result['tags']).to.be.an('array').that.includes("v2001");
     });
 
-    it('upgrade a oauth 1.0 authentication request', function () {
+    it('upgrade a oauth 2.0 authentication request', function () {
       var request = requests['oauth2'];
-      var result = schema._v2001(request);
+      var result = schema._v2001(request, ['v2001']);
       expect(result).to.include.keys('method', 'url', 'body', 'tags', 'created_at', 'updated_at', 'authentication');
       expect(result['method']).to.be.equal(request['method']);
       expect(result['url']).to.be.equal(request['url']);
       expect(result['body']).to.be.equal(request['body']);
       expect(result).to.nested.include({ 'authentication.mode': 'oauth20' });
+      expect(result).to.nested.include({ 'authentication.data.result.token_type': 'Bearer' });
     });
+
   });
 
   describe('From RESTClient v3 favorite requests', function () {
-    var requests = fs.readFileSync(restclient['v31'], 'utf-8');
-    requests = JSON.parse(requests);
+    var payload = fs.readFileSync(restclient['v31'], 'utf-8');
+    payload = JSON.parse(payload);
     it('should detected as version 3', function () {
-      var version = schema._version(requests);
+      var version = schema._version(payload);
       expect(version).to.be.equal("v3001");
     });
+    var requests = payload.data;
+    it('upgrade a oauth 1.0 authentication request', function () {
+      var request = requests['oauth'];
+      var result = schema._v3001(request, ['v3001']);
+      expect(result).to.include.keys('method', 'url', 'body', 'tags', 'created_at', 'updated_at', 'authentication');
+      expect(result['method']).to.be.equal(request['method']);
+      expect(result['url']).to.be.equal(request['url']);
+      expect(result['body']).to.be.equal(request['body']);
+      expect(result).to.nested.include({ 'authentication.mode': 'oauth10' });
+      expect(result).to.nested.include({ 'authentication.data.parameter_transmission': 'header' });
+      expect(result).to.have.nested.property('authentication.data.consumer_key');
+      expect(result['tags']).to.be.an('array').that.includes("Twitter");
+    });
+
+    it('upgrade a oauth 2.0 authentication request', function () {
+      var request = requests['oauth2'];
+      var result = schema._v3001(request, ['v3001']);
+      expect(result).to.include.keys('method', 'url', 'body', 'tags', 'created_at', 'updated_at', 'authentication');
+      expect(result['method']).to.be.equal(request['method']);
+      expect(result['url']).to.be.equal(request['url']);
+      expect(result['body']).to.be.equal(request['body']);
+      expect(result).to.nested.include({ 'authentication.mode': 'oauth20' });
+      expect(result).to.nested.include({ 'authentication.data.result.token_type': 'Bearer' });
+      expect(result['tags']).to.be.an('array').that.includes("Github");
+      expect(result['tags']).to.be.an('array').that.includes("v3001");
+    });
+
+
   });
 });

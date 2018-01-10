@@ -26,6 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 $(function () {
   Ladda.bind('.btn-oauth2-request');
   Ladda.bind('.btn-oauth2-refresh');
+  Ladda.bind('#modal-oauth2-refresh button[type="submit"]');
   $(document).on('oauth2-grant-type-changed', function(){
     var type = $('[name="oauth2-grant-type"]:checked').data('type');
     console.log('[oauth2.js] grant type changed', type);
@@ -168,7 +169,7 @@ $(function () {
 
   $(document).on('submit', '#form-oauth2', function (e) {
     e.preventDefault();
-    $('#modal-oauth2 .has-error').removeClass('has-error');
+    $('#modal-oauth2 .has-danger').removeClass('has-danger');
 
     var params = {
       'grant_type': $('[name="oauth2-grant-type"]:checked').val(),
@@ -353,10 +354,10 @@ $(function () {
   });
 
   $(document).on('submit', '#form-oauth2-refresh', function (e) {
+    console.log(`[oauth2.js] form-oauth2-refresh submit`);
     e.preventDefault();
     var params = $('.authentication-mode[data-mode="oauth20"]').data('params');
-    var l = Ladda.create(document.querySelector('.btn-oauth2-refresh'));
-    $('#modal-oauth2-refresh .has-error').removeClass('has-error');
+    $('#modal-oauth2-refresh .has-danger').removeClass('has-danger');
     var refresh_endpoint = $('#oauth2-refresh-endpoint').val();
 
     var req = {
@@ -377,8 +378,7 @@ $(function () {
       error = true;
     }
     if (error) {
-      l.stop();
-      l.remove();
+      Ladda.stopAll();
       return false;
     }
     
@@ -403,8 +403,7 @@ $(function () {
       toastr.error(xhr.responseText);
     })
     .always(function () {
-      l.stop();
-      l.remove();
+      Ladda.stopAll();
     });
   });
 

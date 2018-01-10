@@ -79,7 +79,7 @@ function basicAuthentication(request)
     var params = request.authentication.data;
     var credentials = params.username + ':' + params.password;
     console.log('[RESTClient][basic.js] basicAuthentication', credentials);
-    var value = 'Basic ' + window.btoa(unescape(encodeURIComponent(credentials)));
+    var value = 'Basic ' + Base64.encode(credentials);
     request.headers.push({'name': 'Authorization', 'value': value});
     return request;
 }

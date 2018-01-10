@@ -23,12 +23,14 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 var Database = {
-    DB_VERSION: 1,
+    DB_VERSION: 2,
     DB_NAME: 'restclient',
 
     _db: null,
     _requests: {},
     _tags: {},
+    _migrationNeeded: false,
+
     db() {
         return this._db;
     },
@@ -137,26 +139,56 @@ var Database = {
         }
         console.log(`[database.js][init]: opening database ${this.DB_NAME}.`, options);
         let opener = indexedDB.open(this.DB_NAME, options);
-
         opener.onupgradeneeded = (event) => this._upgradeSchema(event);
         this._db = await this._requestPromise(opener);
+        
         await this.loadRequests();
         await this._restore();
-
+        
         var num = (typeof this._requests == 'object') ? Object.getOwnPropertyNames(this._requests).length : 0;
         console.log(`[database.js][init]: opened database with ${num} requests`);
+        if (this._migrationNeeded)
+        {
+            this._requests = await this._migration(this._requests);
+        }
         return this._requests;
     },
 
     _upgradeSchema(event) {
-        console.log(`[RESTClient][database.js]: upgrade from version ${event.oldVersion}`);
+        console.log(`[database.js][_upgradeSchema]: upgrade from version ${event.oldVersion}`);
         let { result: db, transaction: tx } = event.target;
         let requests;
         switch (event.oldVersion) {
             case 0:
                 requests = db.createObjectStore("requests");
                 requests.createIndex("idxTagName", "tags", { multiEntry: true });
+                break;
+            default:
+                Database._migrationNeeded = true;
+                console.log(`[database.js][_upgradeSchema]: set data migration to true`);
         }
+    },
+
+    async _migration(result)
+    {
+        console.log(`[database.js][_migration] Start to migration`, result);
+        var requests = {};
+        for (let name in result) {
+            console.log(`[database.js][_migration] Start to migration: ${name}`, result[name]);
+            var request = Schema._v3001(result[name]);
+            console.log(`[database.js][_migration] transformed`, request);
+            requests[name] = request;
+        }
+        console.log(`[database.js][_migration] all migrated`, requests);
+        let tx = Database._db.transaction(['requests'], 'readwrite');
+        var store = tx.objectStore('requests');
+        for (let name in requests) {
+            console.log(`[database.js][_migration] updating`, name, requests[name]);
+            store.put(requests[name], name);
+        }
+        await this._transactionPromise(tx);
+        // Database._backup(requests);
+        return requests;
     },
 
     // Note: this is resolved after the transaction is finished(!!!) mb1193394
@@ -213,88 +245,43 @@ var Database = {
         let tx = this._db.transaction(['requests'], 'readwrite');
         let store = tx.objectStore('requests');
         let imported = 0;
-        console.log(`[RESTClient][database.js]: start to import favorite requests.`);
-        if(!data.version)
-        {
-            tags = _.isArray(tags) ? tags : [];
+        console.log(`[database.js][importRequests]: start to import favorite requests.`, data, filename, tags);
 
-            if (_.isObject(data) && typeof data['requestUrl'] == 'string' && typeof data['requestMethod'] == 'string' && typeof data['requestBody'] == 'string')
-            {
-                // import from RESTClient 1
-                console.log(`[RESTClient][database.js]: saved request from old RESTClient.`, data);
-                var request = {
-                    "method":  data.requestMethod,
-                    "url": data.requestUrl,
-                    "body": data.requestBody,
-                    "tags": tags,
-                    "created_at": new Date(),
-                    "updated_at": new Date(),
-                };
-
-                if(_.isArray(data.headers))
-                {
-                    var headers = [];
-                    for(var i = 0; i < data.headers.length; i = i + 2)
-                    {
-                        headers.push({"name": data.headers[i], "value": data.headers[i+1]});
-                    }
-                    request.headers = headers;
-                }
-                var ext = filename.lastIndexOf("."); 
-                
+        var requests, func;
+        switch (Schema._version(data)) {
+            case 'v1001':
+                var request = Schema._v1001(data, tags);
+                console.log(`[database.js][importRequests]: from version v1001`, request);
+                // use filename as request name
+                var ext = filename.lastIndexOf(".");
                 var name = (ext > 0) ? filename.substr(0, ext) : filename;
                 try {
                     store.put(request, name);
                     imported++;
                 } catch (e) {
-                    console.error(e);
+                    console.error(`[database.js][importRequests] from v1001`, e);
                 }
-            }
-            else
-            {
-                // import from RESTClient 2
-                console.log(`[RESTClient][database.js]: favorite requests from old RESTClient.`);
-                for (let name in data) {
-                    let item = data[name];
-                    // item.name = name;
-                    item.tags = tags;
-                    if (typeof item.overrideMimeType != 'undefined') {
-                        delete item.overrideMimeType;
-                    }
-                    console.log(`[RESTClient][database.js]: processing ${imported}.`, item);
-                    if (item.headers) {
-                        if (item.headers.length > 0) {
-                            var headers = [];
-                            _.each(item.headers, function (header) {
-                                headers.push({ name: header[0], value: header[1] });
-                            })
-                            item.headers = headers;
-                        }
-                        else {
-                            delete item.headers;
-                        }
-                    }
-                    item.created_at = new Date();
-                    item.updated_at = new Date();
+                break;
+            case 'v2001':
+                requests = data;
+                func = '_v2001';
+            case 'v3001':
+                requests = requests || data.data;
+                func = func || '_v3001';
+                console.trace(`[database.js][importRequests]: from version ${func}`, requests, data);
+                for (let name in requests) {
+                    var request = Schema[func](requests[name], tags);
+                    console.log(`[database.js][importRequests]: from version ${func}`, request);
                     try {
-                        store.put(item, name);
+                        store.put(request, name);
                         imported++;
                     } catch (e) {
-                        console.error(e);
+                        console.error(`[database.js][importRequests] ${func}`, e);
                     }
                 }
-            }
-
-        }
-        
-        if(data.version && data.version == 1 && data.data)
-        {
-            console.log(`[RESTClient][database.js]: start to import from version: `, data.version);
-            _.each(data.data, function(request, name) {
-                item.updated_at = new Date();
-                store.put(request, name);
-                imported++;
-            });
+                break;
+            default:
+                break;
         }
         await this._transactionPromise(tx);
         console.log(`[RESTClient][database.js]: ${imported} requests imported.`);

@@ -114,8 +114,8 @@ $(function () {
   });
 
   $(document).on('click', '#nav-download-favorite-request', function (e) {
-    e.stopPropagation();
-    e.preventDefault();
+    // e.stopPropagation();
+    // e.preventDefault();
 
     Database.loadRequests().then(function () {
       let requests = Database.requests;

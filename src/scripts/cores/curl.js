@@ -27,11 +27,11 @@ $(function () {
   $(document).on('request-updated', function(e, request){
     if ($('.curl-container').is(':visible')) {
       var curl = toCurl(request);
-      console.log(`[index.js] request execution, curl: ${curl}`);
-      $('#p-curl').text(curl);
+      console.log(`[curl.js] request execution, curl: ${curl}`);
+      $('#p-curl').val(curl);
     }
     else {
-      $('#p-curl').html('');
+      $('#p-curl').val('');
     }
     $('#p-curl').trigger('change-curl-command');
   });

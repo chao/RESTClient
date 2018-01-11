@@ -116,16 +116,44 @@ $(function () {
       cmResponseBodyPreview.getDoc().setValue(css);
     }
     if (mode === false && mime.indexOf('image') >= 0) {
-      mode = null;
-      $('.response-container a.preview[data-toggle="tab"]').show();
-      var body = ""; // TODO preview image
-      try {
-        iframeDoc.open();
-        iframeDoc.write(body);
-        iframeDoc.close();
-      } catch (e) {
-        console.error(e);
+      console.log(`[response.js] mime: ${mime}`, body);
+      var size = body.length / 1024 / 1024;
+      // if the image is large then 1MB
+      if(size > 1)
+      {
+        cmResponseBody.setOption('mode', null);
+        cmResponseBody.getDoc().setValue('The image is too large to show.');
+        toastr.warning('The image is to large to view in RESTClient', 'Cannot view response body.');
       }
+      else
+      {
+        $('.response-container a.preview[data-toggle="tab"]').show();
+        var image;
+        try {
+          image = base64Encode(body);
+          console.log(`[response.js] after base64 encode`, image);
+        }
+        catch (e) {
+          console.error(`[response.js] cannot convert to base 64`, e);
+        }
+
+        if (image) {
+          var source = `data:${mime};base64,` + image;
+          var preview = `<img src="${source}">`;
+          preview += `<p><code>${source}</code></p>`;
+          try {
+            iframeDoc.open();
+            iframeDoc.write(preview);
+            iframeDoc.close();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        cmResponseBody.setOption('mode', null);
+        cmResponseBody.getDoc().setValue(body);
+      }
+      
+      return true;
     }
     // other text/* mime type
     if (mode === false && mime.indexOf('text/') >= 0) {
@@ -147,5 +175,40 @@ $(function () {
 
     cmResponseBody.getDoc().setValue(body);
   });
-
 });
+
+function downloadResponse(body, mime)
+{
+  let file = new Blob([body], { type: mime });
+  ext.downloads.download({
+    url: URL.createObjectURL(file),
+    saveAs: true
+  });
+}
+function base64Encode(str) {
+  var CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  var out = "", i = 0, len = str.length, c1, c2, c3;
+  while (i < len) {
+    c1 = str.charCodeAt(i++) & 0xff;
+    if (i == len) {
+      out += CHARS.charAt(c1 >> 2);
+      out += CHARS.charAt((c1 & 0x3) << 4);
+      out += "==";
+      break;
+    }
+    c2 = str.charCodeAt(i++);
+    if (i == len) {
+      out += CHARS.charAt(c1 >> 2);
+      out += CHARS.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
+      out += CHARS.charAt((c2 & 0xF) << 2);
+      out += "=";
+      break;
+    }
+    c3 = str.charCodeAt(i++);
+    out += CHARS.charAt(c1 >> 2);
+    out += CHARS.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
+    out += CHARS.charAt(((c2 & 0xF) << 2) | ((c3 & 0xC0) >> 6));
+    out += CHARS.charAt(c3 & 0x3F);
+  }
+  return out;
+}

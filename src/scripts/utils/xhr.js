@@ -107,16 +107,25 @@ var XHR = {
     //   console.log('[background.js] set Accept-Language to null');
     //   xhr.setRequestHeader('Accept-Language', null);
     // }
-
+    var overrideMimeType = true;
     for (var i = 0, header; header = req.headers[i]; i++) {
       xhr.setRequestHeader(header['name'], header['value']);
 
       //Override XMLHTTPRequest default charset
+      if (header['name'].toLowerCase() == 'content-type')
+      {
+        overrideMimeType = false;
+      }
       if (header['name'].toLowerCase() == 'content-type' && header['value'].toLowerCase().indexOf('charset') > -1) {
         xhr.overrideMimeType(header['value']);
       }
     }
 
+    if (overrideMimeType)
+    {
+      xhr.overrideMimeType('text\/plain; charset=x-user-defined');
+    }
+    
     var startedAt = new Date().getTime();
     var self = this;
     xhr.upload.addEventListener('onprogress', function (evt) {

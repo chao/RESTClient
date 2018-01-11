@@ -127,19 +127,22 @@ var XHR = {
       self.onLoad(evt, senderTabId, startedAt);
     }, false);
 
-    xhr.addEventListener("onprogress", function (evt) {
+    xhr.addEventListener("progress", function (evt) {
       self.onProgress(evt, senderTabId);
     }, false);
 
-    xhr.upload.addEventListener('onabort', function (evt) {
+    xhr.addEventListener('abort', function (evt) {
+      console.error(`[xhr.js][abort] Cannot send XHR request`, evt);
       self.onLoadProgress(evt, senderTabId);
     }, false);
 
-    xhr.upload.addEventListener('ontimeout', function (evt) {
+    xhr.addEventListener('timeout', function (evt) {
+      console.error(`[xhr.js][timeout] Cannot send XHR request`, evt);
       self.onTimeout(evt, senderTabId);
     }, false);
 
-    xhr.upload.addEventListener('onerror', function (evt) {
+    xhr.addEventListener('error', function (evt) {
+      console.error(`[xhr.js][error] Cannot send XHR request`, evt);
       self.onError(evt, senderTabId);
     }, false);
 

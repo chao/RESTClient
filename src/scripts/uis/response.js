@@ -23,6 +23,7 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 
+ window.currentResponse = false;
 $(function () {
   /********************** Init Response Raw and Preview **************************/
   CodeMirror.modeURL = "scripts/plugins/codemirror-5.31.0/mode/%N/%N.js";
@@ -47,6 +48,10 @@ $(function () {
   });
   $(document).on('update-response-body', function (e, mime, body) {
     console.log("[index.js]['update-response-body']", mime, body);
+    currentResponse = {'mime': mime, 'body': body};
+    var bodySize = body.length;
+    $('.li-download').hide();
+    
     var iframe = document.getElementById("iframe-response")
     var iframeDoc = iframe.contentWindow.document;
     if (!mime || mime == '') {
@@ -65,6 +70,9 @@ $(function () {
     var mode = false;
     if (mime.indexOf('text/html') >= 0) {
       mode = 'htmlmixed';
+      if (bodySize > 0) {
+        $('.li-download').show();
+      }
       $('.response-container a.preview[data-toggle="tab"]').show();
       try {
         iframeDoc.open();
@@ -76,6 +84,9 @@ $(function () {
     }
 
     if (mode === false && (mime.indexOf('/json') >= 0 || mime.indexOf('+json') > 0)) {
+      if (bodySize > 0) {
+        $('.li-download').show();
+      }
       mode = { name: "javascript", json: true };
       $('.response-container a.preview[data-toggle="tab"]').show();
       $('#tab-response-preview .CodeMirror').show();
@@ -93,6 +104,9 @@ $(function () {
       }
     }
     if (mode === false && (mime.indexOf('/xml') >= 0 || mime.indexOf('+xml') > 0)) {
+      if (bodySize > 0) {
+        $('.li-download').show();
+      }
       mode = 'xml';
       $('.response-container a.preview[data-toggle="tab"]').show();
       $('#tab-response-preview .CodeMirror').show();
@@ -104,6 +118,9 @@ $(function () {
       cmResponseBodyPreview.getDoc().setValue(xml);
     }
     if (mode === false && mime.indexOf('text/css') >= 0) {
+      if (bodySize > 0) {
+        $('.li-download').show();
+      }
       mode = 'css';
       $('.response-container a.preview[data-toggle="tab"]').show();
       $('#tab-response-preview .CodeMirror').show();
@@ -117,13 +134,13 @@ $(function () {
     }
     if (mode === false && mime.indexOf('image') >= 0) {
       console.log(`[response.js] mime: ${mime}`, body);
-      var size = body.length / 1024 / 1024;
+      var size = bodySize / 1024 / 1024;
       // if the image is large then 1MB
       if(size > 1)
       {
         cmResponseBody.setOption('mode', null);
         cmResponseBody.getDoc().setValue('The image is too large to show.');
-        toastr.warning('The image is to large to view in RESTClient', 'Cannot view response body.');
+        toastr.warning('The image is to large to view in RESTClient, please download it.', 'Response body is too large.');
       }
       else
       {
@@ -174,6 +191,14 @@ $(function () {
     }
 
     cmResponseBody.getDoc().setValue(body);
+  });
+
+  $(document).on('click', '.btn-download-response', function(){
+    if (currentResponse == false)
+    {
+      return false;
+    }
+    downloadResponse(currentResponse.body, currentResponse.mime || '');
   });
 });
 

@@ -35,6 +35,7 @@ var XHR = {
     }
     response.body = xhr.responseText;
     response.xml = xhr.responseXML;
+    response.response = xhr.response;
     if (contentType && contentType.indexOf('image') >= 0) {
       var toConvert = "";
       for (var i = 0; i < response.body.length; i++) {

@@ -1,6 +1,6 @@
 {
   "name": "RESTClient",
-  "version": "3.0.0",
+  "version": "3.0.5",
   "description": "a debugger for RESTful web services.",
   "scripts": {
     "chrome-build": "cross-env TARGET=chrome gulp",

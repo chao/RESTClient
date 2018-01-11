@@ -1,0 +1,117 @@
+<div class="modal fade" id="modal-migrate-204" tabindex="-1" role="dialog" aria-labelledby="modal-migrate-204" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Migrate from RESTClient 2</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#204-migration-help" role="tab">How to</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#204-migrate" role="tab">Migrate</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane container active" id="204-migration-help" role="tabpanel">
+                        <p class="text-muted m-t-xlg">
+                            Firefox 57 drops support for legacy API for accessing preferences system in Firefox. RESTClient 2 uses preferences to store
+                            your favorited headers, urls, and requests. To import your old favorites data, you will have
+                            to do it manually.
+                        </p>
+                        <p class="m-t-md">
+                            This following content describes how to use the
+                            <code>about:config</code> page to get RESTClient2 preference settings.
+                        </p>
+                        <h5 class="m-t-lg" style="font-size: 16px;">1. Opening about:config</h5>
+                        <p class="m-t-md">
+                            In the address bar, type
+                            <code>about:config</code> and press Return.
+                            <br/> The about:config "This might void your warranty!" warning page may appear. Click I accept the
+                            risk! to continue to the about:config page.
+                        </p>
+                        <p>
+                            <img src="images/migration/204-1.png" class="img-fluid rounded">
+                        </p>
+                        <h5 class="m-t-xlg" style="font-size: 16px;">2. Searching for RESTClient preferences and copy RESTClient2 settings</h5>
+                        <p class="m-t-md">
+                            You can enter
+                            <code>restclient</code> in the
+                            <code>Search</code> box at the top of the
+                            <code>about:config</code> page to quickly find
+                            <code>RESTClient</code> preferences.
+                        </p>
+                        <p>
+                            <img src="images/migration/204-2.png" class="img-fluid rounded">
+                        </p>
+                        <h5 class="m-t-xlg" style="font-size: 16px;">3. Go to
+                            <code>migrate</code> tab panel paste settings</h5>
+                        <p class="m-t-md">
+                            You will need to copy and paste the following values:
+                            <ul>
+                                <li>extension.restclient.cachedUrls</li>
+                                <li>extension.restclient.favoriteHeaders</li>
+                                <li>extension.restclient.savedRequest</li>
+                            </ul>
+                        </p>
+                        <p class="m-t-md m-b-lg">
+                            <button class="btn btn-md btn-primary btn-switch-migrate-tab">Go to migrate panel</button>
+                        </p>
+                    </div>
+                    <div class="tab-pane container" id="204-migrate" role="tabpanel">
+                        <!-- 204-migrate -->
+                        <div class="form-group row m-t-md">
+                            <label for="204-migrate-urls" class="col-sm-3 col-form-label">Favorite URLs</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="204-migrate-urls" rows="3" placeholder='["http://www.facebook.com", "http://www.google.com"]'></textarea>
+                                <small id="204-migrate-urls-helper" class="form-text text-muted">
+                                    Paste preference
+                                    <span class="text-danger">`extension.restclient.cachedUrls`</span> value.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group row m-t-md">
+                            <label for="204-migrate-headers" class="col-sm-3 col-form-label">Favorite Headers</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="204-migrate-headers" rows="3" placeholder='[["Accept","application/json"], ["Content-type", "text/xml"]]'></textarea>
+                                <small id="204-migrate-headers-helper" class="form-text text-muted">
+                                    Paste preference
+                                    <span class="text-danger">`extension.restclient.favoriteHeaders`</span> value.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group row m-t-md">
+                            <label for="204-migrate-requests" class="col-sm-3 col-form-label">Favorite Requests</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="204-migrate-requests" rows="3" placeholder='{\n  "example":    \n{  \n"method":"POST",  \n"url":"http://www.example.com",  \n"body":"request body",  \n"overrideMimeType":false,  \n"headers":[ [ "Accept", "xml" ] ]  \n}\n }'></textarea>
+                                <small id="204-migrate-requests-helper" class="form-text text-muted">
+                                    Paste preference
+                                    <span class="text-danger">`extension.restclient.savedRequest`</span> value.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="form-group row m-t-md">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-primary btn-migrate">Migrate it now</button>
+                            </div>
+                        </div>
+                        <!-- 204-migrate end -->
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-ignore">Don't bother me</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

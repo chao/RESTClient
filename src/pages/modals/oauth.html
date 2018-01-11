@@ -1,0 +1,214 @@
+  <div class="modal fade" id="modal-oauth" tabindex="-1" role="dialog" aria-labelledby="modal-oauth" aria-hidden="true">
+    <form id="form-oauth">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">OAuth 1.0</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-toggle="tab" href="#oauth-signature" role="tab">Signature for this request</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#oauth-setting" role="tab">Settings</a>
+                </li>
+              </ul>
+              
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div class="tab-pane container active" id="oauth-signature" role="tabpanel">
+                  <!-- oauth-signature -->
+                    <div class="form-group row m-t-md required">
+                      <label for="oauth-consumer-key" class="col-sm-3 form-control-label">Consumer key</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="oauth-consumer-key" placeholder="rKGCVb7Z7b7Z8sVW">
+                        <small id="oauth-consumer-key-helper" class="form-text text-danger helper" style="display: none">Consumer key must be filled out</small>
+                      </div>
+                    </div>
+                    <div class="form-group row required">
+                      <label for="oauth-shared-secret" class="col-sm-3 form-control-label">Shared secret</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="oauth-shared-secret" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
+                        <small id="oauth-shared-secret-helper" class="form-text text-danger helper" style="display: none">Shared secret must be filled out</small>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="oauth-access-token" class="col-sm-3 col-form-label">Access token</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="oauth-access-token" placeholder="LJQgJERHMuJYrRrHRnAqUENE">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="oauth-access-token-secret" class="col-sm-3 col-form-label">Access token secret</label>
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="oauth-access-token-secret" placeholder="kuTaPVZdkaDT4tdKcWFQbnRJzPZ54jS5QXLXyUnqfsdyjFGLKawXMCKf6JKeXRSkaGQdUGKt">
+                      </div>
+                    </div>
+                    <div class="form-group row m-b-xs">
+                      <label for="oauth-parameter-transmission" class="col-sm-3 col-form-label">Parameter transmission</label>
+                      <div class="col-sm-9" style="line-height: 34px;">
+                        <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                          <input class="form-check-input" type="radio" name="oauth-parameter-transmission" id="oauth-parameter-transmission-header" value="header" checked>
+                          <label class="form-check-label" for="oauth-parameter-transmission-header">
+                            Authorization header
+                          </label>
+                        </div>
+                        <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                          <input class="form-check-input" type="radio" name="oauth-parameter-transmission" id="oauth-parameter-transmission-query" value="query">
+                          <label class="form-check-label" for="oauth-parameter-transmission-query">
+                            Request query string
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- oauth-signature -->
+                </div>
+                <div class="tab-pane container" id="oauth-setting" role="tabpanel">
+                  <!-- oauth-settings -->
+                  <div class="form-group row m-t-md">
+                    <label for="oauth-signature-method" class="col-sm-3 col-form-label">Signature method</label>
+                    <div class="col-sm-9" style="line-height: 34px;">
+                      <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                        <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-plaintext" value="PLAINTEXT">
+                        <label class="form-check-label" for="oauth-signature-plaintext">
+                          PLAINTEXT
+                        </label>
+                      </div>
+                      <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                        <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-hmac-sha1" value="HMAC-SHA1"
+                          checked>
+                        <label class="form-check-label" for="oauth-signature-hmac-sha1">
+                          HMAC-SHA1
+                        </label>
+                      </div>
+                      <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
+                        <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-hmac-sha256" value="HMAC-SHA256"
+                          checked>
+                        <label class="form-check-label" for="oauth-signature-hmac-sha256">
+                          HMAC-SHA256
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row m-t-md">
+                    <label for="oauth-consumer-key" class="col-sm-3 col-form-label">OAuth version</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="oauth-version" placeholder="1.0" value="1.0" readonly>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="oauth-consumer-secret" class="col-sm-3 col-form-label">Realm</label>
+                    <div class="col-sm-9">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="oauth-realm" placeholder="http://sp.example.com" readonly>
+                        <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                          <input type="checkbox" id="oauth-realm-auto" checked="true" disabled="true" aria-label="Checkbox for following text input"> 
+                          <label for="oauth-realm-auto">
+                            Auto
+                          </label>
+                        </span>
+                        <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                          <input type="checkbox" id="oauth-realm-disabled" checked="true" aria-label="Checkbox for following text input">
+                          <label for="oauth-realm-disabled">
+                            Disabled
+                          </label>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="oauth-access-token" class="col-sm-3 col-form-label">OAuth nonce</label>
+                    <div class="col-sm-9">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="oauth-nonce" placeholder="OAuth nonce" readonly>
+                        <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                          <input type="checkbox" id="oauth-nonce-auto" checked="true" aria-label="Checkbox for following text input">
+                          <label for="oauth-nonce-auto">
+                            Auto
+                          </label>
+                        </span>
+                      </div>                    
+                    </div>
+                  </div>
+                  <div class="form-group row m-b-xs">
+                    <label for="oauth-access-token-secret" class="col-sm-3 col-form-label">OAuth timestamp</label>
+                    <div class="col-sm-9">
+                      <div class="input-group">
+                        <input type="number" step="1" class="form-control" id="oauth-timestamp" placeholder="OAuth timestamp" readonly>
+                        <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
+                          <input type="checkbox" id="oauth-timestamp-auto" checked="true" aria-label="Checkbox for following text input">
+                          <label for="oauth-timestamp-auto">
+                            Auto
+                          </label>
+                        </span>
+                      </div>
+                      <small id="oauth-timestamp-help" class="form-text text-muted" style="display: none;"></small>
+                    </div>
+                  </div>
+                  <!-- oauth-settings -->
+                </div>
+              </div>
+            
+          </div>
+          <div class="modal-footer">
+            <div class="form-check abc-checkbox abc-checkbox-danger">
+              <input class="form-check-input" id="save-oauth" type="checkbox">
+              <label class="form-check-label" for="save-oauth">
+                Remember this signature
+              </label>
+            </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary btn-oauth-okay">Okay</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal fade" id="modal-oauth-preview" tabindex="-1" role="dialog" aria-labelledby="modal-oauth-preview" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form class="form-request-header">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h5>OAuth Parameters</h5>
+            <table class="table table-hover table-bordered m-t-md">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            <h5 class="m-t-lg">OAuth header</h5>
+            <div class="card card-outline-primary text-xs-center m-t-md">
+              <div class="card-block">
+                <blockquote class="card-blockquote oauth-preview-header">
+                  <code>Authorization:</code><code class="name"></code>
+                </blockquote>
+              </div>
+            </div>
+            <h5 class="m-t-lg">OAuth signed URL</h5>
+            <div class="card card-outline-primary text-xs-center m-t-md">
+              <div class="card-block">
+                <blockquote class="card-blockquote oauth-preview-url">
+                  <code></code>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

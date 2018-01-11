@@ -8,14 +8,19 @@ import preprocessify from 'preprocessify';
 import gulpif from "gulp-if";
 
 const $ = require('gulp-load-plugins')();
-
+var runSequence = require('run-sequence');
+var fileinclude = require('gulp-file-include');
 var production = process.env.NODE_ENV === "production";
-var target = process.env.TARGET || "chrome";
+var target = process.env.TARGET || "firefox";
 var environment = process.env.NODE_ENV || "development";
 
 var generic = JSON.parse(fs.readFileSync(`./config/${environment}.json`));
 var specific = JSON.parse(fs.readFileSync(`./config/${target}.json`));
 var context = Object.assign({}, generic, specific);
+
+var htmlFiles = [
+  './index.html', './blank.html'
+];
 
 var manifest = {
   dev: {
@@ -42,14 +47,14 @@ gulp.task('clean', () => {
 });
 
 gulp.task('build', (cb) => {
-  $.runSequence('clean', 'styles', 'ext', cb)
+  runSequence('clean', 'html', 'styles', 'ext', cb)
 });
 
 gulp.task('watch', ['build'], () => {
   $.livereload.listen();
 
   gulp.watch(['./src/**/*']).on("change", () => {
-    $.runSequence('build', $.livereload.reload);
+    runSequence('build', $.livereload.reload);
   });
 });
 
@@ -58,7 +63,6 @@ gulp.task('default', ['build']);
 gulp.task('ext', ['manifest', 'js'], () => {
   return mergeAll(target)
 });
-
 
 // -----------------
 // COMMON
@@ -93,13 +97,20 @@ gulp.task("manifest", () => {
     .pipe(gulp.dest(`./build/${target}`))
 });
 
-
+gulp.task('html', () => {
+  return gulp.src('src/*.html')
+    .pipe(fileinclude({
+      prefix: '@@',
+      basepath: 'src/'
+    }))
+    .pipe(gulp.dest(`build/${target}/`));
+});
 
 // -----------------
 // DIST
 // -----------------
 gulp.task('dist', (cb) => {
-  $.runSequence('build', 'zip', cb)
+  runSequence('build', 'zip', cb)
 });
 
 gulp.task('zip', () => {
@@ -126,8 +137,9 @@ function mergeAll(dest) {
     pipe(['./src/scripts/data/**/*'], `./build/${dest}/scripts/data`),
     pipe(['./src/scripts/helpers/**/*'], `./build/${dest}/scripts/helpers`),
     pipe(['./src/scripts/cores/**/*'], `./build/${dest}/scripts/cores`),
-    pipe(['./src/scripts/migrates/**/*'], `./build/${dest}/scripts/migrates`),
-    pipe(['./src/**/*.html'], `./build/${dest}`)
+    pipe(['./src/scripts/uis/**/*'], `./build/${dest}/scripts/uis`),
+    pipe(['./src/scripts/pages/**/*'], `./build/${dest}/scripts/pages`),
+    pipe(['./src/scripts/migrates/**/*'], `./build/${dest}/scripts/migrates`)
   )
 }
 
@@ -136,7 +148,8 @@ function buildJS(target) {
     'background.js',
     'options.js',
     'livereload.js',
-    'index.js'
+    'index.js',
+    'curl/index.js'
   ]
 
   let tasks = files.map( file => {

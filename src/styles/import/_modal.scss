@@ -1,7 +1,23 @@
-#modal-header {
-    label {
-        color: #AAA;
+.modal {
+    .form-group.required .form-control-label:after,
+    .form-group.required .col-form-label:after
+     {
+        content:"*";
+        color:red;
+        margin-left: 4px;
     }
+    .form-group {
+        .form-text {
+            display: none;
+        }
+    }
+    .form-group.has-danger {
+        .form-text {
+            display: inline-block !important;
+        }
+    }
+}
+#modal-header {
     input[type="text"] {
         color: #000;
     }
@@ -37,10 +53,74 @@
         }
     }
 }
-#modal-favorite-save {
-    .has-danger {
-        .form-text {
-            display: inline-block !important;
+
+#modal-oauth, #modal-oauth2 {
+    .input-group-addon.abc-checkbox {
+        input[type="checkbox"] {
+            margin-left: 10px;
+
         }
+        label {
+            margin-left: 0px;
+            
+        }
+        label::before {
+            top: 1px;
+        }
+        label::after {
+            top: 2px;
+            left: -1px;
+        }   
+    }
+    input[readonly] {
+        border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+}
+#modal-oauth-preview,
+#modal-oauth2-preview {
+    table {
+        font-size: 12px;
+        th {
+            padding: 0.15rem;
+            text-align: center;
+            font-weight: 200;
+            background-color: #D9230F;
+            color: #FFF;
+            border-bottom: none;
+        }
+        td {
+            padding: 0.15rem;
+        }
+        td:first-child {
+            text-align: center;
+        }
+    }
+}
+#modal-oauth-preview {
+    .oauth-preview-header {
+        code {
+            display: inline-block
+        }
+        code.name {
+            display: inline-block;
+            word-wrap: break-word;
+            word-spacing: initial;
+            word-break: break-all;
+            margin-top: -25px;
+            margin-left: 120px;
+        }
+    }
+    .oauth-preview-url {
+        word-wrap: break-word;
+        word-spacing: initial;
+        word-break: break-all;
+    }
+}
+#modal-oauth2-preview {
+    code {
+        display: inline-block;
+        word-wrap: break-word;
+        word-spacing: initial;
+        word-break: break-all;
     }
 }

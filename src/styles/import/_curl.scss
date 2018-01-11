@@ -1,0 +1,55 @@
+.curl-container {
+    margin-bottom: 3 rem;
+    .title {
+        margin-left: 0.1rem;
+        font-family: Consolas, Monaco, monospace;
+    }
+    .card-block {
+        padding: 0.5rem;
+    }
+    .card-title {
+        color: #AAA;
+    }
+    .btn-group-command {
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        .btn {
+            padding: .25rem .5rem;
+            font-size: 75%;
+            color: #818a91;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: .25rem;
+            background-image: none;
+            outline: 0;
+        }
+        .btn:hover {
+            color: #FFF;
+            background-color: #D9230F;
+            outline: 0;
+            border-color: rgb(173, 28, 12);
+        }
+    }
+    #p-curl {
+        background: #f8f8f8;
+        height: 50px;
+        line-height: 22px;
+        font-family: monospace;
+        font-size: 90%;
+        color: #900;
+        padding: 10px;
+        border-radius: 5px;
+        border: #CCC3 solid 1px;
+        width: 100%;
+    }
+    #curl-paste {
+        width: 400px;
+        height: 100px;
+        position: fixed;
+        top: -100px;
+        left: 0;
+        outline: 0;
+        border: none;
+    }
+}

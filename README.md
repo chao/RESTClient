@@ -5,6 +5,14 @@
 ## Changes
 
 ### Firefox Addon
+
+* Version 3.0.5
+  * Fixed basic authentication unicode problem.
+  * Added OAuth 1.0 authentication.
+  * Added OAuth 2.0 support.
+  * Added CURL command support, you can copy your request as a curl command or paste a curl command to execute.
+  * Added authentication badge for all the authentication mode.
+  * Added response download button for non-binary response.
 * Version 3.0.4
   * Added preview for JSON, XML response body
   * Added data migration for migrating data from RESTClient 2

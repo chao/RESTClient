@@ -81,7 +81,8 @@ if (OAuthSimple === undefined) {
             throw("Missing argument: api_key (oauth_consumer_key) for OAuthSimple. This is usually provided by the hosting site.");
         if (shared_secret == undefined)
             throw("Missing argument: shared_secret (shared secret) for OAuthSimple. This is usually provided by the hosting site.");
-*/ var self = {};
+*/  
+        var self = {};
         self._secrets = {};
 
 
@@ -104,6 +105,11 @@ if (OAuthSimple === undefined) {
             this.sbs = undefined;
             return this;
         };
+        self.setRealm = function(realm)
+        {
+            this._realm = realm;
+        }
+
 
         /** set the parameters either from a hash or a string
          *
@@ -116,14 +122,16 @@ if (OAuthSimple === undefined) {
             if (typeof (parameters) == 'string') {
                 parameters = this._parseParameterString(parameters);
             }
-            this._parameters = this._merge(parameters, this._parameters);
+            console.log('[OAuthSimple.js] setParameters', parameters, this._parameters);
+            this._parameters = Object.assign(this._parameters, parameters);
+            console.log('[OAuthSimple.js] setParameters result', this._parameters);
             if (this._parameters['oauth_nonce'] === undefined) {
                 this._getNonce();
             }
             if (this._parameters['oauth_timestamp'] === undefined) {
                 this._getTimestamp();
             }
-            if (this._parameters['oauth_method'] === undefined) {
+            if (this._parameters['oauth_signature_method'] === undefined) {
                 this.setSignatureMethod();
             }
             if (this._parameters['oauth_consumer_key'] === undefined) {
@@ -139,32 +147,19 @@ if (OAuthSimple === undefined) {
             return this;
         };
 
-        /** convienence method for setParameters
-         *
-         * @param parameters {string,object} See .setParameters.
-         */
-        self.setQueryString = function (parameters) {
-            return this.setParameters(parameters);
-        };
-
         /** Set the target URL (does not include the parameters)
          *
          * @param path {string} the fully qualified URI (excluding query arguments) (e.g "http://example.org/foo").
          */
         self.setURL = function (path) {
+            // TODO: The scheme and host MUST be in lowercase.
+            // TODO: The port MUST be included if it is not the default port for the scheme, and MUST be excluded if it is the default. 
+
             if (path === '') {
                 throw ('No path specified for OAuthSimple.setURL');
             }
             this._path = path;
             return this;
-        };
-
-        /** convienence method for setURL
-         *
-         * @param path {string} see .setURL.
-         */
-        self.setPath = function (path) {
-            return this.setURL(path);
         };
 
         /** set the "action" for the url, (e.g. GET,POST, DELETE, etc.)
@@ -229,8 +224,7 @@ if (OAuthSimple === undefined) {
             if (method === undefined) {
                 method = this._default_signature_method;
             }
-            //TODO: accept things other than PlainText or SHA-MAC1
-            if (method.toUpperCase().match(/(PLAINTEXT|HMAC-SHA1)/) === undefined) {
+            if (method.toUpperCase().match(/(PLAINTEXT|HMAC-SHA1|HMAC-SHA256)/) === undefined) {
                 throw ('Unknown signing method specified for OAuthSimple.setSignatureMethod');
             }
             this._parameters['oauth_signature_method'] = method.toUpperCase();
@@ -260,15 +254,26 @@ if (OAuthSimple === undefined) {
             if (args['method'] !== undefined) {
                 this.setSignatureMethod(args['method']);
             }
-            this.signatures(args['signatures']);
-            this.setParameters(args['parameters']);
+
+            if (typeof args['signatures'] !== 'undefined') {
+                this.signatures(args['signatures']);
+            }
+            if (typeof args['parameters'] !== 'undefined')
+            {
+                this.setParameters(args['parameters']);
+            }
+            
             // check the parameters
             var normParams = this._normalizedParameters();
+            console.log('[OAuthSimple.js] sign', this._parameters, normParams);
             this._parameters['oauth_signature'] = this._generateSignature(normParams);
+            console.log('[OAuthSimple.js] sign', normParams, this._parameters['oauth_signature']);
+            var signature = this._oauthEscape(this._parameters['oauth_signature']);
+
             return {
                 parameters: this._parameters,
-                signature: this._oauthEscape(this._parameters['oauth_signature']),
-                signed_url: this._path + '?' + normParams,
+                signature: this._parameters['oauth_signature'],
+                signed_url: this._path + '?' + normParams + '&oauth_signature=' + signature,
                 header: this.getHeaderString()
             };
         };
@@ -285,11 +290,28 @@ if (OAuthSimple === undefined) {
             if (this._parameters['oauth_signature'] === undefined) {
                 this.sign(args);
             }
-
-            var j, pName, pLength, result = 'OAuth ';
+            
+            var j, pName, pLength, prefix = 'OAuth ', result = '';
+            if (typeof this._realm === 'string' || this._realm === true)
+            {
+                var realm = '';
+                if (typeof this._realm === 'boolean' && urlHelper.is_web_iri(this._path))
+                {
+                    var splits = urlHelper.splitUri(this._path);
+                    console.log('[OAuthSimple.js] get the path', this._path, splits);
+                    var realm = splits[1] + "://" + splits[2];
+                }
+                else
+                {
+                    realm = this._realm || '';
+                }
+                realm = realm.replace(/[\""]/g, '\\"');
+                prefix += 'realm="' + realm + '", ';
+            }
             for (pName in this._parameters) {
                 if (this._parameters.hasOwnProperty(pName)) {
-                    if (pName.match(/^oauth/) === undefined) {
+                    console.log('[OAuthSimple.js] getHeaderString', pName, pName.match(/^oauth/));
+                    if (!pName.match(/^oauth/)) {
                         continue;
                     }
                     if ((this._parameters[pName]) instanceof Array) {
@@ -303,7 +325,7 @@ if (OAuthSimple === undefined) {
                     }
                 }
             }
-            return result.replace(/,\s+$/, '');
+            return prefix + result.replace(/,\s+$/, '');
         };
 
         // Start Private Methods.
@@ -349,7 +371,7 @@ if (OAuthSimple === undefined) {
                 replace(/\(/g, '%28').
                 replace(/\)/g, '%29');
         };
-
+        
         self._getNonce = function (length) {
             if (length === undefined) {
                 length = 5;
@@ -391,10 +413,11 @@ if (OAuthSimple === undefined) {
             return ts;
         };
 
-        self.b64_hmac_sha1 = function (k, d, _p, _z) {
-            // heavily optimized and compressed version of http://pajhome.org.uk/crypt/md5/sha1.js
-            // _p = b64pad, _z = character size; not used here but I left them available just in case
-            if (!_p) { _p = '='; } if (!_z) { _z = 8; } function _f(t, b, c, d) { if (t < 20) { return (b & c) | ((~b) & d); } if (t < 40) { return b ^ c ^ d; } if (t < 60) { return (b & c) | (b & d) | (c & d); } return b ^ c ^ d; } function _k(t) { return (t < 20) ? 1518500249 : (t < 40) ? 1859775393 : (t < 60) ? -1894007588 : -899497514; } function _s(x, y) { var l = (x & 0xFFFF) + (y & 0xFFFF), m = (x >> 16) + (y >> 16) + (l >> 16); return (m << 16) | (l & 0xFFFF); } function _r(n, c) { return (n << c) | (n >>> (32 - c)); } function _c(x, l) { x[l >> 5] |= 0x80 << (24 - l % 32); x[((l + 64 >> 9) << 4) + 15] = l; var w = [80], a = 1732584193, b = -271733879, c = -1732584194, d = 271733878, e = -1009589776; for (var i = 0; i < x.length; i += 16) { var o = a, p = b, q = c, r = d, s = e; for (var j = 0; j < 80; j++) { if (j < 16) { w[j] = x[i + j]; } else { w[j] = _r(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1); } var t = _s(_s(_r(a, 5), _f(j, b, c, d)), _s(_s(e, w[j]), _k(j))); e = d; d = c; c = _r(b, 30); b = a; a = t; } a = _s(a, o); b = _s(b, p); c = _s(c, q); d = _s(d, r); e = _s(e, s); } return [a, b, c, d, e]; } function _b(s) { var b = [], m = (1 << _z) - 1; for (var i = 0; i < s.length * _z; i += _z) { b[i >> 5] |= (s.charCodeAt(i / 8) & m) << (32 - _z - i % 32); } return b; } function _h(k, d) { var b = _b(k); if (b.length > 16) { b = _c(b, k.length * _z); } var p = [16], o = [16]; for (var i = 0; i < 16; i++) { p[i] = b[i] ^ 0x36363636; o[i] = b[i] ^ 0x5C5C5C5C; } var h = _c(p.concat(_b(d)), 512 + d.length * _z); return _c(o.concat(h), 512 + 160); } function _n(b) { var t = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', s = ''; for (var i = 0; i < b.length * 4; i += 3) { var r = (((b[i >> 2] >> 8 * (3 - i % 4)) & 0xFF) << 16) | (((b[i + 1 >> 2] >> 8 * (3 - (i + 1) % 4)) & 0xFF) << 8) | ((b[i + 2 >> 2] >> 8 * (3 - (i + 2) % 4)) & 0xFF); for (var j = 0; j < 4; j++) { if (i * 8 + j * 6 > b.length * 32) { s += _p; } else { s += t.charAt((r >> 6 * (3 - j)) & 0x3F); } } } return s; } function _x(k, d) { return _n(_h(k, d)); } return _x(k, d);
+        self.b64_hmac_sha1 = function (key, base_string) {
+            return CryptoJS.HmacSHA1(base_string, key).toString(CryptoJS.enc.Base64);
+        };
+        self.b64_hmac_sha256 = function (key, base_string) {
+            return CryptoJS.HmacSHA256(base_string, key).toString(CryptoJS.enc.Base64);
         };
 
         self._normalizedParameters = function () {
@@ -443,6 +466,7 @@ if (OAuthSimple === undefined) {
             }
             var secretKey = this._oauthEscape(this._secrets.shared_secret) + '&' +
                 this._oauthEscape(this._secrets.oauth_secret);
+            console.log('[OAuthSimple.js] self._generateSignature', this._parameters['oauth_signature_method'], secretKey);
             if (this._parameters['oauth_signature_method'] == 'PLAINTEXT') {
                 return secretKey;
             }
@@ -450,8 +474,18 @@ if (OAuthSimple === undefined) {
                 normParams = this._normalizedParameters();
             }
             if (this._parameters['oauth_signature_method'] == 'HMAC-SHA1') {
-                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + this.normParams;
-                return this.b64_hmac_sha1(secretKey, sigString);
+                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + this._oauthEscape(normParams);
+                console.log('[OAuthSimple.js] _generateSignature', secretKey, sigString);
+                var result = this.b64_hmac_sha1(secretKey, sigString);
+                console.log('[OAuthSimple.js] b64_hmac_sha1', result);
+                return result;
+            }
+            if (this._parameters['oauth_signature_method'] == 'HMAC-SHA256') {
+                var sigString = this._oauthEscape(this._action) + '&' + this._oauthEscape(this._path) + '&' + this._oauthEscape(normParams);
+                console.log('[OAuthSimple.js] _generateSignature', secretKey, sigString);
+                var result = this.b64_hmac_sha256(secretKey, sigString);
+                console.log('[OAuthSimple.js] b64_hmac_sha256', result);
+                return result;
             }
             return null;
         };
@@ -471,10 +505,4 @@ if (OAuthSimple === undefined) {
 
         return self;
     };
-}
-
-
-// CommonJS Support
-if (module && exports) {
-    module.exports = OAuthSimple;
 }

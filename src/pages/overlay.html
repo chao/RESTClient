@@ -1,0 +1,38 @@
+<!-- Section for fullscreen progress bar -->
+<section id="fullscreen-progressbar" class="module-hero overlay-light" style="display: none;">
+    <!-- button for abort current request -->
+    <div class="panic-button">
+        <button type="button" id="btn-abort-request" class="bttn-material-circle bttn-lg bttn-danger">
+            <i class="fa fa-close"></i>
+        </button>
+    </div>
+
+    <div class="container container-progressbar">
+        <div class="row">
+            <div class="col col-lg-4"></div>
+            <div class="col col-lg-4">
+                <h1 style="margin-bottom: 30px;">
+                    <b>RESTClient</b>
+                    <small class="text-muted">v3.0.0</small>
+                </h1>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="100"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="current-request" style="margin-top: 20px;">
+                    <span class="current-request-basic">GET http://www.baidu.com</span>
+                    <br class="hidden-xs">
+                    <span class="current-request-status">is waiting for response</span>
+                </p>
+            </div>
+            <div class="col col-lg-4"></div>
+        </div>
+    </div>
+
+    <div id="time-passed" style="margin-top: 60px;">
+        <div>
+            <div class="div-seconds">000.0</div>
+            <i>Seconds Passed</i>
+        </div>
+    </div>
+</section>

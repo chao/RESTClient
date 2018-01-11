@@ -1,0 +1,37 @@
+<div class="modal fade" id="modal-header" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form class="form-request-header">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-headers">Request Headers</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="request-header-name" class="col-form-label">Name</label>
+                        <input type="text" class="form-control" id="request-header-name" placeholder="Attribute Name" autocomplete="off">
+                        <small class="form-text text-danger helper" style="display: none;"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="request-header-value" class="col-form-label">Value</label>
+                        <input type="text" class="form-control" id="request-header-value" placeholder="Attribute Value" autocomplete="off">
+                        <small class="form-text text-danger helper" style="display: none;"></small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-check abc-checkbox abc-checkbox-danger">
+                        <input class="form-check-input" id="save-request-header-favorite" type="checkbox">
+                        <label class="form-check-label" for="save-request-header-favorite">
+                            Favorite header
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Okay</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

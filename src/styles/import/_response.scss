@@ -34,4 +34,28 @@
         border: 1px solid #eee;
         height: auto;
     }
+    .li-download {
+        position: absolute;
+        right: 20px;
+        top: 59px;
+        z-index: 999;
+        .btn {
+            background-color: #FFF;
+            padding: .2rem .3rem;
+            border: 1px solid #CCC;
+            font-size: 75%;
+            color: #818a91;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: .25rem;
+            background-image: none;
+            outline: 0;
+        }
+        .btn:hover {
+            color: #FFF;
+            background-color: #D9230F;
+            outline: 0;
+            border-color: rgb(173, 28, 12);
+        }
+    }
 }

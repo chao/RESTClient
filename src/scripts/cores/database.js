@@ -281,6 +281,15 @@ var Database = {
                 }
                 break;
             default:
+                requests = data.data;
+                for (let name in requests) {
+                    try {
+                        store.put(requests[name], name);
+                        imported++;
+                    } catch (e) {
+                        console.error(`[database.js][importRequests] default`, e);
+                    }
+                }
                 break;
         }
         await this._transactionPromise(tx);

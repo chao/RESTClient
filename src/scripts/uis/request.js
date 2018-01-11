@@ -195,7 +195,9 @@ $(function () {
       toastr.error(`Request header name and value cannot be empty at the same time.`);
       return false;
     }
-    if (bannedHeaders.indexOf(requestName.toLowerCase()) >= 0)
+    if (bannedHeaders.indexOf(requestName.toLowerCase()) >= 0 
+          || requestName.toLowerCase().indexOf('proxy-') == 0
+          || requestName.toLowerCase().indexOf('sec-') == 0)
     {
       $('#request-header-name').parents('.form-group').find('.form-text').text(`Request header "${requestName}" is blocked by XMLHttpRequest for security reasons.`);
       $('#request-header-name').parents('.form-group').addClass('has-danger');

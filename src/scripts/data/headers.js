@@ -25,8 +25,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var requestHeaders = {
   "Accept": ["application/json", "application/xml", "text/plain", "text/html", "image/jpeg"],
-  "Accept-Charset": ["iso-8859-5", "UTF-8", "UTF-16"],
-  "Accept-Encoding": ["gzip", "compress"],
   "Accept-Language": ["en-US", "fr"],
   "Access-Control-Request-Method": ["GET", "POST", "PUT", "DELETE"],
   "Access-Control-Request-Headers": ["Content-Length, Content-Type"],
@@ -76,4 +74,10 @@ var requestHeaders = {
   "X-Correlation-ID": []
 };
 
-var bannedHeaders = ['referer'];
+var bannedHeaders = [
+  'referer', 'accept-charset', 'accept-encoding', 'access-control-request-headers', 
+  "access-control-request-method", "connection", "content-length", "cookie", "cookie2", 
+  "date", "dnt", "expect", "host", "keep-alive", "origin", 
+  "referer", "te", "trailer", "transfer-encoding", "upgrade", "via"
+];
+

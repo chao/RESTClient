@@ -200,6 +200,10 @@ $(function () {
       $('#oauth2-token-endpoint').parents('.form-group').addClass('has-danger');
       error = true;
     }
+    if (params.redirect_endpoint == '') {
+      $('#oauth2-redirect-endpoint').parents('.form-group').addClass('has-danger');
+      error = true;
+    }
     if (error) {
       return false;
     }
@@ -265,13 +269,14 @@ $(function () {
       var oauth2Tab = browser.tabs.create({
         "url": url
       });
-      console.log(`open a new tab`, oauth2Tab);
+      console.log(`[oauth2.js] open a new tab`, oauth2Tab);
       oauth2Tab.then(function(tab){
-        console.log(`Created new tab: ${tab.id}`);
+        console.log(`[oauth2.js] Created new tab: ${tab.id}, redirect url: ${params.redirect_endpoint}`);
         window.oauth2TabId = tab.id;
+        window.oauth2RedirectUrl = params.redirect_endpoint;
         toastr.success('A new tab is opened, please wait for OAuth server for processing');
       }, function(){
-        toastr.error('Cannot open new tab for obtaining access token.');
+        toastr.error('[oauth2.js] Cannot open new tab for obtaining access token.');
       });
     }
     return false;
@@ -479,14 +484,21 @@ $(function () {
       'client_secret': params.client_secret,
       'grant_type': 'authorization_code'
     };
-    var code = url.match(/[&\?]code=([^&]+)/)[1];
-    console.log(`[oauth2.js][get-access-token] Get code ${code}`);
-    if (typeof code !== 'string') {
-      alert('Cannot get code from url:' + url);
+    var matches = url.match(/[&\?]code=([^&]+)/);
+    if(!Array.isArray(matches) || matches.length <= 1)
+    {
+      toastr.error('Cannot get code from url: ' + url, { "timeOut": "5000", "extendedTimeOut": "25000" });
+      Ladda.stopAll();
+      try {
+        browser.tabs.remove(
+          window.oauth2TabId
+        );
+      }catch(e) {}
       return false;
     }
-    req['code'] = code;
-    var state = url.match(/[&\?]state=([^&]+)/)[1];
+    
+    req['code'] = matches[1];
+    var state = url.match(/[&\?]state=([^&]+)/)[1] || false;
     console.log(`[oauth2.js][get-access-token] Get state ${state}`);
     if (typeof state !== 'string') {
       if (typeof params.result.state == 'string') {
@@ -588,7 +600,8 @@ function updateOauth2Modal(params)
 
 function handleTabUpdated(tabId, changeInfo, tabInfo) {
   console.log(`TabId: ${tabId}, Url: ${changeInfo.url}`);
-  if (typeof changeInfo.url != 'undefined' && typeof oauth2TabId != 'undefined' && tabId == oauth2TabId) {
+  if (typeof changeInfo.url != 'undefined' && typeof oauth2TabId != 'undefined' && tabId == oauth2TabId
+    && changeInfo.url.toLowerCase().indexOf(oauth2RedirectUrl.toLowerCase()) == 0) {
     console.log(`[oauth2.js] handleTabUpdated Url: ${changeInfo.url} opened!`);
     var makeItGreen = 'document.body.style.border = "5px solid green"';
     var executing = browser.tabs.executeScript(tabId, {

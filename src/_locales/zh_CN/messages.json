@@ -12,79 +12,79 @@
     "description": "Open a new RESTClient window."
   },
   "menuAuthentication": {
-    "message": "Authentication",
-    "description": "Menu authentication"
+    "message": "增加身份认证",
+    "description": "一级菜单，身份认证"
   },
   "menuHttpAuthentication": {
-    "message": "HTTP authentication",
+    "message": "HTTP 身份认证",
     "description": "Menu authentication"
   },
   "menuBasicAuthentication": {
-    "message": "Basic Authentication",
+    "message": "基本认证",
     "description": "HTTP authentication"
   },
   "menuOAuthProtocol": {
-    "message": "OAuth Protocol",
+    "message": "OAuth 协议",
     "description": "Menu authentication"
   },
   "menuOAuth10Authentication": {
-    "message": "OAuth 1.0",
+    "message": "OAuth 1.0 认证",
     "description": "OAuth 1.0"
   },
   "menuOAuth20Authentication": {
-    "message": "OAuth 2.0",
+    "message": "OAuth 2.0 认证",
     "description": "OAuth 2.0"
   },
   "menuHeaders": {
-    "message": "Headers",
+    "message": "增加头字段",
     "description": "Menu Headers"
   },
   "menuCustomHeader": {
-    "message": "Custom Header",
+    "message": "自定义头字段",
     "description": "Menu Custom Header"
   },
   "menuClearFavorites": {
-    "message": "Clear Favorites",
+    "message": "清楚收藏的头字段",
     "description": "Menu Clear Favorites"
   },
   "menuView": {
-    "message": "View",
+    "message": "快速跳转",
     "description": "Menu View"
   },
   "menuViewRequest": {
-    "message": "Request",
+    "message": "HTTP 请求",
     "description": "Menu view request"
   },
   "menuViewResponse": {
-    "message": "Response",
+    "message": "HTTP 响应",
     "description": "Menu view response"
   },
   "menuViewCurl": {
-    "message": "Curl",
+    "message": "CURL命令",
     "description": "Menu view curl"
   },
   "menuFavorites": {
-    "message": "Favorites",
+    "message": "收藏的请求",
     "description": "Menu Favorites"
   },
   "menuImportFavorites": {
-    "message": "Import Favorite Request",
+    "message": "导入收藏",
     "description": "Menu Import Favorite Request"
   },
   "menuExportFavorites": {
-    "message": "Export Favorite Request",
+    "message": "导出收藏",
     "description": "Menu Export Favorite Request"
   },
   "menuManageFavorite": {
-    "message": "Manage Favorite Request",
+    "message": "管理收藏",
     "description": "Menu Manage Favorite Request"
   },
   "menuSaveCurrentRequest": {
-    "message": "Save Current Request",
+    "message": "收藏当前请求",
     "description": "Menu Save Current Request"
   },
   "menuDataMigration": {
-    "message": "Data migration",
+    "message": "数据迁移",
     "description": "Menu Data migration"
   }
 }

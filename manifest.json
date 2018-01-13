@@ -1,8 +1,8 @@
 {
-  "name": "RESTClient",
-  "version": "3.0.5",
+  "name": "__MSG_@@ui_locale__",
+  "version": "3.0.6",
   "manifest_version": 2,
-  "description": "a debugger for RESTful web services.",
+  "description": "__MSG_appDescription__",
   "incognito": "spanning",
   "icons": {
     "16": "icons/icon-16.png",

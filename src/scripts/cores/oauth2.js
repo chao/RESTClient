@@ -498,7 +498,8 @@ $(function () {
     }
     
     req['code'] = matches[1];
-    var state = url.match(/[&\?]state=([^&]+)/)[1] || false;
+    matches = url.match(/[&\?]state=([^&]+)/);
+    var state = (Array.isArray(matches) && matches.length > 1) ? matches[1] : false;
     console.log(`[oauth2.js][get-access-token] Get state ${state}`);
     if (typeof state !== 'string') {
       if (typeof params.result.state == 'string') {
@@ -599,6 +600,10 @@ function updateOauth2Modal(params)
 }
 
 function handleTabUpdated(tabId, changeInfo, tabInfo) {
+  if (typeof tabInfo == 'undefined')
+  {
+    return false;
+  }
   console.log(`TabId: ${tabId}, Url: ${changeInfo.url}`);
   if (typeof changeInfo.url != 'undefined' && typeof oauth2TabId != 'undefined' && tabId == oauth2TabId
     && changeInfo.url.toLowerCase().indexOf(oauth2RedirectUrl.toLowerCase()) == 0) {

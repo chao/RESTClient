@@ -1,5 +1,5 @@
 {
-  "name": "__MSG_@@ui_locale__",
+  "name": "__MSG_appName__",
   "version": "3.0.6",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",

@@ -34,13 +34,25 @@ let i18n = {
       {
         continue;
       }
-      if(element.tagName != 'INPUT' && element.tagName != 'TEXTAREA')
+      if ( element.tagName != 'INPUT' && element.tagName != 'TEXTAREA' 
+                    && !element.hasAttribute("data-i18n-target") )
       {
         element.textContent = value;
       }
       else
       {
-        element.setAttribute('placeholder', value);
+        if (element.hasAttribute("data-i18n-target"))
+        {
+          var target = element.hasAttribute("data-i18n-target");
+          if (element.hasAttribute(target))
+          {
+            element.setAttribute(target, value);
+          }
+        }
+        else
+        {
+          element.setAttribute('placeholder', value);
+        }
       }
       console.log(`[i18n.js] update ${i18nName} to ${value}`);
 

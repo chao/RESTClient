@@ -1,4 +1,8 @@
 {
+  "appVersion": {
+    "message": "v3.0.6",
+    "description": "Current version number"
+  },
   "appName": {
     "message": "RESTClient",
     "description": "a debugger for RESTful web services."
@@ -86,5 +90,105 @@
   "menuDataMigration": {
     "message": "Data migration",
     "description": "Menu Data migration"
+  },
+  "mainPanelCurl": {
+    "message": "Curl",
+    "description": "Curl panel title"
+  },
+  "mainCurlCommand": {
+    "message": "Command",
+    "description": "Curl panel command"
+  },
+  "curlButtonTitleCopy": {
+    "message": "Copy",
+    "description": "Curl button to copy curl command"
+  },
+  "curlButtonTitlePaste": {
+    "message": "Paste",
+    "description": "Curl button to paste curl command"
+  },
+  "curlTextareaPlaceholder": {
+    "message": "CURL command",
+    "description": "Curl panel command textarea placeholder"
+  },
+  "footerAHome": {
+    "message": "Home",
+    "description": "The link at the footer for github home"
+  },
+  "footerAForkMe": {
+    "message": "Fork me",
+    "description": "The link at the footer for forking"
+  },
+  "footerAReportAIssue": {
+    "message": "Report an issue",
+    "description": "The link at the footer for report an issue"
+  },
+  "requestTitle": {
+    "message": "Request",
+    "description": "The title of request panel"
+  },
+  "requestBasicAuthentication": {
+    "message": "Basic authentication",
+    "description": "authentication mode label"
+  },
+  "requestOAuth10": {
+    "message": "OAuth 1.0",
+    "description": "authentication mode label"
+  },
+  "requestOAuth20": {
+    "message": "OAuth 2.0",
+    "description": "authentication mode label"
+  },
+  "requestEdit": {
+    "message": "Edit",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestPreview": {
+    "message": "Preview",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestRefresh": {
+    "message": "Refresh",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestRefreshNow": {
+    "message": "Refresh now",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestSetting": {
+    "message": "Setting",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmission": {
+    "message": "Token transmission",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmissionAsHeader": {
+    "message": "As header",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestMethod": {
+    "message": "Method",
+    "description": "Request panel label"
+  },
+  "requestUrl": {
+    "message": "URL",
+    "description": "Request panel label"
+  },
+  "requestSend": {
+    "message": "SEND",
+    "description": "Request panel label"
+  },
+  "requestHeaders": {
+    "message": "Headers",
+    "description": "Request headers panel title"
+  },
+  "requestBody": {
+    "message": "Body",
+    "description": "Request body panel title"
+  },
+  "requestBodyTextarea": {
+    "message": "Request Body",
+    "description": "Request body panel textarea placeholder"
   }
 }

@@ -3,7 +3,7 @@
   <div class="row">
       <div class="col-12">
           <h5 id="curl-title" class="text-muted title">
-              <a class="btn-toggle-panel">[<span>-</span>] Curl</a>
+              <a class="btn-toggle-panel">[<span>-</span>] <span data-i18n="mainPanelCurl">Curl</span></a>
           </h5>
       </div>
   </div>
@@ -14,17 +14,17 @@
       <div class="card">
         <div class="card-block">
           <h6 class="card-title">
-            Command
+            <span data-i18n="mainCurlCommand">Command</span>
             <div class="btn-group btn-group-command" role="group" aria-label="Copy & Paste">
-              <button type="button" class="btn btn-secondary" id="btn-curl-copy" title="Copy" data-clipboard-target="#p-curl">
+              <button type="button" class="btn btn-secondary" id="btn-curl-copy" data-i18n-target="title" data-i18n="curlButtonTitleCopy" title="Copy" data-clipboard-target="#p-curl">
                 <i class="fa fa-files-o" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-secondary" id="btn-curl-paste" title="Paste">
+              <button type="button" class="btn btn-secondary" id="btn-curl-paste" data-i18n-target="title" data-i18n="curlButtonTitlePaste" title="Paste">
                 <i class="fa fa-clipboard" aria-hidden="true"></i>
               </button>
             </div>
           </h6>
-          <textarea id="p-curl" placeholder="CURL command"></textarea>
+          <textarea id="p-curl" data-i18n-target="placeholder" data-i18n="curlTextareaPlaceholder" placeholder="CURL command"></textarea>
           <textarea id="curl-paste" contenteditable="true"></textarea>
         </div>
       </div>

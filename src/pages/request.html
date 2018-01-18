@@ -3,10 +3,10 @@
     <div class="row">
         <div class="col-12">
             <h5 id="request-title" class="text-muted title">
-                <a class="btn-toggle-panel">[<span>-</span>] Request</a>
+                <a class="btn-toggle-panel">[<span>-</span>] <span data-i18n="requestTitle">Request</span></a>
                 <div class="btn-group authentication-mode animated zoomIn" data-mode="basic">
                     <button type="button" class="btn btn-primary btn-sm btn-auth-mode btn-basic">
-                        <span class="name">Basic authentication</span>
+                        <span class="name" data-i18n="requestBasicAuthentication">Basic authentication</span>
                     </button>
                     <button type="button" class="btn btn-primary btn-sm btn-close">
                         <i class="fa fa-close"></i>
@@ -15,12 +15,12 @@
                 <div class="btn-group authentication-mode animated zoomIn" data-mode="oauth10">
                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle btn-auth-mode btn-oauth-10" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <span class="name">OAuth 1.0</span>
+                        <span class="name" data-i18n="requestOAuth10">OAuth 1.0</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item btn-edit" href="#">Edit</a>
-                        <a class="dropdown-item btn-preview" data-target="#modal-oauth-preview" data-toggle="modal" href="#">Preview</a>
-                        <a class="dropdown-item btn-refresh" href="#">Refresh</a>
+                        <a class="dropdown-item btn-edit" href="#" data-i18n="requestEdit">Edit</a>
+                        <a class="dropdown-item btn-preview" data-target="#modal-oauth-preview" data-toggle="modal" href="#" data-i18n="requestPreview">Preview</a>
+                        <a class="dropdown-item btn-refresh" href="#" data-i18n="requestRefresh">Refresh</a>
                     </div>
                     <button type="button" class="btn btn-primary btn-sm btn-close">
                         <i class="fa fa-close"></i>
@@ -29,19 +29,19 @@
                 <div class="btn-group authentication-mode animated zoomIn" data-mode="oauth20">
                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle btn-auth-mode btn-oauth-10" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
-                        <span class="name">OAuth 2.0</span>
+                        <span class="name" data-i18n="requestOAuth20">OAuth 2.0</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item btn-edit" href="#">Edit</a>
-                        <a class="dropdown-item btn-preview" href="#">Preview</a>
+                        <a class="dropdown-item btn-edit" href="#" data-i18n="requestEdit">Edit</a>
+                        <a class="dropdown-item btn-preview" href="#" data-i18n="requestPreview">Preview</a>
                         <div class="dropdown-divider"></div>
-                        <div class="dropdown-header">Refresh</div>
-                        <a class="dropdown-item btn-oauth2-refresh" href="#">Refresh now</a>
-                        <a class="dropdown-item btn-oauth2-refresh-setting" href="#">Setting</a>
+                        <div class="dropdown-header" data-i18n="requestRefresh">Refresh</div>
+                        <a class="dropdown-item btn-oauth2-refresh" href="#" data-i18n="requestRefreshNow">Refresh now</a>
+                        <a class="dropdown-item btn-oauth2-refresh-setting" href="#" data-i18n="requestSetting">Setting</a>
                         <div class="dropdown-divider"></div>
-                        <div class="dropdown-header">Token transmission</div>
-                        <a class="dropdown-item dropdown-item-checked btn-oauth2-transmission" data-type="header" href="#">As header</a>
-                        <a class="dropdown-item btn-oauth2-transmission" data-type="querystring" href="#">As query string</a>
+                        <div class="dropdown-header" data-i18n="requestTokenTransmission">Token transmission</div>
+                        <a class="dropdown-item dropdown-item-checked btn-oauth2-transmission" data-type="header" href="#" data-i18n="requestTokenTransmissionAsHeader">As header</a>
+                        <a class="dropdown-item btn-oauth2-transmission" data-type="querystring" href="#" data-i18n="requestTokenTransmissionAsQueryString">As query string</a>
                     </div>
                     <button type="button" class="btn btn-primary btn-sm btn-close">
                         <i class="fa fa-close"></i>
@@ -55,7 +55,7 @@
             <div class="card">
                 <div class="card-block">
                     <div class="form-inline d-flex flex-row">
-                        <label for="request-method">Method</label>
+                        <label for="request-method" data-i18n="requestMethod">Method</label>
                         <div class="input-group ig-request-method">
                             <input type="text" class="form-control" id="request-method" placeholder="GET" autocomplete="off" value="GET">
 
@@ -74,7 +74,7 @@
                                 <a class="dropdown-item" href="#">PATCH</a>
                             </div>
                         </div>
-                        <label for="request-url" class="d-inline-flex">URL</label>
+                        <label for="request-url" class="d-inline-flex" data-i18n="requestUrl">URL</label>
                         <div class="input-group ig-request-url">
                             <input type="text" class="form-control" id="request-url" placeholder="http://www.example.com">
                             <button type="button" class="input-group-addon btn-toggle-favorite-url">
@@ -86,7 +86,7 @@
                             <div id="request-urls-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-request-urls">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-send-request btn-primary">SEND</button>
+                        <button type="submit" class="btn btn-send-request btn-primary" data-i18n="requestSend">SEND</button>
                     </div>
                 </div>
             </div>
@@ -95,9 +95,9 @@
         <div class="col-12 div-request-headers m-t-sm" style="display: none;">
             <div class="card">
                 <div class="card-block">
-                    <h6 class="card-title">Headers
+                    <h6 class="card-title"><span data-i18n="requestHeaders">Headers</span>
                         <button type="button" class="btn-remove-all-headers btn btn-outline-secondary btn-sm">
-                            <i class="fa fa-trash"></i> Remove all
+                            <i class="fa fa-trash"></i> <span data-i18n="requestRemoveAll">Remove all</span>
                         </button>
                     </h6>
                     <div class="d-flex flex-wrap list-request-headers">
@@ -110,13 +110,13 @@
             <div class="card">
                 <div class="card-block">
                     <h6 class="card-title">
-                        Body
+                        <span data-i18n="requestBody">Body</span>
                         <button type="button" class="btn btn-link pull-right btn-form-data" data-target="#modal-form-data" data-toggle="modal">
                             <i class="fa fa-table"></i>
                         </button>
                     </h6>
                     <div class="d-flex">
-                        <textarea id="request-body" class="form-control" placeholder="Request Body"></textarea>
+                        <textarea id="request-body" class="form-control" placeholder="Request Body" data-i18n-target="placeholder" data-i18n="requestBodyTextarea"></textarea>
                     </div>
                 </div>
             </div>

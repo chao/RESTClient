@@ -187,8 +187,36 @@
     "message": "Body",
     "description": "Request body panel title"
   },
-  "requestBodyTextarea": {
-    "message": "Request Body",
-    "description": "Request body panel textarea placeholder"
+  "responseTitle": {
+    "message": "Response",
+    "description": "Response panel title"
+  },
+  "responseTabHeaders": {
+    "message": "Headers",
+    "description": "Response panel tab header - Headers"
+  },
+  "responseTabDownload": {
+    "message": "download response body",
+    "description": "Response panel tab download button [title]"
+  },
+  "responseContentBody": {
+    "message": "Response Body",
+    "description": "Response panel content body textarea placeholder"
+  },
+  "responseContentPreview": {
+    "message": "Response Preview",
+    "description": "Response panel content body preivew textarea placeholder"
+  },
+  "scroll": {
+    "message": "Scroll to Top",
+    "description": "Scroll to Top button title"
+  },
+  "favoriteTitle": {
+    "message": "Favorites",
+    "description": "Favorites sidebar title"
+  },
+  "favoriteIsEmptyTip": {
+    "message": "You have no favorite request yet, you can add your request to from menu \"Favorite\" - \"Save Current Request\".",
+    "description": "Favorites sidebar tip `no favorite`"
   }
 }

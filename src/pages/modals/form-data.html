@@ -3,7 +3,7 @@
         <form class="form-form-data">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Form Data Editor</h5>
+                    <h5 class="modal-title" data-i18n="modalFormDataTitle">Form Data Editor</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -11,10 +11,10 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col col-md-3">
-                            <input type="text" class="form-control" name="name" placeholder="Name">
+                            <input type="text" class="form-control" name="name" placeholder="Name" data-i18n="modalFormDataName" data-i18n-target="placeholder">
                         </div>
                         <div class="col col-md-6">
-                            <input type="text" class="form-control" name="value" placeholder="Value">
+                            <input type="text" class="form-control" name="value" placeholder="Value" data-i18n="modalFormDataValue" data-i18n-target="placeholder">
                         </div>
                         <div class="col col-md-3">
                             <div class="btn-group" role="group" aria-label="operation">
@@ -29,8 +29,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary btn-update-form-data">Okay</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
+                    <button type="button" class="btn btn-primary btn-update-form-data" data-i18n="modalOkay">Okay</button>
                 </div>
             </div>
         </form>

@@ -108,10 +108,10 @@ ext.runtime.onMessage.addListener(
       return false;
     }
 
-    if(request.action == 'http-oauth2-tab-closed')
+    if (request.action == 'http-oauth2-tab-closed' && typeof oauth2TabId != 'undefined')
     {
       console.log(`[message.js][http-oauth2-tab-closed] closed tab: ${request.tabId}, oauth2TabId: ${oauth2TabId}`);
-      if (typeof oauth2TabId != 'undefined' && request.tabId == oauth2TabId) {
+      if (request.tabId == oauth2TabId) {
         Ladda.stopAll();
         window.oauth2TabId = false;
       }

@@ -24,7 +24,7 @@
     "description": "Menu authentication"
   },
   "menuBasicAuthentication": {
-    "message": "基本认证",
+    "message": "Basic 认证",
     "description": "HTTP authentication"
   },
   "menuOAuthProtocol": {
@@ -40,15 +40,15 @@
     "description": "OAuth 2.0"
   },
   "menuHeaders": {
-    "message": "增加头字段",
+    "message": "增加 HTTP 头字段",
     "description": "Menu Headers"
   },
   "menuCustomHeader": {
-    "message": "自定义头字段",
+    "message": "自定义 HTTP 头字段",
     "description": "Menu Custom Header"
   },
   "menuClearFavorites": {
-    "message": "清楚收藏的头字段",
+    "message": "清空收藏的 HTTP 头字段",
     "description": "Menu Clear Favorites"
   },
   "menuView": {
@@ -64,7 +64,7 @@
     "description": "Menu view response"
   },
   "menuViewCurl": {
-    "message": "CURL命令",
+    "message": "CURL 命令",
     "description": "Menu view curl"
   },
   "menuFavorites": {
@@ -92,7 +92,7 @@
     "description": "Menu Data migration"
   },
   "mainPanelCurl": {
-    "message": "CURL命令",
+    "message": "CURL 命令",
     "description": "Curl panel title"
   },
   "mainCurlCommand": {
@@ -100,19 +100,19 @@
     "description": "Curl panel command"
   },
   "curlButtonTitleCopy": {
-    "message": "拷贝CURL命令",
+    "message": "拷贝 CURL 命令",
     "description": "Curl button to copy curl command"
   },
   "curlButtonTitlePaste": {
-    "message": "粘贴CURL命令",
+    "message": "粘贴 CURL 命令",
     "description": "Curl button to paste curl command"
   },
   "curlTextareaPlaceholder": {
-    "message": "CURL命令",
+    "message": "CURL 命令",
     "description": "Curl panel command textarea placeholder"
   },
   "footerAHome": {
-    "message": "Github主页",
+    "message": "Github 主页",
     "description": "The link at the footer for github home"
   },
   "footerAForkMe": {
@@ -128,7 +128,7 @@
     "description": "The title of request panel"
   },
   "requestBasicAuthentication": {
-    "message": "基本身份认证",
+    "message": "Basic 认证",
     "description": "authentication mode label"
   },
   "requestOAuth10": {
@@ -156,67 +156,196 @@
     "description": "drop down menu for authentication mode"
   },
   "requestSetting": {
-    "message": "Setting",
-    "description": "drop down menu for authentication mode"
+    "message": "设置",
+    "description": "OAuth的参数设置"
   },
   "requestTokenTransmission": {
-    "message": "Token transmission",
+    "message": "口令牌传输方式",
     "description": "drop down menu for authentication mode"
   },
   "requestTokenTransmissionAsHeader": {
-    "message": "As header",
+    "message": "作为 HTTP 头字段",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmissionAsQueryString": {
+    "message": "作为 HTTP 查询字符串",
     "description": "drop down menu for authentication mode"
   },
   "requestMethod": {
-    "message": "Method",
+    "message": "请求方法",
     "description": "Request panel label"
   },
   "requestUrl": {
-    "message": "URL",
+    "message": "网址",
     "description": "Request panel label"
   },
   "requestSend": {
-    "message": "SEND",
+    "message": "发送",
     "description": "Request panel label"
   },
   "requestHeaders": {
-    "message": "Headers",
+    "message": "HTTP 头字段",
+    "description": "Request headers panel title"
+  },
+  "requestRemoveAll": {
+    "message": "全部删除",
     "description": "Request headers panel title"
   },
   "requestBody": {
-    "message": "Body",
+    "message": "正文",
+    "description": "Request body panel title"
+  },
+  "requestbodytextarea": {
+    "message": "请求正文内容",
     "description": "Request body panel title"
   },
   "responseTitle": {
-    "message": "Response",
+    "message": "HTTP 响应",
     "description": "Response panel title"
   },
   "responseTabHeaders": {
-    "message": "Headers",
+    "message": "HTTP 头字段",
     "description": "Response panel tab header - Headers"
   },
+  "responseTabResponse": {
+    "message": "HTTP 响应内容",
+    "description": "Response panel tab header - Response"
+  },
+  "responseTabPreview": {
+    "message": "HTTP 响应预览",
+    "description": "Response panel tab header - Preview"
+  },
   "responseTabDownload": {
-    "message": "download response body",
+    "message": "下载 HTTP 响应内容",
     "description": "Response panel tab download button [title]"
   },
   "responseContentBody": {
-    "message": "Response Body",
+    "message": "HTTP 响应正文",
     "description": "Response panel content body textarea placeholder"
   },
   "responseContentPreview": {
-    "message": "Response Preview",
+    "message": "HTTP 响应预览",
     "description": "Response panel content body preivew textarea placeholder"
   },
   "scroll": {
-    "message": "Scroll to Top",
+    "message": "返回顶部",
     "description": "Scroll to Top button title"
   },
   "favoriteTitle": {
-    "message": "Favorites",
+    "message": "收藏夹",
     "description": "Favorites sidebar title"
   },
   "favoriteIsEmptyTip": {
-    "message": "You have no favorite request yet, you can add your request to from menu \"Favorite\" - \"Save Current Request\".",
+    "message": "您暂时还没有收藏的 HTTP 请求，您可以使用菜单（\"收藏\" - \"保存当前请求\"）增加新的收藏。",
     "description": "Favorites sidebar tip `no favorite`"
+  },
+  "overlaySecond": {
+    "message": "秒",
+    "description": "用时多少秒"
+  },
+  "modalBasicAuthenticationTitle": {
+    "message": "Basic 认证",
+    "description": "#modal-basic-auth .modal-title"
+  },
+  "modalBasicAuthenticationUsername": {
+    "message": "用户名",
+    "description": "#modal-basic-auth input['name=\"username\"]"
+  },
+  "modalBasicAuthenticationUsernameInfo": {
+    "message": "用户名不能为空。",
+    "description": "#modal-basic-auth .basic-auth-name-helper"
+  },
+  "modalBasicAuthenticationPassword": {
+    "message": "密码",
+    "description": "#modal-basic-auth input['name=\"password\"]"
+  },
+  "modalFavoriteTitle": {
+    "message": "保存当前请求",
+    "description": "modal favorite"
+  },
+  "modalFavoriteName": {
+    "message": "名称",
+    "description": "modal favorite"
+  },
+  "modalFavoriteNameHelper": {
+    "message": "名称不能为空。",
+    "description": "modal favorite"
+  },
+  "modalFavoriteTags": {
+    "message": "标签",
+    "description": "modal favorite"
+  },
+  "modalFormDataTitle": {
+    "message": "Form Data 编辑器",
+    "description": "modal form data editor"
+  },
+  "modalFormDataName": {
+    "message": "键名（Name）",
+    "description": "modal form data editor"
+  },
+  "modalFormDataValue": {
+    "message": "键值（Value）",
+    "description": "modal form data editor"
+  },
+  "modalHeaderTitle": {
+    "message": "HTTP 头字段",
+    "description": "modal request header editor"
+  },
+  "modalHeaderName": {
+    "message": "名称",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeName": {
+    "message": "头字段名称",
+    "description": "modal request header editor"
+  },
+  "modalHeaderValue": {
+    "message": "值",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeValue": {
+    "message": "头字段值",
+    "description": "modal request header editor"
+  },
+  "modalHeaderFavorite": {
+    "message": "收藏该 HTTP 头字段",
+    "description": "modal request header editor"
+  },
+  "modalImportTitle": {
+    "message": "导入收藏的请求",
+    "description": "modal favorite import"
+  },
+  "modalImportWarning": {
+    "message": "警告：",
+    "description": "modal favorite importr"
+  },
+  "modalImportWarningDetail": {
+    "message": "导入的文件中请求会自动覆盖当前收藏列表中的同名请求。建议您先备份再导入。",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPTitle": {
+    "message": "拖拽您之前备份的导出文件 (.json) 到虚线框内",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPClient": {
+    "message": "或点击此处打开文件对话框进行选择",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPMax": {
+    "message": "最大允许的上传文件大小：5 MB",
+    "description": "modal favorite importr"
+  },
+  
+  "modalClose": {
+    "message": "关闭",
+    "description": "modal close button"
+  },
+  "modalOkay": {
+    "message": "确定",
+    "description": "modal okay button"
+  },
+  "modalSave": {
+    "message": "保存",
+    "description": "modal save button"
   }
 }

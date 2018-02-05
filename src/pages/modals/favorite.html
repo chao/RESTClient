@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Save Current Request</h5>
+                <h5 class="modal-title" data-i18n="modalFavoriteTitle">Save Current Request</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -10,23 +10,23 @@
             <div class="modal-body">
                 <form class="form-favorite-save">
                     <div class="form-group row">
-                        <label for="favorite-name" class="col-2 col-form-label">Name</label>
+                        <label for="favorite-name" class="col-2 col-form-label" data-i18n="modalFavoriteName">Name</label>
                         <div class="col-10">
-                            <input type="text" class="form-control" id="favorite-name" name="favorite-name" aria-describedby="favorite name" placeholder="Name">
-                            <small id="favorite-name-helper" class="form-text text-danger" style="display: none">Name must be filled out</small>
+                            <input type="text" class="form-control" id="favorite-name" name="favorite-name" aria-describedby="favorite name" placeholder="Name" data-i18n="modalFavoriteName" data-i18n-target="placeholder">
+                            <small id="favorite-name-helper" class="form-text text-danger" style="display: none" data-i18n="modalFavoriteNameHelper">Name must be filled out</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="favorite-tags" class="col-2 col-form-label">Tags</label>
+                        <label for="favorite-tags" class="col-2 col-form-label" data-i18n="modalFavoriteTags">Tags</label>
                         <div class="col-10">
-                            <input type="text" class="form-control" id="favorite-tags" name="favorite-tags" aria-describedby="favorite tags" placeholder="Tags">
+                            <input type="text" class="form-control" id="favorite-tags" name="favorite-tags" aria-describedby="favorite tags" placeholder="Tags" data-i18n="modalFavoriteTags" data-i18n-target="placeholder">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-save-favorite">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
+                <button type="button" class="btn btn-primary btn-save-favorite" data-i18n="modalSave">Save</button>
             </div>
         </div>
     </div>

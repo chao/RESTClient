@@ -167,6 +167,10 @@
     "message": "As header",
     "description": "drop down menu for authentication mode"
   },
+  "requestTokenTransmissionAsQueryString": {
+    "message": "As query string",
+    "description": "drop down menu for authentication mode"
+  },
   "requestMethod": {
     "message": "Method",
     "description": "Request panel label"
@@ -183,8 +187,16 @@
     "message": "Headers",
     "description": "Request headers panel title"
   },
+  "requestRemoveAll": {
+    "message": "Remove all",
+    "description": "Request headers panel title"
+  },
   "requestBody": {
     "message": "Body",
+    "description": "Request body panel title"
+  },
+  "requestbodytextarea": {
+    "message": "Request Body",
     "description": "Request body panel title"
   },
   "responseTitle": {
@@ -194,6 +206,14 @@
   "responseTabHeaders": {
     "message": "Headers",
     "description": "Response panel tab header - Headers"
+  },
+  "responseTabResponse": {
+    "message": "Response",
+    "description": "Response panel tab header - Response"
+  },
+  "responseTabPreview": {
+    "message": "Preview",
+    "description": "Response panel tab header - Preview"
   },
   "responseTabDownload": {
     "message": "download response body",
@@ -218,5 +238,114 @@
   "favoriteIsEmptyTip": {
     "message": "You have no favorite request yet, you can add your request to from menu \"Favorite\" - \"Save Current Request\".",
     "description": "Favorites sidebar tip `no favorite`"
+  },
+  "overlaySecond": {
+    "message": "Seconds Passed",
+    "description": "Overlay seconds passed"
+  },
+  "modalBasicAuthenticationTitle": {
+    "message": "Basic Authentication",
+    "description": "#modal-basic-auth .modal-title"
+  },
+  "modalBasicAuthenticationUsername": {
+    "message": "Username",
+    "description": "#modal-basic-auth input['name=\"username\"]"
+  },
+  "modalBasicAuthenticationUsernameInfo": {
+    "message": "Username cannot be empty.",
+    "description": "#modal-basic-auth .basic-auth-name-helper"
+  },
+  "modalBasicAuthenticationPassword": {
+    "message": "Password",
+    "description":"#modal-basic-auth input['name=\"password\"]"
+  },
+  "modalFavoriteTitle": {
+    "message": "Save Current Request",
+    "description": "modal favorite"
+  },
+  "modalFavoriteName": {
+    "message": "Name",
+    "description": "modal favorite"
+  },
+  "modalFavoriteNameHelper": {
+    "message": "Name must be filled out.",
+    "description": "modal favorite"
+  },
+  "modalFavoriteTags": {
+    "message": "Tags",
+    "description": "modal favorite"
+  },
+  "modalFormDataTitle": {
+    "message": "Form Data Editor",
+    "description": "modal form data editor"
+  },
+  "modalFormDataName": {
+    "message": "Name",
+    "description": "modal form data editor"
+  },
+  "modalFormDataValue": {
+    "message": "Value",
+    "description": "modal form data editor"
+  },
+  "modalHeaderTitle": {
+    "message": "Request Headers",
+    "description": "modal request header editor"
+  },
+  "modalHeaderName": {
+    "message": "Name",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeName": {
+    "message": "Attribute Name",
+    "description": "modal request header editor"
+  },
+  "modalHeaderValue": {
+    "message": "Attribute Value",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeValue": {
+    "message": "Value",
+    "description": "modal request header editor"
+  },
+  "modalHeaderFavorite": {
+    "message": "Favorite header",
+    "description": "modal request header editor"
+  },
+  "modalImportTitle": {
+    "message": "Import Favorite Request",
+    "description": "modal favorite import"
+  },
+  "modalImportWarning": {
+    "message": "Warning:",
+    "description": "modal favorite importr"
+  },
+  "modalImportWarningDetail": {
+    "message": "any requests that have the same request name as ones already in your favorites will replace automatically.",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPTitle": {
+    "message": "Drag and drop your favorite request file (.json) here,",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPClient": {
+    "message": "or click here to select file.",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPMax": {
+    "message": "Max file size: 5 MB",
+    "description": "modal favorite importr"
+  },
+  
+  "modalClose": {
+    "message": "Close",
+    "description": "modal close button"
+  },
+  "modalOkay": {
+    "message": "Okay",
+    "description": "modal okay button"
+  },
+  "modalSave": {
+    "message": "Save",
+    "description": "modal save button"
   }
 }

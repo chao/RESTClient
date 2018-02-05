@@ -336,6 +336,188 @@
     "description": "modal favorite importr"
   },
   
+  "modalMigrationTitle": {
+    "message": "Migrate from RESTClient 2",
+    "description": "modal migration"
+  },
+  "modalMigrationHowTo": {
+    "message": "How to",
+    "description": "modal migration"
+  },
+  "modalMigrationMigrate": {
+    "message": "Migrate",
+    "description": "modal migration"
+  },
+  "modalMigrationReason": {
+    "message": "Firefox 57 drops support for legacy API for accessing preferences system in Firefox. RESTClient 2 uses preferences to store your favorited headers, urls, and requests. To import your old favorites data, you will have to do it manually.",
+    "description": "modal migration"
+  },
+  "modalMigrationConfig": {
+    "message": "This following content describes how to use the <code>about:config</code> page to get RESTClient2 preference settings.",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1": {
+    "message": "1. Opening about:config",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1Info": {
+    "message": "In the address bar, type <code>about:config</code> and press Return. <br/> The about:config \"This might void your warranty!\" warning page may appear. Click I accept the risk! to continue to the about:config page.",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2": {
+    "message": "2. Searching for RESTClient preferences and copy RESTClient2 settings",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2Info": {
+    "message": "You can enter <code>restclient</code> in the <code>Search</code> box at the top of the <code>about:config</code> page to quickly find <code>RESTClient</code> preferences.",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3": {
+    "message": "3. Go to <code>migrate</code> tab panel paste settings",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3Info": {
+    "message": "You will need to copy and paste the following values: <ul><li>extension.restclient.cachedUrls</li><li>extension.restclient.favoriteHeaders</li><li>extension.restclient.savedRequest</li></ul>",
+    "description": "modal migration"
+  },
+  "modalMigrationTabSwitcher": {
+    "message": "Go to migrate panel",
+    "description": "modal migration"
+  },
+  "modalMigrationURL": {
+    "message": "Favorite URLs",
+    "description": "modal migration"
+  },
+  "modalMigrationURLHelper": {
+    "message": "Paste preference <span class=\"text-danger\">`extension.restclient.cachedUrls`</span> value.",
+    "description": "modal migration"
+  },
+  "modalMigrationHeader": {
+    "message": "Favorite Headers",
+    "description": "modal migration"
+  },
+  "modalMigrationHeaderHelper": {
+    "message": "Paste preference <span class=\"text-danger\">`extension.restclient.favoriteHeaders`</span> value.",
+    "description": "modal migration"
+  },
+  "modalMigrationRequest": {
+    "message": "Favorite Requests",
+    "description": "modal migration"
+  },
+  "modalMigrationRequestHelper": {
+    "message": "Paste preference<span class=\"text-danger\">`extension.restclient.savedRequest`</span> value.",
+    "description": "modal migration"
+  },
+  "modalMigrationDoItNow": {
+    "message": "Migrate it now",
+    "description": "modal migration"
+  },
+  "modalMigrationDontBotherMe": {
+    "message": "Don't bother me",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewTitle": {
+    "message": "OAuth Parameters",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewName": {
+    "message": "Name",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewValue": {
+    "message": "Value",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewHeader": {
+    "message": "OAuth header",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewSignedUrl": {
+    "message": "OAuth signed URL",
+    "description": "modal oauth preview"
+  },
+
+  "modalOAuthTitle": {
+    "message": "OAuth 1.0",
+    "description": "modal oauth"
+  },
+  "modalOAuthSign": {
+    "message": "Signature for this request",
+    "description": "modal oauth"
+  },
+  "modalOAuthSetting": {
+    "message": "Settings",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKey": {
+    "message": "Consumer key",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKeyHelper": {
+    "message": "Consumer key must be filled out",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecret": {
+    "message": "Shared secret",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecretHelper": {
+    "message": "Shared secret must be filled out",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessToken": {
+    "message": "Access token",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessTokenSecret": {
+    "message": "Access token secret",
+    "description": "modal oauth"
+  },
+  "modalOAuthPT": {
+    "message": "Parameter transmission",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTHeader": {
+    "message": "Authorization header",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTQS": {
+    "message": "Request query string",
+    "description": "modal oauth"
+  },
+  "modalOAuthMethod": {
+    "message": "Signature method",
+    "description": "modal oauth"
+  },
+  "modalOAuthVersion": {
+    "message": "OAuth version",
+    "description": "modal oauth"
+  },
+  "modalOAuthRealm": {
+    "message": "Realm",
+    "description": "modal oauth"
+  },
+  "modalOAuthNonce": {
+    "message": "OAuth nonce",
+    "description": "modal oauth"
+  },
+  "modalOAuthTimestamp": {
+    "message": "OAuth timestamp",
+    "description": "modal oauth"
+  },
+  "modalOAuthRemember": {
+    "message": "Remember this signature",
+    "description": "modal oauth"
+  },
+
+  "modalAuto": {
+    "message": "Auto",
+    "description": "modal input auto button"
+  },
+  "modalDisabled": {
+    "message": "Disabled",
+    "description": "modal input disabled button"
+  },
   "modalClose": {
     "message": "Close",
     "description": "modal close button"
@@ -347,5 +529,18 @@
   "modalSave": {
     "message": "Save",
     "description": "modal save button"
+  },
+  "modalRefresh": {
+    "message": "Refresh",
+    "description": "modal refresh button"
+  },
+
+  "imageMigration2041": {
+    "message": "images/en/migration/204-1.png",
+    "description": "modal migration about:page screenshot"
+  },
+  "imageMigration2042": {
+    "message": "images/en/migration/204-2.png",
+    "description": "modal migration about:page page screenshot"
   }
 }

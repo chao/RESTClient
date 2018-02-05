@@ -336,6 +336,188 @@
     "description": "modal favorite importr"
   },
   
+  "modalMigrationTitle": {
+    "message": "数据迁移助手（从RESTClient2迁移）",
+    "description": "modal migration"
+  },
+  "modalMigrationHowTo": {
+    "message": "操作说明",
+    "description": "modal migration"
+  },
+  "modalMigrationMigrate": {
+    "message": "迁移",
+    "description": "modal migration"
+  },
+  "modalMigrationReason": {
+    "message": "Firefox 57 开始不再支持老式 Firefox 插件，同时对插件的权限进行了限制。当前 Firefox 插件不再具备访问 Firefox 偏好设置的能力。而RESTClient 2中的所有数据均存储在 Firefox 偏好设置中。因此您需要手动迁移 RESTClient 2 的数据到 RESTClient 3 中。",
+    "description": "modal migration"
+  },
+  "modalMigrationConfig": {
+    "message": "以下内容将介绍如何使用 <code>about:config</code> 页面获得 RESTClient 2 的相关数据。",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1": {
+    "message": "第一步： 打开 about:config 页面",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1Info": {
+    "message": "在浏览器的地址栏中输入：<code>about:config</code> 并回车。 <br/> <code>about:config</code> 页面会提醒您“这可能导致质量保证失效！”， 点击下方“我了解此风险”按钮继续。",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2": {
+    "message": "第二步：搜索 RESTClient 的偏好设置，并且复制这些值",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2Info": {
+    "message": "请在 <code>about:config</code> 页面顶部的 <code>Search</code> 栏中输入 <code>restclient</code> 来搜索 <code>RESTClient2</code> 相关的偏好设置。",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3": {
+    "message": "第三部：打开本迁移助手的 <code>迁移</code> 标签页面，粘贴您拷贝的数据",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3Info": {
+    "message": "您需要从 <code>about:config</code> 页面复制以下数据： <ul><li><code>extension.restclient.cachedUrls</code></li><li><code>extension.restclient.favoriteHeaders</code></li><li><code>extension.restclient.savedRequest</code></li></ul>",
+    "description": "modal migration"
+  },
+  "modalMigrationTabSwitcher": {
+    "message": "立即打开「迁移」面板",
+    "description": "modal migration"
+  },
+  "modalMigrationURL": {
+    "message": "收藏的 URL",
+    "description": "modal migration"
+  },
+  "modalMigrationURLHelper": {
+    "message": "粘贴 <span class=\"text-danger\">`extension.restclient.cachedUrls`</span> 的值。",
+    "description": "modal migration"
+  },
+  "modalMigrationHeader": {
+    "message": "收藏的 HTTP 头字段",
+    "description": "modal migration"
+  },
+  "modalMigrationHeaderHelper": {
+    "message": "粘贴 <span class=\"text-danger\">`extension.restclient.favoriteHeaders`</span> 的值。",
+    "description": "modal migration"
+  },
+  "modalMigrationRequest": {
+    "message": "收藏的请求",
+    "description": "modal migration"
+  },
+  "modalMigrationRequestHelper": {
+    "message": "粘贴 <span class=\"text-danger\">`extension.restclient.savedRequest`</span> 的值。",
+    "description": "modal migration"
+  },
+  "modalMigrationDoItNow": {
+    "message": "现在立即迁移",
+    "description": "modal migration"
+  },
+  "modalMigrationDontBotherMe": {
+    "message": "隐藏本对话框并不再显示",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewTitle": {
+    "message": "OAuth 参数",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewName": {
+    "message": "参数名",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewValue": {
+    "message": "参数值",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewHeader": {
+    "message": "OAuth 头字段",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewSignedUrl": {
+    "message": "OAuth 签名后的 URL",
+    "description": "modal oauth preview"
+  },
+
+  "modalOAuthTitle": {
+    "message": "OAuth 1.0 认证",
+    "description": "modal oauth"
+  },
+  "modalOAuthSign": {
+    "message": "为当前请求签名",
+    "description": "modal oauth"
+  },
+  "modalOAuthSetting": {
+    "message": "设置",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKey": {
+    "message": "消费者密钥",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKeyHelper": {
+    "message": "消费者密钥 Consumer key 不能为空",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecret": {
+    "message": "共享密钥",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecretHelper": {
+    "message": "共享密钥 Shared Secret 不能为空",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessToken": {
+    "message": "访问令牌",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessTokenSecret": {
+    "message": "访问令牌密钥",
+    "description": "modal oauth"
+  },
+  "modalOAuthPT": {
+    "message": "参数传输方式",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTHeader": {
+    "message": "Authorization 头字段",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTQS": {
+    "message": "查询字符串",
+    "description": "modal oauth"
+  },
+  "modalOAuthMethod": {
+    "message": "签名算法",
+    "description": "modal oauth"
+  },
+  "modalOAuthVersion": {
+    "message": "OAuth 版本",
+    "description": "modal oauth"
+  },
+  "modalOAuthRealm": {
+    "message": "领域",
+    "description": "modal oauth"
+  },
+  "modalOAuthNonce": {
+    "message": "OAuth 随机数",
+    "description": "modal oauth"
+  },
+  "modalOAuthTimestamp": {
+    "message": "OAuth 时间戳",
+    "description": "modal oauth"
+  },
+  "modalOAuthRemember": {
+    "message": "记住这些设置",
+    "description": "modal oauth"
+  },
+  
+  "modalAuto": {
+    "message": "自动",
+    "description": "modal input auto button"
+  },
+  "modalDisabled": {
+    "message": "禁用",
+    "description": "modal input disabled button"
+  },
   "modalClose": {
     "message": "关闭",
     "description": "modal close button"
@@ -347,5 +529,18 @@
   "modalSave": {
     "message": "保存",
     "description": "modal save button"
+  },
+  "modalRefresh": {
+    "message": "刷新",
+    "description": "modal refresh button"
+  },
+
+  "imageMigration2041": {
+    "message": "images/zh_CN/migration/204-1.png",
+    "description": "modal migration about:page screenshot"
+  },
+  "imageMigration2042": {
+    "message": "images/zh_CN/migration/204-2.png",
+    "description": "modal migration about:page page screenshot"
   }
 }

@@ -509,7 +509,172 @@
     "message": "记住这些设置",
     "description": "modal oauth"
   },
-  
+
+  "modalOAuth2Title": {
+    "message": "OAuth 2.0 认证",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Intro": {
+    "message": "获取新的访问令牌",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GrantType": {
+    "message": "授权模式",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTAC": {
+    "message": "授权码模式 Authorization code",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTCC": {
+    "message": "客户端模式 Client credentials",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientId": {
+    "message": "客户端ID",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInput": {
+    "message": "客户端ID，如：rKGCVb7Z7b7Z8sVW",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInputHelper": {
+    "message": "客户端ID不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecret": {
+    "message": "客户端密钥",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInput": {
+    "message": "客户端密钥 Client secret，如：4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInputHelper": {
+    "message": "客户端密钥不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Scope": {
+    "message": "权限范围",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ScopeInput": {
+    "message": "权限范围 Scope",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2State": {
+    "message": "状态码",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2StateInput": {
+    "message": "状态码 State",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestMethod": {
+    "message": "发送请求方法",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMPost": {
+    "message": "POST",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMGet": {
+    "message": "GET",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEP": {
+    "message": "认证服务器",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInput": {
+    "message": "认证服务器 Authorization endpoint，如 https://github.com/login/oauth/authorize",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInputHelper": {
+    "message": "认证服务器不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEP": {
+    "message": "访问令牌服务器",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPInput": {
+    "message": "访问令牌服务器 token endpoint， 如：https://github.com/login/oauth/access_token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPHelper": {
+    "message": "访问令牌服务器不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEP": {
+    "message": "重定向地址",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInput": {
+    "message": "重定向地址 Redirect endpoint，如 http://restclient.net/auth/github/callback",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInputHelper": {
+    "message": "重定向地址不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Remember": {
+    "message": "记住这些设置",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestToken": {
+    "message": "立即获取令牌",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RefreshTitle": {
+    "message": "OAuth 2.0 认证 <small class=\"text-muted\">刷新访问令牌</small>",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshToken": {
+    "message": "刷新令牌",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInput": {
+    "message": "刷新令牌 Refresh token，如：4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInputHelper": {
+    "message": "刷新令牌不能为空",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpoint": {
+    "message": "刷新令牌服务器",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInput": {
+    "message": "刷新令牌服务器 Refreshing endpoint， 如：https://github.com/login/oauth/access_token",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInputHelper": {
+    "message": "刷新令牌服务器不能为空",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScope": {
+    "message": "权限范围",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScopeInput": {
+    "message": "权限范围 Scope",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2PreviewTitle": {
+    "message": "OAuth 2.0",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewName": {
+    "message": "参数名",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewValue": {
+    "message": "参数值",
+    "description": "modal oauth2 preview"
+  },
+
   "modalAuto": {
     "message": "自动",
     "description": "modal input auto button"

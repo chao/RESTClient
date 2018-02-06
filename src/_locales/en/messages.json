@@ -510,6 +510,172 @@
     "description": "modal oauth"
   },
 
+  "modalOAuth2Title": {
+    "message": "OAuth 2.0",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Intro": {
+    "message": "Get new access token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GrantType": {
+    "message": "Grant type",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTAC": {
+    "message": "Authorization code",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTCC": {
+    "message": "Client credentials",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientId": {
+    "message": "Client id",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInput": {
+    "message": "Client id, e.g. rKGCVb7Z7b7Z8sVW",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInputHelper": {
+    "message": "Client id must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecret": {
+    "message": "Client secret",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInput": {
+    "message": "Client secret, e.g. 4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInputHelper": {
+    "message": "Client secret must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Scope": {
+    "message": "Scope",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ScopeInput": {
+    "message": "Scope",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2State": {
+    "message": "State",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2StateInput": {
+    "message": "OAuth state",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestMethod": {
+    "message": "Request Method",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMPost": {
+    "message": "POST",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMGet": {
+    "message": "GET",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEP": {
+    "message": "Authorization endpoint",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInput": {
+    "message": "https://github.com/login/oauth/authorize",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInputHelper": {
+    "message": "Authorization endpoint must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEP": {
+    "message": "Token endpoint",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPInput": {
+    "message": "https://github.com/login/oauth/access_token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPHelper": {
+    "message": "Token endpoint must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEP": {
+    "message": "Redirect endpoint",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInput": {
+    "message": "http://restclient.net/auth/github/callback",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInputHelper": {
+    "message": "Redirect endpoint must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Remember": {
+    "message": "Remember this setting",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestToken": {
+    "message": "Request token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RefreshTitle": {
+    "message": "OAuth 2.0 <small class=\"text-muted\">Refresh access token</small>",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshToken": {
+    "message": "Refresh token",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInput": {
+    "message": "Refresh token, e.g. 4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInputHelper": {
+    "message": "Refresh token must be filled out for refreshing",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpoint": {
+    "message": "Refreshing endpoint",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInput": {
+    "message": "Refreshing endpoint, e.g. https://github.com/login/oauth/access_token",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInputHelper": {
+    "message": "Refresh endpoint must be filled out for refreshing",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScope": {
+    "message": "Scope",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScopeInput": {
+    "message": "Scope",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2PreviewTitle": {
+    "message": "OAuth 2.0 Access token",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewName": {
+    "message": "Name",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewValue": {
+    "message": "Value",
+    "description": "modal oauth2 preview"
+  },
+
+    
   "modalAuto": {
     "message": "Auto",
     "description": "modal input auto button"

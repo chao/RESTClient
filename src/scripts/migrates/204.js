@@ -47,7 +47,7 @@ $(function () {
 
         if (headers == "" && urls == "" && requests == '')
         {
-            toastr.error('Please paste your perference value in the textarea.');
+            toastr.error( browser.i18n.getMessage("js204NoInput") );
             return false;
         }
         console.log('[204.js] value pasted', headers, urls, requests);
@@ -58,13 +58,13 @@ $(function () {
             }
             catch(e)
             {
-                toastr.error('Invalid favorite headers value!');
+                toastr.error(browser.i18n.getMessage("js204InvalidHeaderFormat"));
                 return false;
             }
             console.log('[204.js] headers', headers);
             if(!_.isArray(headers) || !_.isArray(headers[0]))
             {
-                toastr.error('Favorite headers should be Array value.', 'Invalid headers');
+                toastr.error(browser.i18n.getMessage("js204InvalidHeader"), browser.i18n.getMessage("js204InvalidHeaderTitle"));
                 return false;
             }
             favoriteHeaders = _.isArray(favoriteHeaders) ? favoriteHeaders : [];
@@ -85,12 +85,12 @@ $(function () {
                 urls = JSON.parse(urls);
             }
             catch (e) {
-                toastr.error('Invalid favorite urls value!');
+                toastr.error(browser.i18n.getMessage("js204InvalidUrlFormat"));
                 return false;
             }
             
             if (!_.isArray(urls) || !_.isString(urls[0])) {
-                toastr.error('Favorite urls should be Array value.', 'Invalid urls');
+                toastr.error(browser.i18n.getMessage("js204InvalidFavoriteUrl"), browser.i18n.getMessage("js204InvalidFavoriteUrlTitle"));
                 return false;
             }
             favoriteUrls = _.isArray(favoriteUrls) ? favoriteUrls : [];
@@ -104,11 +104,11 @@ $(function () {
                 requests = JSON.parse(requests);
             }
             catch (e) {
-                toastr.error('Invalid favorite requests value!');
+                toastr.error(browser.i18n.getMessage("js204InvalidRequest"));
                 return false;
             }
             Database.importRequests(requests, null, ['RESTClient2']).then(function (e) {
-                toastr.success("RESTClient2 requests imported");
+                toastr.success(browser.i18n.getMessage("js204Imported"));
                 $(document).trigger('favorite-requests-loaded');
             });
         }

@@ -707,5 +707,122 @@
   "imageMigration2042": {
     "message": "images/zh_CN/migration/204-2.png",
     "description": "modal migration about:page page screenshot"
+  },
+
+  "jsCurlClipboardCopied": {
+    "message": "已复制 CURL 到您的剪贴板",
+    "description": "curl.js clipboard on success"
+  },
+  "jsCurlCommandCannotParsed": {
+    "message": "无法解析您拷贝的 CURL 命令，请您检查您的命令是否正确。如有疑问请您点击页面底部的「提问题」链接提问。",
+    "description": "curl.js curl-command-pasted"
+  },
+  "jsFavoriteFileTooLarge": {
+    "message": "文件：（$1）大小过大，无法导入。",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFileNotJsonFormat": {
+    "message": "文件：（$1）不是JSON格式的文件，无法导入。",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteCannotImport": {
+    "message": "无法导入收藏的请求",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteStartToImport": {
+    "message": "开始导入您收藏的请求文件，请稍候...",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteImportSuccess": {
+    "message": "文件已全部成功导入！",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFormatError": {
+    "message": "导入失败，您导入的文件格式不正确。",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsMessageAbortRequest": {
+    "message": "HTTP 请求（$1 $2）已终止。",
+    "description": "message.js abort-http-request"
+  },
+  "jsMessageTimeOut": {
+    "message": "HTTP 请求（$1 $2）已超时。",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageError": {
+    "message": "HTTP 请求错误",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageErrorDetail": {
+    "message": "无 HTTP 请求错误详细信息。",
+    "description": "message.js http-request-timeout"
+  },
+  "jsOAuthInvlidUrl": {
+    "message": "请先在主窗口 「HTTP 请求」面板中输入一个合法的URL地址。",
+    "description": "oauth.js #modal-oauth-preview show.bs.modal"
+  },
+  "jsOAuthRefreshed": {
+    "message": "OAuth 1.0 签名已更新成功！",
+    "description": "oauth.js #modal-oauth-preview .btn-refresh"
+  },
+  "jsOAuth2Refreshed": {
+    "message": "访问令牌已更新",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabOpened": {
+    "message": "OAuth 验证将在刚打开的标签页中进行，请您耐心等待 OAuth 服务器跳转到您的「重定向地址」。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabCannotOpen": {
+    "message": "无法打开新的标签页，无法获取访问令牌。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2TokenObtained": {
+    "message": "成功从 OAuth 服务器获得访问令牌。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetCode": {
+    "message": "无法从URL（$1）中获得 code 参数信息。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetAccessToken": {
+    "message": "请求访问令牌失败！",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "js204NoInput": {
+    "message": "请从偏好设置中将您 RESTClient2 的相关值粘贴到下方文本框中。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderFormat": {
+    "message": "您粘贴的 HTTP 头字段收藏内容不正确。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeader": {
+    "message": "收藏的 HTTP 头字段的值应为数组型。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderTitle": {
+    "message": "HTTP 头字段格式不正确",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidUrlFormat": {
+    "message": "您粘贴的 URL 收藏内容不正确。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrl": {
+    "message": "收藏的 URL 的值应为数组型。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrlTitle": {
+    "message": "收藏的 URL 格式不正确！",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidRequest": {
+    "message": "收藏的请求格式不正确！",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204Imported": {
+    "message": "RESTClient2 中的所有收藏内容已成功导入！",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
   }
 }

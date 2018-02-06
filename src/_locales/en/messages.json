@@ -675,7 +675,6 @@
     "description": "modal oauth2 preview"
   },
 
-    
   "modalAuto": {
     "message": "Auto",
     "description": "modal input auto button"
@@ -708,5 +707,122 @@
   "imageMigration2042": {
     "message": "images/en/migration/204-2.png",
     "description": "modal migration about:page page screenshot"
+  },
+
+  "jsCurlClipboardCopied": {
+    "message": "CURL command copied!",
+    "description": "curl.js clipboard on success"
+  },
+  "jsCurlCommandCannotParsed": {
+    "message": "Cannot parse your pasted CURL command.",
+    "description": "curl.js curl-command-pasted"
+  },
+  "jsFavoriteFileTooLarge": {
+    "message": "File: ($1) $2 too large.",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFileNotJsonFormat": {
+    "message": "File: ($1) $2 not JSON format.",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteCannotImport": {
+    "message": "Cannot import favorite files",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteStartToImport": {
+    "message": "Start to import...",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteImportSuccess": {
+    "message": "The file has been successfully imported",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFormatError": {
+    "message": "Format error",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsMessageAbortRequest": {
+    "message": "HTTP request ($1 $2) aborted.",
+    "description": "message.js abort-http-request"
+  },
+  "jsMessageTimeOut": {
+    "message": "HTTP request ($1 $2) timed out.",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageError": {
+    "message": "HTTP request error",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageErrorDetail": {
+    "message": "Request error without details",
+    "description": "message.js http-request-timeout"
+  },
+  "jsOAuthInvlidUrl": {
+    "message": "Please input a valid URL first!",
+    "description": "oauth.js #modal-oauth-preview show.bs.modal"
+  },
+  "jsOAuthRefreshed": {
+    "message": "OAuth 1.0 signature refreshed!",
+    "description": "oauth.js #modal-oauth-preview .btn-refresh"
+  },
+  "jsOAuth2Refreshed": {
+    "message": "Access token refreshed!",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabOpened": {
+    "message": "A new tab is opened, please wait for OAuth server for processing.",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabCannotOpen": {
+    "message": "Cannot open new tab for obtaining access token.",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2TokenObtained": {
+    "message": "Access token obtained!",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetCode": {
+    "message": "Cannot get code from url: $1",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetAccessToken": {
+    "message": "Cannot get access token!",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "js204NoInput": {
+    "message": "Please paste your perference value in the textarea.",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderFormat": {
+    "message": "Invalid favorite headers value!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeader": {
+    "message": "Favorite headers should be Array value.",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderTitle": {
+    "message": "Invalid headers",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidUrlFormat": {
+    "message": "Invalid favorite urls value!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrl": {
+    "message": "Favorite urls should be Array value.",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrlTitle": {
+    "message": "Invalid urls",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidRequest": {
+    "message": "Invalid favorite requests value!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204Imported": {
+    "message": "RESTClient2 requests imported!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
   }
 }

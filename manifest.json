@@ -20,8 +20,7 @@
     "unlimitedStorage",
     "<all_urls>",
     "downloads",
-    "clipboardRead",
-    "clipboardWrite"
+    "clipboardRead"
   ],
   "browser_action": {
     "default_icon": {

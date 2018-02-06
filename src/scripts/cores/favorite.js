@@ -52,19 +52,19 @@ let Favorite = {
         var errors = '';
         if (filesizes.length > 0) {
             var isOrAre = filesizes.length == 1 ? ' is' : ' are';
-            errors += "File: " + filesizes.join(', ') + isOrAre + " too large. ";
+            errors += browser.i18n.getMessage("jsFavoriteFileTooLarge", [filetypes.join(', '), isOrAre]);
         }
         if (filetypes.length > 0) {
             var isOrAre = filetypes.length == 1 ? ' is' : ' are';
             errors = errors === '' ? errors : errors + '<br />';
-            errors += "File: " + filetypes.join(', ') + isOrAre + " not JSON format. ";
+            errors += browser.i18n.getMessage("jsFavoriteFileNotJsonFormat", [filetypes.join(', '), isOrAre]);
         }
         if (errors !== '') {
-            toastr.error(errors, 'Cannot import favorite files', { "timeOut": "15000" });
+            toastr.error(errors, browser.i18n.getMessage("jsFavoriteCannotImport"), { "timeOut": "15000" });
             return false;
         }
         _.each(files, function (file) {
-            toastr.info('Start to import...', file.name);
+            toastr.info(browser.i18n.getMessage("jsFavoriteStartToImport"), file.name);
             Favorite.favoriteReader.onloadend = (function (file) {
                 return function (e) {
                     console.log(e);
@@ -73,13 +73,13 @@ let Favorite = {
                     try{
                         var data = JSON.parse(content);
                         Database.importRequests(data, file.name).then(function(e){
-                            toastr.success("The file has been successfully imported", file.name);
+                            toastr.success(browser.i18n.getMessage("jsFavoriteImportSuccess"), file.name);
                             $(document).trigger('favorite-requests-loaded');
                         });
                     }
                     catch(e)
                     {
-                        toastr.error('Format error', file.name);
+                        toastr.error(browser.i18n.getMessage("jsFavoriteFormatError"), file.name);
                     }
                 };
             })(file);

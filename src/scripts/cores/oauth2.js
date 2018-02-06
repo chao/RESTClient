@@ -147,7 +147,7 @@ $(function () {
         params.result = result;
         console.log(`[oauth2.js] update params from menu`, params);
         $('.authentication-mode[data-mode="oauth20"]').data('params', params);
-        toastr.success('Access token refreshed!');
+        toastr.success(browser.i18n.getMessage("jsOAuth2Refreshed"));
         if ($('#modal-oauth2-preview').is(':visible'))
         {
           $('#modal-oauth2-preview').trigger('show.bs.modal');
@@ -274,9 +274,9 @@ $(function () {
         console.log(`[oauth2.js] Created new tab: ${tab.id}, redirect url: ${params.redirect_endpoint}`);
         window.oauth2TabId = tab.id;
         window.oauth2RedirectUrl = params.redirect_endpoint;
-        toastr.success('A new tab is opened, please wait for OAuth server for processing');
+        toastr.success(browser.i18n.getMessage("jsOAuth2NewTabOpened"));
       }, function(){
-        toastr.error('[oauth2.js] Cannot open new tab for obtaining access token.');
+        toastr.error(browser.i18n.getMessage("jsOAuth2NewTabCannotOpen"));
       });
     }
     return false;
@@ -401,7 +401,7 @@ $(function () {
       params.result = result;
       console.log(`[oauth2.js] update params`, params);
       $('.authentication-mode[data-mode="oauth20"]').data('params', params);
-      toastr.success('Access token refreshed!');
+      toastr.success(browser.i18n.getMessage("jsOAuth2Refreshed"));
       $('#modal-oauth2-refresh').modal('hide');
     })
     .fail(function (xhr) {
@@ -460,7 +460,7 @@ $(function () {
       {
         callback(params);
       }
-      toastr.success('Access token obtained!');
+      toastr.success(browser.i18n.getMessage("jsOAuth2TokenObtained"));
     })
     .fail(function (xhr) {
       toastr.error(xhr.responseText);
@@ -487,7 +487,7 @@ $(function () {
     var matches = url.match(/[&\?]code=([^&]+)/);
     if(!Array.isArray(matches) || matches.length <= 1)
     {
-      toastr.error('Cannot get code from url: ' + url, { "timeOut": "5000", "extendedTimeOut": "25000" });
+      toastr.error(browser.i18n.getMessage("jsOAuth2CannotGetCode", url), { "timeOut": "5000", "extendedTimeOut": "25000" });
       Ladda.stopAll();
       try {
         browser.tabs.remove(
@@ -544,14 +544,14 @@ $(function () {
       console.log(`[oauth2.js] access token`, result);
       params.result = result;
       updateOauth2Modal(params);
-      toastr.success("Access token obtained!");
+      toastr.success(browser.i18n.getMessage("jsOAuth2TokenObtained"));
       console.log(`[oauth2.js] close modal`);
       browser.tabs.remove(
         tabId
       );
     }).catch(function(error) {
       console.log(error);
-      toastr.error(error, 'Cannot get access token!', { "timeOut": "10000"});
+      toastr.error(error, browser.i18n.getMessage("jsOAuth2CannotGetAccessToken"), { "timeOut": "10000"});
       Ladda.stopAll();
       console.error(`Error: ${error}`);
       browser.tabs.remove(

@@ -32,7 +32,7 @@ ext.tabs.getCurrent().then(function (tabInfo) {
   window.currentTabInfo = tabInfo;
   if (tabInfo.incognito)
   {
-    toastr.warning('You are using private browsing mode, you will not be able to use "favorites" function.', 'Private Browsing', {
+    toastr.warning(browser.i18n.getMessage("jsIndexPrivateModeContent"), browser.i18n.getMessage("jsIndexPrivateModeTitle"), {
       "positionClass": "toast-bottom-full-width",
       "closeButton": true,
       "timeOut": 0,
@@ -48,7 +48,7 @@ $(function () {
   window.favoriteHeaders = [];
   window.favoriteUrls = [];
   $(document).on('click', '[data-toggle="development"]', function () {
-    toastr.error('This function is still under development.', 'Not ready yet!');
+    toastr.error(browser.i18n.getMessage("jsIndexDevelopmentContent"), browser.i18n.getMessage("jsIndexDevelopmentTitle"));
   });
   /**************************** Init Toastr ********************************/
   toastr.options = {

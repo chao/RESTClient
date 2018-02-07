@@ -1,4 +1,6 @@
-
+.no-favorite-tip {
+  color: #FFF;
+}
 $text-color: #000;
 // HAMBURGER COLOR
 $hamburger-color-closed: transparentize($text-color, 0.6);

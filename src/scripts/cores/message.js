@@ -65,19 +65,25 @@ ext.runtime.onMessage.addListener(
     }
 
     if (request.action == "abort-http-request") {
-      toastr.warning("HTTP request (" + $('#request-method').val() + " " + $('#request-url').val() + ") aborted.");
+      toastr.warning(
+        browser.i18n.getMessage("jsMessageAbortRequest", [$('#request-method').val(), $('#request-url').val()])
+      );
       return false;
     }
 
     if (request.action == "http-request-timeout") {
       $(document).trigger("hide-fullscreen");
-      toastr.error("HTTP request (" + $('#request-method').val() + " " + $('#request-url').val() + ") timed out.");
+      toastr.error(
+        browser.i18n.getMessage("jsMessageTimeOut", [$('#request-method').val(), $('#request-url').val()])
+      );
       return false;
     }
 
     if (request.action == "http-request-error") {
       $(document).trigger("hide-fullscreen");
-      toastr.error(request.data.detail || "Request error", request.data.title || "Error");
+      let title = typeof request.data.title == 'undefined' ? browser.i18n.getMessage("jsMessageError") : request.data.title;
+      let content = typeof request.data.detail == 'undefined' ? browser.i18n.getMessage("jsMessageErrorDetail") : request.data.detail;
+      toastr.error(content, title);
       return false;
     }
 
@@ -108,10 +114,10 @@ ext.runtime.onMessage.addListener(
       return false;
     }
 
-    if(request.action == 'http-oauth2-tab-closed')
+    if (request.action == 'http-oauth2-tab-closed' && typeof oauth2TabId != 'undefined')
     {
       console.log(`[message.js][http-oauth2-tab-closed] closed tab: ${request.tabId}, oauth2TabId: ${oauth2TabId}`);
-      if (typeof oauth2TabId != 'undefined' && request.tabId == oauth2TabId) {
+      if (request.tabId == oauth2TabId) {
         Ladda.stopAll();
         window.oauth2TabId = false;
       }

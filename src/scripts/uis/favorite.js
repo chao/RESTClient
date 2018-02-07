@@ -91,12 +91,12 @@ $(function () {
     console.log('[RESTClient][index.js][btn-save-favorite] get request', request);
     $('#modal-favorite-save').modal('hide');
     if (typeof Database.requests[name] !== 'undefined') {
-      bootbox.confirm(`You already have a favorite request named: ${name}, Would you like to replace it?`,
+      bootbox.confirm(browser.i18n.getMessage("jsFavoriteConflicted", name),
         function (result) {
           if (result) {
             Database.saveRequest(name, request).then(function () {
               $(document).trigger('favorite-requests-loaded');
-              toastr.success('Request replaced.', name);
+              toastr.success(browser.i18n.getMessage("jsFavoriteReplaced"), name);
             });
           }
           console.log('This was logged in the callback: ', result);
@@ -105,7 +105,7 @@ $(function () {
     else {
       Database.saveRequest(name, request).then(function () {
         $(document).trigger('favorite-requests-loaded');
-        toastr.success('Request saved.', name);
+        toastr.success(browser.i18n.getMessage("jsFavoriteSaved"), name);
       });
     }
   });

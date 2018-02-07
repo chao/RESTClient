@@ -39,7 +39,7 @@ $(function () {
   var clipboard = new Clipboard('#btn-curl-copy');
 
   clipboard.on('success', function (e) {
-    toastr.success('CURL command copied!');
+    toastr.success( browser.i18n.getMessage("jsCurlClipboardCopied") );
     e.clearSelection();
   });
 
@@ -73,7 +73,9 @@ $(function () {
     catch(e)
     {
       $('#p-curl').val('');
-      toastr.error(e.message, 'Cannot parse your pasted CURL command.', {"timeOut": 15000});
+      toastr.error(e.message, 
+        browser.i18n.getMessage("jsCurlCommandCannotParsed")
+        , {"timeOut": 15000});
       console.error(`[curl.js] parse curl command error`, e);
       $('#p-curl').trigger('change-curl-command');
       return false;

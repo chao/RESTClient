@@ -192,7 +192,7 @@ $(function () {
       $('#request-header-value').parents('.form-group').find('.form-text').text('Request header name and value cannot be empty at the same time.');
       $('#request-header-name').parents('.form-group').addClass('has-danger');
       $('#request-header-value').parents('.form-group').addClass('has-danger');
-      toastr.error(`Request header name and value cannot be empty at the same time.`);
+      toastr.error(browser.i18n.getMessage("jsRequestHeaderCannotBeEmpty"));
       return false;
     }
     if (bannedHeaders.indexOf(requestName.toLowerCase()) >= 0 
@@ -233,7 +233,7 @@ $(function () {
     favoriteHeaders = [];
     $(document).trigger('init-favorite-headers-dropdown-items', true);
     $('.di-favorite-header, .di-favorite-divider').remove();
-    toastr.success('All favorite request headers are removed.');
+    toastr.success(browser.i18n.getMessage("jsRequestHeaderCleared"));
   });
 
   $(document).on('click', '.btn-remove-header', function (e) {

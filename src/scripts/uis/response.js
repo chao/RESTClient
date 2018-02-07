@@ -140,7 +140,7 @@ $(function () {
       {
         cmResponseBody.setOption('mode', null);
         cmResponseBody.getDoc().setValue('The image is too large to show.');
-        toastr.warning('The image is to large to view in RESTClient, please download it.', 'Response body is too large.');
+        toastr.warning(browser.i18n.getMessage("jsResponseImageTooLargeContent"), browser.i18n.getMessage("jsResponseImageTooLargeTitle"));
       }
       else
       {

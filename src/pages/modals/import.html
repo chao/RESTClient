@@ -3,25 +3,26 @@
     <form class="form-file-import">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Import Favorite Request</h5>
+          <h5 class="modal-title" data-i18n="modalImportTitle">Import Favorite Request</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="alert alert-danger" role="alert">
-            <strong>Warning:</strong> any requests that have the same request name as ones already in your favorites will replace
-            automatically.
+            <strong class="text-primary" data-i18n="modalImportWarning">Warning:</strong> 
+            <span data-i18n="modalImportWarningDetail">any requests that have the same request name as ones already in your favorites will replace
+            automatically.</span>
           </div>
           <div id="dropzone-import" class="dropzone">
-            Drag and drop your favorite request file (.json) here,
-            <br/> or click here to select file.
+            <span data-i18n="modalImportDPTitle">Drag and drop your favorite request file (.json) here,</span>
+            <br/> <span data-i18n="modalImportDPClient">or click here to select file.</span>
             <br />
-            <small>Max file size: 5MB</small>
+            <small data-i18n="modalImportDPMax">Max file size: 5MB</small>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
         </div>
       </div>
     </form>

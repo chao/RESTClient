@@ -1,8 +1,8 @@
 {
-  "name": "RESTClient",
-  "version": "3.0.5",
+  "name": "__MSG_appName__",
+  "version": "3.0.6",
   "manifest_version": 2,
-  "description": "a debugger for RESTful web services.",
+  "description": "__MSG_appDescription__",
   "incognito": "spanning",
   "icons": {
     "16": "icons/icon-16.png",
@@ -20,8 +20,7 @@
     "unlimitedStorage",
     "<all_urls>",
     "downloads",
-    "clipboardRead",
-    "clipboardWrite"
+    "clipboardRead"
   ],
   "browser_action": {
     "default_icon": {

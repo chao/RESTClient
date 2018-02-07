@@ -765,6 +765,10 @@
     "message": "OAuth 1.0 signature refreshed!",
     "description": "oauth.js #modal-oauth-preview .btn-refresh"
   },
+  "jsOAuthInValidTimestamp": {
+    "message": "Invalid timestamp",
+    "description": "oauth.js #oauth-timestamp input"
+  },
   "jsOAuth2Refreshed": {
     "message": "Access token refreshed!",
     "description": "oauth2.js .btn-oauth2-refresh"
@@ -841,6 +845,10 @@
     "message": "Request header name and value cannot be empty at the same time.",
     "description": "request.js .form-request-header submit"
   },
+  "jsRequestHeaderBlocked": {
+    "message": "Request header \"$1\" is blocked by XMLHttpRequest for security reasons.",
+    "description": "request.js .form-request-header submit"
+  },
   "jsRequestHeaderCleared": {
     "message": "All favorite request headers are removed.",
     "description": "request.js .nav-custom-header-clear"
@@ -868,5 +876,41 @@
   "jsIndexDevelopmentTitle": {
     "message": "Not ready yet!",
     "description": "index.js development mode"
+  },
+  "jsMainInitialized": {
+    "message": "is waiting for response",
+    "description": "main.js show-fullscreen"
+  },
+  "jsXhrSending": {
+    "message": "Sending data...",
+    "description": "xhr.js onLoadProgress"
+  },
+  "jsXhrOnLoad": {
+    "message": "Successed! Processing result...",
+    "description": "xhr.js onLoad"
+  },
+  "jsXhrOnProgressReceving": {
+    "message": "Receving data...",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnProgressProcessing": {
+    "message": "Processing...",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnErrorTitle": {
+    "message": "Error",
+    "description": "xhr.js onError"
+  },
+  "jsXhrOnErrorDetail": {
+    "message": "Could not connect to server",
+    "description": "xhr.js onError"
+  },
+  "jsXhrMakeRequestStart": {
+    "message": "Starting...",
+    "description": "xhr.js makeRequest"
+  },
+  "jsXhrMakeRequestInitiating": {
+    "message": "Initiating XMLHttpRequest...",
+    "description": "xhr.js makeRequest"
   }
 }

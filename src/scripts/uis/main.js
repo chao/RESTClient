@@ -41,7 +41,7 @@ $(function () {
         }
         window.counting = 0;
         $(".current-request-basic").text($('#request-method').text() + ' ' + $('request-url').text());
-        $(".current-request-status").text("is waiting for response");
+        $(".current-request-status").text(browser.i18n.getMessage("jsMainInitialized"));
         $("#fullscreen-progressbar").show();
     });
 

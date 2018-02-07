@@ -188,8 +188,8 @@ $(function () {
     var requestValue = $('#request-header-value').typeahead('val');
     if (requestValue == '' && requestName == '')
     {
-      $('#request-header-name').parents('.form-group').find('.form-text').text('Request header name must be fill out.');
-      $('#request-header-value').parents('.form-group').find('.form-text').text('Request header name and value cannot be empty at the same time.');
+      $('#request-header-name').parents('.form-group').find('.form-text').text(browser.i18n.getMessage("jsRequestHeaderCannotBeEmpty"));
+      $('#request-header-value').parents('.form-group').find('.form-text').text(browser.i18n.getMessage("jsRequestHeaderCannotBeEmpty"));
       $('#request-header-name').parents('.form-group').addClass('has-danger');
       $('#request-header-value').parents('.form-group').addClass('has-danger');
       toastr.error(browser.i18n.getMessage("jsRequestHeaderCannotBeEmpty"));
@@ -199,7 +199,7 @@ $(function () {
           || requestName.toLowerCase().indexOf('proxy-') == 0
           || requestName.toLowerCase().indexOf('sec-') == 0)
     {
-      $('#request-header-name').parents('.form-group').find('.form-text').text(`Request header "${requestName}" is blocked by XMLHttpRequest for security reasons.`);
+      $('#request-header-name').parents('.form-group').find('.form-text').text(browser.i18n.getMessage("jsRequestHeaderBlocked", requestName));
       $('#request-header-name').parents('.form-group').addClass('has-danger');
       return false;
     }

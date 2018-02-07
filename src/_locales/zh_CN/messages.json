@@ -765,6 +765,10 @@
     "message": "OAuth 1.0 签名已更新成功！",
     "description": "oauth.js #modal-oauth-preview .btn-refresh"
   },
+  "jsOAuthInValidTimestamp": {
+    "message": "时间戳格式不正确，时间戳应为正整数。",
+    "description": "oauth.js #oauth-timestamp input"
+  },
   "jsOAuth2Refreshed": {
     "message": "访问令牌已更新",
     "description": "oauth2.js .btn-oauth2-refresh"
@@ -841,6 +845,10 @@
     "message": "请求的 HTTP 头字段的名称和值不能同时为空。",
     "description": "request.js .form-request-header submit"
   },
+  "jsRequestHeaderBlocked": {
+    "message": "基于 Firefox 的安全策略，插件无法设置「$1」HTTP 头字段。",
+    "description": "request.js .form-request-header submit"
+  },
   "jsRequestHeaderCleared": {
     "message": "所有收藏的 HTTP 头字段均已被成功移除。",
     "description": "request.js .nav-custom-header-clear"
@@ -868,5 +876,41 @@
   "jsIndexDevelopmentTitle": {
     "message": "功能建设中",
     "description": "index.js development mode"
+  },
+  "jsMainInitialized": {
+    "message": "正在等待服务器响应中…",
+    "description": "main.js show-fullscreen"
+  },
+  "jsXhrSending": {
+    "message": "正在发送数据…",
+    "description": "xhr.js onLoadProgress"
+  },
+  "jsXhrOnLoad": {
+    "message": "成功！正在处理返回的数据…",
+    "description": "xhr.js onLoad"
+  },
+  "jsXhrOnProgressReceving": {
+    "message": "接手数据中…",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnProgressProcessing": {
+    "message": "处理中…",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnErrorTitle": {
+    "message": "出错了",
+    "description": "xhr.js onError"
+  },
+  "jsXhrOnErrorDetail": {
+    "message": "无法连接到服务器",
+    "description": "xhr.js onError"
+  },
+  "jsXhrMakeRequestStart": {
+    "message": "启动中…",
+    "description": "xhr.js makeRequest"
+  },
+  "jsXhrMakeRequestInitiating": {
+    "message": "初始化 XMLHTTPRequest 对象…",
+    "description": "xhr.js makeRequest"
   }
 }

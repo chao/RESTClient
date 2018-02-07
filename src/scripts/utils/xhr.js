@@ -5,7 +5,7 @@ var XHR = {
       var percentComplete = evt.loaded * 100 / evt.total;
 
       if (evt.loaded < evt.total) {
-        this.sendResponse(tabId, { action: "update-progress-label", data: 'Sending data...' });
+        this.sendResponse(tabId, { action: "update-progress-label", data: browser.i18n.getMessage("jsXhrSending") });
         this.sendResponse(tabId, { action: "update-progress-bar", data: percentComplete });
       }
     }
@@ -13,7 +13,7 @@ var XHR = {
 
   onLoad(evt, tabId, startedAt) {
     console.log('[xhr.js][onLoad]', evt, tabId);
-    this.sendResponse(tabId, { action: "set-progress-bar-animated", data: "Successed! Processing result..." });
+    this.sendResponse(tabId, { action: "set-progress-bar-animated", data: browser.i18n.getMessage("jsXhrOnLoad") });
     var xhr = evt.currentTarget;
     var contentType = xhr.getResponseHeader("Content-Type");
     var response = {};
@@ -54,13 +54,13 @@ var XHR = {
       var percentComplete = evt.loaded * 100 / evt.total;
 
       if (evt.loaded < evt.total) {
-        this.sendResponse(tabId, { action: "update-progress-label", data: 'Receving data...' });
+        this.sendResponse(tabId, { action: "update-progress-label", data: browser.i18n.getMessage("jsXhrOnProgressReceving") });
         this.sendResponse(tabId, { action: "update-progress-bar", data: percentComplete });
       }
       console.log(`[xhr.js][onProgress] percentComplete: ${percentComplete}`);
     }
     else {
-      this.sendResponse(senderTabId, { action: "set-progress-bar-animated", data: "Processing..." });
+      this.sendResponse(senderTabId, { action: "set-progress-bar-animated", data: browser.i18n.getMessage("jsXhrOnProgressProcessing") });
       console.log('[xhr.js][onProgress] Processing...');
     }
   },
@@ -77,7 +77,7 @@ var XHR = {
 
   onError(evt, tabId) {
     console.log('[xhr.js][onError]', evt, tabId);
-    this.sendResponse(tabId, { action: "http-request-error", data: { "title": "Error", "detail": "Could not connect to server" } });
+    this.sendResponse(tabId, { action: "http-request-error", data: { "title": browser.i18n.getMessage("jsXhrOnErrorTitle"), "detail": browser.i18n.getMessage("jsXhrOnErrorDetail") } });
   },
 
   sendResponse(senderTabId, response) {
@@ -90,7 +90,7 @@ var XHR = {
   {
     var senderTabId = sender.tab.id; // get the sender tab id
     var xhr = new XMLHttpRequest();
-    this.sendResponse(senderTabId, { action: "set-progress-bar-animated", data: "Starting..." });
+    this.sendResponse(senderTabId, { action: "set-progress-bar-animated", data: browser.i18n.getMessage("jsXhrMakeRequestStart") });
     var req = {
       'method': request.data.method || 'GET',
       'url': request.data.url || '',
@@ -101,7 +101,7 @@ var XHR = {
     xhr.open(req.method, req.url, true);
     this.sendResponse(senderTabId, { action: "start-counting" });
     console.log('[background.js] Initiating XMLHttpRequest...');
-    this.sendResponse(senderTabId, { action: "update-progress-label", data: 'Initiating XMLHttpRequest...' });
+    this.sendResponse(senderTabId, { action: "update-progress-label", data: browser.i18n.getMessage("jsXhrMakeRequestInitiating") });
     
     // if(req.method.toLowerCase() != 'delete')
     // {

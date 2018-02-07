@@ -51,7 +51,9 @@ $(function () {
     if( _.isNaN(ts) )
     {
       $(this).parents('.form-group').addClass('has-danger');
-      $('#oauth-timestamp-help').text('Invalid timestamp').show();
+      $('#oauth-timestamp-help').text(
+          browser.i18n.getMessage("jsOAuthInValidTimestamp")
+      ).show();
       return false;
     }
     $(this).parents('.form-group').removeClass('has-danger');

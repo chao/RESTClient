@@ -824,5 +824,49 @@
   "js204Imported": {
     "message": "RESTClient2 中的所有收藏内容已成功导入！",
     "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "jsFavoriteConflicted": {
+    "message": "在您的收藏列表中已存在名为「$1」的 HTTP 请求，您想替换该请求吗？",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteReplaced": {
+    "message": "收藏的 HTTP 请求已替换！",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteSaved": {
+    "message": "HTTP 请求收藏成功！",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsRequestHeaderCannotBeEmpty": {
+    "message": "请求的 HTTP 头字段的名称和值不能同时为空。",
+    "description": "request.js .form-request-header submit"
+  },
+  "jsRequestHeaderCleared": {
+    "message": "所有收藏的 HTTP 头字段均已被成功移除。",
+    "description": "request.js .nav-custom-header-clear"
+  },
+  "jsResponseImageTooLargeContent": {
+    "message": "HTTP 服务器返回的是图片，但图片的尺寸太大无法在 RESTClient 中显示。",
+    "description": "response.js update-response-body"
+  },
+  "jsResponseImageTooLargeTitle": {
+    "message": "HTTP 响应正文过大，无法显示。",
+    "description": "response.js update-response-body"
+  },
+  "jsIndexPrivateModeContent": {
+    "message": "您正在使用隐私模式，您无法在隐私模式下使用收藏功能。",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexPrivateModeTitle": {
+    "message": "隐私模式中",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexDevelopmentContent": {
+    "message": "该功能目前正在开发中，请耐心等待。",
+    "description": "index.js development mode"
+  },
+  "jsIndexDevelopmentTitle": {
+    "message": "功能建设中",
+    "description": "index.js development mode"
   }
 }

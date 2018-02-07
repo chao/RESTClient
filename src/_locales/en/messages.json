@@ -824,5 +824,49 @@
   "js204Imported": {
     "message": "RESTClient2 requests imported!",
     "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "jsFavoriteConflicted": {
+    "message": "You already have a favorite request named: $1, Would you like to replace it?",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteReplaced": {
+    "message": "Request replaced.",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteSaved": {
+    "message": "Request saved.",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsRequestHeaderCannotBeEmpty": {
+    "message": "Request header name and value cannot be empty at the same time.",
+    "description": "request.js .form-request-header submit"
+  },
+  "jsRequestHeaderCleared": {
+    "message": "All favorite request headers are removed.",
+    "description": "request.js .nav-custom-header-clear"
+  },
+  "jsResponseImageTooLargeContent": {
+    "message": "The image is to large to view in RESTClient, please download it.",
+    "description": "response.js update-response-body"
+  },
+  "jsResponseImageTooLargeTitle": {
+    "message": "Response body is too large.",
+    "description": "response.js update-response-body"
+  },
+  "jsIndexPrivateModeContent": {
+    "message": "You are using private browsing mode, you will not be able to use \"favorites\" function.",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexPrivateModeTitle": {
+    "message": "Private Browsing",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexDevelopmentContent": {
+    "message": "This function is still under development.",
+    "description": "index.js development mode"
+  },
+  "jsIndexDevelopmentTitle": {
+    "message": "Not ready yet!",
+    "description": "index.js development mode"
   }
 }

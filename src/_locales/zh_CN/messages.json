@@ -240,7 +240,7 @@
     "description": "Favorites sidebar tip `no favorite`"
   },
   "overlaySecond": {
-    "message": "秒",
+    "message": "执行时间（秒）",
     "description": "用时多少秒"
   },
   "modalBasicAuthenticationTitle": {
@@ -673,6 +673,39 @@
   "modalOAuth2PreviewValue": {
     "message": "参数值",
     "description": "modal oauth2 preview"
+  },
+
+  "modalHttpsTitle": {
+    "message": "$URL$ 的证书不合法",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "modalHttpsReason": {
+    "message": "网站「$URL$」所使用的证书不是合法的证书。请在新窗口中打开该网站页面，在你警告页点击「高级」按钮，点击「添加例外」按钮，并在添加安全列外对话框中点击「确认安全例外」。在将您的网站「$URL$」加入例外后，您可以在 RESTClient 中继续测试您的网站。",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "imageHttpsCertificateException": {
+    "message": "images/zh_CN/https/certificate.png",
+    "description": "modal https"
+  },
+  "modalHttpsMore": {
+    "message": "了解更多信息，请访问 Firefox 官方网站：<a href=\"http://mzl.la/1Pn5D8f\" target=\"_blank\">如何针对安全网站的错误码进行故障排除</a>",
+    "description": "modal https"
+  },
+  "modalHttpsOpenTab": {
+    "message": "在新标签页中打开网站",
+    "description": "modal https"
   },
 
   "modalAuto": {

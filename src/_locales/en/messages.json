@@ -675,6 +675,39 @@
     "description": "modal oauth2 preview"
   },
 
+  "modalHttpsTitle": {
+    "message": "$URL$ uses an invalid security certificate",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "modalHttpsReason": {
+    "message": "It seems the web site \"$URL$\" is using an invalid security certificate. You can add an exception in order to visit the site. Please open the web site on a new tab then click on the button <code>Advanced</code>, then click <code>Add Exception...</code> button and click the button <code>Confirm Security Exception</code> in Add Security Exception dialog. After add the web site \"$URL$\" to the exception list you can use RESTClient continue to test that web site again.",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "imageHttpsCertificateException": {
+    "message": "images/en/https/certificate.png",
+    "description": "modal https"
+  },
+  "modalHttpsMore": {
+    "message": "For more information please refer to: <a href=\"http://mzl.la/1lFJl3h\">Firefox support</a>",
+    "description": "modal https"
+  },
+  "modalHttpsOpenTab": {
+    "message": "Open in a new tab",
+    "description": "modal https"
+  },
+
   "modalAuto": {
     "message": "Auto",
     "description": "modal input auto button"

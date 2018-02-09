@@ -50,3 +50,25 @@
     </div>
 </div>
 <!-- Response End -->
+<script id="template-response-redirects" type="text/template">
+<div class="response-redirects card m-b-sm">
+    <div class="card-block p-v-sm">
+        <ol class="linenums">
+            <li>
+                <span class="d-flex">
+                    <span class="header-name">Status</span>
+                    <span class="header-split">: </span>
+                    <span class="header-value">{{statusCode}}</span>
+                </span>
+            </li>
+            <li>
+                <span class="d-flex">
+                    <span class="header-name">Location</span>
+                    <span class="header-split">: </span>
+                    <span class="header-value">{{url}}</span>
+                </span>
+            </li>
+        </ol>
+    </div>
+</div>
+</script>

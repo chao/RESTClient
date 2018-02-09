@@ -46,8 +46,14 @@ $(function () {
       cmResponseBodyPreview.refresh();
     }
   });
+
+  $(document).on('redirected', function (e, statusCode, url){
+    var template = $('#template-response-redirects').html();
+    $(Mustache.to_html(template, { 'statusCode': statusCode, 'url': url })).insertBefore('#response-headers');
+  });
+
   $(document).on('update-response-body', function (e, mime, body) {
-    console.log("[index.js]['update-response-body']", mime, body);
+    // console.log("[index.js]['update-response-body']", mime, body);
     currentResponse = {'mime': mime, 'body': body};
     var bodySize = body.length;
     $('.li-download').hide();
@@ -125,15 +131,15 @@ $(function () {
       $('.response-container a.preview[data-toggle="tab"]').show();
       $('#tab-response-preview .CodeMirror').show();
       $('#iframe-response').hide();
-      console.log('[RESTClient][index.js]["update-response-body"] is css', mode);
+      // console.log('[RESTClient][index.js]["update-response-body"] is css', mode);
       var css = css_beautify(body, { "indent_size": 2 });
-      console.log('[RESTClient][index.js]["update-response-body"] is css', css);
+      // console.log('[RESTClient][index.js]["update-response-body"] is css', css);
       cmResponseBodyPreview.setOption('mode', mode);
       CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name || mode);
       cmResponseBodyPreview.getDoc().setValue(css);
     }
     if (mode === false && mime.indexOf('image') >= 0) {
-      console.log(`[response.js] mime: ${mime}`, body);
+      // console.log(`[response.js] mime: ${mime}`, body);
       var size = bodySize / 1024 / 1024;
       // if the image is large then 1MB
       if(size > 1)
@@ -148,7 +154,7 @@ $(function () {
         var image;
         try {
           image = base64Encode(body);
-          console.log(`[response.js] after base64 encode`, image);
+          // console.log(`[response.js] after base64 encode`, image);
         }
         catch (e) {
           console.error(`[response.js] cannot convert to base 64`, e);
@@ -181,7 +187,7 @@ $(function () {
       var info = CodeMirror.findModeByMIME(mime);
       mode = info.mode || null;
     }
-    console.log(`[response.js] response result`, mode, body);
+    // console.log(`[response.js] response result`, mode, body);
     if (mode) {
       cmResponseBody.setOption('mode', mode);
       CodeMirror.autoLoadMode(cmResponseBody, mode.name || mode);

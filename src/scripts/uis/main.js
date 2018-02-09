@@ -55,10 +55,7 @@ $(function () {
     $(document).on('click', "#btn-abort-request", function () {
         $(document).trigger('abort-current-ajax');
         $(document).trigger("hide-fullscreen");
-        ext.runtime.sendMessage({
-            action: "abort-http-request",
-            target: "background"
-        });
+        requestWorker.postMessage("abort-http-request");
     });
     
     /*********************** Toggle REQUEST, RESPONSE, CURL Panel ***************************/

@@ -27,9 +27,13 @@ window.ext = require("./utils/ext");
 window.storage = require("./utils/storage");
 window.curlconverter = require('curlconverter');
 window.currentTabInfo = false;
-import { isWebUrl, urlResolve } from './utils/url';
+import { isWebUrl, urlResolve } from './library/url';
+import { onXhrMessage } from './library/message';
 window.isWebUrl = isWebUrl;
 window.urlResolve = urlResolve;
+
+window.requestWorker = new Worker('./scripts/worker/xhr.js');
+requestWorker.onmessage = onXhrMessage;
 
 ext.tabs.getCurrent().then(function (tabInfo) {
   console.log(`[index.js] getCurrent`, tabInfo);
@@ -47,6 +51,17 @@ ext.tabs.getCurrent().then(function (tabInfo) {
 }, function (error) {
   console.log(`[index.js] Error: ${error}`);
 });
+
+// try to intercept url redirect
+browser.webRequest.onBeforeRedirect.addListener(
+  function (requestDetails) {
+    console.log("[background][logURL]", requestDetails);
+    let url = requestDetails.redirectUrl;
+    let statusCode = requestDetails.statusLine;
+    $(document).trigger('redirected', [statusCode, url]);
+  },
+  { urls: ["<all_urls>"] }
+);
 
 $(function () {
   window.favoriteHeaders = [];
@@ -107,22 +122,18 @@ $(function () {
     }
 
     $('#response-headers ol').empty();
+    $('.response-redirects').remove();
+
     cmResponseBody.getDoc().setValue('');
     cmResponseBodyPreview.getDoc().setValue('');
     $('#tab-response-preview .CodeMirror').hide();
     $('#iframe-response').show();
     $('.response-container a.preview[data-toggle="tab"]').hide();
 
-    ext.runtime.sendMessage({
-      action: "execute-http-request",
-      target: "background",
-      data: request
-    });
+    requestWorker.postMessage(request);
 
     $('.current-request-basic').html(request.method + ' ' + request.url);
     $(document).trigger("show-fullscreen");
     $(document).trigger('request-updated', [request]);
   });
-
-
 });

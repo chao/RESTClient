@@ -48,20 +48,22 @@ ext.tabs.getCurrent().then(function (tabInfo) {
     });
     $('[data-invisible-incognito]').hide();
   }
+
+  // intercept url redirect and show redirections in response headers
+  browser.webRequest.onBeforeRedirect.addListener(
+    function (requestDetails) {
+      console.log("[background][logURL]", requestDetails);
+      let url = requestDetails.redirectUrl;
+      let statusCode = requestDetails.statusLine;
+      $(document).trigger('redirected', [statusCode, url]);
+    },
+    { urls: ["<all_urls>"], tabId: currentTabInfo.id }
+  );
 }, function (error) {
   console.log(`[index.js] Error: ${error}`);
 });
 
-// try to intercept url redirect
-browser.webRequest.onBeforeRedirect.addListener(
-  function (requestDetails) {
-    console.log("[background][logURL]", requestDetails);
-    let url = requestDetails.redirectUrl;
-    let statusCode = requestDetails.statusLine;
-    $(document).trigger('redirected', [statusCode, url]);
-  },
-  { urls: ["<all_urls>"] }
-);
+
 
 $(function () {
   window.favoriteHeaders = [];

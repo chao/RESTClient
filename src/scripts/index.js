@@ -27,9 +27,13 @@ window.ext = require("./utils/ext");
 window.storage = require("./utils/storage");
 window.curlconverter = require('curlconverter');
 window.currentTabInfo = false;
-import { isWebUrl, urlResolve } from './utils/url';
+import { isWebUrl, urlResolve } from './library/url';
+import { onXhrMessage } from './library/message';
 window.isWebUrl = isWebUrl;
 window.urlResolve = urlResolve;
+
+window.requestWorker = new Worker('./scripts/worker/xhr.js');
+requestWorker.onmessage = onXhrMessage;
 
 ext.tabs.getCurrent().then(function (tabInfo) {
   console.log(`[index.js] getCurrent`, tabInfo);
@@ -113,11 +117,7 @@ $(function () {
     $('#iframe-response').show();
     $('.response-container a.preview[data-toggle="tab"]').hide();
 
-    ext.runtime.sendMessage({
-      action: "execute-http-request",
-      target: "background",
-      data: request
-    });
+    requestWorker.postMessage(request);
 
     $('.current-request-basic').html(request.method + ' ' + request.url);
     $(document).trigger("show-fullscreen");

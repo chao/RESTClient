@@ -233,7 +233,7 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth-preview', function (e) {
-    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    var validUrl = isWebUrl($('#request-url').val());
     if (typeof validUrl == 'undefined') {
       toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
       return true;
@@ -242,7 +242,7 @@ $(function () {
   });
 
   $(document).on('click', '#modal-oauth-preview .btn-refresh', function (e) {
-    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    var validUrl = isWebUrl($('#request-url').val());
     if (typeof validUrl == 'undefined') {
       toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
       return true;
@@ -261,7 +261,7 @@ $(function () {
   });
   
   $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-refresh', function (e) {
-    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    var validUrl = isWebUrl($('#request-url').val());
     if (typeof validUrl == 'undefined') {
       toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
       return true;

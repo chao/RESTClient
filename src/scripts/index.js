@@ -27,6 +27,10 @@ window.ext = require("./utils/ext");
 window.storage = require("./utils/storage");
 window.curlconverter = require('curlconverter');
 window.currentTabInfo = false;
+import { isWebUrl, urlResolve } from './utils/url';
+window.isWebUrl = isWebUrl;
+window.urlResolve = urlResolve;
+
 ext.tabs.getCurrent().then(function (tabInfo) {
   console.log(`[index.js] getCurrent`, tabInfo);
   window.currentTabInfo = tabInfo;
@@ -75,11 +79,10 @@ $(function () {
     
     var method = $('#request-method').val();
     var url = $('#request-url').val();
-    var isUrl = urlHelper.is_web_iri(url);
+    var isUrl = isWebUrl(url);
     console.log('[index.js] request url changed, decide request SEND button status.', method, url, isUrl);
-    // console.log(isUrl);
-    // console.log(method != '' && typeof isUrl != 'undefined');
-    if (method != '' && typeof isUrl != 'undefined') {
+
+    if (method != '' && url != '' && isUrl) {
       $('.btn-send-request').prop('disabled', false);
     }
     else {

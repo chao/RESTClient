@@ -63,7 +63,8 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "path": "^0.12.7",
-    "popper.js": "^1.12.5"
+    "popper.js": "^1.12.5",
+    "url": "^0.11.0"
   },
   "browser": {
     "jquery": "./node_modules/jquery/dist/jquery.js",

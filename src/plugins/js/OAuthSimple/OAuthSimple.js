@@ -295,11 +295,9 @@ if (OAuthSimple === undefined) {
             if (typeof this._realm === 'string' || this._realm === true)
             {
                 var realm = '';
-                if (typeof this._realm === 'boolean' && urlHelper.is_web_iri(this._path))
+                if (typeof this._realm === 'boolean' && isWebUrl(this._path))
                 {
-                    var splits = urlHelper.splitUri(this._path);
-                    console.log('[OAuthSimple.js] get the path', this._path, splits);
-                    var realm = splits[1] + "://" + splits[2];
+                    var realm = urlResolve(this._path, '/');
                 }
                 else
                 {

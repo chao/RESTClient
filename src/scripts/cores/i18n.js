@@ -44,21 +44,20 @@ let i18n = {
         if (element.hasAttribute("data-i18n-target"))
         {
           var target = element.getAttribute("data-i18n-target");
-          console.log(`[i18n.js] element: ${i18nName}, target: ${target}`)
+          // console.log(`[i18n.js] element: ${i18nName}, target: ${target}`)
           if (element.hasAttribute(target))
           {
-            console.log(`[i18n.js] set attribute value ${value}`);
+            // console.log(`[i18n.js] set attribute value ${value}`);
             element.setAttribute(target, value);
           }
         }
         else
         {
-          console.log(`[i18n.js] set placeholder ${value}`);
+          // console.log(`[i18n.js] set placeholder ${value}`);
           element.setAttribute('placeholder', value);
         }
       }
-      console.log(`[i18n.js] update ${i18nName} to ${value}`);
-
+      // console.log(`[i18n.js] update ${i18nName} to ${value}`);
     }
   }
 }

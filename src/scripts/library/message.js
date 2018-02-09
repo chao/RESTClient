@@ -34,7 +34,6 @@ export function onXhrMessage(oEvent)
   if (request.action == "http-request-load") {
     var mime = false;
     $(document).trigger("hide-fullscreen");
-    $('#response-headers ol').empty();
     if (request.data && request.data.headers) {
       _.each(request.data.headers, function (header) {
         var span = $('<span class="d-flex"></span>');

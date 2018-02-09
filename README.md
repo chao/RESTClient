@@ -6,6 +6,10 @@
 
 ### Firefox Addon
 
+* Version 3.0.6
+  * Added Chinese locale.
+  * Added an instruction for add self signed web site to certificates exception list.
+  * Added headers for following server side redirection.
 * Version 3.0.5
   * Fixed basic authentication unicode problem.
   * Added OAuth 1.0 authentication.

@@ -97,10 +97,10 @@ var XHR = {
       'headers': request.headers || [],
       'body': request.body || '',
     }
-    console.log('[background.js] start to send request', req);
+    console.log('[xhr.js] start to send request', req);
     xhr.open(req.method, req.url, true);
     postMessage({ action: "start-counting" });
-    console.log('[background.js] Initiating XMLHttpRequest...');
+    console.log('[xhr.js] Initiating XMLHttpRequest...');
     postMessage({ action: "update-progress-label", data: "jsXhrMakeRequestInitiating" });
 
     var overrideMimeType = true;

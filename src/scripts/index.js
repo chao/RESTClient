@@ -52,6 +52,17 @@ ext.tabs.getCurrent().then(function (tabInfo) {
   console.log(`[index.js] Error: ${error}`);
 });
 
+// try to intercept url redirect
+browser.webRequest.onBeforeRedirect.addListener(
+  function (requestDetails) {
+    console.log("[background][logURL]", requestDetails);
+    let url = requestDetails.redirectUrl;
+    let statusCode = requestDetails.statusLine;
+    $(document).trigger('redirected', [statusCode, url]);
+  },
+  { urls: ["<all_urls>"] }
+);
+
 $(function () {
   window.favoriteHeaders = [];
   window.favoriteUrls = [];
@@ -111,6 +122,8 @@ $(function () {
     }
 
     $('#response-headers ol').empty();
+    $('.response-redirects').remove();
+
     cmResponseBody.getDoc().setValue('');
     cmResponseBodyPreview.getDoc().setValue('');
     $('#tab-response-preview .CodeMirror').hide();
@@ -123,6 +136,4 @@ $(function () {
     $(document).trigger("show-fullscreen");
     $(document).trigger('request-updated', [request]);
   });
-
-
 });

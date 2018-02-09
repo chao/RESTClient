@@ -60,7 +60,7 @@ var XHR = {
       console.log(`[xhr.js][onProgress] percentComplete: ${percentComplete}`);
     }
     else {
-      this.sendResponse(senderTabId, { action: "set-progress-bar-animated", data: browser.i18n.getMessage("jsXhrOnProgressProcessing") });
+      this.sendResponse(tabId, { action: "set-progress-bar-animated", data: browser.i18n.getMessage("jsXhrOnProgressProcessing") });
       console.log('[xhr.js][onProgress] Processing...');
     }
   },
@@ -77,7 +77,16 @@ var XHR = {
 
   onError(evt, tabId) {
     console.log('[xhr.js][onError]', evt, tabId);
-    this.sendResponse(tabId, { action: "http-request-error", data: { "title": browser.i18n.getMessage("jsXhrOnErrorTitle"), "detail": browser.i18n.getMessage("jsXhrOnErrorDetail") } });
+    let xhr = evt.target;
+    this.sendResponse(tabId, { 
+      action: "http-request-error", 
+      data: { 
+        title: browser.i18n.getMessage("jsXhrOnErrorTitle"), 
+        detail: browser.i18n.getMessage("jsXhrOnErrorDetail"),
+        readyState: xhr.readyState,
+        status: xhr.status
+      } 
+    });
   },
 
   sendResponse(senderTabId, response) {
@@ -89,6 +98,11 @@ var XHR = {
   makeRequest(request, sender) 
   {
     var senderTabId = sender.tab.id; // get the sender tab id
+    if (typeof senderTabId == 'undefined')
+    {
+      console.error('[xhr.js][makeRequest] unkown sender', sender);
+      senderTabId = -1;
+    }
     var xhr = new XMLHttpRequest();
     this.sendResponse(senderTabId, { action: "set-progress-bar-animated", data: browser.i18n.getMessage("jsXhrMakeRequestStart") });
     var req = {

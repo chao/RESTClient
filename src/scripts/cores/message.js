@@ -81,6 +81,14 @@ ext.runtime.onMessage.addListener(
 
     if (request.action == "http-request-error") {
       $(document).trigger("hide-fullscreen");
+      let url = $('#request-url').val();
+      if (typeof request.data.readyState !== 'undefined' && request.data.readyState == 4 
+        && typeof request.data.status != 'undefined' && request.data.status == 0 
+        && url.toLowerCase().indexOf('https://') == 0)
+      {
+        $('#modal-https').data('url', url).modal('show');
+        return false;
+      }
       let title = typeof request.data.title == 'undefined' ? browser.i18n.getMessage("jsMessageError") : request.data.title;
       let content = typeof request.data.detail == 'undefined' ? browser.i18n.getMessage("jsMessageErrorDetail") : request.data.detail;
       toastr.error(content, title);

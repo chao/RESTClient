@@ -118,7 +118,14 @@ $(function () {
     if(isBlob)
     {
       cmResponseBody.getDoc().setValue(browser.i18n.getMessage("jsResponseBlobTypeDetected"));
-      $('#modal-binary-warning').modal('show');
+      storage.get('binary-warning-ignore').then((data) => {
+        console.log('[response.js] binary-warning-ignore!', data);
+        if (data['binary-warning-ignore'] === true) {
+          return false;
+        }
+
+        $('#modal-binary-warning').data('mime', mime).modal('show');
+      });
       return false;
     }
 

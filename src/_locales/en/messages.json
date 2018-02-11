@@ -720,6 +720,37 @@
     "description": "modal https"
   },
 
+  "modalBinWarning": {
+    "message": "Binary response detected",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningContent": {
+    "message": "Your current HTTP response MIME type is \"$MIME$\". To view the response properly, you need to switch response type to \"Blob (Binary file)\" type. ",
+    "description": "modal binary warning",
+    "placeholders": {
+      "mime": {
+        "content": "$1",
+        "example": "text/plain"
+      }
+    }
+  },
+  "modalBinWarningHowTo": {
+    "message": "You can switch response type from the drop down menu at the left of the URL input box.",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningImage": {
+    "message": "images/en/response/type.png",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningCheck": {
+    "message": "Don't bother me again!",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningBtn": {
+    "message": "Set response type to Blob, and send again",
+    "description": "modal binary warning"
+  },
+
   "modalAuto": {
     "message": "Auto",
     "description": "modal input auto button"

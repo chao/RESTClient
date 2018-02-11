@@ -469,7 +469,7 @@ $(function () {
     $(document).trigger('switch-response-type', [type]);
   });
 
-  $(document).on('switch-response-type', function (e, type) {
+  $(document).on('switch-response-type', function (e, type, callback) {
     $('.btn-switch-response-type').removeClass('active');
     $('.btn-switch-response-type[data-type="' + type + '"]').addClass('active');
     if (type == 'text') {
@@ -477,6 +477,11 @@ $(function () {
     }
     else {
       $('.icon-response-type').removeClass('fa-file-text-o').addClass('fa-file-archive-o').data('type', 'blob');
+    }
+
+    if (typeof callback == 'function')
+    {
+      callback();
     }
   });
 });

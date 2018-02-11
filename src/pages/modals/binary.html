@@ -1,0 +1,35 @@
+<div class="modal fade" id="modal-binary-warning" tabindex="-1" role="dialog" aria-labelledby="modal-https" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-i18n="modalBinWarning">Binary response detected</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- modal-body -->
+      <div class="modal-body">
+        <p class="text-muted m-t-md" data-i18n="modalBinWarningContent">
+          Your current HTTP response MIME type is "$1". To view the response properly, you need to switch response type to blob type. 
+        </p>
+        <p class="text-muted m-t-md" data-i18n="modalBinWarningHowTo">
+          You can switch response type from the drop down menu at the left of the URL input box.
+        </p>
+        <p class="m-t-xlg text-center m-b-md">
+          <img src="images/response/type.png" class="img-fluid rounded" data-i18n="modalBinWarningImage" data-i18n-target="src">
+        </p>
+      </div>
+      <!-- modal-body end -->
+      <div class="modal-footer">
+        <div class="form-check abc-checkbox abc-checkbox-danger">
+          <input class="form-check-input" id="modal-binary-warning-ignore" type="checkbox">
+          <label class="form-check-label" for="modal-binary-warning-ignore" data-i18n="modalBinWarningCheck">
+            Don't bother me
+          </label>
+        </div>
+        <button type="button" class="btn btn-warning btn-set-response-type-blob" data-i18n="modalBinWarningBtn">Set response type to Blob</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

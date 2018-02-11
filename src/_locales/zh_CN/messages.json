@@ -720,6 +720,37 @@
     "description": "modal https"
   },
 
+  "modalBinWarning": {
+    "message": "检测到二进制的 HTTP 响应",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningContent": {
+    "message": "您当前 HTTP 请求的返回结果类型为：「$MIME$」，为正确显示该 HTTP 响应，您需要将 HTTP 响应类型设置为「二进制（Blob）」。 ",
+    "description": "modal binary warning",
+    "placeholders": {
+      "mime": {
+        "content": "$1",
+        "example": "text/plain"
+      }
+    }
+  },
+  "modalBinWarningHowTo": {
+    "message": "您可以点击 HTTP 请求面板中网址左侧的按钮，并且在下拉列表中选择 HTTP 响应类型。",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningImage": {
+    "message": "images/zh_CN/response/type.png",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningCheck": {
+    "message": "不再提醒",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningBtn": {
+    "message": "设置 HTTP 响应类型为二进制（Blob），并再次发送",
+    "description": "modal binary warning"
+  },
+
   "modalAuto": {
     "message": "自动",
     "description": "modal input auto button"

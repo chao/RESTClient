@@ -55,6 +55,11 @@ ext.tabs.getCurrent().then(function (tabInfo) {
       console.log("[background][logURL]", requestDetails);
       let url = requestDetails.redirectUrl;
       let statusCode = requestDetails.statusLine;
+      if (statusCode != '' && statusCode.indexOf(' ') > 0)
+      {
+        // console.error(statusCode.indexOf(' '));
+        statusCode = statusCode.substring(statusCode.indexOf(' '), statusCode.length);
+      }
       $(document).trigger('redirected', [statusCode, url]);
     },
     { urls: ["<all_urls>"], tabId: currentTabInfo.id }

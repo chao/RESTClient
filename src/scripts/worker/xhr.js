@@ -3,8 +3,7 @@ var XHR = {
   onLoadProgress(evt) {
     console.log('[xhr.js][onLoadProgress]', evt);
     if (evt.lengthComputable) {
-      var percentComplete = evt.loaded * 100 / evt.total;
-
+      var percentComplete = Math.round((evt.loaded * 100) / evt.total);
       if (evt.loaded < evt.total) {
         postMessage({ action: "update-progress-label", data: "jsXhrSending"});
         postMessage({ action: "update-progress-bar", data: percentComplete });
@@ -12,15 +11,14 @@ var XHR = {
     }
   },
 
-  onLoad(evt, startedAt) {
+  onLoad(evt, responseType, startedAt) {
     console.log('[xhr.js][onLoad]', evt);
     postMessage({ action: "set-progress-bar-animated", data: "jsXhrOnLoad" });
     var xhr = evt.currentTarget;
     var contentType = xhr.getResponseHeader("Content-Type");
-    var response = {};
-    response.timeCosted = (new Date().getTime()) - startedAt;
-    response.headers = [];
-    response.headers.push({ key: "Status Code", value: xhr.status + " " + xhr.statusText });
+    let timeCosted = (new Date().getTime()) - startedAt;
+    let headers = [];
+    headers.push({ key: "Status Code", value: xhr.status + " " + xhr.statusText });
     var headersText = xhr.getAllResponseHeaders(),
       responseHeaders = headersText.split("\n"),
       key, value;
@@ -30,23 +28,18 @@ var XHR = {
         key = header.substring(0, header.indexOf(":"));
         value = xhr.getResponseHeader(key);
         if (value) {
-          response.headers.push({ key: key, value: value });
+          headers.push({ key: key, value: value });
         }
       }
     }
-    response.body = xhr.responseText;
-    response.xml = xhr.responseXML;
-    response.response = xhr.response;
-    if (contentType && contentType.indexOf('image') >= 0) {
-      var toConvert = "";
-      for (var i = 0; i < response.body.length; i++) {
-        toConvert += String.fromCharCode(response.body.charCodeAt(i) & 0xff);
-      }
-      var base64encoded = btoa(toConvert);
-      response.image = "data:" + contentType + ";base64," + base64encoded;
-    }
-    postMessage({ action: "hide-overlay" });
-    postMessage({ action: "http-request-load", data: response });
+
+    postMessage({ action: "http-request-load", data: { 
+        headers,
+        timeCosted,
+        responseType, 
+        response: xhr.response
+      } 
+    });
   },
 
   onProgress(evt) {
@@ -103,21 +96,21 @@ var XHR = {
     console.log('[xhr.js] Initiating XMLHttpRequest...');
     postMessage({ action: "update-progress-label", data: "jsXhrMakeRequestInitiating" });
 
-    var overrideMimeType = true;
+    let responseType = 'text';
+    if (request.responseType)
+    {
+      xhr.responseType = request.responseType;
+      responseType = request.responseType;
+    }
+
     for (var i = 0, header; header = req.headers[i]; i++) {
       xhr.setRequestHeader(header['name'], header['value']);
 
       //Override XMLHTTPRequest default charset
-      if (header['name'].toLowerCase() == 'content-type') {
-        overrideMimeType = false;
-      }
-      if (header['name'].toLowerCase() == 'content-type' && header['value'].toLowerCase().indexOf('charset') > -1) {
+      if (header['name'].toLowerCase() == 'content-type' 
+          && header['value'].toLowerCase().indexOf('charset') > -1) {
         xhr.overrideMimeType(header['value']);
       }
-    }
-
-    if (overrideMimeType) {
-      xhr.overrideMimeType('text\/plain; charset=x-user-defined');
     }
 
     var startedAt = new Date().getTime();
@@ -125,13 +118,13 @@ var XHR = {
     xhr.upload.addEventListener('onprogress', this.onLoadProgress, false);
 
     xhr.addEventListener("load", function (evt) {
-      self.onLoad(evt, startedAt);
+      self.onLoad(evt, responseType, startedAt);
     }, false);
 
     xhr.addEventListener("progress", this.onProgress, false);
-    xhr.addEventListener('abort', this.onAbort, false);
-    xhr.addEventListener('timeout', this.onTimeout, false);
-    xhr.addEventListener('error', this.onError, false);
+    xhr.addEventListener('abort',    this.onAbort,    false);
+    xhr.addEventListener('timeout',  this.onTimeout,  false);
+    xhr.addEventListener('error',    this.onError,    false);
 
     if (typeof req.body != 'undefined' && req.body.length > 0) {
       xhr.send(req.body);

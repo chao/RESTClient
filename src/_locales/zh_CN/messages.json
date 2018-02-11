@@ -173,7 +173,19 @@
   },
   "requestMethod": {
     "message": "请求方法",
-    "description": "Request panel label"
+    "description": "Request panel method select"
+  },
+  "requestResponseTypeMenu": {
+    "message": "选择 HTTP 响应类型",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuText": {
+    "message": "文本型（Text）",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuBlob": {
+    "message": "文件型（Blob）",
+    "description": "Request panel response type dropdown"
   },
   "requestUrl": {
     "message": "网址",
@@ -886,12 +898,12 @@
     "message": "所有收藏的 HTTP 头字段均已被成功移除。",
     "description": "request.js .nav-custom-header-clear"
   },
-  "jsResponseImageTooLargeContent": {
-    "message": "HTTP 服务器返回的是图片，但图片的尺寸太大无法在 RESTClient 中显示。",
+  "jsResponseBlobTooLargeContent": {
+    "message": "文件过大，无法在 HTTP 响应文本框中显示！请您下载后打开。",
     "description": "response.js update-response-body"
   },
-  "jsResponseImageTooLargeTitle": {
-    "message": "HTTP 响应正文过大，无法显示。",
+  "jsResponseBlobTypeDetected": {
+    "message": "HTTP 服务器返回结果MIME类型为$1，请您切换响应类型为「二进制结果」类型。",
     "description": "response.js update-response-body"
   },
   "jsIndexPrivateModeContent": {
@@ -945,5 +957,9 @@
   "jsXhrMakeRequestInitiating": {
     "message": "初始化 XMLHTTPRequest 对象…",
     "description": "xhr.js makeRequest"
+  },
+  "jsMessageExecutionTime": {
+    "message": "您的 HTTP 请求已经成功执行，并返回结果。执行时间：$1 毫秒。",
+    "description": "message.js show execution time"
   }
 }

@@ -173,7 +173,19 @@
   },
   "requestMethod": {
     "message": "Method",
-    "description": "Request panel label"
+    "description": "Request panel method select"
+  },
+  "requestResponseTypeMenu": {
+    "message": "Response type",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuText": {
+    "message": "Text",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuBlob": {
+    "message": "Blob (Binary file)",
+    "description": "Request panel response type dropdown"
   },
   "requestUrl": {
     "message": "URL",
@@ -886,12 +898,12 @@
     "message": "All favorite request headers are removed.",
     "description": "request.js .nav-custom-header-clear"
   },
-  "jsResponseImageTooLargeContent": {
-    "message": "The image is to large to view in RESTClient, please download it.",
+  "jsResponseBlobTooLargeContent": {
+    "message": "File is too large to show in response. Please download it!",
     "description": "response.js update-response-body"
   },
-  "jsResponseImageTooLargeTitle": {
-    "message": "Response body is too large.",
+  "jsResponseBlobTypeDetected": {
+    "message": "The response MIME type is $1. Please switch your response type to \"blob\".",
     "description": "response.js update-response-body"
   },
   "jsIndexPrivateModeContent": {
@@ -945,5 +957,9 @@
   "jsXhrMakeRequestInitiating": {
     "message": "Initiating XMLHttpRequest...",
     "description": "xhr.js makeRequest"
+  },
+  "jsMessageExecutionTime": {
+    "message": "Your request has been processed successfully! Execution time: $1 ms.",
+    "description": "message.js show execution time"
   }
 }

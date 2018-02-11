@@ -122,7 +122,11 @@ $(function () {
     $('#favorite-requests-list .requests-list').empty();
     _.each(requests, function (request, name) {
       var item = $(html).clone();
-
+      if(request.responseType == 'blob')
+      {
+        item.find('.type').removeClass('fa-file-text-o').addClass('fa-file-archive-o');
+      }
+      
       item.find('.name').text(name);
       item.find('.method').text(request.method);
       item.find('.host').text(request.url);
@@ -189,6 +193,13 @@ $(function () {
       var params = request.authentication.data;
       
       $(`.authentication-mode[data-mode="${mode}"]`).addClass('active').data('params', params);
+    }
+    if (request.responseType) {
+      $(document).trigger('switch-response-type', [request.responseType]);
+    }
+    else
+    {
+      $(document).trigger('switch-response-type', ['text']);
     }
     slideout.toggle();
     $('#request-url').trigger('input');

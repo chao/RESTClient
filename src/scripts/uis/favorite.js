@@ -45,7 +45,16 @@ $(function () {
   });
   
   /********************** Init Favorite Request **************************/
-  $('#favorite-tags').tagsinput();
+  let tagInput = $('#favorite-tags').tagsinput();
+  $(document).on('blur', '#modal-favorite-save .bootstrap-tagsinput input', function(){
+    let tag = $(this).val();
+    $(this).val('');
+    if(tag != '')
+    {
+      $('#favorite-tags').tagsinput('add', tag);
+    }
+  });
+
   $(document).on('favorite-tags-changed', function (e, tags) {
     var tags = tags ? _.keys(tags) : [];
     console.log('[RESTClient][index.js][favorite-tags-changed] init', tags);

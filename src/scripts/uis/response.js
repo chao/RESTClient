@@ -32,6 +32,7 @@ $(function () {
   'application/x-rar-compressed', 'application/rtf', 'application/x-tar', 'application/x-font-ttf', 
   'application/x-font-woff', 'application/x-7z-compressed'];
 
+  let imageMimes = ['image/gif', 'image/jpeg', 'image/png', 'image/svg+xml'];
   /********************** Init Response Raw and Preview **************************/
   CodeMirror.modeURL = "scripts/plugins/codemirror-5.31.0/mode/%N/%N.js";
   window.cmResponseBody = CodeMirror.fromTextArea(document.getElementById("response-body"), {
@@ -72,7 +73,7 @@ $(function () {
       currentResponseBlob = response;
       console.log('[response.js][update-response-body]blob result', mime.indexOf('image'), response.size );
       
-      if (mime.indexOf('image') == 0)// || mime.indexOf('pdf') >= 0)
+      if (imageMimes.indexOf(mime) >= 0)
       {
         var blobUrl = window.URL.createObjectURL(response);
         iframe.setAttribute('src', blobUrl);

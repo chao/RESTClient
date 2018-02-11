@@ -1,4 +1,32 @@
 .response-container {
+    .response-type {
+        display: none;
+        box-shadow: 0 0 0 2px hsla(8, 79%, 62%, 0.4);
+        z-index: 999;
+        button:first-child {
+            padding-left: 10px;
+        }
+        .btn-response-type,
+        .btn-close {
+            background-image: none;
+            border: none;
+            font-size: 10px;
+            border-radius: 0;
+            outline: 0;
+            box-shadow: none;
+            background-color: #eb6651;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .dropdown-menu {
+            left: -2px !important;
+            border-radius: 0;
+        }
+        &.active {
+            display: inline-flex;
+        }
+    }
+
     margin-bottom: 1.2rem;
     .title {
         margin-left: 0.1rem;

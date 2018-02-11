@@ -461,27 +461,4 @@ $(function () {
     height = (height < 140) ? 140 : height;
     $('#request-body').css('height', height + 'px');
   });
-
-  /********************** Switch response type **************************/
-  $(document).on('click', '.btn-switch-response-type', function (e) {
-    var li = $(this);
-    var type = li.data('type');
-    $(document).trigger('switch-response-type', [type]);
-  });
-
-  $(document).on('switch-response-type', function (e, type, callback) {
-    $('.btn-switch-response-type').removeClass('active');
-    $('.btn-switch-response-type[data-type="' + type + '"]').addClass('active');
-    if (type == 'text') {
-      $('.icon-response-type').removeClass('fa-file-archive-o').addClass('fa-file-text-o').removeData();
-    }
-    else {
-      $('.icon-response-type').removeClass('fa-file-text-o').addClass('fa-file-archive-o').data('type', 'blob');
-    }
-
-    if (typeof callback == 'function')
-    {
-      callback();
-    }
-  });
 });

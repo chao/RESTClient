@@ -215,6 +215,10 @@
     "message": "HTTP 响应",
     "description": "Response panel title"
   },
+  "responseTypeBadge": {
+    "message": "文件型",
+    "description": "Response type badge"
+  },
   "responseTabHeaders": {
     "message": "HTTP 头字段",
     "description": "Response panel tab header - Headers"
@@ -721,11 +725,11 @@
   },
 
   "modalBinWarning": {
-    "message": "检测到二进制的 HTTP 响应",
+    "message": "检测到文件型的 HTTP 响应",
     "description": "modal binary warning"
   },
   "modalBinWarningContent": {
-    "message": "您当前 HTTP 请求的返回结果类型为：「$MIME$」，为正确显示该 HTTP 响应，您需要将 HTTP 响应类型设置为「二进制（Blob）」。 ",
+    "message": "您当前 HTTP 请求的返回结果类型为：「$MIME$」，为正确显示该 HTTP 响应，您需要将 HTTP 响应类型设置为「文件型（Blob）」。 ",
     "description": "modal binary warning",
     "placeholders": {
       "mime": {
@@ -747,7 +751,7 @@
     "description": "modal binary warning"
   },
   "modalBinWarningBtn": {
-    "message": "设置 HTTP 响应类型为二进制（Blob），并再次发送",
+    "message": "设置 HTTP 响应类型为文件型（Blob），并再次发送",
     "description": "modal binary warning"
   },
 
@@ -934,7 +938,7 @@
     "description": "response.js update-response-body"
   },
   "jsResponseBlobTypeDetected": {
-    "message": "HTTP 服务器返回结果MIME类型为$1，请您切换响应类型为「二进制结果」类型。",
+    "message": "HTTP 服务器返回结果MIME类型为$1，请您切换响应类型为「文件型结果」类型。",
     "description": "response.js update-response-body"
   },
   "jsIndexPrivateModeContent": {

@@ -215,6 +215,10 @@
     "message": "Response",
     "description": "Response panel title"
   },
+  "responseTypeBadge": {
+    "message": "Binary",
+    "description": "Response type badge"
+  },
   "responseTabHeaders": {
     "message": "Headers",
     "description": "Response panel tab header - Headers"

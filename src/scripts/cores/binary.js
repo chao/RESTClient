@@ -24,6 +24,29 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 
 $(function () {
+  $(document).on('click', '.btn-switch-response-type', function (e) {
+    var li = $(this);
+    var type = li.data('type');
+    $(document).trigger('switch-response-type', [type]);
+  });
+
+  $(document).on('switch-response-type', function (e, type, callback) {
+    $('.btn-switch-response-type').removeClass('active');
+    $('.btn-switch-response-type[data-type="' + type + '"]').addClass('active');
+    if (type == 'text') {
+      $('.icon-response-type').removeClass('fa-file-archive-o').addClass('fa-file-text-o').removeData();
+      $('.response-type[data-type="blob"]').removeClass('active');
+    }
+    else {
+      $('.icon-response-type').removeClass('fa-file-text-o').addClass('fa-file-archive-o').data('type', 'blob');
+      $('.response-type[data-type="blob"]').addClass('active');
+    }
+
+    if (typeof callback == 'function') {
+      callback();
+    }
+  });
+
   $('#modal-binary-warning').on('show.bs.modal', function (e) {
     var mime = $('#modal-binary-warning').data('mime');
     $('[data-i18n="modalBinWarningContent"]').html(browser.i18n.getMessage("modalBinWarningContent", mime));
@@ -41,5 +64,9 @@ $(function () {
       $('.btn-send-request').click();
     }]);
     $('#modal-binary-warning').modal('hide');
+  });
+
+  $(document).on('click', '.response-type[data-type="blob"] .btn-close', function (e) {
+    $(document).trigger('switch-response-type', ['text']);
   });
 });

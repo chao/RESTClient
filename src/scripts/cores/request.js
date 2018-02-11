@@ -51,6 +51,10 @@ var Request = {
         {
             request.form = $('#request-body').data('form-data');
         }
+        if ($('.icon-response-type').data('type'))
+        {
+            request.responseType = $('.icon-response-type').data('type');
+        }
         return request;
     },
     getProcessed(request) {

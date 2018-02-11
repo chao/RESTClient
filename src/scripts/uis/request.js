@@ -461,5 +461,4 @@ $(function () {
     height = (height < 140) ? 140 : height;
     $('#request-body').css('height', height + 'px');
   });
-
 });

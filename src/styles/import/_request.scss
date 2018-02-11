@@ -66,12 +66,31 @@
         border-bottom-right-radius: 0.25rem;
       }
     }
+    .request-combo {
+      flex: 1;
+
+      #dd-response-type {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border: 1px solid #DDD;
+        border-right: 0 !important;
+      }
+
+      #request-url {
+        border: 1px solid #DDD;
+        border-top-left-radius: 0px !important;
+        border-bottom-left-radius: 0px !important;
+        border-left: 0 !important;
+      }
+    }
+
     .ig-request-method:focus-within,
-    .ig-request-url:focus-within {
+    .request-combo:focus-within {
       input {
-        border: #d9230f solid 1px;
+        border: #d9230f solid 1px !important;
       }
       .input-group-addon {
+        border: #d9230f solid 1px !important;
         background-color: #d9230f;
         text-decoration: none;
         color: #fff;

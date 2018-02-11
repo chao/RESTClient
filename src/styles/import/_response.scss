@@ -1,9 +1,42 @@
 .response-container {
+    .response-type {
+        display: none;
+        box-shadow: 0 0 0 2px hsla(8, 79%, 62%, 0.4);
+        z-index: 999;
+        button:first-child {
+            padding-left: 10px;
+        }
+        .btn-response-type,
+        .btn-close {
+            background-image: none;
+            border: none;
+            font-size: 10px;
+            border-radius: 0;
+            outline: 0;
+            box-shadow: none;
+            background-color: #eb6651;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+        .dropdown-menu {
+            left: -2px !important;
+            border-radius: 0;
+        }
+        &.active {
+            display: inline-flex;
+        }
+    }
+
     margin-bottom: 1.2rem;
     .title {
         margin-left: 0.1rem;
         font-family: Consolas, Monaco, monospace;
     }
+
+    .tab-pane {
+        position: relative;
+    }
+
     #response-headers, .response-redirects {
         .card-block {
             padding-left: 0;
@@ -34,28 +67,28 @@
         border: 1px solid #eee;
         height: auto;
     }
-    .li-download {
+    .btn-download-response {
         position: absolute;
-        right: 20px;
-        top: 59px;
+        right: 5px;
+        top: 5px;
         z-index: 999;
-        .btn {
-            background-color: #FFF;
-            padding: .2rem .3rem;
-            border: 1px solid #CCC;
-            font-size: 75%;
-            color: #818a91;
-            cursor: pointer;
-            background-color: transparent;
-            border-radius: .25rem;
-            background-image: none;
-            outline: 0;
-        }
-        .btn:hover {
-            color: #FFF;
+        display: none;
+        background-color: #FFF;
+        padding: .2rem .3rem;
+        border: 1px solid #CCC !important;
+        font-size: 75%;
+        color: #818a91;
+        cursor: pointer;
+        background-color: transparent;
+        border-radius: .25rem;
+        background-image: none;
+        outline: 0;
+
+        &:hover {
+            color: #FFF !important;
             background-color: #D9230F;
             outline: 0;
-            border-color: rgb(173, 28, 12);
+            border-color: rgb(173, 28, 12) !important;
         }
     }
 }

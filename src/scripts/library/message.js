@@ -1,41 +1,62 @@
 export function onXhrMessage(oEvent)
 {
-  var request = oEvent.data;
-  console.log(`[onXhrMessage]`, oEvent);
+  let eventData = oEvent.data;
+  let action = eventData.action;
+  let data = eventData.data;
 
-  if (request.action == "update-progress-label")
+  if(!action)
   {
-    $('.current-request-status').html(browser.i18n.getMessage(request.data));
+    console.error(`[message.js][onXhrMessage]no action`, oEvent);
     return false;
   }
 
-  if (request.action == "update-progress-bar") {
+  console.log(`[message.js][onXhrMessage]`, oEvent);
+
+  if (action == "update-progress-label")
+  {
+    $('.current-request-status').html(browser.i18n.getMessage(data));
+    return false;
+  }
+
+  if (action == "update-progress-bar") {
     $('[role="progressbar"]')
       .addClass('progress-bar-animated')
-      .attr('aria-valuenow', request.data)
-      .css('width', request.data + '%');
+      .attr('aria-valuenow', data)
+      .css('width', data + '%');
     return false;
   }
 
-  if (request.action == "set-progress-bar-animated") {
+  if (action == "set-progress-bar-animated") {
     $('[role="progressbar"]').addClass('progress-bar-animated')
       .attr('aria-valuenow', '100')
       .css('width', '100%');
-    $('.current-request-status').html(browser.i18n.getMessage(request.data));
+    $('.current-request-status').html(browser.i18n.getMessage(data));
     return false;
   }
 
-  if (request.action == "hide-overlay") {
+  if (action == "hide-overlay") {
     $(document).trigger("hide-fullscreen");
     return false;
   }
 
 
-  if (request.action == "http-request-load") {
-    var mime = false;
+  if (action == "http-request-load") {
+
     $(document).trigger("hide-fullscreen");
-    if (request.data && request.data.headers) {
-      _.each(request.data.headers, function (header) {
+    let response = (data && data.response) ? data.response : false;
+    let headers = (data && data.headers) ? data.headers : false;
+    let timeCosted = (data && data.timeCosted) ? data.timeCosted : -1;
+
+    let responseType = 'text';
+    let mime = 'plain/text';
+    if (data && data.responseType)
+    {
+      responseType = data.responseType;
+    }
+
+    if (Array.isArray(headers)) 
+    {
+      _.each(headers, function (header) {
         var span = $('<span class="d-flex"></span>');
         span.append($('<span class="header-name"></span>').text(header['key']));
         span.append($('<span class="header-split">: </span>'));
@@ -44,24 +65,26 @@ export function onXhrMessage(oEvent)
         $('#response-headers ol').append(li);
 
         if (header['key'].toLowerCase() == 'content-type') {
-          mime = header['value'];
+          var contentType = header['value'].toLowerCase();
+          mime = (contentType.indexOf(';') > 0) ? contentType.substr(0, contentType.indexOf(';')) : contentType;
         }
       });
     }
 
-    var body = request.data.body || '';
-    $(document).trigger('update-response-body', [mime, body]);
+    toastr.success(browser.i18n.getMessage("jsMessageExecutionTime", timeCosted), null, { "positionClass": "toast-bottom-full-width" });
+    // console.log(`[message.js][http-request-load]`, mime, responseType, response);
+    $(document).trigger('update-response-body', [mime, responseType, response]);
     return false;
   }
 
-  if (request.action == "abort-http-request") {
+  if (action == "abort-http-request") {
     toastr.warning(
       browser.i18n.getMessage("jsMessageAbortRequest", [$('#request-method').val(), $('#request-url').val()])
     );
     return false;
   }
 
-  if (request.action == "http-request-timeout") {
+  if (action == "http-request-timeout") {
     $(document).trigger("hide-fullscreen");
     toastr.error(
       browser.i18n.getMessage("jsMessageTimeOut", [$('#request-method').val(), $('#request-url').val()])
@@ -69,22 +92,22 @@ export function onXhrMessage(oEvent)
     return false;
   }
 
-  if (request.action == "http-request-error") {
+  if (action == "http-request-error") {
     $(document).trigger("hide-fullscreen");
     let url = $('#request-url').val();
-    if (typeof request.data.readyState !== 'undefined' && request.data.readyState == 4
-      && typeof request.data.status != 'undefined' && request.data.status == 0
+    if (typeof data.readyState !== 'undefined' && data.readyState == 4
+      && typeof data.status != 'undefined' && data.status == 0
       && url.toLowerCase().indexOf('https://') == 0) {
       $('#modal-https').data('url', url).modal('show');
       return false;
     }
-    let title = typeof request.data.title == 'undefined' ? browser.i18n.getMessage("jsMessageError") : request.data.title;
-    let content = typeof request.data.detail == 'undefined' ? browser.i18n.getMessage("jsMessageErrorDetail") : request.data.detail;
+    let title = typeof data.title == 'undefined' ? browser.i18n.getMessage("jsMessageError") : data.title;
+    let content = typeof data.detail == 'undefined' ? browser.i18n.getMessage("jsMessageErrorDetail") : data.detail;
     toastr.error(content, title);
     return false;
   }
 
-  if (request.action == "start-counting") {
+  if (action == "start-counting") {
     $(document).trigger('start-counting');
     return false;
   }

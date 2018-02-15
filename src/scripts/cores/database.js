@@ -336,12 +336,20 @@ var Database = {
 }
 
 ext.tabs.getCurrent().then(function (tabInfo) {
-    if (!tabInfo.incognito) {
-        Database.init().then(function () {
-            console.log('[database.js] database inited');
-            $(document).trigger('favorite-requests-loaded');
-        });
+    if (tabInfo.incognito == false) {
+        Database.init().then(
+            function (value) {
+                console.log('[database.js] database inited');
+                $(document).trigger('favorite-requests-loaded');
+            }, function (reason) {
+                console.error('[database.js] database cannot inited', reason);
+            }
+        );
+    }
+    else
+    {
+        console.warn('[database.js] You are running in incognito mode.');
     }
 }, function (error) {
-    console.log(`[database.js] Error: ${error}`);
+    console.error(`[database.js] Error: ${error}`);
 });

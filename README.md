@@ -10,6 +10,9 @@
   * Added Chinese locale.
   * Added an instruction for add self signed web site to certificates exception list.
   * Added headers for following server side redirection.
+  * Binary response type is supported.
+  * Added download button for binary response.
+  * Fixed some bugs.
 * Version 3.0.5
   * Fixed basic authentication unicode problem.
   * Added OAuth 1.0 authentication.

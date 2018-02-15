@@ -51,7 +51,9 @@ $(function () {
     if( _.isNaN(ts) )
     {
       $(this).parents('.form-group').addClass('has-danger');
-      $('#oauth-timestamp-help').text('Invalid timestamp').show();
+      $('#oauth-timestamp-help').text(
+          browser.i18n.getMessage("jsOAuthInValidTimestamp")
+      ).show();
       return false;
     }
     $(this).parents('.form-group').removeClass('has-danger');
@@ -231,18 +233,18 @@ $(function () {
   });
 
   $(document).on('show.bs.modal', '#modal-oauth-preview', function (e) {
-    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    var validUrl = isWebUrl($('#request-url').val());
     if (typeof validUrl == 'undefined') {
-      toastr.error('Please input a valid URL first!');
+      toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
       return true;
     }
     $(document).trigger('update-oauth-preview');
   });
 
   $(document).on('click', '#modal-oauth-preview .btn-refresh', function (e) {
-    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    var validUrl = isWebUrl($('#request-url').val());
     if (typeof validUrl == 'undefined') {
-      toastr.error('Please input a valid URL first!');
+      toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
       return true;
     }
     $(document).trigger('update-oauth-preview');
@@ -254,18 +256,18 @@ $(function () {
 
     if (_.isString(params.oauth_nonce) && params.oauth_nonce != ''
           && _.isString(params.oauth_timestamp) && params.oauth_timestamp != '') {
-      toastr.success('OAuth 1.0 signature refreshed!');
+      toastr.success(browser.i18n.getMessage("jsOAuthRefreshed"));
     }
   });
   
   $(document).on('click', '.authentication-mode[data-mode="oauth10"] .btn-refresh', function (e) {
-    var validUrl = urlHelper.is_web_iri($('#request-url').val());
+    var validUrl = isWebUrl($('#request-url').val());
     if (typeof validUrl == 'undefined') {
-      toastr.error('Please input a valid URL first!');
+      toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
       return true;
     }
     $(document).trigger('update-oauth-preview');
-    toastr.success('OAuth 1.0 signature refreshed!');
+    toastr.success(browser.i18n.getMessage("jsOAuthRefreshed"));
   });
 
   $(document).on('update-oauth-preview', function(){

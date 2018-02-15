@@ -3,7 +3,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">OAuth 1.0</h5>
+            <h5 class="modal-title" data-i18n="modalOAuthTitle">OAuth 1.0</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -13,10 +13,10 @@
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" data-toggle="tab" href="#oauth-signature" role="tab">Signature for this request</a>
+                  <a class="nav-link active" data-toggle="tab" href="#oauth-signature" role="tab" data-i18n="modalOAuthSign">Signature for this request</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#oauth-setting" role="tab">Settings</a>
+                  <a class="nav-link" data-toggle="tab" href="#oauth-setting" role="tab" data-i18n="modalOAuthSetting">Settings</a>
                 </li>
               </ul>
               
@@ -25,43 +25,43 @@
                 <div class="tab-pane container active" id="oauth-signature" role="tabpanel">
                   <!-- oauth-signature -->
                     <div class="form-group row m-t-md required">
-                      <label for="oauth-consumer-key" class="col-sm-3 form-control-label">Consumer key</label>
+                      <label for="oauth-consumer-key" class="col-sm-3 form-control-label" data-i18n="modalOAuthConsumerKey">Consumer key</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" id="oauth-consumer-key" placeholder="rKGCVb7Z7b7Z8sVW">
-                        <small id="oauth-consumer-key-helper" class="form-text text-danger helper" style="display: none">Consumer key must be filled out</small>
+                        <input type="text" class="form-control" id="oauth-consumer-key" placeholder="Consumer key">
+                        <small id="oauth-consumer-key-helper" class="form-text text-danger helper" style="display: none" data-i18n="modalOAuthConsumerKeyHelper">Consumer key must be filled out</small>
                       </div>
                     </div>
                     <div class="form-group row required">
-                      <label for="oauth-shared-secret" class="col-sm-3 form-control-label">Shared secret</label>
+                      <label for="oauth-shared-secret" class="col-sm-3 form-control-label" data-i18n="modalOAuthSharedSecret">Shared secret</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" id="oauth-shared-secret" placeholder="4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn">
-                        <small id="oauth-shared-secret-helper" class="form-text text-danger helper" style="display: none">Shared secret must be filled out</small>
+                        <input type="text" class="form-control" id="oauth-shared-secret" placeholder="Shared secret">
+                        <small id="oauth-shared-secret-helper" class="form-text text-danger helper" style="display: none" data-i18n="modalOAuthSharedSecretHelper">Shared secret must be filled out</small>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="oauth-access-token" class="col-sm-3 col-form-label">Access token</label>
+                      <label for="oauth-access-token" class="col-sm-3 col-form-label" data-i18n="modalOAuthAcessToken">Access token</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" id="oauth-access-token" placeholder="LJQgJERHMuJYrRrHRnAqUENE">
+                        <input type="text" class="form-control" id="oauth-access-token" placeholder="Access token">
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="oauth-access-token-secret" class="col-sm-3 col-form-label">Access token secret</label>
+                      <label for="oauth-access-token-secret" class="col-sm-3 col-form-label" data-i18n="modalOAuthAcessTokenSecret">Access token secret</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" id="oauth-access-token-secret" placeholder="kuTaPVZdkaDT4tdKcWFQbnRJzPZ54jS5QXLXyUnqfsdyjFGLKawXMCKf6JKeXRSkaGQdUGKt">
+                        <input type="text" class="form-control" id="oauth-access-token-secret" placeholder="Access token secret">
                       </div>
                     </div>
                     <div class="form-group row m-b-xs">
-                      <label for="oauth-parameter-transmission" class="col-sm-3 col-form-label">Parameter transmission</label>
+                      <label for="oauth-parameter-transmission" class="col-sm-3 col-form-label" data-i18n="modalOAuthPT">Parameter transmission</label>
                       <div class="col-sm-9" style="line-height: 34px;">
                         <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
                           <input class="form-check-input" type="radio" name="oauth-parameter-transmission" id="oauth-parameter-transmission-header" value="header" checked>
-                          <label class="form-check-label" for="oauth-parameter-transmission-header">
+                          <label class="form-check-label" for="oauth-parameter-transmission-header" data-i18n="modalOAuthPTHeader">
                             Authorization header
                           </label>
                         </div>
                         <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
                           <input class="form-check-input" type="radio" name="oauth-parameter-transmission" id="oauth-parameter-transmission-query" value="query">
-                          <label class="form-check-label" for="oauth-parameter-transmission-query">
+                          <label class="form-check-label" for="oauth-parameter-transmission-query" data-i18n="modalOAuthPTQS">
                             Request query string
                           </label>
                         </div>
@@ -72,7 +72,7 @@
                 <div class="tab-pane container" id="oauth-setting" role="tabpanel">
                   <!-- oauth-settings -->
                   <div class="form-group row m-t-md">
-                    <label for="oauth-signature-method" class="col-sm-3 col-form-label">Signature method</label>
+                    <label for="oauth-signature-method" class="col-sm-3 col-form-label" data-i18n="modalOAuthMethod">Signature method</label>
                     <div class="col-sm-9" style="line-height: 34px;">
                       <div class="form-check abc-radio d-inline-block m-b-none m-r-md">
                         <input class="form-check-input" type="radio" name="oauth-signature-method" id="oauth-signature-plaintext" value="PLAINTEXT">
@@ -97,25 +97,25 @@
                     </div>
                   </div>
                   <div class="form-group row m-t-md">
-                    <label for="oauth-consumer-key" class="col-sm-3 col-form-label">OAuth version</label>
+                    <label for="oauth-consumer-key" class="col-sm-3 col-form-label" data-i18n="modalOAuthVersion">OAuth version</label>
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="oauth-version" placeholder="1.0" value="1.0" readonly>
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="oauth-consumer-secret" class="col-sm-3 col-form-label">Realm</label>
+                    <label for="oauth-consumer-secret" class="col-sm-3 col-form-label" data-i18n="modalOAuthRealm">Realm</label>
                     <div class="col-sm-9">
                       <div class="input-group">
-                        <input type="text" class="form-control" id="oauth-realm" placeholder="http://sp.example.com" readonly>
+                        <input type="text" class="form-control" id="oauth-realm" placeholder="Realm, e.g. http://sp.example.com" readonly>
                         <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
                           <input type="checkbox" id="oauth-realm-auto" checked="true" disabled="true" aria-label="Checkbox for following text input"> 
-                          <label for="oauth-realm-auto">
+                          <label for="oauth-realm-auto" data-i18n="modalAuto">
                             Auto
                           </label>
                         </span>
                         <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
                           <input type="checkbox" id="oauth-realm-disabled" checked="true" aria-label="Checkbox for following text input">
-                          <label for="oauth-realm-disabled">
+                          <label for="oauth-realm-disabled" data-i18n="modalDisabled">
                             Disabled
                           </label>
                         </span>
@@ -123,13 +123,13 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label for="oauth-access-token" class="col-sm-3 col-form-label">OAuth nonce</label>
+                    <label for="oauth-access-token" class="col-sm-3 col-form-label" data-i18n="modalOAuthNonce">OAuth nonce</label>
                     <div class="col-sm-9">
                       <div class="input-group">
                         <input type="text" class="form-control" id="oauth-nonce" placeholder="OAuth nonce" readonly>
                         <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
                           <input type="checkbox" id="oauth-nonce-auto" checked="true" aria-label="Checkbox for following text input">
-                          <label for="oauth-nonce-auto">
+                          <label for="oauth-nonce-auto" data-i18n="modalAuto">
                             Auto
                           </label>
                         </span>
@@ -137,13 +137,13 @@
                     </div>
                   </div>
                   <div class="form-group row m-b-xs">
-                    <label for="oauth-access-token-secret" class="col-sm-3 col-form-label">OAuth timestamp</label>
+                    <label for="oauth-access-token-secret" class="col-sm-3 col-form-label" data-i18n="modalOAuthTimestamp">OAuth timestamp</label>
                     <div class="col-sm-9">
                       <div class="input-group">
                         <input type="number" step="1" class="form-control" id="oauth-timestamp" placeholder="OAuth timestamp" readonly>
                         <span class="input-group-addon d-inline-block abc-checkbox abc-checkbox-dark">
                           <input type="checkbox" id="oauth-timestamp-auto" checked="true" aria-label="Checkbox for following text input">
-                          <label for="oauth-timestamp-auto">
+                          <label for="oauth-timestamp-auto" data-i18n="modalAuto">
                             Auto
                           </label>
                         </span>
@@ -159,12 +159,12 @@
           <div class="modal-footer">
             <div class="form-check abc-checkbox abc-checkbox-danger">
               <input class="form-check-input" id="save-oauth" type="checkbox">
-              <label class="form-check-label" for="save-oauth">
+              <label class="form-check-label" for="save-oauth" data-i18n="modalOAuthRemember">
                 Remember this signature
               </label>
             </div>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-oauth-okay">Okay</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
+            <button type="submit" class="btn btn-primary btn-oauth-okay" data-i18n="modalOkay">Okay</button>
           </div>
         </div>
       </div>
@@ -175,19 +175,19 @@
       <form class="form-request-header">
         <div class="modal-content">
           <div class="modal-body">
-            <h5>OAuth Parameters</h5>
+            <h5 data-i18n="modalOauthPreviewTitle">OAuth Parameters</h5>
             <table class="table table-hover table-bordered m-t-md">
               <thead class="thead-inverse">
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Value</th>
+                  <th data-i18n="modalOauthPreviewName">Name</th>
+                  <th data-i18n="modalOauthPreviewValue">Value</th>
                 </tr>
               </thead>
               <tbody>
               </tbody>
             </table>
-            <h5 class="m-t-lg">OAuth header</h5>
+            <h5 class="m-t-lg" data-i18n="modalOauthPreviewHeader">OAuth header</h5>
             <div class="card card-outline-primary text-xs-center m-t-md">
               <div class="card-block">
                 <blockquote class="card-blockquote oauth-preview-header">
@@ -195,7 +195,7 @@
                 </blockquote>
               </div>
             </div>
-            <h5 class="m-t-lg">OAuth signed URL</h5>
+            <h5 class="m-t-lg" data-i18n="modalOauthPreviewSignedUrl">OAuth signed URL</h5>
             <div class="card card-outline-primary text-xs-center m-t-md">
               <div class="card-block">
                 <blockquote class="card-blockquote oauth-preview-url">
@@ -205,8 +205,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
+            <button type="button" class="btn btn-primary btn-refresh"><i class="fa fa-refresh"></i> <span data-i18n="modalRefresh">Refresh</span></button>
           </div>
         </div>
       </form>

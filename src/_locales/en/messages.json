@@ -1,14 +1,1000 @@
 {
+  "appVersion": {
+    "message": "v3.0.6",
+    "description": "Current version number"
+  },
   "appName": {
     "message": "RESTClient",
-    "description": "The name of the extension."
+    "description": "a debugger for RESTful web services."
   },
   "appDescription": {
-    "message": "Boilerplate for building cross browser extensions",
+    "message": "a debugger for RESTful web services.",
     "description": "The description of the extension."
   },
   "btnTooltip": {
-    "message": "RESTClient",
+    "message": "Open a new RESTClient window.",
     "description": "Open a new RESTClient window."
+  },
+  "menuAuthentication": {
+    "message": "Authentication",
+    "description": "Menu authentication"
+  },
+  "menuHttpAuthentication": {
+    "message": "HTTP authentication",
+    "description": "Menu authentication"
+  },
+  "menuBasicAuthentication": {
+    "message": "Basic Authentication",
+    "description": "HTTP authentication"
+  },
+  "menuOAuthProtocol": {
+    "message": "OAuth Protocol",
+    "description": "Menu authentication"
+  },
+  "menuOAuth10Authentication": {
+    "message": "OAuth 1.0",
+    "description": "OAuth 1.0"
+  },
+  "menuOAuth20Authentication": {
+    "message": "OAuth 2.0",
+    "description": "OAuth 2.0"
+  },
+  "menuHeaders": {
+    "message": "Headers",
+    "description": "Menu Headers"
+  },
+  "menuCustomHeader": {
+    "message": "Custom Header",
+    "description": "Menu Custom Header"
+  },
+  "menuClearFavorites": {
+    "message": "Clear Favorites",
+    "description": "Menu Clear Favorites"
+  },
+  "menuView": {
+    "message": "View",
+    "description": "Menu View"
+  },
+  "menuViewRequest": {
+    "message": "Request",
+    "description": "Menu view request"
+  },
+  "menuViewResponse": {
+    "message": "Response",
+    "description": "Menu view response"
+  },
+  "menuViewCurl": {
+    "message": "Curl",
+    "description": "Menu view curl"
+  },
+  "menuFavorites": {
+    "message": "Favorites",
+    "description": "Menu Favorites"
+  },
+  "menuImportFavorites": {
+    "message": "Import Favorite Request",
+    "description": "Menu Import Favorite Request"
+  },
+  "menuExportFavorites": {
+    "message": "Export Favorite Request",
+    "description": "Menu Export Favorite Request"
+  },
+  "menuManageFavorite": {
+    "message": "Manage Favorite Request",
+    "description": "Menu Manage Favorite Request"
+  },
+  "menuSaveCurrentRequest": {
+    "message": "Save Current Request",
+    "description": "Menu Save Current Request"
+  },
+  "menuDataMigration": {
+    "message": "Data migration",
+    "description": "Menu Data migration"
+  },
+  "mainPanelCurl": {
+    "message": "Curl",
+    "description": "Curl panel title"
+  },
+  "mainCurlCommand": {
+    "message": "Command",
+    "description": "Curl panel command"
+  },
+  "curlButtonTitleCopy": {
+    "message": "Copy",
+    "description": "Curl button to copy curl command"
+  },
+  "curlButtonTitlePaste": {
+    "message": "Paste",
+    "description": "Curl button to paste curl command"
+  },
+  "curlTextareaPlaceholder": {
+    "message": "CURL command",
+    "description": "Curl panel command textarea placeholder"
+  },
+  "footerAHome": {
+    "message": "Home",
+    "description": "The link at the footer for github home"
+  },
+  "footerAForkMe": {
+    "message": "Fork me",
+    "description": "The link at the footer for forking"
+  },
+  "footerAReportAIssue": {
+    "message": "Report an issue",
+    "description": "The link at the footer for report an issue"
+  },
+  "requestTitle": {
+    "message": "Request",
+    "description": "The title of request panel"
+  },
+  "requestBasicAuthentication": {
+    "message": "Basic authentication",
+    "description": "authentication mode label"
+  },
+  "requestOAuth10": {
+    "message": "OAuth 1.0",
+    "description": "authentication mode label"
+  },
+  "requestOAuth20": {
+    "message": "OAuth 2.0",
+    "description": "authentication mode label"
+  },
+  "requestEdit": {
+    "message": "Edit",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestPreview": {
+    "message": "Preview",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestRefresh": {
+    "message": "Refresh",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestRefreshNow": {
+    "message": "Refresh now",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestSetting": {
+    "message": "Setting",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmission": {
+    "message": "Token transmission",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmissionAsHeader": {
+    "message": "As header",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmissionAsQueryString": {
+    "message": "As query string",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestMethod": {
+    "message": "Method",
+    "description": "Request panel method select"
+  },
+  "requestResponseTypeMenu": {
+    "message": "Response type",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuText": {
+    "message": "Text",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuBlob": {
+    "message": "Blob (Binary file)",
+    "description": "Request panel response type dropdown"
+  },
+  "requestUrl": {
+    "message": "URL",
+    "description": "Request panel label"
+  },
+  "requestSend": {
+    "message": "SEND",
+    "description": "Request panel label"
+  },
+  "requestHeaders": {
+    "message": "Headers",
+    "description": "Request headers panel title"
+  },
+  "requestRemoveAll": {
+    "message": "Remove all",
+    "description": "Request headers panel title"
+  },
+  "requestBody": {
+    "message": "Body",
+    "description": "Request body panel title"
+  },
+  "requestbodytextarea": {
+    "message": "Request Body",
+    "description": "Request body panel title"
+  },
+  "responseTitle": {
+    "message": "Response",
+    "description": "Response panel title"
+  },
+  "responseTypeBadge": {
+    "message": "Binary",
+    "description": "Response type badge"
+  },
+  "responseTabHeaders": {
+    "message": "Headers",
+    "description": "Response panel tab header - Headers"
+  },
+  "responseTabResponse": {
+    "message": "Response",
+    "description": "Response panel tab header - Response"
+  },
+  "responseTabPreview": {
+    "message": "Preview",
+    "description": "Response panel tab header - Preview"
+  },
+  "responseTabDownload": {
+    "message": "download response body",
+    "description": "Response panel tab download button [title]"
+  },
+  "responseContentBody": {
+    "message": "Response Body",
+    "description": "Response panel content body textarea placeholder"
+  },
+  "responseContentPreview": {
+    "message": "Response Preview",
+    "description": "Response panel content body preivew textarea placeholder"
+  },
+  "scroll": {
+    "message": "Scroll to Top",
+    "description": "Scroll to Top button title"
+  },
+  "favoriteTitle": {
+    "message": "Favorites",
+    "description": "Favorites sidebar title"
+  },
+  "favoriteIsEmptyTip": {
+    "message": "You have no favorite request yet, you can add your request to from menu \"Favorite\" - \"Save Current Request\".",
+    "description": "Favorites sidebar tip `no favorite`"
+  },
+  "overlaySecond": {
+    "message": "Seconds Passed",
+    "description": "Overlay seconds passed"
+  },
+  "modalBasicAuthenticationTitle": {
+    "message": "Basic Authentication",
+    "description": "#modal-basic-auth .modal-title"
+  },
+  "modalBasicAuthenticationUsername": {
+    "message": "Username",
+    "description": "#modal-basic-auth input['name=\"username\"]"
+  },
+  "modalBasicAuthenticationUsernameInfo": {
+    "message": "Username cannot be empty.",
+    "description": "#modal-basic-auth .basic-auth-name-helper"
+  },
+  "modalBasicAuthenticationPassword": {
+    "message": "Password",
+    "description":"#modal-basic-auth input['name=\"password\"]"
+  },
+  "modalFavoriteTitle": {
+    "message": "Save Current Request",
+    "description": "modal favorite"
+  },
+  "modalFavoriteName": {
+    "message": "Name",
+    "description": "modal favorite"
+  },
+  "modalFavoriteNameHelper": {
+    "message": "Name must be filled out.",
+    "description": "modal favorite"
+  },
+  "modalFavoriteTags": {
+    "message": "Tags",
+    "description": "modal favorite"
+  },
+  "modalFormDataTitle": {
+    "message": "Form Data Editor",
+    "description": "modal form data editor"
+  },
+  "modalFormDataName": {
+    "message": "Name",
+    "description": "modal form data editor"
+  },
+  "modalFormDataValue": {
+    "message": "Value",
+    "description": "modal form data editor"
+  },
+  "modalHeaderTitle": {
+    "message": "Request Headers",
+    "description": "modal request header editor"
+  },
+  "modalHeaderName": {
+    "message": "Name",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeName": {
+    "message": "Attribute Name",
+    "description": "modal request header editor"
+  },
+  "modalHeaderValue": {
+    "message": "Attribute Value",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeValue": {
+    "message": "Value",
+    "description": "modal request header editor"
+  },
+  "modalHeaderFavorite": {
+    "message": "Favorite header",
+    "description": "modal request header editor"
+  },
+  "modalImportTitle": {
+    "message": "Import Favorite Request",
+    "description": "modal favorite import"
+  },
+  "modalImportWarning": {
+    "message": "Warning:",
+    "description": "modal favorite importr"
+  },
+  "modalImportWarningDetail": {
+    "message": "any requests that have the same request name as ones already in your favorites will replace automatically.",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPTitle": {
+    "message": "Drag and drop your favorite request file (.json) here,",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPClient": {
+    "message": "or click here to select file.",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPMax": {
+    "message": "Max file size: 5 MB",
+    "description": "modal favorite importr"
+  },
+  
+  "modalMigrationTitle": {
+    "message": "Migrate from RESTClient 2",
+    "description": "modal migration"
+  },
+  "modalMigrationHowTo": {
+    "message": "How to",
+    "description": "modal migration"
+  },
+  "modalMigrationMigrate": {
+    "message": "Migrate",
+    "description": "modal migration"
+  },
+  "modalMigrationReason": {
+    "message": "Firefox 57 drops support for legacy API for accessing preferences system in Firefox. RESTClient 2 uses preferences to store your favorited headers, urls, and requests. To import your old favorites data, you will have to do it manually.",
+    "description": "modal migration"
+  },
+  "modalMigrationConfig": {
+    "message": "This following content describes how to use the <code>about:config</code> page to get RESTClient2 preference settings.",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1": {
+    "message": "1. Opening about:config",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1Info": {
+    "message": "In the address bar, type <code>about:config</code> and press Return. <br/> The about:config \"This might void your warranty!\" warning page may appear. Click I accept the risk! to continue to the about:config page.",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2": {
+    "message": "2. Searching for RESTClient preferences and copy RESTClient2 settings",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2Info": {
+    "message": "You can enter <code>restclient</code> in the <code>Search</code> box at the top of the <code>about:config</code> page to quickly find <code>RESTClient</code> preferences.",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3": {
+    "message": "3. Go to <code>migrate</code> tab panel paste settings",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3Info": {
+    "message": "You will need to copy and paste the following values: <ul><li>extension.restclient.cachedUrls</li><li>extension.restclient.favoriteHeaders</li><li>extension.restclient.savedRequest</li></ul>",
+    "description": "modal migration"
+  },
+  "modalMigrationTabSwitcher": {
+    "message": "Go to migrate panel",
+    "description": "modal migration"
+  },
+  "modalMigrationURL": {
+    "message": "Favorite URLs",
+    "description": "modal migration"
+  },
+  "modalMigrationURLHelper": {
+    "message": "Paste preference <span class=\"text-danger\">`extension.restclient.cachedUrls`</span> value.",
+    "description": "modal migration"
+  },
+  "modalMigrationHeader": {
+    "message": "Favorite Headers",
+    "description": "modal migration"
+  },
+  "modalMigrationHeaderHelper": {
+    "message": "Paste preference <span class=\"text-danger\">`extension.restclient.favoriteHeaders`</span> value.",
+    "description": "modal migration"
+  },
+  "modalMigrationRequest": {
+    "message": "Favorite Requests",
+    "description": "modal migration"
+  },
+  "modalMigrationRequestHelper": {
+    "message": "Paste preference<span class=\"text-danger\">`extension.restclient.savedRequest`</span> value.",
+    "description": "modal migration"
+  },
+  "modalMigrationDoItNow": {
+    "message": "Migrate it now",
+    "description": "modal migration"
+  },
+  "modalMigrationDontBotherMe": {
+    "message": "Don't bother me",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewTitle": {
+    "message": "OAuth Parameters",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewName": {
+    "message": "Name",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewValue": {
+    "message": "Value",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewHeader": {
+    "message": "OAuth header",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewSignedUrl": {
+    "message": "OAuth signed URL",
+    "description": "modal oauth preview"
+  },
+
+  "modalOAuthTitle": {
+    "message": "OAuth 1.0",
+    "description": "modal oauth"
+  },
+  "modalOAuthSign": {
+    "message": "Signature for this request",
+    "description": "modal oauth"
+  },
+  "modalOAuthSetting": {
+    "message": "Settings",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKey": {
+    "message": "Consumer key",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKeyHelper": {
+    "message": "Consumer key must be filled out",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecret": {
+    "message": "Shared secret",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecretHelper": {
+    "message": "Shared secret must be filled out",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessToken": {
+    "message": "Access token",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessTokenSecret": {
+    "message": "Access token secret",
+    "description": "modal oauth"
+  },
+  "modalOAuthPT": {
+    "message": "Parameter transmission",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTHeader": {
+    "message": "Authorization header",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTQS": {
+    "message": "Request query string",
+    "description": "modal oauth"
+  },
+  "modalOAuthMethod": {
+    "message": "Signature method",
+    "description": "modal oauth"
+  },
+  "modalOAuthVersion": {
+    "message": "OAuth version",
+    "description": "modal oauth"
+  },
+  "modalOAuthRealm": {
+    "message": "Realm",
+    "description": "modal oauth"
+  },
+  "modalOAuthNonce": {
+    "message": "OAuth nonce",
+    "description": "modal oauth"
+  },
+  "modalOAuthTimestamp": {
+    "message": "OAuth timestamp",
+    "description": "modal oauth"
+  },
+  "modalOAuthRemember": {
+    "message": "Remember this signature",
+    "description": "modal oauth"
+  },
+
+  "modalOAuth2Title": {
+    "message": "OAuth 2.0",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Intro": {
+    "message": "Get new access token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GrantType": {
+    "message": "Grant type",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTAC": {
+    "message": "Authorization code",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTCC": {
+    "message": "Client credentials",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientId": {
+    "message": "Client id",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInput": {
+    "message": "Client id, e.g. rKGCVb7Z7b7Z8sVW",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInputHelper": {
+    "message": "Client id must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecret": {
+    "message": "Client secret",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInput": {
+    "message": "Client secret, e.g. 4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInputHelper": {
+    "message": "Client secret must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Scope": {
+    "message": "Scope",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ScopeInput": {
+    "message": "Scope",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2State": {
+    "message": "State",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2StateInput": {
+    "message": "OAuth state",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestMethod": {
+    "message": "Request Method",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMPost": {
+    "message": "POST",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMGet": {
+    "message": "GET",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEP": {
+    "message": "Authorization endpoint",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInput": {
+    "message": "https://github.com/login/oauth/authorize",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInputHelper": {
+    "message": "Authorization endpoint must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEP": {
+    "message": "Token endpoint",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPInput": {
+    "message": "https://github.com/login/oauth/access_token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPHelper": {
+    "message": "Token endpoint must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEP": {
+    "message": "Redirect endpoint",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInput": {
+    "message": "http://restclient.net/auth/github/callback",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInputHelper": {
+    "message": "Redirect endpoint must be filled out",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Remember": {
+    "message": "Remember this setting",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestToken": {
+    "message": "Request token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RefreshTitle": {
+    "message": "OAuth 2.0 <small class=\"text-muted\">Refresh access token</small>",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshToken": {
+    "message": "Refresh token",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInput": {
+    "message": "Refresh token, e.g. 4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInputHelper": {
+    "message": "Refresh token must be filled out for refreshing",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpoint": {
+    "message": "Refreshing endpoint",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInput": {
+    "message": "Refreshing endpoint, e.g. https://github.com/login/oauth/access_token",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInputHelper": {
+    "message": "Refresh endpoint must be filled out for refreshing",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScope": {
+    "message": "Scope",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScopeInput": {
+    "message": "Scope",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2PreviewTitle": {
+    "message": "OAuth 2.0 Access token",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewName": {
+    "message": "Name",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewValue": {
+    "message": "Value",
+    "description": "modal oauth2 preview"
+  },
+
+  "modalHttpsTitle": {
+    "message": "$URL$ uses an invalid security certificate",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "modalHttpsReason": {
+    "message": "It seems the web site \"$URL$\" is using an invalid security certificate. You can add an exception in order to visit the site. Please open the web site on a new tab then click on the button <code>Advanced</code>, then click <code>Add Exception...</code> button and click the button <code>Confirm Security Exception</code> in Add Security Exception dialog. After add the web site \"$URL$\" to the exception list you can use RESTClient continue to test that web site again.",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "imageHttpsCertificateException": {
+    "message": "images/en/https/certificate.png",
+    "description": "modal https"
+  },
+  "modalHttpsMore": {
+    "message": "For more information please refer to: <a href=\"http://mzl.la/1lFJl3h\">Firefox support</a>",
+    "description": "modal https"
+  },
+  "modalHttpsOpenTab": {
+    "message": "Open in a new tab",
+    "description": "modal https"
+  },
+
+  "modalBinWarning": {
+    "message": "Binary response detected",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningContent": {
+    "message": "Your current HTTP response MIME type is \"$MIME$\". To view the response properly, you need to switch response type to \"Blob (Binary file)\" type. ",
+    "description": "modal binary warning",
+    "placeholders": {
+      "mime": {
+        "content": "$1",
+        "example": "text/plain"
+      }
+    }
+  },
+  "modalBinWarningHowTo": {
+    "message": "You can switch response type from the drop down menu at the left of the URL input box.",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningImage": {
+    "message": "images/en/response/type.png",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningCheck": {
+    "message": "Don't bother me again!",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningBtn": {
+    "message": "Set response type to Blob, and send again",
+    "description": "modal binary warning"
+  },
+
+  "modalAuto": {
+    "message": "Auto",
+    "description": "modal input auto button"
+  },
+  "modalDisabled": {
+    "message": "Disabled",
+    "description": "modal input disabled button"
+  },
+  "modalClose": {
+    "message": "Close",
+    "description": "modal close button"
+  },
+  "modalOkay": {
+    "message": "Okay",
+    "description": "modal okay button"
+  },
+  "modalSave": {
+    "message": "Save",
+    "description": "modal save button"
+  },
+  "modalRefresh": {
+    "message": "Refresh",
+    "description": "modal refresh button"
+  },
+
+  "imageMigration2041": {
+    "message": "images/en/migration/204-1.png",
+    "description": "modal migration about:page screenshot"
+  },
+  "imageMigration2042": {
+    "message": "images/en/migration/204-2.png",
+    "description": "modal migration about:page page screenshot"
+  },
+
+  "jsCurlClipboardCopied": {
+    "message": "CURL command copied!",
+    "description": "curl.js clipboard on success"
+  },
+  "jsCurlCommandCannotParsed": {
+    "message": "Cannot parse your pasted CURL command.",
+    "description": "curl.js curl-command-pasted"
+  },
+  "jsFavoriteFileTooLarge": {
+    "message": "File: ($1) $2 too large.",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFileNotJsonFormat": {
+    "message": "File: ($1) $2 not JSON format.",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteCannotImport": {
+    "message": "Cannot import favorite files",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteStartToImport": {
+    "message": "Start to import...",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteImportSuccess": {
+    "message": "The file has been successfully imported",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFormatError": {
+    "message": "Format error",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsMessageAbortRequest": {
+    "message": "HTTP request ($1 $2) aborted.",
+    "description": "message.js abort-http-request"
+  },
+  "jsMessageTimeOut": {
+    "message": "HTTP request ($1 $2) timed out.",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageError": {
+    "message": "HTTP request error",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageErrorDetail": {
+    "message": "Request error without details",
+    "description": "message.js http-request-timeout"
+  },
+  "jsOAuthInvlidUrl": {
+    "message": "Please input a valid URL first!",
+    "description": "oauth.js #modal-oauth-preview show.bs.modal"
+  },
+  "jsOAuthRefreshed": {
+    "message": "OAuth 1.0 signature refreshed!",
+    "description": "oauth.js #modal-oauth-preview .btn-refresh"
+  },
+  "jsOAuthInValidTimestamp": {
+    "message": "Invalid timestamp",
+    "description": "oauth.js #oauth-timestamp input"
+  },
+  "jsOAuth2Refreshed": {
+    "message": "Access token refreshed!",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabOpened": {
+    "message": "A new tab is opened, please wait for OAuth server for processing.",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabCannotOpen": {
+    "message": "Cannot open new tab for obtaining access token.",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2TokenObtained": {
+    "message": "Access token obtained!",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetCode": {
+    "message": "Cannot get code from url: $1",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetAccessToken": {
+    "message": "Cannot get access token!",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "js204NoInput": {
+    "message": "Please paste your perference value in the textarea.",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderFormat": {
+    "message": "Invalid favorite headers value!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeader": {
+    "message": "Favorite headers should be Array value.",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderTitle": {
+    "message": "Invalid headers",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidUrlFormat": {
+    "message": "Invalid favorite urls value!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrl": {
+    "message": "Favorite urls should be Array value.",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrlTitle": {
+    "message": "Invalid urls",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidRequest": {
+    "message": "Invalid favorite requests value!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204Imported": {
+    "message": "RESTClient2 requests imported!",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "jsFavoriteConflicted": {
+    "message": "You already have a favorite request named: $1, Would you like to replace it?",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteReplaced": {
+    "message": "Request replaced.",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteSaved": {
+    "message": "Request saved.",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsRequestHeaderCannotBeEmpty": {
+    "message": "Request header name and value cannot be empty at the same time.",
+    "description": "request.js .form-request-header submit"
+  },
+  "jsRequestHeaderBlocked": {
+    "message": "Request header \"$1\" is blocked by XMLHttpRequest for security reasons.",
+    "description": "request.js .form-request-header submit"
+  },
+  "jsRequestHeaderCleared": {
+    "message": "All favorite request headers are removed.",
+    "description": "request.js .nav-custom-header-clear"
+  },
+  "jsResponseBlobTooLargeContent": {
+    "message": "File is too large to show in response. Please download it!",
+    "description": "response.js update-response-body"
+  },
+  "jsResponseBlobTypeDetected": {
+    "message": "The response MIME type is $1. Please switch your response type to \"blob\".",
+    "description": "response.js update-response-body"
+  },
+  "jsIndexPrivateModeContent": {
+    "message": "You are using private browsing mode, you will not be able to use \"favorites\" function.",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexPrivateModeTitle": {
+    "message": "Private Browsing",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexDevelopmentContent": {
+    "message": "This function is still under development.",
+    "description": "index.js development mode"
+  },
+  "jsIndexDevelopmentTitle": {
+    "message": "Not ready yet!",
+    "description": "index.js development mode"
+  },
+  "jsMainInitialized": {
+    "message": "is waiting for response",
+    "description": "main.js show-fullscreen"
+  },
+  "jsXhrSending": {
+    "message": "Sending data...",
+    "description": "xhr.js onLoadProgress"
+  },
+  "jsXhrOnLoad": {
+    "message": "Successed! Processing result...",
+    "description": "xhr.js onLoad"
+  },
+  "jsXhrOnProgressReceving": {
+    "message": "Receving data...",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnProgressProcessing": {
+    "message": "Processing...",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnErrorTitle": {
+    "message": "Error",
+    "description": "xhr.js onError"
+  },
+  "jsXhrOnErrorDetail": {
+    "message": "Could not connect to server",
+    "description": "xhr.js onError"
+  },
+  "jsXhrMakeRequestStart": {
+    "message": "Starting...",
+    "description": "xhr.js makeRequest"
+  },
+  "jsXhrMakeRequestInitiating": {
+    "message": "Initiating XMLHttpRequest...",
+    "description": "xhr.js makeRequest"
+  },
+  "jsMessageExecutionTime": {
+    "message": "Your request has been processed successfully! Execution time: $1 ms.",
+    "description": "message.js show execution time"
   }
 }

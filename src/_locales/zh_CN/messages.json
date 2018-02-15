@@ -1,0 +1,1000 @@
+{
+  "appVersion": {
+    "message": "v3.0.6",
+    "description": "当前版本号"
+  },
+  "appName": {
+    "message": "RESTClient",
+    "description": "a debugger for RESTful web services."
+  },
+  "appDescription": {
+    "message": "a debugger for RESTful web services.",
+    "description": "The description of the extension."
+  },
+  "btnTooltip": {
+    "message": "Open a new RESTClient window.",
+    "description": "Open a new RESTClient window."
+  },
+  "menuAuthentication": {
+    "message": "增加身份认证",
+    "description": "一级菜单，身份认证"
+  },
+  "menuHttpAuthentication": {
+    "message": "HTTP 身份认证",
+    "description": "Menu authentication"
+  },
+  "menuBasicAuthentication": {
+    "message": "Basic 认证",
+    "description": "HTTP authentication"
+  },
+  "menuOAuthProtocol": {
+    "message": "OAuth 协议",
+    "description": "Menu authentication"
+  },
+  "menuOAuth10Authentication": {
+    "message": "OAuth 1.0 认证",
+    "description": "OAuth 1.0"
+  },
+  "menuOAuth20Authentication": {
+    "message": "OAuth 2.0 认证",
+    "description": "OAuth 2.0"
+  },
+  "menuHeaders": {
+    "message": "增加 HTTP 头字段",
+    "description": "Menu Headers"
+  },
+  "menuCustomHeader": {
+    "message": "自定义 HTTP 头字段",
+    "description": "Menu Custom Header"
+  },
+  "menuClearFavorites": {
+    "message": "清空收藏的 HTTP 头字段",
+    "description": "Menu Clear Favorites"
+  },
+  "menuView": {
+    "message": "快速跳转",
+    "description": "Menu View"
+  },
+  "menuViewRequest": {
+    "message": "HTTP 请求",
+    "description": "Menu view request"
+  },
+  "menuViewResponse": {
+    "message": "HTTP 响应",
+    "description": "Menu view response"
+  },
+  "menuViewCurl": {
+    "message": "CURL 命令",
+    "description": "Menu view curl"
+  },
+  "menuFavorites": {
+    "message": "收藏的请求",
+    "description": "Menu Favorites"
+  },
+  "menuImportFavorites": {
+    "message": "导入收藏",
+    "description": "Menu Import Favorite Request"
+  },
+  "menuExportFavorites": {
+    "message": "导出收藏",
+    "description": "Menu Export Favorite Request"
+  },
+  "menuManageFavorite": {
+    "message": "管理收藏",
+    "description": "Menu Manage Favorite Request"
+  },
+  "menuSaveCurrentRequest": {
+    "message": "收藏当前请求",
+    "description": "Menu Save Current Request"
+  },
+  "menuDataMigration": {
+    "message": "数据迁移",
+    "description": "Menu Data migration"
+  },
+  "mainPanelCurl": {
+    "message": "CURL 命令",
+    "description": "Curl panel title"
+  },
+  "mainCurlCommand": {
+    "message": "命令内容",
+    "description": "Curl panel command"
+  },
+  "curlButtonTitleCopy": {
+    "message": "拷贝 CURL 命令",
+    "description": "Curl button to copy curl command"
+  },
+  "curlButtonTitlePaste": {
+    "message": "粘贴 CURL 命令",
+    "description": "Curl button to paste curl command"
+  },
+  "curlTextareaPlaceholder": {
+    "message": "CURL 命令",
+    "description": "Curl panel command textarea placeholder"
+  },
+  "footerAHome": {
+    "message": "Github 主页",
+    "description": "The link at the footer for github home"
+  },
+  "footerAForkMe": {
+    "message": "贡献代码",
+    "description": "The link at the footer for forking"
+  },
+  "footerAReportAIssue": {
+    "message": "提问题",
+    "description": "The link at the footer for report an issue"
+  },
+  "requestTitle": {
+    "message": "HTTP 请求",
+    "description": "The title of request panel"
+  },
+  "requestBasicAuthentication": {
+    "message": "Basic 认证",
+    "description": "authentication mode label"
+  },
+  "requestOAuth10": {
+    "message": "OAuth 1.0",
+    "description": "authentication mode label"
+  },
+  "requestOAuth20": {
+    "message": "OAuth 2.0",
+    "description": "authentication mode label"
+  },
+  "requestEdit": {
+    "message": "编辑",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestPreview": {
+    "message": "预览",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestRefresh": {
+    "message": "刷新",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestRefreshNow": {
+    "message": "立即刷新",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestSetting": {
+    "message": "设置",
+    "description": "OAuth的参数设置"
+  },
+  "requestTokenTransmission": {
+    "message": "口令牌传输方式",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmissionAsHeader": {
+    "message": "作为 HTTP 头字段",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestTokenTransmissionAsQueryString": {
+    "message": "作为 HTTP 查询字符串",
+    "description": "drop down menu for authentication mode"
+  },
+  "requestMethod": {
+    "message": "请求方法",
+    "description": "Request panel method select"
+  },
+  "requestResponseTypeMenu": {
+    "message": "选择 HTTP 响应类型",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuText": {
+    "message": "文本型（Text）",
+    "description": "Request panel response type dropdown"
+  },
+  "requestResponseTypeMenuBlob": {
+    "message": "文件型（Blob）",
+    "description": "Request panel response type dropdown"
+  },
+  "requestUrl": {
+    "message": "网址",
+    "description": "Request panel label"
+  },
+  "requestSend": {
+    "message": "发送",
+    "description": "Request panel label"
+  },
+  "requestHeaders": {
+    "message": "HTTP 头字段",
+    "description": "Request headers panel title"
+  },
+  "requestRemoveAll": {
+    "message": "全部删除",
+    "description": "Request headers panel title"
+  },
+  "requestBody": {
+    "message": "正文",
+    "description": "Request body panel title"
+  },
+  "requestbodytextarea": {
+    "message": "请求正文内容",
+    "description": "Request body panel title"
+  },
+  "responseTitle": {
+    "message": "HTTP 响应",
+    "description": "Response panel title"
+  },
+  "responseTypeBadge": {
+    "message": "文件型",
+    "description": "Response type badge"
+  },
+  "responseTabHeaders": {
+    "message": "HTTP 头字段",
+    "description": "Response panel tab header - Headers"
+  },
+  "responseTabResponse": {
+    "message": "HTTP 响应内容",
+    "description": "Response panel tab header - Response"
+  },
+  "responseTabPreview": {
+    "message": "HTTP 响应预览",
+    "description": "Response panel tab header - Preview"
+  },
+  "responseTabDownload": {
+    "message": "下载 HTTP 响应内容",
+    "description": "Response panel tab download button [title]"
+  },
+  "responseContentBody": {
+    "message": "HTTP 响应正文",
+    "description": "Response panel content body textarea placeholder"
+  },
+  "responseContentPreview": {
+    "message": "HTTP 响应预览",
+    "description": "Response panel content body preivew textarea placeholder"
+  },
+  "scroll": {
+    "message": "返回顶部",
+    "description": "Scroll to Top button title"
+  },
+  "favoriteTitle": {
+    "message": "收藏夹",
+    "description": "Favorites sidebar title"
+  },
+  "favoriteIsEmptyTip": {
+    "message": "您暂时还没有收藏的 HTTP 请求，您可以使用菜单（\"收藏\" - \"保存当前请求\"）增加新的收藏。",
+    "description": "Favorites sidebar tip `no favorite`"
+  },
+  "overlaySecond": {
+    "message": "执行时间（秒）",
+    "description": "用时多少秒"
+  },
+  "modalBasicAuthenticationTitle": {
+    "message": "Basic 认证",
+    "description": "#modal-basic-auth .modal-title"
+  },
+  "modalBasicAuthenticationUsername": {
+    "message": "用户名",
+    "description": "#modal-basic-auth input['name=\"username\"]"
+  },
+  "modalBasicAuthenticationUsernameInfo": {
+    "message": "用户名不能为空。",
+    "description": "#modal-basic-auth .basic-auth-name-helper"
+  },
+  "modalBasicAuthenticationPassword": {
+    "message": "密码",
+    "description": "#modal-basic-auth input['name=\"password\"]"
+  },
+  "modalFavoriteTitle": {
+    "message": "保存当前请求",
+    "description": "modal favorite"
+  },
+  "modalFavoriteName": {
+    "message": "名称",
+    "description": "modal favorite"
+  },
+  "modalFavoriteNameHelper": {
+    "message": "名称不能为空。",
+    "description": "modal favorite"
+  },
+  "modalFavoriteTags": {
+    "message": "标签",
+    "description": "modal favorite"
+  },
+  "modalFormDataTitle": {
+    "message": "Form Data 编辑器",
+    "description": "modal form data editor"
+  },
+  "modalFormDataName": {
+    "message": "键名（Name）",
+    "description": "modal form data editor"
+  },
+  "modalFormDataValue": {
+    "message": "键值（Value）",
+    "description": "modal form data editor"
+  },
+  "modalHeaderTitle": {
+    "message": "HTTP 头字段",
+    "description": "modal request header editor"
+  },
+  "modalHeaderName": {
+    "message": "名称",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeName": {
+    "message": "头字段名称",
+    "description": "modal request header editor"
+  },
+  "modalHeaderValue": {
+    "message": "值",
+    "description": "modal request header editor"
+  },
+  "modalHeaderAttributeValue": {
+    "message": "头字段值",
+    "description": "modal request header editor"
+  },
+  "modalHeaderFavorite": {
+    "message": "收藏该 HTTP 头字段",
+    "description": "modal request header editor"
+  },
+  "modalImportTitle": {
+    "message": "导入收藏的请求",
+    "description": "modal favorite import"
+  },
+  "modalImportWarning": {
+    "message": "警告：",
+    "description": "modal favorite importr"
+  },
+  "modalImportWarningDetail": {
+    "message": "导入的文件中请求会自动覆盖当前收藏列表中的同名请求。建议您先备份再导入。",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPTitle": {
+    "message": "拖拽您之前备份的导出文件 (.json) 到虚线框内",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPClient": {
+    "message": "或点击此处打开文件对话框进行选择",
+    "description": "modal favorite importr"
+  },
+  "modalImportDPMax": {
+    "message": "最大允许的上传文件大小：5 MB",
+    "description": "modal favorite importr"
+  },
+  
+  "modalMigrationTitle": {
+    "message": "数据迁移助手（从RESTClient2迁移）",
+    "description": "modal migration"
+  },
+  "modalMigrationHowTo": {
+    "message": "操作说明",
+    "description": "modal migration"
+  },
+  "modalMigrationMigrate": {
+    "message": "迁移",
+    "description": "modal migration"
+  },
+  "modalMigrationReason": {
+    "message": "Firefox 57 开始不再支持老式 Firefox 插件，同时对插件的权限进行了限制。当前 Firefox 插件不再具备访问 Firefox 偏好设置的能力。而RESTClient 2中的所有数据均存储在 Firefox 偏好设置中。因此您需要手动迁移 RESTClient 2 的数据到 RESTClient 3 中。",
+    "description": "modal migration"
+  },
+  "modalMigrationConfig": {
+    "message": "以下内容将介绍如何使用 <code>about:config</code> 页面获得 RESTClient 2 的相关数据。",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1": {
+    "message": "第一步： 打开 about:config 页面",
+    "description": "modal migration"
+  },
+  "modalMigrationStep1Info": {
+    "message": "在浏览器的地址栏中输入：<code>about:config</code> 并回车。 <br/> <code>about:config</code> 页面会提醒您“这可能导致质量保证失效！”， 点击下方“我了解此风险”按钮继续。",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2": {
+    "message": "第二步：搜索 RESTClient 的偏好设置，并且复制这些值",
+    "description": "modal migration"
+  },
+  "modalMigrationStep2Info": {
+    "message": "请在 <code>about:config</code> 页面顶部的 <code>Search</code> 栏中输入 <code>restclient</code> 来搜索 <code>RESTClient2</code> 相关的偏好设置。",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3": {
+    "message": "第三部：打开本迁移助手的 <code>迁移</code> 标签页面，粘贴您拷贝的数据",
+    "description": "modal migration"
+  },
+  "modalMigrationStep3Info": {
+    "message": "您需要从 <code>about:config</code> 页面复制以下数据： <ul><li><code>extension.restclient.cachedUrls</code></li><li><code>extension.restclient.favoriteHeaders</code></li><li><code>extension.restclient.savedRequest</code></li></ul>",
+    "description": "modal migration"
+  },
+  "modalMigrationTabSwitcher": {
+    "message": "立即打开「迁移」面板",
+    "description": "modal migration"
+  },
+  "modalMigrationURL": {
+    "message": "收藏的 URL",
+    "description": "modal migration"
+  },
+  "modalMigrationURLHelper": {
+    "message": "粘贴 <span class=\"text-danger\">`extension.restclient.cachedUrls`</span> 的值。",
+    "description": "modal migration"
+  },
+  "modalMigrationHeader": {
+    "message": "收藏的 HTTP 头字段",
+    "description": "modal migration"
+  },
+  "modalMigrationHeaderHelper": {
+    "message": "粘贴 <span class=\"text-danger\">`extension.restclient.favoriteHeaders`</span> 的值。",
+    "description": "modal migration"
+  },
+  "modalMigrationRequest": {
+    "message": "收藏的请求",
+    "description": "modal migration"
+  },
+  "modalMigrationRequestHelper": {
+    "message": "粘贴 <span class=\"text-danger\">`extension.restclient.savedRequest`</span> 的值。",
+    "description": "modal migration"
+  },
+  "modalMigrationDoItNow": {
+    "message": "现在立即迁移",
+    "description": "modal migration"
+  },
+  "modalMigrationDontBotherMe": {
+    "message": "隐藏本对话框并不再显示",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewTitle": {
+    "message": "OAuth 参数",
+    "description": "modal migration"
+  },
+  "modalOauthPreviewName": {
+    "message": "参数名",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewValue": {
+    "message": "参数值",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewHeader": {
+    "message": "OAuth 头字段",
+    "description": "modal oauth preview"
+  },
+  "modalOauthPreviewSignedUrl": {
+    "message": "OAuth 签名后的 URL",
+    "description": "modal oauth preview"
+  },
+
+  "modalOAuthTitle": {
+    "message": "OAuth 1.0 认证",
+    "description": "modal oauth"
+  },
+  "modalOAuthSign": {
+    "message": "为当前请求签名",
+    "description": "modal oauth"
+  },
+  "modalOAuthSetting": {
+    "message": "设置",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKey": {
+    "message": "消费者密钥",
+    "description": "modal oauth"
+  },
+  "modalOAuthConsumerKeyHelper": {
+    "message": "消费者密钥 Consumer key 不能为空",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecret": {
+    "message": "共享密钥",
+    "description": "modal oauth"
+  },
+  "modalOAuthSharedSecretHelper": {
+    "message": "共享密钥 Shared Secret 不能为空",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessToken": {
+    "message": "访问令牌",
+    "description": "modal oauth"
+  },
+  "modalOAuthAcessTokenSecret": {
+    "message": "访问令牌密钥",
+    "description": "modal oauth"
+  },
+  "modalOAuthPT": {
+    "message": "参数传输方式",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTHeader": {
+    "message": "Authorization 头字段",
+    "description": "modal oauth"
+  },
+  "modalOAuthPTQS": {
+    "message": "查询字符串",
+    "description": "modal oauth"
+  },
+  "modalOAuthMethod": {
+    "message": "签名算法",
+    "description": "modal oauth"
+  },
+  "modalOAuthVersion": {
+    "message": "OAuth 版本",
+    "description": "modal oauth"
+  },
+  "modalOAuthRealm": {
+    "message": "领域",
+    "description": "modal oauth"
+  },
+  "modalOAuthNonce": {
+    "message": "OAuth 随机数",
+    "description": "modal oauth"
+  },
+  "modalOAuthTimestamp": {
+    "message": "OAuth 时间戳",
+    "description": "modal oauth"
+  },
+  "modalOAuthRemember": {
+    "message": "记住这些设置",
+    "description": "modal oauth"
+  },
+
+  "modalOAuth2Title": {
+    "message": "OAuth 2.0 认证",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Intro": {
+    "message": "获取新的访问令牌",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GrantType": {
+    "message": "授权模式",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTAC": {
+    "message": "授权码模式 Authorization code",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2GTCC": {
+    "message": "客户端模式 Client credentials",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientId": {
+    "message": "客户端ID",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInput": {
+    "message": "客户端ID，如：rKGCVb7Z7b7Z8sVW",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientIdInputHelper": {
+    "message": "客户端ID不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecret": {
+    "message": "客户端密钥",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInput": {
+    "message": "客户端密钥 Client secret，如：4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ClientSecretInputHelper": {
+    "message": "客户端密钥不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Scope": {
+    "message": "权限范围",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2ScopeInput": {
+    "message": "权限范围 Scope",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2State": {
+    "message": "状态码",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2StateInput": {
+    "message": "状态码 State",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestMethod": {
+    "message": "发送请求方法",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMPost": {
+    "message": "POST",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RMGet": {
+    "message": "GET",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEP": {
+    "message": "认证服务器",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInput": {
+    "message": "认证服务器 Authorization endpoint，如 https://github.com/login/oauth/authorize",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2AuthEPInputHelper": {
+    "message": "认证服务器不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEP": {
+    "message": "访问令牌服务器",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPInput": {
+    "message": "访问令牌服务器 token endpoint， 如：https://github.com/login/oauth/access_token",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2TokenEPHelper": {
+    "message": "访问令牌服务器不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEP": {
+    "message": "重定向地址",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInput": {
+    "message": "重定向地址 Redirect endpoint，如 http://restclient.net/auth/github/callback",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RedirectEPInputHelper": {
+    "message": "重定向地址不能为空",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2Remember": {
+    "message": "记住这些设置",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RequestToken": {
+    "message": "立即获取令牌",
+    "description": "modal oauth2"
+  },
+  "modalOAuth2RefreshTitle": {
+    "message": "OAuth 2.0 认证 <small class=\"text-muted\">刷新访问令牌</small>",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshToken": {
+    "message": "刷新令牌",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInput": {
+    "message": "刷新令牌 Refresh token，如：4pL5Vxtsk673USqwN5aJAwtJ6a6pdvzgzHsM9V83VZTbevMn",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshTokenInputHelper": {
+    "message": "刷新令牌不能为空",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpoint": {
+    "message": "刷新令牌服务器",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInput": {
+    "message": "刷新令牌服务器 Refreshing endpoint， 如：https://github.com/login/oauth/access_token",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshEndpointInputHelper": {
+    "message": "刷新令牌服务器不能为空",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScope": {
+    "message": "权限范围",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2RefreshScopeInput": {
+    "message": "权限范围 Scope",
+    "description": "modal oauth2 refresh"
+  },
+  "modalOAuth2PreviewTitle": {
+    "message": "OAuth 2.0",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewName": {
+    "message": "参数名",
+    "description": "modal oauth2 preview"
+  },
+  "modalOAuth2PreviewValue": {
+    "message": "参数值",
+    "description": "modal oauth2 preview"
+  },
+
+  "modalHttpsTitle": {
+    "message": "$URL$ 的证书不合法",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "modalHttpsReason": {
+    "message": "网站「$URL$」所使用的证书不是合法的证书。请在新窗口中打开该网站页面，在你警告页点击「<code>高级</code>」按钮，点击「<code>添加例外</code>」按钮，并在添加安全列外对话框中点击「<code>确认安全例外</code>」。在将您的网站「$URL$」加入例外后，您可以在 RESTClient 中继续测试您的网站。",
+    "description": "modal https",
+    "placeholders": {
+      "url": {
+        "content": "$1",
+        "example": "https://www.example.com"
+      }
+    }
+  },
+  "imageHttpsCertificateException": {
+    "message": "images/zh_CN/https/certificate.png",
+    "description": "modal https"
+  },
+  "modalHttpsMore": {
+    "message": "了解更多信息，请访问 Firefox 官方网站：<a href=\"http://mzl.la/1Pn5D8f\" target=\"_blank\">如何针对安全网站的错误码进行故障排除</a>",
+    "description": "modal https"
+  },
+  "modalHttpsOpenTab": {
+    "message": "在新标签页中打开网站",
+    "description": "modal https"
+  },
+
+  "modalBinWarning": {
+    "message": "检测到文件型的 HTTP 响应",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningContent": {
+    "message": "您当前 HTTP 请求的返回结果类型为：「$MIME$」，为正确显示该 HTTP 响应，您需要将 HTTP 响应类型设置为「文件型（Blob）」。 ",
+    "description": "modal binary warning",
+    "placeholders": {
+      "mime": {
+        "content": "$1",
+        "example": "text/plain"
+      }
+    }
+  },
+  "modalBinWarningHowTo": {
+    "message": "您可以点击 HTTP 请求面板中网址左侧的按钮，并且在下拉列表中选择 HTTP 响应类型。",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningImage": {
+    "message": "images/zh_CN/response/type.png",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningCheck": {
+    "message": "不再提醒",
+    "description": "modal binary warning"
+  },
+  "modalBinWarningBtn": {
+    "message": "设置 HTTP 响应类型为文件型（Blob），并再次发送",
+    "description": "modal binary warning"
+  },
+
+  "modalAuto": {
+    "message": "自动",
+    "description": "modal input auto button"
+  },
+  "modalDisabled": {
+    "message": "禁用",
+    "description": "modal input disabled button"
+  },
+  "modalClose": {
+    "message": "关闭",
+    "description": "modal close button"
+  },
+  "modalOkay": {
+    "message": "确定",
+    "description": "modal okay button"
+  },
+  "modalSave": {
+    "message": "保存",
+    "description": "modal save button"
+  },
+  "modalRefresh": {
+    "message": "刷新",
+    "description": "modal refresh button"
+  },
+
+  "imageMigration2041": {
+    "message": "images/zh_CN/migration/204-1.png",
+    "description": "modal migration about:page screenshot"
+  },
+  "imageMigration2042": {
+    "message": "images/zh_CN/migration/204-2.png",
+    "description": "modal migration about:page page screenshot"
+  },
+
+  "jsCurlClipboardCopied": {
+    "message": "已复制 CURL 到您的剪贴板",
+    "description": "curl.js clipboard on success"
+  },
+  "jsCurlCommandCannotParsed": {
+    "message": "无法解析您拷贝的 CURL 命令，请您检查您的命令是否正确。如有疑问请您点击页面底部的「提问题」链接提问。",
+    "description": "curl.js curl-command-pasted"
+  },
+  "jsFavoriteFileTooLarge": {
+    "message": "文件：（$1）大小过大，无法导入。",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFileNotJsonFormat": {
+    "message": "文件：（$1）不是JSON格式的文件，无法导入。",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteCannotImport": {
+    "message": "无法导入收藏的请求",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteStartToImport": {
+    "message": "开始导入您收藏的请求文件，请稍候...",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteImportSuccess": {
+    "message": "文件已全部成功导入！",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsFavoriteFormatError": {
+    "message": "导入失败，您导入的文件格式不正确。",
+    "description": "favorite.js _fileDropped"
+  },
+  "jsMessageAbortRequest": {
+    "message": "HTTP 请求（$1 $2）已终止。",
+    "description": "message.js abort-http-request"
+  },
+  "jsMessageTimeOut": {
+    "message": "HTTP 请求（$1 $2）已超时。",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageError": {
+    "message": "HTTP 请求错误",
+    "description": "message.js http-request-timeout"
+  },
+  "jsMessageErrorDetail": {
+    "message": "无 HTTP 请求错误详细信息。",
+    "description": "message.js http-request-timeout"
+  },
+  "jsOAuthInvlidUrl": {
+    "message": "请先在主窗口 「HTTP 请求」面板中输入一个合法的URL地址。",
+    "description": "oauth.js #modal-oauth-preview show.bs.modal"
+  },
+  "jsOAuthRefreshed": {
+    "message": "OAuth 1.0 签名已更新成功！",
+    "description": "oauth.js #modal-oauth-preview .btn-refresh"
+  },
+  "jsOAuthInValidTimestamp": {
+    "message": "时间戳格式不正确，时间戳应为正整数。",
+    "description": "oauth.js #oauth-timestamp input"
+  },
+  "jsOAuth2Refreshed": {
+    "message": "访问令牌已更新",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabOpened": {
+    "message": "OAuth 验证将在刚打开的标签页中进行，请您耐心等待 OAuth 服务器跳转到您的「重定向地址」。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2NewTabCannotOpen": {
+    "message": "无法打开新的标签页，无法获取访问令牌。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2TokenObtained": {
+    "message": "成功从 OAuth 服务器获得访问令牌。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetCode": {
+    "message": "无法从URL（$1）中获得 code 参数信息。",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "jsOAuth2CannotGetAccessToken": {
+    "message": "请求访问令牌失败！",
+    "description": "oauth2.js .btn-oauth2-refresh"
+  },
+  "js204NoInput": {
+    "message": "请从偏好设置中将您 RESTClient2 的相关值粘贴到下方文本框中。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderFormat": {
+    "message": "您粘贴的 HTTP 头字段收藏内容不正确。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeader": {
+    "message": "收藏的 HTTP 头字段的值应为数组型。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidHeaderTitle": {
+    "message": "HTTP 头字段格式不正确",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidUrlFormat": {
+    "message": "您粘贴的 URL 收藏内容不正确。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrl": {
+    "message": "收藏的 URL 的值应为数组型。",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidFavoriteUrlTitle": {
+    "message": "收藏的 URL 格式不正确！",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204InvalidRequest": {
+    "message": "收藏的请求格式不正确！",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "js204Imported": {
+    "message": "RESTClient2 中的所有收藏内容已成功导入！",
+    "description": "204.js #modal-migrate-204 .btn-migrate"
+  },
+  "jsFavoriteConflicted": {
+    "message": "在您的收藏列表中已存在名为「$1」的 HTTP 请求，您想替换该请求吗？",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteReplaced": {
+    "message": "收藏的 HTTP 请求已替换！",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsFavoriteSaved": {
+    "message": "HTTP 请求收藏成功！",
+    "description": "favorite.js .btn-save-favorite clicked"
+  },
+  "jsRequestHeaderCannotBeEmpty": {
+    "message": "请求的 HTTP 头字段的名称和值不能同时为空。",
+    "description": "request.js .form-request-header submit"
+  },
+  "jsRequestHeaderBlocked": {
+    "message": "基于 Firefox 的安全策略，插件无法设置「$1」HTTP 头字段。",
+    "description": "request.js .form-request-header submit"
+  },
+  "jsRequestHeaderCleared": {
+    "message": "所有收藏的 HTTP 头字段均已被成功移除。",
+    "description": "request.js .nav-custom-header-clear"
+  },
+  "jsResponseBlobTooLargeContent": {
+    "message": "文件过大，无法在 HTTP 响应文本框中显示！请您下载后打开。",
+    "description": "response.js update-response-body"
+  },
+  "jsResponseBlobTypeDetected": {
+    "message": "HTTP 服务器返回结果MIME类型为$1，请您切换响应类型为「文件型结果」类型。",
+    "description": "response.js update-response-body"
+  },
+  "jsIndexPrivateModeContent": {
+    "message": "您正在使用隐私模式，您无法在隐私模式下使用收藏功能。",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexPrivateModeTitle": {
+    "message": "隐私模式中",
+    "description": "index.js incognito mode"
+  },
+  "jsIndexDevelopmentContent": {
+    "message": "该功能目前正在开发中，请耐心等待。",
+    "description": "index.js development mode"
+  },
+  "jsIndexDevelopmentTitle": {
+    "message": "功能建设中",
+    "description": "index.js development mode"
+  },
+  "jsMainInitialized": {
+    "message": "正在等待服务器响应中…",
+    "description": "main.js show-fullscreen"
+  },
+  "jsXhrSending": {
+    "message": "正在发送数据…",
+    "description": "xhr.js onLoadProgress"
+  },
+  "jsXhrOnLoad": {
+    "message": "成功！正在处理返回的数据…",
+    "description": "xhr.js onLoad"
+  },
+  "jsXhrOnProgressReceving": {
+    "message": "接手数据中…",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnProgressProcessing": {
+    "message": "处理中…",
+    "description": "xhr.js onProgress"
+  },
+  "jsXhrOnErrorTitle": {
+    "message": "出错了",
+    "description": "xhr.js onError"
+  },
+  "jsXhrOnErrorDetail": {
+    "message": "无法连接到服务器",
+    "description": "xhr.js onError"
+  },
+  "jsXhrMakeRequestStart": {
+    "message": "启动中…",
+    "description": "xhr.js makeRequest"
+  },
+  "jsXhrMakeRequestInitiating": {
+    "message": "初始化 XMLHTTPRequest 对象…",
+    "description": "xhr.js makeRequest"
+  },
+  "jsMessageExecutionTime": {
+    "message": "您的 HTTP 请求已经成功执行，并返回结果。执行时间：$1 毫秒。",
+    "description": "message.js show execution time"
+  }
+}

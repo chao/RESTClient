@@ -139,14 +139,14 @@ function mergeAll(dest) {
     pipe(['./src/scripts/cores/**/*'], `./build/${dest}/scripts/cores`),
     pipe(['./src/scripts/uis/**/*'], `./build/${dest}/scripts/uis`),
     pipe(['./src/scripts/pages/**/*'], `./build/${dest}/scripts/pages`),
-    pipe(['./src/scripts/migrates/**/*'], `./build/${dest}/scripts/migrates`)
+    pipe(['./src/scripts/migrates/**/*'], `./build/${dest}/scripts/migrates`),
+    pipe(['./src/scripts/worker/**/*'], `./build/${dest}/scripts/worker`)
   )
 }
 
 function buildJS(target) {
   const files = [
     'background.js',
-    'options.js',
     'livereload.js',
     'index.js',
     'curl/index.js'

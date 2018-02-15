@@ -23,36 +23,12 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ***** END LICENSE BLOCK ***** */
 
-import myXhr from "./utils/xhr";
-
-var xhrs = {};
-
 // Open a new RESTClient tab when the icon was clicked
 browser.browserAction.onClicked.addListener(function () {
   browser.tabs.create({
     'url': browser.extension.getURL('index.html')
   });
 });
-
-// xhr.timeout = 200000;
-
-browser.runtime.onMessage.addListener(
-  function (request, sender) {
-    console.log(`[background.js] get new message, action: ${request.action}`, request, sender);
-    if (request.target !== 'background') 
-    {
-        return false;
-    }
-    if (request.action === "execute-http-request") 
-    {
-      xhrs[sender.tab.id] = myXhr.makeRequest(request, sender);
-    }
-    if (request.action == "abort-http-request")
-    {
-      xhrs[sender.tab.id].abort();
-    }
-  }
-);
 
 // when a tab is removed
 browser.tabs.onRemoved.addListener(function (tabId, removeInfo){

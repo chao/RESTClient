@@ -3,7 +3,15 @@
     <div class="row">
         <div class="col-12">
             <h5 id="response-title" class="text-muted title">
-                <a class="btn-toggle-panel">[<span>-</span>] Response</a>
+                <a class="btn-toggle-panel">[<span>-</span>] <span data-i18n="responseTitle">Response</span></a>
+                <div class="btn-group response-type animated zoomIn" data-type="blob">
+                    <button type="button" class="btn btn-primary btn-sm btn-response-type">
+                        <span class="name" data-i18n="responseTypeBadge">Binary</span>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm btn-close">
+                        <i class="fa fa-close"></i>
+                    </button>
+                </div>
             </h5>
         </div>
     </div>
@@ -12,16 +20,13 @@
         <div class="col-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#tab-response-headers" role="tab">Headers</a>
+                    <a class="nav-link headers active" data-toggle="tab" href="#tab-response-headers" role="tab" data-i18n="responseTabHeaders">Headers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab-response-body" role="tab">Response</a>
+                    <a class="nav-link response" data-toggle="tab" href="#tab-response-body" role="tab" data-i18n="responseTabResponse">Response</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link preview" data-toggle="tab" href="#tab-response-preview" role="tab" style="display: none;">Preview</a>
-                </li>
-                <li class="li-download" style="display: none;">
-                    <a class="btn btn-secondary btn-download-response"><i class="fa fa-download"></i></a>
+                    <a class="nav-link preview" data-toggle="tab" href="#tab-response-preview" role="tab" style="display: none;" data-i18n="responseTabPreview">Preview</a>
                 </li>
             </ul>
            
@@ -38,15 +43,40 @@
                 <!-- response-headers end -->
 
                 <div class="tab-pane" id="tab-response-body" role="tabpanel">
-                    <textarea id="response-body" class="form-control" placeholder="Response Body"></textarea>
+                    <a class="btn btn-secondary btn-download-response" data-i18n="responseTabDownload" data-i18n-target="title" title="download response body">
+                        <i class="fa fa-download"></i>
+                    </a>
+                    <textarea id="response-body" class="form-control" placeholder="Response Body" data-i18n="responseContentBody" data-i18n-target="placeholder"></textarea>
                 </div>
                 <div class="tab-pane" id="tab-response-preview" role="tabpanel">
                     <iframe id="iframe-response" src="blank.html" class="card" width="100%" height="500" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-forms">
                     </iframe>
-                    <textarea id="response-body-preview" class="form-control" placeholder="Response Preview" style="blank"></textarea>
+                    <textarea id="response-body-preview" class="form-control" placeholder="Response Preview" data-i18n="responseContentPreview" data-i18n-target="placeholder"></textarea>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- Response End -->
+<script id="template-response-redirects" type="text/template">
+<div class="response-redirects card m-b-sm">
+    <div class="card-block p-v-sm">
+        <ol class="linenums">
+            <li>
+                <span class="d-flex">
+                    <span class="header-name">Status</span>
+                    <span class="header-split">: </span>
+                    <span class="header-value">{{statusCode}}</span>
+                </span>
+            </li>
+            <li>
+                <span class="d-flex">
+                    <span class="header-name">Location</span>
+                    <span class="header-split">: </span>
+                    <span class="header-value">{{url}}</span>
+                </span>
+            </li>
+        </ol>
+    </div>
+</div>
+</script>

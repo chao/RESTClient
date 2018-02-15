@@ -27,12 +27,20 @@ window.ext = require("./utils/ext");
 window.storage = require("./utils/storage");
 window.curlconverter = require('curlconverter');
 window.currentTabInfo = false;
+import { isWebUrl, urlResolve } from './library/url';
+import { onXhrMessage } from './library/message';
+window.isWebUrl = isWebUrl;
+window.urlResolve = urlResolve;
+
+window.requestWorker = new Worker('./scripts/worker/xhr.js');
+requestWorker.onmessage = onXhrMessage;
+
 ext.tabs.getCurrent().then(function (tabInfo) {
   console.log(`[index.js] getCurrent`, tabInfo);
   window.currentTabInfo = tabInfo;
   if (tabInfo.incognito)
   {
-    toastr.warning('You are using private browsing mode, you will not be able to use "favorites" function.', 'Private Browsing', {
+    toastr.warning(browser.i18n.getMessage("jsIndexPrivateModeContent"), browser.i18n.getMessage("jsIndexPrivateModeTitle"), {
       "positionClass": "toast-bottom-full-width",
       "closeButton": true,
       "timeOut": 0,
@@ -40,15 +48,33 @@ ext.tabs.getCurrent().then(function (tabInfo) {
     });
     $('[data-invisible-incognito]').hide();
   }
+
+  // intercept url redirect and show redirections in response headers
+  browser.webRequest.onBeforeRedirect.addListener(
+    function (requestDetails) {
+      console.log("[background][logURL]", requestDetails);
+      let url = requestDetails.redirectUrl;
+      let statusCode = requestDetails.statusLine;
+      if (statusCode != '' && statusCode.indexOf(' ') > 0)
+      {
+        // console.error(statusCode.indexOf(' '));
+        statusCode = statusCode.substring(statusCode.indexOf(' '), statusCode.length);
+      }
+      $(document).trigger('redirected', [statusCode, url]);
+    },
+    { urls: ["<all_urls>"], tabId: currentTabInfo.id }
+  );
 }, function (error) {
   console.log(`[index.js] Error: ${error}`);
 });
+
+
 
 $(function () {
   window.favoriteHeaders = [];
   window.favoriteUrls = [];
   $(document).on('click', '[data-toggle="development"]', function () {
-    toastr.error('This function is still under development.', 'Not ready yet!');
+    toastr.error(browser.i18n.getMessage("jsIndexDevelopmentContent"), browser.i18n.getMessage("jsIndexDevelopmentTitle"));
   });
   /**************************** Init Toastr ********************************/
   toastr.options = {
@@ -75,11 +101,10 @@ $(function () {
     
     var method = $('#request-method').val();
     var url = $('#request-url').val();
-    var isUrl = urlHelper.is_web_iri(url);
+    var isUrl = isWebUrl(url);
     console.log('[index.js] request url changed, decide request SEND button status.', method, url, isUrl);
-    // console.log(isUrl);
-    // console.log(method != '' && typeof isUrl != 'undefined');
-    if (method != '' && typeof isUrl != 'undefined') {
+
+    if (method != '' && url != '' && isUrl) {
       $('.btn-send-request').prop('disabled', false);
     }
     else {
@@ -104,22 +129,18 @@ $(function () {
     }
 
     $('#response-headers ol').empty();
+    $('.response-redirects').remove();
+
     cmResponseBody.getDoc().setValue('');
     cmResponseBodyPreview.getDoc().setValue('');
     $('#tab-response-preview .CodeMirror').hide();
     $('#iframe-response').show();
     $('.response-container a.preview[data-toggle="tab"]').hide();
 
-    ext.runtime.sendMessage({
-      action: "execute-http-request",
-      target: "background",
-      data: request
-    });
+    requestWorker.postMessage(request);
 
     $('.current-request-basic').html(request.method + ' ' + request.url);
     $(document).trigger("show-fullscreen");
     $(document).trigger('request-updated', [request]);
   });
-
-
 });

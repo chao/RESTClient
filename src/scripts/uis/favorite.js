@@ -45,7 +45,16 @@ $(function () {
   });
   
   /********************** Init Favorite Request **************************/
-  $('#favorite-tags').tagsinput();
+  let tagInput = $('#favorite-tags').tagsinput();
+  $(document).on('blur', '#modal-favorite-save .bootstrap-tagsinput input', function(){
+    let tag = $(this).val();
+    $(this).val('');
+    if(tag != '')
+    {
+      $('#favorite-tags').tagsinput('add', tag);
+    }
+  });
+
   $(document).on('favorite-tags-changed', function (e, tags) {
     var tags = tags ? _.keys(tags) : [];
     console.log('[RESTClient][index.js][favorite-tags-changed] init', tags);
@@ -91,12 +100,12 @@ $(function () {
     console.log('[RESTClient][index.js][btn-save-favorite] get request', request);
     $('#modal-favorite-save').modal('hide');
     if (typeof Database.requests[name] !== 'undefined') {
-      bootbox.confirm(`You already have a favorite request named: ${name}, Would you like to replace it?`,
+      bootbox.confirm(browser.i18n.getMessage("jsFavoriteConflicted", name),
         function (result) {
           if (result) {
             Database.saveRequest(name, request).then(function () {
               $(document).trigger('favorite-requests-loaded');
-              toastr.success('Request replaced.', name);
+              toastr.success(browser.i18n.getMessage("jsFavoriteReplaced"), name);
             });
           }
           console.log('This was logged in the callback: ', result);
@@ -105,7 +114,7 @@ $(function () {
     else {
       Database.saveRequest(name, request).then(function () {
         $(document).trigger('favorite-requests-loaded');
-        toastr.success('Request saved.', name);
+        toastr.success(browser.i18n.getMessage("jsFavoriteSaved"), name);
       });
     }
   });
@@ -122,7 +131,11 @@ $(function () {
     $('#favorite-requests-list .requests-list').empty();
     _.each(requests, function (request, name) {
       var item = $(html).clone();
-
+      if(request.responseType == 'blob')
+      {
+        item.find('.type').removeClass('fa-file-text-o').addClass('fa-file-archive-o');
+      }
+      
       item.find('.name').text(name);
       item.find('.method').text(request.method);
       item.find('.host').text(request.url);
@@ -189,6 +202,13 @@ $(function () {
       var params = request.authentication.data;
       
       $(`.authentication-mode[data-mode="${mode}"]`).addClass('active').data('params', params);
+    }
+    if (request.responseType) {
+      $(document).trigger('switch-response-type', [request.responseType]);
+    }
+    else
+    {
+      $(document).trigger('switch-response-type', ['text']);
     }
     slideout.toggle();
     $('#request-url').trigger('input');

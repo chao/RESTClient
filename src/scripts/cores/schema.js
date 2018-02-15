@@ -42,7 +42,9 @@ var Schema = {
     {
       for(let key in request)
       {
-        if(request[key]['method'] && request[key]['url'] && request[key]['body'])
+        if (typeof request[key]['method'] != 'undefined' 
+            && typeof request[key]['url'] != 'undefined' 
+            && typeof request[key]['body'] != 'undefined' )
         {
           return "v2001";
         }

@@ -130,91 +130,98 @@ $(function () {
       return false;
     }
 
-    currentResponseBlob = new Blob([response], { type: mime });
+    response = (response === false) ? '' : response;
+    
     
     let mode = false;
 
-    // is an html document
-    if (mime.indexOf('text/html') >= 0) {
-      
-      mode = 'htmlmixed';
-      btnDownload.show();
-      previewTab.show();
+    if (response.length != '')
+    {
+      currentResponseBlob = new Blob([response], { type: mime });
 
-      $('#tab-response-preview .CodeMirror').hide();
-      $('#iframe-response').show();
-      console.log('[response.js][update-response-body] HTML', mode, response);
-      try {
-        iframeDoc.open();
-        iframeDoc.write(response);
-        iframeDoc.close();
-      } catch (e) {
-        console.error(e);
+      // is an html document
+      if (mime.indexOf('text/html') >= 0) {
+
+        mode = 'htmlmixed';
+        btnDownload.show();
+        previewTab.show();
+
+        $('#tab-response-preview .CodeMirror').hide();
+        $('#iframe-response').show();
+        console.log('[response.js][update-response-body] HTML', mode, response);
+        try {
+          iframeDoc.open();
+          iframeDoc.write(response);
+          iframeDoc.close();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // is an json document
+      if (mode === false && (mime.indexOf('json') >= 0)) {
+        btnDownload.show();
+        previewTab.show();
+
+        mode = { name: "javascript", json: true };
+        $('#tab-response-preview .CodeMirror').show();
+        $('#iframe-response').hide();
+        try {
+          var json = js_beautify(response, { "indent_size": 2, "unescape_strings": true });
+          cmResponseBodyPreview.setOption('mode', mode);
+          CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name);
+          cmResponseBodyPreview.getDoc().setValue(json);
+        }
+        catch (e) {
+          console.error(e);
+          cmResponseBodyPreview.getDoc().setValue(response);
+        }
+      }
+
+      // is an xml document
+      if (mode === false && (mime.indexOf('xml') >= 0)) {
+        btnDownload.show();
+        previewTab.show();
+
+        mode = 'xml';
+        $('#tab-response-preview .CodeMirror').show();
+        $('#iframe-response').hide();
+        try {
+          var xml = html_beautify(response, { "indent_size": 2, "unescape_strings": true });
+          cmResponseBodyPreview.setOption('mode', mode);
+          CodeMirror.autoLoadMode(cmResponseBodyPreview, mode);
+          cmResponseBodyPreview.getDoc().setValue(xml);
+        }
+        catch (e) {
+          console.error(e);
+          cmResponseBodyPreview.getDoc().setValue(response);
+        }
+      }
+
+      if (mode === false && (mime.indexOf('css') >= 0)) {
+        btnDownload.show();
+        previewTab.show();
+
+        mode = 'css';
+        $('#tab-response-preview .CodeMirror').show();
+        $('#iframe-response').hide();
+        try {
+          var css = css_beautify(response, { "indent_size": 2 });
+          cmResponseBodyPreview.setOption('mode', mode);
+          CodeMirror.autoLoadMode(cmResponseBodyPreview, mode);
+          cmResponseBodyPreview.getDoc().setValue(css);
+        }
+        catch (e) {
+          console.error(e);
+          cmResponseBodyPreview.getDoc().setValue(response);
+        }
       }
     }
-
-    // is an json document
-    if (mode === false && ( mime.indexOf('json') >= 0 )) {
-      btnDownload.show();
-      previewTab.show();
-
-      mode = { name: "javascript", json: true };
-      $('#tab-response-preview .CodeMirror').show();
-      $('#iframe-response').hide();
-      try {
-        var json = js_beautify(response, { "indent_size": 2, "unescape_strings": true });
-        cmResponseBodyPreview.setOption('mode', mode);
-        CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name);
-        cmResponseBodyPreview.getDoc().setValue(json);
-      }
-      catch (e) {
-        console.error(e);
-        cmResponseBodyPreview.getDoc().setValue(response);
-      }
-    }
-
-    // is an xml document
-    if (mode === false && (mime.indexOf('xml') >= 0)) {
-      btnDownload.show();
-      previewTab.show();
-
-      mode = 'xml';
-      $('#tab-response-preview .CodeMirror').show();
-      $('#iframe-response').hide();
-      try {
-        var xml = html_beautify(response, { "indent_size": 2, "unescape_strings": true });
-        cmResponseBodyPreview.setOption('mode', mode);
-        CodeMirror.autoLoadMode(cmResponseBodyPreview, mode);
-        cmResponseBodyPreview.getDoc().setValue(xml);
-      }
-      catch (e) {
-        console.error(e);
-        cmResponseBodyPreview.getDoc().setValue(response);
-      }
-    }
-
-    if (mode === false && (mime.indexOf('css') >= 0)) {
-      btnDownload.show();
-      previewTab.show();
-
-      mode = 'css';
-      $('#tab-response-preview .CodeMirror').show();
-      $('#iframe-response').hide();
-      try {
-        var css = css_beautify(response, { "indent_size": 2 });
-        cmResponseBodyPreview.setOption('mode', mode);
-        CodeMirror.autoLoadMode(cmResponseBodyPreview, mode);
-        cmResponseBodyPreview.getDoc().setValue(css);
-      }
-      catch (e) {
-        console.error(e);
-        cmResponseBodyPreview.getDoc().setValue(response);
-      }
-    }
+    
 
     if (mode === false) {
       var info = CodeMirror.findModeByMIME(mime);
-      if (info.mode) {
+      if (info && info.mode) {
         cmResponseBody.setOption('mode', info.mode);
         CodeMirror.autoLoadMode(cmResponseBody, info.mode);
       }
@@ -224,7 +231,7 @@ $(function () {
     }
 
     cmResponseBody.getDoc().setValue(response);
-    $(document).trigger('update-response-active-tab');    
+    $(document).trigger('update-response-active-tab'); 
   });
 
   $(document).on('click', '.btn-download-response', function(){

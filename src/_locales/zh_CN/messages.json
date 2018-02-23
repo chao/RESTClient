@@ -39,6 +39,14 @@
     "message": "OAuth 2.0 认证",
     "description": "OAuth 2.0"
   },
+  "menuJWTProtocol": {
+    "message": "JSON Web Token",
+    "description": "Menu JWT authentication"
+  },
+  "menuJWTProtocolItem": {
+    "message": "JWT 认证",
+    "description": "Jwt item"
+  },
   "menuHeaders": {
     "message": "增加 HTTP 头字段",
     "description": "Menu Headers"

@@ -39,6 +39,14 @@
     "message": "OAuth 2.0",
     "description": "OAuth 2.0"
   },
+  "menuJWTProtocol": {
+    "message": "JSON Web Token",
+    "description": "Menu JWT authentication"
+  },
+  "menuJWTProtocolItem": {
+    "message": "JWT",
+    "description": "Jwt item"
+  },
   "menuHeaders": {
     "message": "Headers",
     "description": "Menu Headers"

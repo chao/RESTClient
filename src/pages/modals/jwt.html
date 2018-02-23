@@ -1,0 +1,68 @@
+<div class="modal fade" id="modal-jwt" tabindex="-1" role="dialog" aria-labelledby="modal-jwt" aria-hidden="true">
+  <form id="form-jwt">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" data-i18n="modalJWTTitle">JSON Web Token</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#jwt-signing" role="tab" data-i18n="modalJWTSigning">Signature for this request</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#jwt-payload" role="tab" data-i18n="modalJWTPayload">Payload</a>
+            </li>
+          </ul>
+          <!-- Nav tabs -->
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div class="tab-pane container active" id="oauth-signature" role="tabpanel">
+              <!-- jwt header -->
+              <h5 data-i18n="modalJWTHeaderTitle">Header</h5>
+              <div class="form-group row required">
+                <label for="jwt-alg" class="col-sm-3 form-control-label" data-i18n="modalJWTHeaderAlg">Signing algorithm</label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="jwt-alg">
+                    <option value="none"> none (no signature)</option>
+                    <option value="HS256" selected> HS256 (HmacSHA256) with default shared key</option>
+                    <option value="HS384" disabled> HS384 (HmacSHA384) with default shared key</option>
+                    <option value="HS512" disabled> HS512 (HmacSHA512) with default shared key</option>
+                    <option value="RS256" disabled> RS256 (SHA256withRSA RSA2048bit:z4) with default private key</option>
+                    <option value="RS384" disabled> RS384 (SHA384withRSA RSA2048bit:z4) with default private key</option>
+                    <option value="RS512" disabled> RS512 (SHA512withRSA RSA2048bit:z4) with default private key</option>
+                    <option value="ES256" disabled> ES256 (SHA256withECDSA NIST P-256:k6) with default private key</option>
+                    <option value="ES384" disabled> ES384 (SHA384withECDSA NIST P-384) with default private key</option>
+                    <option value="PS256" disabled> PS256 (SHA256withRSAandMGF1 RSA2048bit:z4) with default private key</option>
+                    <option value="PS384" disabled> PS384 (SHA384withRSAandMGF1 RSA2048bit:z4) with default private key</option>
+                    <option value="PS512" disabled> PS512 (SHA512withRSAandMGF1 RSA2048bit:z4) with default private key</option>
+                    <option value="RS256" disabled> SHA256withRSA with PKCS#5 plain private key(z4)</option>
+                    <option value="RS256" disabled> SHA256withRSA with PKCS#8 plain private key(z4)</option>
+                    <option value="RS256" disabled> SHA256withRSA with PKCS#8 encrypted private key(z4)</option>
+                  </select>
+                  <small id="jwt-alg-helper" class="form-text text-danger helper" style="display: none" data-i18n="modalJWTHeaderAlgHelper">Please select a signing algorithm</small>
+                </div>
+              </div>
+              <!-- jwt header -->
+            </div>
+          </div>
+          <!-- Tab panes -->
+        </div>
+        <div class="modal-footer">
+          <div class="form-check abc-checkbox abc-checkbox-danger">
+            <input class="form-check-input" id="save-oauth" type="checkbox">
+            <label class="form-check-label" for="save-oauth" data-i18n="modalJWTRemember">
+              Remember this setting
+            </label>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" data-i18n="modalClose">Close</button>
+          <button type="submit" class="btn btn-primary btn-jwt-okay" data-i18n="modalOkay">Okay</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

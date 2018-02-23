@@ -413,19 +413,25 @@ $(function () {
   });
 
   $(document).on('obtain-access-token', function(e, params, callback) {
-    console.log(`[oauth2.js] obtain-access-token`, params, callback);
+    console.log(`[oauth2.js][obtain-access-token] parameters`, params, callback);
     var l = Ladda.create(document.querySelector('.btn-oauth2-request'));
-    l.start();
+    
     var url = params.token_endpoint
     if (url.indexOf('{{') >= 0 && url.indexOf('}}') >= 0) {
       url = Mustache.to_html(url, params);
+    }
+
+    if (!isWebUrl(url)) {
+      toastr.error(browser.i18n.getMessage("jsOAuthInvlidUrl"));
+      Ladda.stopAll();
+      return true;
     }
 
     var ajaxOption = {
       url: url,
       method: params.request_method
     };
-    if (params.request_method == 'GET') {
+    if (params.request_method == 'get') {
       var data = {};
       if (url.indexOf('grant_type=') === -1) {
         data['grant_type'] = 'client_credentials';
@@ -435,7 +441,7 @@ $(function () {
       }
       ajaxOption['data'] = data;
     }
-    if (params.request_method == 'POST') {
+    if (params.request_method == 'post') {
       var data = {
         'grant_type': 'client_credentials'
       }
@@ -451,7 +457,9 @@ $(function () {
       ajaxOption['data'] = data;
       ajaxOption['contentType'] = 'Content-Type: application/x-www-form-urlencoded';
     }
-
+    console.log(`[oauth2.js][obtain-access-token] ajaxOption`, ajaxOption);
+    
+    l.start();
     $.ajax(ajaxOption)
     .done(function (response) {
       params.result = parseAccessToken(response);

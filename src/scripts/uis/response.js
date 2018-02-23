@@ -27,7 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 $(function () {
 
   let mimes = ['application/pdf', 'application/zip', 'image/', 'application/octet-stream', 'video/', 
-  'audio/', 'application/vnd', 'application/x-abiword', 'application/x-bzip', 'application/x-bzip2', 
+  'audio/', 'application/x-abiword', 'application/x-bzip', 'application/x-bzip2', 
   'application/msword', 'application/epub+zip', 'application/java-archive', 'application/ogg', 
   'application/x-rar-compressed', 'application/rtf', 'application/x-tar', 'application/x-font-ttf', 
   'application/x-font-woff', 'application/x-7z-compressed'];
@@ -107,42 +107,35 @@ $(function () {
     }
 
     // if this mime type is a binary response warn user!
-    let isBlob = false;
-    for(let i = 0; i < mimes.length; i++) {
-      if(mime.indexOf(mimes[i]) == 0)
-      {
-        isBlob = true;
-        break;
+    let mode = CodeMirror.findModeByMIME(mime);
+    mode = (typeof mode == 'undefined') ? false : mode;
+    if (mode === false)
+    {
+      for (let i = 0; i < mimes.length; i++) {
+        if (mime.indexOf(mimes[i]) == 0) {
+          cmResponseBody.getDoc().setValue(browser.i18n.getMessage("jsResponseBlobTypeDetected"));
+          storage.get('binary-warning-ignore').then((data) => {
+            console.log('[response.js] binary-warning-ignore!', data);
+            if (data['binary-warning-ignore'] === true) {
+              return false;
+            }
+
+            $('#modal-binary-warning').data('mime', mime).modal('show');
+          });
+          return true;
+        }
       }
     }
 
-    if(isBlob)
-    {
-      cmResponseBody.getDoc().setValue(browser.i18n.getMessage("jsResponseBlobTypeDetected"));
-      storage.get('binary-warning-ignore').then((data) => {
-        console.log('[response.js] binary-warning-ignore!', data);
-        if (data['binary-warning-ignore'] === true) {
-          return false;
-        }
-
-        $('#modal-binary-warning').data('mime', mime).modal('show');
-      });
-      return false;
-    }
-
     response = (response === false) ? '' : response;
-    
-    
-    let mode = false;
-
+    let processed = false;
     if (response.length != '')
     {
       currentResponseBlob = new Blob([response], { type: mime });
 
       // is an html document
-      if (mime.indexOf('text/html') >= 0) {
-
-        mode = 'htmlmixed';
+      if (mode.mode == 'htmlembedded' || mode.mode == 'htmlmixed') {
+        processed = true;
         btnDownload.show();
         previewTab.show();
 
@@ -159,17 +152,18 @@ $(function () {
       }
 
       // is an json document
-      if (mode === false && (mime.indexOf('json') >= 0)) {
+      if (mode.mode == 'javascript') {
+        processed = true;
         btnDownload.show();
         previewTab.show();
 
-        mode = { name: "javascript", json: true };
+        let option = { name: "javascript", json: true };
         $('#tab-response-preview .CodeMirror').show();
         $('#iframe-response').hide();
         try {
           var json = js_beautify(response, { "indent_size": 2, "unescape_strings": true });
-          cmResponseBodyPreview.setOption('mode', mode);
-          CodeMirror.autoLoadMode(cmResponseBodyPreview, mode.name);
+          cmResponseBodyPreview.setOption('mode', option);
+          CodeMirror.autoLoadMode(cmResponseBodyPreview, option.name);
           cmResponseBodyPreview.getDoc().setValue(json);
         }
         catch (e) {
@@ -179,17 +173,18 @@ $(function () {
       }
 
       // is an xml document
-      if (mode === false && (mime.indexOf('xml') >= 0)) {
+      if (mode.mode == 'xml') {
+        processed = true;
         btnDownload.show();
         previewTab.show();
 
-        mode = 'xml';
+        let option = 'xml';
         $('#tab-response-preview .CodeMirror').show();
         $('#iframe-response').hide();
         try {
           var xml = html_beautify(response, { "indent_size": 2, "unescape_strings": true });
-          cmResponseBodyPreview.setOption('mode', mode);
-          CodeMirror.autoLoadMode(cmResponseBodyPreview, mode);
+          cmResponseBodyPreview.setOption('mode', option);
+          CodeMirror.autoLoadMode(cmResponseBodyPreview, option);
           cmResponseBodyPreview.getDoc().setValue(xml);
         }
         catch (e) {
@@ -198,17 +193,18 @@ $(function () {
         }
       }
 
-      if (mode === false && (mime.indexOf('css') >= 0)) {
+      if (mode.mode == 'css') {
+        processed = true;
         btnDownload.show();
         previewTab.show();
 
-        mode = 'css';
+        let option = 'css';
         $('#tab-response-preview .CodeMirror').show();
         $('#iframe-response').hide();
         try {
           var css = css_beautify(response, { "indent_size": 2 });
-          cmResponseBodyPreview.setOption('mode', mode);
-          CodeMirror.autoLoadMode(cmResponseBodyPreview, mode);
+          cmResponseBodyPreview.setOption('mode', option);
+          CodeMirror.autoLoadMode(cmResponseBodyPreview, option);
           cmResponseBodyPreview.getDoc().setValue(css);
         }
         catch (e) {
@@ -219,14 +215,13 @@ $(function () {
     }
     
 
-    if (mode === false) {
-      var info = CodeMirror.findModeByMIME(mime);
-      if (info && info.mode) {
-        cmResponseBody.setOption('mode', info.mode);
-        CodeMirror.autoLoadMode(cmResponseBody, info.mode);
+    if (processed === false) {
+      if (mode === false) {
+        cmResponseBody.setOption('mode', null);
       }
       else {
-        cmResponseBody.setOption('mode', null);
+        cmResponseBody.setOption('mode', mode.mode);
+        CodeMirror.autoLoadMode(cmResponseBody, mode.mode);
       }
     }
 

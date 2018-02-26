@@ -81,10 +81,6 @@ $(function () {
     console.log('[RESTClient][index.js][favorite-requests-loaded]');
   });
 
-  $('#modal-form-data').on('show.bs.modal', function (e) {
-    $('.has-danger').removeClass('has-danger');
-  });
-
   $(document).on('click', '.btn-save-favorite', function (e, tags) {
     var name = $('#favorite-name').val();
     if (name.length == 0) {
@@ -258,4 +254,24 @@ $(function () {
       }
     });
   });
+
+  $(document).on('keypress', '#modal-favorite-save #favorite-name', function (e) {
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode == '13') {
+      $('#modal-favorite-save .tt-input').focus();
+    }
+  });
+  $(document).on('keydown', '#modal-favorite-save .tt-input', function (e) {
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    var val = $(this).val();
+    console.log(keycode, val);
+    if (keycode == '13' && val == '') {
+      $('#modal-favorite-save .btn-save-favorite').click();
+    }
+  });
+
+  $('#modal-favorite-save').on('shown.bs.modal', function (e) {
+    $('#modal-favorite-save #favorite-name').focus();
+  });
+
 });

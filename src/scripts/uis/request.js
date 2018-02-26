@@ -392,6 +392,10 @@ $(function () {
     }
   }).trigger('modal-form-data-row-changed');
 
+  $('#modal-form-data').on('show.bs.modal', function (e) {
+    $('.has-danger').removeClass('has-danger');
+  });
+  
   $(document).on('focus', '#modal-form-data input', function () {
     $(this).select();
   });

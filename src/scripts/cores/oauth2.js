@@ -455,7 +455,7 @@ $(function () {
         data['scope'] = params.scope;
       }
       ajaxOption['data'] = data;
-      ajaxOption['contentType'] = 'Content-Type: application/x-www-form-urlencoded';
+      ajaxOption['contentType'] = 'application/x-www-form-urlencoded';
     }
     console.log(`[oauth2.js][obtain-access-token] ajaxOption`, ajaxOption);
     

@@ -45,11 +45,27 @@ $(function () {
 
   function paste() 
   {
-    var pasteText = document.querySelector("#curl-paste");
+    var pasteText = document.querySelector("#curl-paste"),
+        triggerFn = function() {
+          console.log('[curl.js] pasted', pasteText.textContent);
+          $(document).trigger('curl-command-pasted', [pasteText.textContent]);
+        };
+
     pasteText.focus();
     document.execCommand("paste");
-    console.log('[curl.js] pasted', pasteText.textContent);
-    $(document).trigger('curl-command-pasted', [pasteText.textContent]);
+
+    if (pasteText.textContent.length > 0 || navigator.clipboard === undefined) {
+      triggerFn();
+      return;
+    }
+
+    navigator.clipboard
+      .readText()
+      .then(function(clipText) {
+        pasteText.innerText = clipText;
+        pasteText.textContent = clipText;
+        triggerFn();
+      });
   }
 
   document.querySelector("#btn-curl-paste").addEventListener("click", paste);
